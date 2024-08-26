@@ -1,18 +1,22 @@
-import { FC, PropsWithChildren, useEffect } from 'react'
+import { FC, PropsWithChildren } from 'react'
 import React, { useMemo, useState } from 'react'
-
 import { WalletAdapterNetwork } from '@solana/wallet-adapter-base'
-import { ConnectionProvider, WalletProvider } from '@solana/wallet-adapter-react'
+import {
+  ConnectionProvider,
+  WalletProvider,
+} from '@solana/wallet-adapter-react'
 import { WalletModalProvider } from '@solana/wallet-adapter-react-ui'
 import { GlowWalletAdapter } from '@solana/wallet-adapter-glow'
 import { ExodusWalletAdapter } from '@solana/wallet-adapter-exodus'
 import { SlopeWalletAdapter } from '@solana/wallet-adapter-slope'
-import { SolflareWalletAdapter, initialize } from '@solflare-wallet/wallet-adapter'
+import {
+  SolflareWalletAdapter,
+  initialize,
+} from '@solflare-wallet/wallet-adapter'
 import {
   PhantomWalletAdapter,
   TorusWalletAdapter,
   TrustWalletAdapter,
-  // LedgerWalletAdapter,
   MathWalletAdapter,
   TokenPocketWalletAdapter,
   CoinbaseWalletAdapter,
@@ -20,36 +24,31 @@ import {
   Coin98WalletAdapter,
   SafePalWalletAdapter,
   BitpieWalletAdapter,
-  BitgetWalletAdapter
+  BitgetWalletAdapter,
 } from '@solana/wallet-adapter-wallets'
-import { useAppStore, defaultNetWork, defaultEndpoint } from '../store/useAppStore'
+import { type WalletError } from '@solana/wallet-adapter-base'
 import { registerMoonGateWallet } from '@moongate/moongate-adapter'
 import { TipLinkWalletAdapter } from '@tiplink/wallet-adapter'
 import { WalletConnectWalletAdapter } from '@walletconnect/solana-adapter'
-
-import { type Adapter, type WalletError } from '@solana/wallet-adapter-base'
-import { sendWalletEvent } from '@/api/event'
-import { useEvent } from '@/hooks/useEvent'
-import { LedgerWalletAdapter } from './Ledger/LedgerWalletAdapter'
+//import { LedgerWalletAdapter } from './Ledger/LedgerWalletAdapter'
+import { defaultEndpoint, defaultNetWork } from '@/utils/network'
 
 initialize()
 
 const App: FC<PropsWithChildren<any>> = ({ children }) => {
+  //TODO: Add different networks
   const [network] = useState<WalletAdapterNetwork>(defaultNetWork)
-  const rpcNodeUrl = useAppStore((s) => s.rpcNodeUrl)
-  const wsNodeUrl = useAppStore((s) => s.wsNodeUrl)
-  // const [endpoint] = useState<string>(defaultEndpoint)
-  const [endpoint, setEndpoint] = useState<string>(rpcNodeUrl || defaultEndpoint)
+  const [endpoint] = useState<string>(defaultEndpoint)
 
   registerMoonGateWallet({
     authMode: 'Ethereum',
-    position: 'top-right'
+    position: 'top-right',
     // logoDataUri: 'OPTIONAL ADD IN-WALLET LOGO URL HERE',
     // buttonLogoUri: 'ADD OPTIONAL LOGO FOR WIDGET BUTTON HERE'
   })
   registerMoonGateWallet({
     authMode: 'Google',
-    position: 'top-right'
+    position: 'top-right',
     // logoDataUri: 'OPTIONAL ADD IN-WALLET LOGO URL HERE',
     // buttonLogoUri: 'ADD OPTIONAL LOGO FOR WIDGET BUTTON HERE'
   })
@@ -61,7 +60,7 @@ const App: FC<PropsWithChildren<any>> = ({ children }) => {
   // })
   registerMoonGateWallet({
     authMode: 'Apple',
-    position: 'top-right'
+    position: 'top-right',
     // logoDataUri: 'OPTIONAL ADD IN-WALLET LOGO URL HERE',
     // buttonLogoUri: 'ADD OPTIONAL LOGO FOR WIDGET BUTTON HERE'
   })
@@ -78,9 +77,9 @@ const App: FC<PropsWithChildren<any>> = ({ children }) => {
               name: 'Raydium',
               description: 'Raydium',
               url: 'https://raydium.io/',
-              icons: ['https://raydium.io/logo/logo-only-icon.svg']
-            }
-          }
+              icons: ['https://raydium.io/logo/logo-only-icon.svg'],
+            },
+          },
         })
       )
     } catch (e) {
@@ -95,7 +94,7 @@ const App: FC<PropsWithChildren<any>> = ({ children }) => {
       new SolflareWalletAdapter(),
       new SlopeWalletAdapter({ endpoint }),
       new TorusWalletAdapter(),
-      new LedgerWalletAdapter(),
+      //new LedgerWalletAdapter(),
       ..._walletConnect,
       new GlowWalletAdapter(),
       new TrustWalletAdapter(),
@@ -111,28 +110,21 @@ const App: FC<PropsWithChildren<any>> = ({ children }) => {
       new TipLinkWalletAdapter({
         clientId: process.env.NEXT_PUBLIC_WALLET_TIP_WALLET_KEY ?? '',
         title: 'Raydium',
-        theme: 'system'
-      })
+        theme: 'system',
+      }),
     ],
     [network, endpoint]
   )
 
-  useEffect(() => {
-    if (rpcNodeUrl) setEndpoint(rpcNodeUrl)
-  }, [rpcNodeUrl])
-
-  const onWalletError = useEvent((error: WalletError, adapter?: Adapter) => {
-    if (!adapter) return
-    sendWalletEvent({
-      type: 'connectWallet',
-      walletName: adapter.name,
-      connectStatus: 'failure',
-      errorMsg: error.message || error.stack
-    })
-  })
+  const onWalletError = (error: WalletError) => {
+    console.error('Wallet error', error)
+  }
 
   return (
-    <ConnectionProvider endpoint={endpoint} config={{ disableRetryOnRateLimit: true, wsEndpoint: wsNodeUrl }}>
+    <ConnectionProvider
+      endpoint={endpoint}
+      config={{ disableRetryOnRateLimit: true }}
+    >
       <WalletProvider wallets={wallets} onError={onWalletError} autoConnect>
         <WalletModalProvider>{children}</WalletModalProvider>
       </WalletProvider>
