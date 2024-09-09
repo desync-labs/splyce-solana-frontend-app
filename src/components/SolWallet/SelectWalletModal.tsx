@@ -6,7 +6,6 @@ import SmartphoneRoundedIcon from '@mui/icons-material/SmartphoneRounded'
 import ComputerRoundedIcon from '@mui/icons-material/ComputerRounded'
 import {
   Box,
-  Button,
   Collapse,
   Grid,
   List,
