@@ -5,8 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="980c1e59-2a66-476c-8058-c1191519ba3f" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/pages/vaults/index.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/AppLayout/AppNavLayout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/AppLayout/AppNavLayout.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Base/Boxes/StyledBoxes.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Base/Boxes/StyledBoxes.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Base/Buttons/StyledButtons.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Base/Buttons/StyledButtons.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Base/Dialog/StyledDialog.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Base/Dialog/StyledDialog.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/SolWallet/SelectWalletModal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/SolWallet/SelectWalletModal.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/SolWallet/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/SolWallet/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/theme/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/theme/index.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -27,34 +35,37 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/aleksandrdovgopolyj/Work/splyce-frontend/src/assets&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.standard&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.standard&quot;: &quot;&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;prettierjs.PrettierConfiguration.Package&quot;: &quot;/Users/aleksandrdovgopolyj/Work/splyce-frontend/node_modules/prettier&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;settings.javascript.linters.eslint&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;/Users/aleksandrdovgopolyj/Work/splyce-frontend-app-M/node_modules/typescript/lib&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "master",
+    "last_opened_file_path": "/Users/aleksandrdovgopolyj/Work/splyce-frontend-app-M/src/components/Base",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.standard": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.standard": "",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "prettierjs.PrettierConfiguration.Package": "/Users/aleksandrdovgopolyj/Work/splyce-frontend/node_modules/prettier",
+    "settings.editor.selected.configurable": "settings.javascript.prettier",
+    "ts.external.directory.path": "/Users/aleksandrdovgopolyj/Work/splyce-frontend-app-M/node_modules/typescript/lib",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/src/assets" />
-      <recent name="$PROJECT_DIR$/src/components/SolWallet" />
       <recent name="$PROJECT_DIR$/src/components/Base" />
-      <recent name="$PROJECT_DIR$/src/utils" />
-      <recent name="$PROJECT_DIR$/src/components" />
+      <recent name="$PROJECT_DIR$/src/components/AppLayout" />
+      <recent name="$PROJECT_DIR$/src/hooks/General" />
+      <recent name="$PROJECT_DIR$/src/components/Dao" />
+      <recent name="$PROJECT_DIR$/src/pages/dao" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/pages/dao" />
+      <recent name="$PROJECT_DIR$/src/pages/vaults" />
+      <recent name="$PROJECT_DIR$/src/pages/lending" />
       <recent name="$PROJECT_DIR$/src/theme" />
     </key>
   </component>
@@ -70,7 +81,7 @@
       <workItem from="1724246798340" duration="37689000" />
       <workItem from="1724660312940" duration="3829000" />
       <workItem from="1724760043508" duration="608000" />
-      <workItem from="1725872092903" duration="9000" />
+      <workItem from="1725872092903" duration="17027000" />
     </task>
     <servers />
   </component>
@@ -79,5 +90,16 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="LAST_COMMIT_MESSAGE" value="" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/components/Base/Boxes/StyledBoxes.tsx</url>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

@@ -10,6 +10,15 @@ export const FlexBox = styled(Box)`
   width: 100%;
 `
 
+export const MainBox = styled(Box)`
+  min-height: calc(var(--vh, 1vh) * 100 - 125px);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  width: 100%;
+  overflow: auto;
+`
+
 export const BaseInfoBox = styled(Box)`
   display: flex;
   flex-direction: row;

@@ -37,10 +37,7 @@ declare module '@mui/material/styles/createPalette' {
 
   interface Palette {
     gradients?: {
-      fathomMainGradient: string
-      newGradient: string
-      fathomGradient: string
-      fathomlightGradient: string
+      primary: string
     }
     other: {
       standardInputLine: string
@@ -48,15 +45,6 @@ declare module '@mui/material/styles/createPalette' {
       fathomAccentLight: string
       fathomAccentMute: string
       fathomLink: string
-    }
-  }
-
-  interface PaletteOptions {
-    gradients?: {
-      fathomMainGradient: string
-      newGradient: string
-      fathomGradient: string
-      fathomlightGradient: string
     }
   }
 }
@@ -150,7 +138,7 @@ export const getDesignTokens = () => {
     palette: {
       mode: 'dark',
       primary: {
-        main: '#a0f2c4',
+        main: '#BBFB5B',
         light: '#7B9EA6',
         dark: '#D2D4DC',
       },
@@ -199,13 +187,13 @@ export const getDesignTokens = () => {
       },
       background: {
         default: '#071028',
-        paper: '#051926',
+        paper: '#1F2632',
         surface: '#072a40',
         surface2: '#072a40',
         header: '#101d32',
         disabled: '#EBEBEF14',
       },
-      divider: '#072a40',
+      divider: '#3A4F6A',
       action: {
         active: '#EBEBEF8F',
         hover: '#072a40',
@@ -222,12 +210,7 @@ export const getDesignTokens = () => {
         fathomLink: '#a8bfb0',
       },
       gradients: {
-        fathomMainGradient:
-          'linear-gradient(104.04deg, #99CAD8 0%, #9DFBC7 100%)',
-        newGradient: 'linear-gradient(79.67deg, #8C3EBC 0%, #007782 95.82%)',
-        fathomGradient: 'linear-gradient(180deg, #071126 0%, #050c1a 100%)',
-        fathomlightGradient:
-          'linear-gradient(104.04deg, #99CAD8 0%, #9DFBC7 100%)',
+        primary: 'linear-gradient(104deg, #59799D 0%, #9FF229 100%)',
       },
     },
     spacing: 8,
@@ -400,6 +383,20 @@ export const getDesignTokens = () => {
 export function getThemedComponents(theme: Theme) {
   return {
     components: {
+      MuiContainer: {
+        styleOverrides: {
+          root: {
+            margin: '36px 0',
+            paddingLeft: '40px',
+            paddingRight: '40px',
+            [theme.breakpoints.up('sm')]: {
+              maxWidth: '100%',
+              paddingLeft: '40px',
+              paddingRight: '40px',
+            },
+          },
+        },
+      },
       MuiSkeleton: {
         styleOverrides: {
           root: {
@@ -824,7 +821,7 @@ export function getThemedComponents(theme: Theme) {
             lineHeight: 1.5,
             minWidth: '375px',
             color: '#fff',
-            background: '#0d0d0d',
+            background: '#1F2632',
             '> div:first-of-type': {
               minHeight: '100vh',
               display: 'flex',
@@ -836,9 +833,9 @@ export function getThemedComponents(theme: Theme) {
       MuiAppBar: {
         styleOverrides: {
           root: {
-            backgroundColor: '#0D0D0DFF',
+            backgroundColor: '#000E16',
             color: theme.palette.text.primary,
-            borderBottom: `1px solid ${theme.palette.divider}`,
+            borderBottom: `1px solid #314156`,
             borderRadius: 0,
           },
         },
@@ -848,12 +845,13 @@ export function getThemedComponents(theme: Theme) {
           root: {
             justifyContent: 'space-between',
             alignItems: 'center',
-            gap: '16px',
-            minHeight: '50px',
-            height: '50px',
+            gap: '24px',
+            minHeight: '64px',
+            height: '64px',
             boxSizing: 'border-box',
-            [theme.breakpoints.up('xs')]: {
-              minHeight: '50px',
+            [theme.breakpoints.up('sm')]: {
+              paddingLeft: '40px',
+              paddingRight: '40px',
             },
           },
         },

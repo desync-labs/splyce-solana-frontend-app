@@ -1,6 +1,32 @@
 import { styled } from '@mui/material/styles'
-import { Box, IconButton as MuiButton, ToggleButtonGroup } from '@mui/material'
+import {
+  Box,
+  Button,
+  IconButton as MuiButton,
+  ToggleButtonGroup,
+} from '@mui/material'
 import OpenInNewRoundedIcon from '@mui/icons-material/OpenInNewRounded'
+
+export const WalletButton = styled(Button)`
+  color: #183102;
+  background: ${({ theme }) => theme.palette.gradients.primary};
+  font-size: 15px;
+  line-height: 20px;
+  font-weight: 600;
+  border-radius: 8px;
+  height: 36px;
+  padding: 8px 16px;
+  &:hover {
+    background: transparent;
+    color: ${({ theme }) => theme.palette.primary.main};
+    border: 1px solid ${({ theme }) => theme.palette.primary.main};
+    cursor: pointer;
+    pointer-events: all !important;
+    svg {
+      color: ${({ theme }) => theme.palette.primary.main};
+    }
+  }
+`
 
 export const BaseButtonsSwitcherGroup = styled(Box)`
   display: flex;
@@ -98,7 +124,7 @@ export const ExtLinkIcon = styled(OpenInNewRoundedIcon, {
 })<{ width?: string; height?: string }>`
   width: ${({ width = '16px' }) => width};
   height: ${({ height = '16px' }) => height};
-  color: #a0f2c4;
+  color: ${({ theme }) => theme.palette.primary.main};
   margin-left: 4px;
   ${({ theme }) => theme.breakpoints.down('sm')} {
     margin-left: 0;

@@ -31,7 +31,7 @@ import {
 const WalletItemWrapper = styled(FlexBox)`
   justify-content: flex-start;
   cursor: not-allowed;
-  background: #072a40;
+  background: #314156;
   border-radius: 8px;
   opacity: 0.5;
   padding: 8px;
@@ -286,7 +286,7 @@ const SelectWalletModal = ({
               py={2}
               px={2.5}
               mb={1.5}
-              bgcolor="#072a40"
+              bgcolor="#314156"
               borderRadius="16px"
             >
               <FlexBox sx={{ justifyContent: 'flex-start' }}>

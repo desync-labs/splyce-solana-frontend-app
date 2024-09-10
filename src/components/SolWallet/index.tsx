@@ -2,28 +2,28 @@ import { useCallback, useState } from 'react'
 import { Wallet, useWallet } from '@solana/wallet-adapter-react'
 import { useWalletModal } from '@solana/wallet-adapter-react-ui'
 import { Typography, styled } from '@mui/material'
-import IconButton from '@mui/material/IconButton'
-import { AccountBalanceWallet as AccountBalanceWalletIcon } from '@mui/icons-material'
 import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded'
 import { encodeStr } from '@/utils/common'
 import SelectWalletModal from './SelectWalletModal'
 import { FlexBox } from '@/components/Base/Boxes/StyledBoxes'
 import WalletInfoModal from '@/components/SolWallet/WalletInfoModal'
+import { WalletButton } from '@/components/Base/Buttons/StyledButtons'
 
 const WalletInfo = styled(FlexBox)`
   justify-content: flex-end;
   width: fit-content;
   gap: 0;
-  background-color: #072a40;
+  background-color: #2e3a4c;
   border-radius: 8px;
   cursor: pointer;
-  padding: 4px 16px;
+  padding: 6px 16px;
 
   & img {
     margin-right: 8px;
   }
 
   & svg {
+    margin-left: 4px;
     margin-right: -8px;
   }
 `
@@ -66,16 +66,16 @@ const SolWallet = () => {
               />
             )}
             <Typography>{encodeStr(publicKey?.toBase58(), 4)}</Typography>
-            <KeyboardArrowDownRoundedIcon />
+            <KeyboardArrowDownRoundedIcon sx={{ width: '16px' }} />
           </WalletInfo>
         </FlexBox>
       </>
     )
   return (
     <>
-      <IconButton color="inherit" onClick={handleOpen}>
-        <AccountBalanceWalletIcon />
-      </IconButton>
+      <FlexBox sx={{ justifyContent: 'flex-end' }}>
+        <WalletButton onClick={handleOpen}>Connect Wallet</WalletButton>
+      </FlexBox>
       <SelectWalletModal
         wallets={wallets}
         isOpen={visible}

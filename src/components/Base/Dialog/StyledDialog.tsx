@@ -19,8 +19,8 @@ export const BaseDialogWrapper = styled(
   },
   '& .MuiDialog-paper': {
     borderRadius: '16px',
-    border: '1px solid #072a40',
-    background: '#051926',
+    border: `1px solid ${theme.palette.divider}`,
+    background: theme.palette.background.paper,
     [theme.breakpoints.down('sm')]: {
       width: '100vw',
       height: 'calc(var(--vh, 1vh) * 100)',
