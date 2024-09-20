@@ -8,10 +8,6 @@ body {
   margin: 0;
 }
 
-.MuiList-padding.MuiMenu-list {
-  background: #072a40;
-}
-
 a {
   color: #a8bfb0;
   text-decoration: none;

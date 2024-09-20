@@ -30,12 +30,12 @@ export const BaseInfoBox = styled(Box)`
   svg {
     height: 20px;
     width: 20px;
-    color: #7b9ea6;
+    color: #d1dae6;
     margin: 0;
   }
 
   p {
-    color: #7b9ea6;
+    color: #d1dae6;
     font-size: 14px;
     width: 100%;
     white-space: break-spaces;

@@ -61,40 +61,24 @@ const Footer = () => {
         <a href={'https://splyce.finance'} rel="noreferrer" target={'_blank'}>
           splyce.fi
         </a>
-        <a href={'https://docs.fathom.fi'} rel="noreferrer" target={'_blank'}>
+        <a href={'#'} rel="noreferrer" target={'_blank'}>
           Docs
         </a>
-        <a
-          href={'https://docs.fathom.fi/privacy-policy'}
-          rel="noreferrer"
-          target={'_blank'}
-        >
+        <a href={'#'} rel="noreferrer" target={'_blank'}>
           Privacy Policy
         </a>
-        <a
-          href={'https://docs.fathom.fi/terms-of-service'}
-          rel="noreferrer"
-          target={'_blank'}
-        >
+        <a href={'#'} rel="noreferrer" target={'_blank'}>
           Terms of Service
         </a>
-        <a
-          href={'https://docs.fathom.fi/fxd-deployments'}
-          target={'_blank'}
-          rel="noreferrer"
-        >
+        <a href={'#'} target={'_blank'} rel="noreferrer">
           spUSD
         </a>
-        <a
-          href={'https://docs.fathom.fi/fthm-deployments'}
-          target={'_blank'}
-          rel="noreferrer"
-        >
+        <a href={'#'} target={'_blank'} rel="noreferrer">
           SPLY
         </a>
       </LinksWrapper>
       <SocialLinksWrapper>
-        <a href={'https://t.me/fathom_fi'} rel="noreferrer" target={'_blank'}>
+        <a href={'#'} rel="noreferrer" target={'_blank'}>
           <Image
             src={TelegramSrc as string}
             width={20}
@@ -102,11 +86,7 @@ const Footer = () => {
             alt={'telegram'}
           />
         </a>
-        <a
-          href={'https://twitter.com/Fathom_fi'}
-          rel="noreferrer"
-          target={'_blank'}
-        >
+        <a href={'#'} rel="noreferrer" target={'_blank'}>
           <Image
             src={TwitterSrc as string}
             width={20}
@@ -114,11 +94,7 @@ const Footer = () => {
             alt={'twitter'}
           />
         </a>
-        <a
-          href={'https://www.linkedin.com/company/fathom-protocol/'}
-          rel="noreferrer"
-          target={'_blank'}
-        >
+        <a href={'#'} rel="noreferrer" target={'_blank'}>
           <Image
             src={LinkedInSrc as string}
             width={20}

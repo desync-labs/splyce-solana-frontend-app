@@ -38,13 +38,11 @@ declare module '@mui/material/styles/createPalette' {
   interface Palette {
     gradients?: {
       primary: string
+      secondary: string
     }
     other: {
-      standardInputLine: string
-      fathomAccent: string
-      fathomAccentLight: string
-      fathomAccentMute: string
-      fathomLink: string
+      splyceAccent: string
+      splyceLink: string
     }
   }
 }
@@ -140,7 +138,7 @@ export const getDesignTokens = () => {
       primary: {
         main: '#BBFB5B',
         light: '#7B9EA6',
-        dark: '#D2D4DC',
+        dark: '#183102',
       },
       secondary: {
         main: '#7D91B5',
@@ -186,8 +184,8 @@ export const getDesignTokens = () => {
         highlight: '#a0f2c4',
       },
       background: {
-        default: '#071028',
-        paper: '#1F2632',
+        default: '#1F2632',
+        paper: '#314156',
         surface: '#072a40',
         surface2: '#072a40',
         header: '#101d32',
@@ -196,21 +194,19 @@ export const getDesignTokens = () => {
       divider: '#3A4F6A',
       action: {
         active: '#EBEBEF8F',
-        hover: '#072a40',
+        hover: '#CFFF81',
         selected: '#072a40',
         disabled: '#EBEBEF4D',
         disabledBackground: '#EBEBEF1F',
-        focus: '#EBEBEF1F',
+        focus: '0px 0px 8px 0px rgba(207, 255, 129, 0.80)',
       },
       other: {
-        standardInputLine: '#EBEBEF6B',
-        fathomAccent: '#a0f2c4',
-        fathomAccentLight: '#B3FFF9',
-        fathomAccentMute: '#2696a0',
-        fathomLink: '#a8bfb0',
+        splyceAccent: '#CFFF81',
+        splyceLink: '#a8bfb0',
       },
       gradients: {
         primary: 'linear-gradient(104deg, #59799D 0%, #9FF229 100%)',
+        secondary: 'linear-gradient(104deg, #CFFF81 0%, #9FF229 100%)',
       },
     },
     spacing: 8,
@@ -434,6 +430,18 @@ export function getThemedComponents(theme: Theme) {
           },
         },
       },
+      MuiPagination: {
+        styleOverrides: {
+          root: {
+            '& .MuiPaginationItem-root': {
+              '&.Mui-selected': {
+                backgroundColor: '#476182',
+                color: theme.palette.text.primary,
+              },
+            },
+          },
+        },
+      },
       MuiButton: {
         defaultProps: {
           disableElevation: true,
@@ -448,8 +456,8 @@ export function getThemedComponents(theme: Theme) {
           },
           sizeMedium: {
             ...theme.typography.buttonM,
-            padding: '8px 12px',
-            height: '32px',
+            padding: '8px 16px',
+            height: '36px',
           },
           sizeSmall: {
             ...theme.typography.buttonS,
@@ -475,16 +483,38 @@ export function getThemedComponents(theme: Theme) {
             },
           },
           {
+            props: { variant: 'contained' },
+            style: {
+              color: theme.palette.primary.dark,
+              boxSizing: 'border-box',
+              border: '1px solid transparent',
+              fontSize: pxToRem(15),
+              fontWeight: 600,
+              '&:hover, &.Mui-focusVisible': {
+                background: 'transparent',
+                color: theme.palette.primary.main,
+                border: '1px solid ' + theme.palette.primary.main,
+              },
+              '&:disabled': {
+                color: theme.palette.action.disabled,
+                background: 'transparent',
+                borderColor: theme.palette.action.disabled,
+                cursor: 'not-allowed',
+                pointerEvents: 'all',
+              },
+            },
+          },
+          {
             props: { variant: 'gradient' },
             style: {
-              color: theme.palette.common.black,
-              background: theme.palette.gradients?.fathomlightGradient,
+              color: theme.palette.primary.dark,
+              background: theme.palette.gradients?.secondary,
               boxSizing: 'border-box',
               border: '1px solid transparent',
               '&:hover, &.Mui-focusVisible': {
                 background: 'transparent',
-                color: theme.palette.other.fathomAccentLight,
-                border: '1px solid ' + theme.palette.other.fathomAccentLight,
+                color: theme.palette.other.splyceAccent,
+                border: '1px solid ' + theme.palette.other.splyceAccent,
               },
               '&:disabled': {
                 color: theme.palette.action.disabled,
@@ -512,19 +542,20 @@ export function getThemedComponents(theme: Theme) {
           {
             props: { variant: 'outlined' },
             style: {
-              color: theme.palette.other.fathomAccent,
+              color: theme.palette.primary.main,
               background: 'transparent',
-              border: '1px solid ' + theme.palette.other.fathomAccent,
+              border: '1px solid ' + theme.palette.primary.main,
               '&:hover, &.Mui-focusVisible': {
                 background: 'transparent',
-                color: theme.palette.other.fathomAccentLight,
-                border: '1px solid ' + theme.palette.other.fathomAccentLight,
+                color: theme.palette.other.splyceAccent,
+                border: '1px solid ' + theme.palette.other.splyceAccent,
               },
               '&:disabled': {
-                color: theme.palette.action.disabled,
+                color: theme.palette.primary.main,
                 background: 'transparent',
-                borderColor: theme.palette.action.disabled,
+                borderColor: theme.palette.primary.main,
                 cursor: 'not-allowed',
+                opacity: 0.5,
                 pointerEvents: 'all',
               },
             },
@@ -578,6 +609,14 @@ export function getThemedComponents(theme: Theme) {
             },
           },
         },
+        styleOverrides: {
+          paper: {
+            border: `1px solid ${theme.palette.divider}`,
+            backgroundColor: '#1F2632',
+            borderRadius: '8px',
+            boxShadow: '0px 4px 40px 0px rgba(0, 7, 21, 0.30)',
+          },
+        },
       },
       MuiList: {
         styleOverrides: {
@@ -591,6 +630,15 @@ export function getThemedComponents(theme: Theme) {
         styleOverrides: {
           root: {
             padding: '8px 16px',
+            '&.Mui-selected': {
+              backgroundColor: '#314156',
+              '&:hover': {
+                backgroundColor: '#314156',
+              },
+            },
+            '&:hover': {
+              backgroundColor: '#31415670',
+            },
           },
         },
       },
@@ -622,6 +670,7 @@ export function getThemedComponents(theme: Theme) {
         styleOverrides: {
           root: {
             borderRadius: '8px',
+            padding: '24px',
           },
         },
         variants: [
@@ -680,9 +729,9 @@ export function getThemedComponents(theme: Theme) {
         styleOverrides: {
           switchBase: {
             '&.Mui-checked': {
-              color: theme.palette.other.fathomAccent,
+              color: theme.palette.primary.main,
               '& + .MuiSwitch-track': {
-                backgroundColor: theme.palette.other.fathomAccent,
+                backgroundColor: theme.palette.primary.main,
                 opacity: 0.5,
               },
             },
@@ -799,7 +848,7 @@ export function getThemedComponents(theme: Theme) {
               border: '1px solid' + theme.palette.warning['300'],
               a: {
                 textDecoration: 'none',
-                color: theme.palette.other.fathomLink,
+                color: theme.palette.other.splyceLink,
                 '&:hover': {
                   textDecoration: 'underline',
                 },
@@ -837,6 +886,7 @@ export function getThemedComponents(theme: Theme) {
             color: theme.palette.text.primary,
             borderBottom: `1px solid #314156`,
             borderRadius: 0,
+            padding: 0,
           },
         },
       },
@@ -867,7 +917,7 @@ export function getThemedComponents(theme: Theme) {
         defaultProps: {
           IconComponent: (props) => (
             <KeyboardArrowDownRoundedIcon
-              sx={{ fontSize: '22px' }}
+              sx={{ fontSize: '22px', color: '#9EBBC1' }}
               {...props}
             />
           ),
@@ -876,8 +926,8 @@ export function getThemedComponents(theme: Theme) {
           root: {
             '&.Mui-focused, &:hover': {
               '.MuiOutlinedInput-notchedOutline': {
-                border: '1px solid #a8bfb0',
-                boxShadow: '0 0 8px #a0f2c4',
+                border: '1px solid #a0adb2',
+                boxShadow: theme.palette.action.focus,
               },
             },
             '&.Mui-disabled:hover': {
@@ -898,16 +948,19 @@ export function getThemedComponents(theme: Theme) {
       MuiLinearProgress: {
         styleOverrides: {
           bar1Indeterminate: {
-            background: theme.palette.gradients?.fathomMainGradient,
+            background: theme.palette.gradients?.primary,
           },
           bar2Indeterminate: {
-            background: theme.palette.gradients?.fathomMainGradient,
+            background: theme.palette.gradients?.primary,
           },
         },
       },
       MuiModal: {
         styleOverrides: {
           root: {
+            '& .MuiPaper-root': {
+              padding: 0,
+            },
             [`@media (max-width: ${theme.breakpoints.values.sm}px)`]: {
               '&.LendingModal': {
                 '&>.MuiPaper-root': {

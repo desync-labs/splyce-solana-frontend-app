@@ -27,7 +27,10 @@
     "@walletconnect/solana-adapter": "^0.0.6",
     "next": "14.2.5",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "react-hook-form": "^7.53.0",
+    "react-player": "^2.16.0",
+    "recharts": "^2.12.7"
   },
   "devDependencies": {
     "@types/node": "^20",

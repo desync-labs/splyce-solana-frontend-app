@@ -58,7 +58,7 @@ const BasePopover: FC<AppPopoverProps> = ({
   element,
   type = PopoverType.Info,
   iconSize = '16px',
-  iconColor = '#7b9ea6',
+  iconColor = '#A9BAD0',
 }) => {
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null)
 

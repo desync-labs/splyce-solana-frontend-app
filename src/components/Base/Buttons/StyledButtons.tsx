@@ -28,35 +28,6 @@ export const WalletButton = styled(Button)`
   }
 `
 
-export const BaseButtonsSwitcherGroup = styled(Box)`
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  gap: 8px;
-  justify-content: stretch;
-  width: 100%;
-  height: fit-content;
-  background: #051926;
-  border-radius: 8px;
-  padding: 4px;
-  margin-bottom: 16px;
-`
-
-export const BaseSwitcherButton = styled(MuiButton)`
-  align-items: center;
-  height: 40px;
-  width: calc(50% - 4px);
-  color: #fff;
-  font-size: 13px;
-  font-weight: 600;
-  border: none;
-  border-radius: 8px;
-  background: transparent;
-  &.active {
-    background: #072a40;
-  }
-`
-
 export const BaseButtonSecondary = styled(MuiButton)`
   color: #a0f2c4;
   font-weight: bold;
@@ -147,5 +118,34 @@ export const BaseToggleButtonGroup = styled(ToggleButtonGroup)`
     &.Mui-selected {
       font-weight: 600;
     }
+  }
+`
+
+export const BaseButtonsSwitcherGroup = styled(Box)`
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  gap: 8px;
+  justify-content: stretch;
+  width: 100%;
+  height: fit-content;
+  background: #051926;
+  border-radius: 8px;
+  padding: 4px;
+  margin-bottom: 16px;
+`
+
+export const BaseSwitcherButton = styled(MuiButton)`
+  align-items: center;
+  height: 40px;
+  width: calc(50% - 4px);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  &.active {
+    background: #072a40;
   }
 `

@@ -1,5 +1,5 @@
 import { styled } from '@mui/material/styles'
-import { Dialog } from '@mui/material'
+import { Box, Button, Dialog } from '@mui/material'
 
 export const BaseDialogWrapper = styled(
   Dialog,
@@ -20,7 +20,8 @@ export const BaseDialogWrapper = styled(
   '& .MuiDialog-paper': {
     borderRadius: '16px',
     border: `1px solid ${theme.palette.divider}`,
-    background: theme.palette.background.paper,
+    background: theme.palette.background.default,
+    padding: '0',
     [theme.breakpoints.down('sm')]: {
       width: '100vw',
       height: 'calc(var(--vh, 1vh) * 100)',
@@ -40,4 +41,79 @@ export const BaseDialogWrapper = styled(
 
 export const BaseDialogContent = styled('div')`
   padding: 0 24px 24px;
+`
+
+export const BaseDialogButtonWrapper = styled(Box)`
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  padding-top: 16px;
+
+  & > button {
+    height: 48px;
+    font-size: 17px;
+    font-weight: 600;
+    padding: 8px 32px;
+
+    &:first-of-type {
+      width: 118px;
+    }
+    &:last-child {
+      width: calc(100% - 128px);
+    }
+  }
+
+  ${({ theme }) => theme.breakpoints.down('sm')} {
+    & > button {
+      height: 36px;
+      font-size: 15px;
+      padding: 4px 18px;
+    }
+  }
+`
+
+export const BaseDialogNavWrapper = styled(Box)`
+  width: fit-content;
+  border-bottom: 1.5px solid #1d2d49;
+  display: flex;
+  align-items: center;
+  padding: 0;
+  margin-top: -10px;
+  ${({ theme }) => theme.breakpoints.down('sm')} {
+    width: fit-content;
+    padding: 0;
+
+    & button {
+      font-size: 16px;
+    }
+  }
+`
+
+export const BaseDialogNavItem = styled(Button)`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 100%;
+  font-size: 16px;
+  font-weight: 600;
+  text-transform: none;
+  color: #9fadc6;
+  background: unset;
+  border-radius: 0;
+  padding: 8px 18px;
+
+  &.active {
+    color: #fff;
+    border-bottom: 1px solid #00fff6;
+  }
+
+  &:hover {
+    background-color: unset;
+  }
+
+  ${({ theme }) => theme.breakpoints.down('sm')} {
+    font-size: 14px;
+    width: 100%;
+  }
 `

@@ -5,15 +5,21 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="980c1e59-2a66-476c-8058-c1191519ba3f" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/pages/vaults/index.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/Base/Breadcrumbs/StyledBreadcrumbs.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/utils/explorer.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/AppLayout/AppNavLayout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/AppLayout/AppNavLayout.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/next.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/vercel.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/AppLayout/Footer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/AppLayout/Footer.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/Base/Boxes/StyledBoxes.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Base/Boxes/StyledBoxes.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/Base/Buttons/StyledButtons.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Base/Buttons/StyledButtons.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/Base/Dialog/StyledDialog.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Base/Dialog/StyledDialog.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/SolWallet/SelectWalletModal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/SolWallet/SelectWalletModal.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/SolWallet/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/SolWallet/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Base/Popover/BasePopover.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Base/Popover/BasePopover.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/vaults/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/vaults/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/vaults/tutorial.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/vaults/tutorial.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/theme/globals.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/theme/globals.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/theme/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/theme/index.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -40,7 +46,7 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "master",
-    "last_opened_file_path": "/Users/aleksandrdovgopolyj/Work/splyce-frontend-app-M/src/components/Base",
+    "last_opened_file_path": "/Users/aleksandrdovgopolyj/Work/splyce-frontend-app-M/src/components/Vaults/Detail",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.standard": "true",
     "node.js.detected.package.tslint": "true",
@@ -56,11 +62,11 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/src/components/Base" />
-      <recent name="$PROJECT_DIR$/src/components/AppLayout" />
-      <recent name="$PROJECT_DIR$/src/hooks/General" />
-      <recent name="$PROJECT_DIR$/src/components/Dao" />
-      <recent name="$PROJECT_DIR$/src/pages/dao" />
+      <recent name="$PROJECT_DIR$/src/components/Vaults/Detail" />
+      <recent name="$PROJECT_DIR$/src/utils/Vaults" />
+      <recent name="$PROJECT_DIR$/src/components/Vaults/Detail/Tabs" />
+      <recent name="$PROJECT_DIR$/src/components/Base/Tabs" />
+      <recent name="$PROJECT_DIR$/src/assets/svg/icons" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/pages/dao" />
@@ -81,7 +87,12 @@
       <workItem from="1724246798340" duration="37689000" />
       <workItem from="1724660312940" duration="3829000" />
       <workItem from="1724760043508" duration="608000" />
-      <workItem from="1725872092903" duration="17027000" />
+      <workItem from="1725872092903" duration="33188000" />
+      <workItem from="1726043002442" duration="11025000" />
+      <workItem from="1726058148653" duration="3053000" />
+      <workItem from="1726062314712" duration="4652000" />
+      <workItem from="1726129744684" duration="51987000" />
+      <workItem from="1726656010231" duration="25558000" />
     </task>
     <servers />
   </component>
@@ -96,7 +107,6 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/components/Base/Boxes/StyledBoxes.tsx</url>
-          <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="1" />
         </line-breakpoint>
       </breakpoints>
