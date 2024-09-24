@@ -1,5 +1,6 @@
 import { FC, memo } from 'react'
 import { FormProvider } from 'react-hook-form'
+import { useWallet } from '@solana/wallet-adapter-react'
 import { Box, Button, CircularProgress, DialogContent } from '@mui/material'
 
 import useVaultOpenDeposit from '@/hooks/Vaults/useVaultOpenDeposit'
@@ -19,7 +20,6 @@ import {
   BaseErrorBox,
 } from '@/components/Base/Boxes/StyledBoxes'
 import { BaseInfoIcon } from '@/components/Base/Icons/StyledIcons'
-import { useWallet } from '@solana/wallet-adapter-react'
 
 export type VaultDepositProps = {
   vaultItemData: IVault

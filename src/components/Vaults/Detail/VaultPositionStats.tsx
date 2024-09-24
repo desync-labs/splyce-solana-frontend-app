@@ -103,6 +103,8 @@ const VaultPositionStats = () => {
             )
           }
           xs={6}
+          sm={6}
+          md={4}
         />
         <BasePageStatsItem
           title={'Available'}
@@ -131,7 +133,7 @@ const VaultPositionStats = () => {
           }
           xs={6}
           sm={6}
-          md={2}
+          md={4}
         />
         <BasePageStatsItem
           title={'Balance'}

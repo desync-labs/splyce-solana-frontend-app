@@ -1,11 +1,13 @@
+import { useState } from 'react'
 import { Container, Paper } from '@mui/material'
+import useSharedContext from '@/context/shared'
+import { IVault, SortType } from '@/utils/TempData'
 import VaultsNestedNav from '@/components/Vaults/NestedNav'
 import BasePageHeader from '@/components/Base/PageHeader'
 import VaultsTotalStats from '@/components/Vaults/List/VaultsTotalStats'
 import VaultsList from '@/components/Vaults/List/VaultsList'
-import { IVault, SortType } from '@/utils/TempData'
 import VaultFilters from '@/components/Vaults/List/VaultFilters'
-import { useState } from 'react'
+import VaultsListMobile from '@/components/Vaults/List/VaultsListMobile'
 
 const vaults: IVault[] = [
   {
@@ -59,6 +61,7 @@ const vaults: IVault[] = [
 ]
 
 const VaultsOverview = () => {
+  const { isMobile } = useSharedContext()
   const { search, setSearch } = useState('')
   const { sortBy, setSortBy } = useState<SortType>(SortType.TVL)
   const { isShutdown, setIsShutdown } = useState(false)
@@ -67,7 +70,6 @@ const VaultsOverview = () => {
     setIsShutdown(value)
   }
 
-  console.log(1, sortBy)
   return (
     <>
       <VaultsNestedNav />
@@ -77,17 +79,31 @@ const VaultsOverview = () => {
           description="Explore existing Vaults, and deposit your assets for a sustainable yield."
         />
         <VaultsTotalStats positionsLoading={false} positionsList={[]} />
-        <Paper sx={{ padding: 0 }}>
-          <VaultFilters
-            search={search}
-            sortBy={sortBy}
-            isShutdown={isShutdown}
-            setSearch={setSearch}
-            setSortBy={setSortBy}
-            handleIsShutdown={handleIsShutdown}
-          />
-          <VaultsList vaults={vaults} />
-        </Paper>
+        {isMobile ? (
+          <>
+            <VaultFilters
+              search={search}
+              sortBy={sortBy}
+              isShutdown={isShutdown}
+              setSearch={setSearch}
+              setSortBy={setSortBy}
+              handleIsShutdown={handleIsShutdown}
+            />
+            <VaultsListMobile vaults={vaults} />
+          </>
+        ) : (
+          <Paper sx={{ padding: 0 }}>
+            <VaultFilters
+              search={search}
+              sortBy={sortBy}
+              isShutdown={isShutdown}
+              setSearch={setSearch}
+              setSortBy={setSortBy}
+              handleIsShutdown={handleIsShutdown}
+            />
+            <VaultsList vaults={vaults} />
+          </Paper>
+        )}
       </Container>
     </>
   )

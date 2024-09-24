@@ -2,19 +2,23 @@ import { styled } from '@mui/material/styles'
 import { Box, TableCell, TableRow } from '@mui/material'
 
 export const BaseTableRow = styled(TableRow)`
-  background: #131f35;
   td {
     color: #c5d7f2;
     font-style: normal;
     font-weight: 400;
     font-size: 14px;
     line-height: 20px;
-    border-bottom: 2px solid #121212;
+    background: #314156;
+    border-bottom: 2px solid #1f2632;
     height: 72px;
     padding: 0;
   }
   td:first-of-type {
+    border-radius: 8px 0 0 8px;
     padding-left: 24px;
+  }
+  td:last-of-type {
+    border-radius: 0 8px 8px 0;
   }
 `
 

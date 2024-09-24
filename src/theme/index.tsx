@@ -382,11 +382,12 @@ export function getThemedComponents(theme: Theme) {
       MuiContainer: {
         styleOverrides: {
           root: {
-            margin: '36px 0',
-            paddingLeft: '40px',
-            paddingRight: '40px',
+            margin: '32px 0',
+            paddingLeft: '16px',
+            paddingRight: '16px',
             [theme.breakpoints.up('sm')]: {
               maxWidth: '100%',
+              margin: '36px 0',
               paddingLeft: '40px',
               paddingRight: '40px',
             },
@@ -671,6 +672,9 @@ export function getThemedComponents(theme: Theme) {
           root: {
             borderRadius: '8px',
             padding: '24px',
+            [theme.breakpoints.down('sm')]: {
+              padding: '24px 16px',
+            },
           },
         },
         variants: [
@@ -887,6 +891,9 @@ export function getThemedComponents(theme: Theme) {
             borderBottom: `1px solid #314156`,
             borderRadius: 0,
             padding: 0,
+            [theme.breakpoints.down('sm')]: {
+              padding: 0,
+            },
           },
         },
       },

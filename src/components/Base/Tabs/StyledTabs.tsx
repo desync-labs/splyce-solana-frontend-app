@@ -6,6 +6,10 @@ export const BaseTabsWrapper = styled(Box)`
   border: 1px solid #476182;
   background: #3a4f6a;
   padding: 10px 24px;
+
+  ${({ theme }) => theme.breakpoints.down('sm')} {
+    padding: 10px 16px;
+  }
 `
 
 export const BaseTabsItem = styled(Button)`
@@ -35,5 +39,6 @@ export const BaseTabsItem = styled(Button)`
   ${({ theme }) => theme.breakpoints.down('sm')} {
     font-size: 14px;
     width: 100%;
+    padding: 8px 16px;
   }
 `

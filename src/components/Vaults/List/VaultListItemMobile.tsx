@@ -1,20 +1,24 @@
-import { FC, memo, useState } from 'react'
+import { FC, memo, useMemo, useState } from 'react'
+import Image from 'next/image'
 import { styled } from '@mui/material/styles'
 import { TableCell } from '@mui/material'
-import BigNumber from 'bignumber.js'
-import { getTokenLogoURL } from 'utils/tokenLogo'
-import { formatCurrency } from 'utils/format'
+
+import { getTokenLogoURL } from '@/utils/tokenLogo'
+import { formatCurrency } from '@/utils/format'
+import { IVault, IVaultPosition } from '@/utils/TempData'
+
 import { BaseTableRow } from '@/components/Base/Table/StyledTable'
-import { IVault } from '@/utils/TempData'
 import { FlexBox } from '@/components/Base/Boxes/StyledBoxes'
+import VaultListItemPreviewModal from '@/components/Vaults/List/VaultListItemPreviewModal'
+import VaultListItemDepositModal from '@/components/Vaults/List/DepositVaultModal'
+import VaultListItemManageModal from '@/components/Vaults/List/ManageVaultModal'
 // import VaultListItemPreviewModal from 'components/Vaults/List/VaultListItemPreviewModal'
 // import VaultListItemDepositModal from 'components/Vaults/List/VaultListItemDepositModal'
 // import VaultListItemManageModal from 'components/Vaults/List/VaultListItemManageModal'
 
 export const VaultItemTableRow = styled(BaseTableRow)`
   width: 100%;
-  border-radius: 8px;
-  background: #132340;
+  background: #314156;
 
   & td {
     height: 52px;
@@ -23,9 +27,12 @@ export const VaultItemTableRow = styled(BaseTableRow)`
   & td:first-of-type {
     padding-left: 16px;
   }
+  & td:last-of-type {
+    padding-right: 16px;
+  }
 
   &:active {
-    background: #2c4066;
+    background: #3a4f6a;
   }
 `
 
@@ -56,10 +63,10 @@ export const VaultTagLabel = styled('div')`
   justify-content: center;
   height: 20px;
   width: fit-content;
-  background: rgba(79, 101, 140, 0.3);
+  background: #476182;
   font-size: 11px;
   font-weight: 600;
-  color: #43fff1;
+  color: ${({ theme }) => theme.palette.primary.main};
   border-radius: 6px;
   padding: 4px 8px;
 `
@@ -87,6 +94,8 @@ const VaultListItemMobile: FC<VaultListItemMobileProps> = ({
   const { token } = vaultItemData
 
   const [isOpenPreviewModal, setIsOpenPreviewModal] = useState<boolean>(false)
+  const [newVaultDeposit, setNewVaultDeposit] = useState<boolean>(false)
+  const [manageVault, setManageVault] = useState<boolean>(false)
 
   const handleOpenPreviewModal = () => {
     setIsOpenPreviewModal(true)
@@ -95,13 +104,17 @@ const VaultListItemMobile: FC<VaultListItemMobileProps> = ({
     setIsOpenPreviewModal(false)
   }
 
+  const handleWithdrawAll = () => {
+    alert('withdraw all')
+  }
+
   return (
     <>
       <VaultItemTableRow onClick={handleOpenPreviewModal}>
         <TableCell colSpan={2}>
           <FlexBox sx={{ justifyContent: 'flex-start', gap: '4px' }}>
             <VaultListItemImageWrapper>
-              <img src={getTokenLogoURL(token.id)} alt={token.name} />
+              <Image src={getTokenLogoURL(token.id)} alt={token.name} />
             </VaultListItemImageWrapper>
             <VaultTitle>{vaultItemData.name}</VaultTitle>
           </FlexBox>
@@ -116,67 +129,56 @@ const VaultListItemMobile: FC<VaultListItemMobileProps> = ({
           <VaultTagLabel>Live</VaultTagLabel>
         </TableCell>
       </VaultItemTableRow>
-      {/*{useMemo(() => {*/}
-      {/*  return (*/}
-      {/*    <VaultListItemPreviewModal*/}
-      {/*      isOpenPreviewModal={isOpenPreviewModal}*/}
-      {/*      vault={vaultItemData}*/}
-      {/*      vaultPosition={vaultPosition as IVaultPosition}*/}
-      {/*      balanceEarned={balanceEarned}*/}
-      {/*      handleClosePreview={handleClosePreviewModal}*/}
-      {/*      setManageVault={setManageVault}*/}
-      {/*      setNewVaultDeposit={setNewVaultDeposit}*/}
-      {/*      tfVaultDepositLimit={tfVaultDepositLimit}*/}
-      {/*      handleWithdrawAll={handleWithdrawAll}*/}
-      {/*      isTfVaultType={isTfVaultType}*/}
-      {/*      activeTfPeriod={activeTfPeriod}*/}
-      {/*      isWithdrawLoading={isWithdrawLoading}*/}
-      {/*    />*/}
-      {/*  )*/}
-      {/*}, [*/}
-      {/*  isOpenPreviewModal,*/}
-      {/*  vaultItemData,*/}
-      {/*  vaultPosition,*/}
-      {/*  balanceEarned,*/}
-      {/*  setManageVault,*/}
-      {/*  setNewVaultDeposit,*/}
-      {/*])}*/}
+      {useMemo(() => {
+        return (
+          <VaultListItemPreviewModal
+            isOpenPreviewModal={isOpenPreviewModal}
+            vault={vaultItemData}
+            vaultPosition={vaultPosition as IVaultPosition}
+            handleClosePreview={handleClosePreviewModal}
+            setManageVault={setManageVault}
+            setNewVaultDeposit={setNewVaultDeposit}
+            handleWithdrawAll={handleWithdrawAll}
+            isTfVaultType={false}
+            activeTfPeriod={0}
+            isWithdrawLoading={false}
+          />
+        )
+      }, [
+        isOpenPreviewModal,
+        vaultItemData,
+        vaultPosition,
+        setManageVault,
+        setNewVaultDeposit,
+      ])}
 
-      {/*{useMemo(() => {*/}
-      {/*  return (*/}
-      {/*    newVaultDeposit && (*/}
-      {/*      <VaultListItemDepositModal*/}
-      {/*        vaultItemData={vaultItemData}*/}
-      {/*        performanceFee={performanceFee}*/}
-      {/*        isTfVaultType={isTfVaultType}*/}
-      {/*        isUserKycPassed={isUserKycPassed}*/}
-      {/*        tfVaultDepositEndDate={tfVaultDepositEndDate}*/}
-      {/*        tfVaultLockEndDate={tfVaultLockEndDate}*/}
-      {/*        activeTfPeriod={activeTfPeriod}*/}
-      {/*        minimumDeposit={minimumDeposit}*/}
-      {/*        onClose={() => setNewVaultDeposit(false)}*/}
-      {/*      />*/}
-      {/*    )*/}
-      {/*  )*/}
-      {/*}, [newVaultDeposit, setNewVaultDeposit])}*/}
-      {/*{useMemo(() => {*/}
-      {/*  return (*/}
-      {/*    manageVault &&*/}
-      {/*    vaultPosition && (*/}
-      {/*      <VaultListItemManageModal*/}
-      {/*        vaultItemData={vaultItemData}*/}
-      {/*        vaultPosition={vaultPosition}*/}
-      {/*        performanceFee={performanceFee}*/}
-      {/*        isTfVaultType={isTfVaultType}*/}
-      {/*        tfVaultDepositEndDate={tfVaultDepositEndDate}*/}
-      {/*        tfVaultLockEndDate={tfVaultLockEndDate}*/}
-      {/*        activeTfPeriod={activeTfPeriod}*/}
-      {/*        minimumDeposit={minimumDeposit}*/}
-      {/*        onClose={() => setManageVault(false)}*/}
-      {/*      />*/}
-      {/*    )*/}
-      {/*  )*/}
-      {/*}, [manageVault, setManageVault])}*/}
+      {useMemo(() => {
+        return (
+          newVaultDeposit && (
+            <VaultListItemDepositModal
+              vaultItemData={vaultItemData}
+              isTfVaultType={false}
+              activeTfPeriod={0}
+              onClose={() => setNewVaultDeposit(false)}
+            />
+          )
+        )
+      }, [newVaultDeposit, setNewVaultDeposit])}
+      {useMemo(() => {
+        return (
+          manageVault &&
+          vaultPosition && (
+            <VaultListItemManageModal
+              vaultItemData={vaultItemData}
+              vaultPosition={vaultPosition}
+              performanceFee={performanceFee}
+              isTfVaultType={false}
+              activeTfPeriod={0}
+              onClose={() => setManageVault(false)}
+            />
+          )
+        )
+      }, [manageVault, setManageVault])}
     </>
   )
 }

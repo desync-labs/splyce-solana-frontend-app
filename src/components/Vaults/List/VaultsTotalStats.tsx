@@ -2,20 +2,21 @@ import { FC, memo } from 'react'
 import Image from 'next/image'
 import { Box, styled } from '@mui/material'
 import BigNumber from 'bignumber.js'
-import { formatNumber } from 'utils/format'
-import useSharedContext from 'context/shared'
-import useTotalStats from 'hooks/Vaults/useTotalStats'
+import { formatNumber } from '@/utils/format'
+import useSharedContext from '@/context/shared'
+import useTotalStats from '@/hooks/Vaults/useTotalStats'
 import { BaseSkeletonValue } from '@/components/Base/Skeletons/StyledSkeleton'
 import { FlexBox } from '@/components/Base/Boxes/StyledBoxes'
 
-import DepositedIcon from 'assets/svg/icons/vault-stats-deposited.svg'
-import EarnedIcon from 'assets/svg/icons/vault-stats-earning.svg'
+import DepositedIcon from '@/assets/svg/icons/vault-stats-deposited.svg'
+import EarnedIcon from '@/assets/svg/icons/vault-stats-earning.svg'
 
 const StatsWrapper = styled(FlexBox)`
   gap: 16px;
   margin: 36px 0;
   ${({ theme }) => theme.breakpoints.down('sm')} {
     gap: 4px;
+    margin: 20px 0;
   }
 `
 
@@ -45,8 +46,13 @@ const StatItemInfo = styled(FlexBox)`
   ${({ theme }) => theme.breakpoints.down('sm')} {
     flex-direction: column;
     justify-content: center;
-    align-items: flex-start;
-    gap: 0;
+    align-items: center;
+    gap: 4px;
+    width: fit-content;
+
+    & img {
+      margin-left: -4px;
+    }
   }
 `
 const StatItemLabel = styled(Box)`

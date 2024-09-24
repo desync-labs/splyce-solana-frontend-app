@@ -59,6 +59,11 @@ const CalculatorUsdIndicator = styled(BaseFormInputUsdIndicator)`
   top: 34px;
   left: unset;
   right: 8px;
+
+  ${({ theme }) => theme.breakpoints.down('sm')} {
+    top: 34px;
+    left: unset;
+  }
 `
 
 const InputTokenLabelRow = styled(BaseFormLabelRow)`

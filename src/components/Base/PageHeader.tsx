@@ -4,7 +4,7 @@ import { Box, styled, Typography } from '@mui/material'
 const PageHeaderWrapper = styled(Box)`
   padding-top: 6px;
   ${({ theme }) => theme.breakpoints.down('sm')} {
-    padding-top: 9px;
+    padding-top: 0;
   }
 `
 

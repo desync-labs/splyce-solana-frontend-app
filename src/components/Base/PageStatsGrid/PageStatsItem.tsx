@@ -12,7 +12,6 @@ const PositionStatItem = styled(Grid)`
     height: auto !important;
     margin: 0 !important;
     & > .MuiBox-root {
-      border: none;
       padding: 16px;
     }
   }

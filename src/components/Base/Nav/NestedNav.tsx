@@ -12,8 +12,6 @@ export const NestedRouteNav = styled('nav')`
   padding: 0 40px;
   ${({ theme }) => theme.breakpoints.down('sm')} {
     display: grid;
-    height: auto;
-    border: none;
     grid-template-columns: 1fr 1fr;
   }
 `
@@ -24,7 +22,7 @@ export const NestedRouteLink = styled(Link)<{ span?: number }>`
   align-items: center;
   justify-content: center;
   gap: 8px;
-  height: 100%;
+  height: 60px;
   font-size: 17px;
   font-weight: 600;
   border-bottom: 2px solid transparent;

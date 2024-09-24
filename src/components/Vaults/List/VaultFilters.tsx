@@ -9,6 +9,7 @@ import {
 } from '@/components/Base/Form/Filters'
 import { FlexBox } from '@/components/Base/Boxes/StyledBoxes'
 import { SortType } from '@/utils/TempData'
+import useSharedContext from '@/context/shared'
 
 const SearchFieldWrapper = styled(Box)`
   position: relative;
@@ -32,13 +33,13 @@ const VaultFilters: FC<VaultFiltersPropsType> = ({
   setSearch,
   setSortBy,
 }) => {
-  console.log(111, sortBy)
+  const { isMobile } = useSharedContext()
   return (
     <FlexBox
       sx={{
         width: '100%',
         justifyContent: 'space-between',
-        padding: '16px 24px 24px',
+        padding: isMobile ? '0 0 16px 0' : '16px 24px 24px',
       }}
     >
       <SearchFieldWrapper>
