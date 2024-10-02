@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Container, Paper } from '@mui/material'
 import useSharedContext from '@/context/shared'
 import { IVault, SortType } from '@/utils/TempData'
@@ -8,67 +8,38 @@ import VaultsTotalStats from '@/components/Vaults/List/VaultsTotalStats'
 import VaultsList from '@/components/Vaults/List/VaultsList'
 import VaultFilters from '@/components/Vaults/List/VaultFilters'
 import VaultsListMobile from '@/components/Vaults/List/VaultsListMobile'
-
-const vaults: IVault[] = [
-  {
-    id: '1',
-    name: 'Vault 1',
-    token: {
-      id: '1',
-      name: 'SPLY',
-    },
-    shareToken: {
-      id: '2',
-      name: 'Share Token 1',
-    },
-  },
-  {
-    id: '2',
-    name: 'Vault 2',
-    token: {
-      id: '1',
-      name: 'SPLY',
-    },
-    shareToken: {
-      id: '2',
-      name: 'Share Token 2',
-    },
-  },
-  {
-    id: '3',
-    name: 'Vault 3',
-    token: {
-      id: '1',
-      name: 'SPLY',
-    },
-    shareToken: {
-      id: '2',
-      name: 'Share Token 3',
-    },
-  },
-  {
-    id: '4',
-    name: 'Vault 4',
-    token: {
-      id: '1',
-      name: 'SPLY',
-    },
-    shareToken: {
-      id: '2',
-      name: 'Share Token 4',
-    },
-  },
-]
+import useVaultList from '@/hooks/Vaults/useVaultList'
 
 const VaultsOverview = () => {
+  const {
+    search,
+    sortBy,
+    isShutdown,
+    vaultsLoading,
+    vaultPositionsLoading,
+    vaultSortedList,
+    filterCurrentPosition,
+    performanceFee,
+    vaultItemsCount,
+    vaultCurrentPage,
+    setSearch,
+    setSortBy,
+    handlePageChange,
+    handleIsShutdown,
+  } = useVaultList()
   const { isMobile } = useSharedContext()
-  const { search, setSearch } = useState('')
-  const { sortBy, setSortBy } = useState<SortType>(SortType.TVL)
-  const { isShutdown, setIsShutdown } = useState(false)
 
-  const handleIsShutdown = (value: boolean) => {
-    setIsShutdown(value)
-  }
+  const [listLoading, setListLoading] = useState<boolean>(true)
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setListLoading(vaultsLoading || vaultPositionsLoading)
+    }, 50)
+
+    return () => {
+      clearTimeout(timeout)
+    }
+  }, [vaultsLoading, vaultPositionsLoading, setListLoading])
 
   return (
     <>
@@ -89,7 +60,10 @@ const VaultsOverview = () => {
               setSortBy={setSortBy}
               handleIsShutdown={handleIsShutdown}
             />
-            <VaultsListMobile vaults={vaults} />
+            <VaultsListMobile
+              vaults={vaultSortedList}
+              isLoading={listLoading}
+            />
           </>
         ) : (
           <Paper sx={{ padding: 0 }}>
@@ -101,7 +75,15 @@ const VaultsOverview = () => {
               setSortBy={setSortBy}
               handleIsShutdown={handleIsShutdown}
             />
-            <VaultsList vaults={vaults} />
+            <VaultsList
+              vaults={vaultSortedList}
+              isLoading={listLoading}
+              performanceFee={performanceFee}
+              filterCurrentPosition={filterCurrentPosition}
+              vaultCurrentPage={vaultCurrentPage}
+              vaultItemsCount={vaultItemsCount}
+              handlePageChange={handlePageChange}
+            />
           </Paper>
         )}
       </Container>

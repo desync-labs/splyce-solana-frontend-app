@@ -4,25 +4,24 @@ import Link from 'next/link'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import dayjs from 'dayjs'
 import { Box, Typography, styled, ListItemText } from '@mui/material'
-import { formatNumber, formatPercentage } from '@/utils/format'
+import { formatNumber } from '@/utils/format'
 import { getExplorerUrl } from '@/utils/explorer'
+import { IVaultStrategy, IVaultStrategyReport } from '@/utils/TempData'
 import useSharedContext from '@/context/shared'
 import useVaultContext from '@/context/vaultDetail'
+import { getApr } from '@/hooks/Vaults/useApr'
+import { IVaultStrategyHistoricalApr } from '@/hooks/Vaults/useVaultDetail'
 import {
   DescriptionList,
   strategyDescription,
   strategyTitle,
 } from '@/utils/Vaults/getStrategyTitleAndDescription'
-// import { IVaultStrategyHistoricalApr } from 'hooks/Vaults/useVaultListItem'
 import VaultHistoryChart, {
   HistoryChartDataType,
 } from '@/components/Vaults/Detail/VaultHistoryChart'
 import { StatusLabel } from '@/components/Vaults/Detail/Managment/StrategyStatusBar'
-import { IVaultStrategy, IVaultStrategyReport } from '@/utils/TempData'
-import { IVaultStrategyHistoricalApr } from '@/hooks/Vaults/useVaultDetail'
 import { FlexBox } from '@/components/Base/Boxes/StyledBoxes'
 import { AppListFees } from '@/components/Vaults/Detail/Tabs/InfoTabAbout'
-import BasePopover from '@/components/Base/Popover/BasePopover'
 import { BaseListItem } from '@/components/Base/List/StyledList'
 
 dayjs.extend(relativeTime)
@@ -93,57 +92,28 @@ export const VaultIndicatorItemLabel = styled(Typography)`
   }
 `
 
-export const VaultIndicatorItemValue = styled(Typography)`
-  font-size: 14px;
-  font-weight: 600;
-  text-align: left;
-  ${({ theme }) => theme.breakpoints.down('sm')} {
-    font-size: 13px;
-  }
-`
-
-type VaultIndicatorItemPropsType = {
-  title: string
-  value: string | number
-  units: string
-  sx?: object
-}
-
 type VaultStrategyItemPropsType = {
   reports: IVaultStrategyReport[]
   historicalApr: IVaultStrategyHistoricalApr[]
   strategyData: IVaultStrategy
   vaultBalanceTokens: string
   tokenName: string
-  performanceFee: number
   index: number
   vaultId: string
   isShow?: boolean
   reportsLoading?: boolean
 }
 
-const VaultIndicatorItem: FC<VaultIndicatorItemPropsType> = memo(
-  ({ title, value, units, sx }) => {
-    return (
-      <VaultIndicatorItemWrapper sx={sx}>
-        <VaultIndicatorItemLabel>{title}</VaultIndicatorItemLabel>
-        <VaultIndicatorItemValue>{value + units}</VaultIndicatorItemValue>
-      </VaultIndicatorItemWrapper>
-    )
-  }
-)
-
 const VaultStrategyItem: FC<VaultStrategyItemPropsType> = ({
   strategyData,
   vaultBalanceTokens,
   tokenName,
-  performanceFee,
   index,
   vaultId,
   reports,
   historicalApr,
   isShow,
-  reportsLoading = false,
+  reportsLoading,
 }) => {
   const [aprHistoryArr, setAprHistoryArr] = useState<HistoryChartDataType[]>([])
   const [lastReportDate, setLastReportDate] = useState<string>('')
@@ -159,7 +129,11 @@ const VaultStrategyItem: FC<VaultStrategyItemPropsType> = ({
       .map((reportsItem, index) => {
         return {
           timestamp: reportsItem.timestamp,
-          chartValue: '1001',
+          chartValue: getApr(
+            reportsItem.currentDebt,
+            historicalApr[index]?.apr,
+            vaultId
+          ),
         }
       })
       .sort((a, b) => parseInt(a.timestamp) - parseInt(b.timestamp))
@@ -196,7 +170,7 @@ const VaultStrategyItem: FC<VaultStrategyItemPropsType> = ({
     if (strategyTitle[strategyData.id.toLowerCase()]) {
       return strategyTitle[strategyData.id.toLowerCase()]
     } else {
-      return `FXD: Direct Incentive - Educational Strategy ${index + 1}`
+      return `spUSD: Direct Incentive - Educational Strategy ${index + 1}`
     }
   }, [strategyData.id, index])
 
@@ -225,8 +199,8 @@ const VaultStrategyItem: FC<VaultStrategyItemPropsType> = ({
         ) : (
           <>
             <p>
-              The strategy enhances returns for FXD Vault investors by ensuring
-              continuous earnings. Here's what makes it stand out:
+              The strategy enhances returns for spUSD Vault investors by
+              ensuring continuous earnings. Here's what makes it stand out:
             </p>
             <DescriptionList>
               <li>
@@ -275,7 +249,13 @@ const VaultStrategyItem: FC<VaultStrategyItemPropsType> = ({
           <ListItemText primary="Total Gain" />
         </BaseListItem>
         <BaseListItem
-          secondaryAction={<>{`${formatNumber(Number('1002'))}%`}</>}
+          secondaryAction={
+            <>{`${formatNumber(
+              Number(
+                getApr(strategyData.currentDebt, strategyData.apr, vaultId)
+              )
+            )}%`}</>
+          }
         >
           <ListItemText primary="APY" />
         </BaseListItem>
@@ -285,7 +265,9 @@ const VaultStrategyItem: FC<VaultStrategyItemPropsType> = ({
           <ListItemText primary="Allocation" />
         </BaseListItem>
         <BaseListItem
-          secondaryAction={<>{`${formatNumber(performanceFee)}%`}</>}
+          secondaryAction={
+            <>{`${formatNumber(BigNumber(strategyData.performanceFees).dividedBy(100).toNumber())}%`}</>
+          }
         >
           <ListItemText primary="Perfomance fee" />
         </BaseListItem>
@@ -297,7 +279,7 @@ const VaultStrategyItem: FC<VaultStrategyItemPropsType> = ({
             chartDataArray={aprHistoryArr}
             valueLabel="APY"
             valueUnits="%"
-            isLoading={false}
+            isLoading={reportsLoading}
           />
         </Box>
       )}

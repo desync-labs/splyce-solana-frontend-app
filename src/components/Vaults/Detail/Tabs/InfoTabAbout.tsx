@@ -153,7 +153,7 @@ const InfoTabAbout = () => {
           chartDataArray={earnedHistoryArr}
           valueLabel="Earnings"
           valueUnits={` ${vault?.token?.name}`}
-          isLoading={false}
+          isLoading={!isReportsLoaded}
         />
       )}
     </TabContentWrapper>

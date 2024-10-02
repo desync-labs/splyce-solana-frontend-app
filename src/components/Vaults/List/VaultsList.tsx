@@ -1,4 +1,4 @@
-import { FC, memo } from 'react'
+import { ChangeEvent, FC, memo } from 'react'
 import {
   Pagination,
   Table,
@@ -15,14 +15,28 @@ import {
   BaseTableHeaderRow,
   BaseTablePaginationWrapper,
 } from '@/components/Base/Table/StyledTable'
-import { IVault } from '@/utils/TempData'
+import { IVault, IVaultPosition } from '@/utils/TempData'
+import { COUNT_PER_PAGE_VAULT } from '@/utils/Constants'
 
 type VaultListPropsType = {
   vaults: IVault[]
+  performanceFee: number
+  isLoading: boolean
+  filterCurrentPosition: (vaultId: string) => IVaultPosition | null
+  vaultCurrentPage: number
+  vaultItemsCount: number
+  handlePageChange: (event: ChangeEvent<unknown>, page: number) => void
 }
 
-const VaultsList: FC<VaultListPropsType> = ({ vaults }) => {
-  const isLoading = false
+const VaultsList: FC<VaultListPropsType> = ({
+  vaults,
+  performanceFee,
+  isLoading,
+  filterCurrentPosition,
+  vaultCurrentPage,
+  vaultItemsCount,
+  handlePageChange,
+}) => {
   return (
     <TableContainer>
       <Table aria-label="simple table">
@@ -79,14 +93,25 @@ const VaultsList: FC<VaultListPropsType> = ({ vaults }) => {
             </>
           ) : (
             vaults.map((vault) => (
-              <VaultListItem key={vault.id} vaultItemData={vault} />
+              <VaultListItem
+                key={vault.id}
+                vaultItemData={vault}
+                vaultPosition={filterCurrentPosition(vault.id)}
+                performanceFee={performanceFee}
+              />
             ))
           )}
         </TableBody>
       </Table>
-      <BaseTablePaginationWrapper>
-        <Pagination count={3} page={1} />
-      </BaseTablePaginationWrapper>
+      {!isLoading && vaults.length > COUNT_PER_PAGE_VAULT && (
+        <BaseTablePaginationWrapper>
+          <Pagination
+            count={Math.ceil(vaultItemsCount / COUNT_PER_PAGE_VAULT)}
+            page={vaultCurrentPage}
+            onChange={handlePageChange}
+          />
+        </BaseTablePaginationWrapper>
+      )}
     </TableContainer>
   )
 }

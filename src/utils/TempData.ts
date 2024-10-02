@@ -5,18 +5,35 @@ export interface IVaultPosition {
 }
 export interface IVaultStrategy {
   id: string
+  delegatedAssets: string
+  currentDebt: string
+  maxDebt: string
+  apr: string
+  performanceFees: string
 }
 export interface IVault {
   id: string
   name: string
   token: {
     id: string
+    decimals: number
     name: string
+    symbol: string
   }
   shareToken: {
     id: string
+    decimals: number
     name: string
+    symbol: string
   }
+  sharesSupply: string
+  balanceTokens: string
+  depositLimit: string
+  apr: string
+  performanceFees: string
+  shutdown: boolean
+  strategies: IVaultStrategy[]
+  type?: VaultType
 }
 
 export interface IVaultStrategyReport {
@@ -40,40 +57,45 @@ export enum VaultType {
 }
 
 export const TestVault = {
-  id: '0x0bd92a4749392e99df284d216ad8ec09d622a5c4',
-  name: "Splyce's Vault",
+  id: 'Ahg1opVcGX',
   token: {
-    id: '0xdf29cb40cb92a1b8e8337f542e3846e185deff96',
+    id: 'Bpp8p5jBbEZEMwn7ic2Nt9uwtCpo5zgQ99msacwxuvCd',
     decimals: 18,
-    name: 'Splyce',
-    symbol: 'SPLY',
+    name: '',
+    symbol: '',
   },
   shareToken: {
-    id: '0x0bd92a4749392e99df284d216ad8ec09d622a5c4',
+    id: '2SmYHinLR8ufAG8T7iHqiLH4XEbfXuPEb34Re1QL16jY',
     decimals: 18,
-    name: 'FXD-DeFi-1',
-    symbol: 'fvFXDDefi1',
+    name: '',
+    symbol: '',
   },
-  sharesSupply: '13303449811359440924390',
-  balanceTokens: '13768422751984532447323',
+  sharesSupply: '0',
+  balanceTokens: '100',
   balanceTokensIdle: '0',
-  depositLimit: '10000000000000000000000000',
-  apr: '0.008792603446816998620284198556092955',
+  depositLimit: '2000',
+  apr: '0',
   shutdown: false,
   strategies: [
     {
-      id: '0x989a19e29cb9bc194bd35606af8f9a641a4cbce4',
+      id: 'FqiLdu9RWTJZ1EW4XALQ6gZgfwCi7gSoeaJC8jcu8QAk',
       delegatedAssets: '0',
-      currentDebt: '6746527148472420896322',
-      maxDebt: '5000000000000000000000000',
+      currentDebt: '0',
+      maxDebt: '1000000000',
       apr: '0',
     },
+  ],
+}
+
+const TestReports = {
+  strategyHistoricalAprs: [],
+  strategyReports: [
     {
-      id: '0x4e2fc8a4e62cf515ee7954fd01346cd2501e7e81',
-      delegatedAssets: '0',
-      currentDebt: '6746527148472420896322',
-      maxDebt: '5000000000000000000000000',
-      apr: '0.01794408866697346657963213567300036',
+      id: '4RPJopHmvoQm4two1sU2SJ38KxZtBV4zYdLYrLc4XnBLmUhvTEeGbDxCy1FatfuwRyFzdoEWMwo5mYdXTjh6o1v3-FqiLdu9RWTJZ1EW4XALQ6gZgfwCi7gSoeaJC8jcu8QAk',
+      timestamp: '1727358805',
+      gain: '54',
+      loss: '0',
+      currentDebt: '114',
     },
   ],
 }

@@ -9,6 +9,7 @@ import { getExplorerUrl } from '@/utils/explorer'
 import { formatNumber, formatPercentage } from '@/utils/format'
 import { getDefaultVaultDescription } from '@/utils/Vaults/getVaultTitleAndDescription'
 import useVaultContext from '@/context/vaultDetail'
+import { useAprNumber } from '@/hooks/Vaults/useApr'
 import {
   AppListApy,
   AppListFees,
@@ -24,8 +25,13 @@ const FeesItemWrapper = styled(Box)`
 `
 
 const VaultAboutTabContent = () => {
-  const { vault, performanceFee, protocolFee } = useVaultContext()
-  const aprNumber = 8.5
+  const { vault, performanceFee } = useVaultContext()
+  const aprNumber = useAprNumber(vault)
+
+  // todo: integrate fees for other vault types
+  const totalFee = performanceFee
+  const depositFee = '0'
+  const managementFee = '0'
   return (
     <>
       <VaultDescriptionWrapper>
@@ -68,15 +74,19 @@ const VaultAboutTabContent = () => {
             >
               <ListItemText primary={'Monthly APY'} />
             </BaseListItem>
-            <BaseListItem secondaryAction={<>{formatNumber(aprNumber)}%</>}>
+            <BaseListItem
+              secondaryAction={
+                <>{formatNumber(BigNumber(aprNumber).toNumber())}%</>
+              }
+            >
               <ListItemText primary={'Yearly APY'} />
             </BaseListItem>
-            <BaseListItem secondaryAction={<>{formatNumber(aprNumber)}%</>}>
-              <ListItemText primary={'Estimated APY'} />
-            </BaseListItem>
-            <BaseListItem secondaryAction={<>{formatNumber(aprNumber)}%</>}>
-              <ListItemText primary={'Historical APY'} />
-            </BaseListItem>
+            {/*<BaseListItem secondaryAction={<>{formatNumber(aprNumber)}%</>}>*/}
+            {/*  <ListItemText primary={'Estimated APY'} />*/}
+            {/*</BaseListItem>*/}
+            {/*<BaseListItem secondaryAction={<>{formatNumber(aprNumber)}%</>}>*/}
+            {/*  <ListItemText primary={'Historical APY'} />*/}
+            {/*</BaseListItem>*/}
           </AppListApy>
         </Box>
       </Box>
@@ -84,13 +94,7 @@ const VaultAboutTabContent = () => {
         <VaultAboutTitle sx={{ marginBottom: 0 }}>Fees</VaultAboutTitle>
         <AppListFees>
           <BaseListItem
-            secondaryAction={
-              <>
-                {`${formatPercentage(
-                  Number(performanceFee * (protocolFee / 100))
-                )}%`}
-              </>
-            }
+            secondaryAction={<>{`${formatPercentage(Number(totalFee))}%`}</>}
           >
             <ListItemText
               primary={
@@ -108,9 +112,7 @@ const VaultAboutTabContent = () => {
             />
           </BaseListItem>
           <BaseListItem
-            secondaryAction={
-              <>{`${formatPercentage(Number(performanceFee))}%`}</>
-            }
+            secondaryAction={<>{`${formatPercentage(Number(depositFee))}%`}</>}
           >
             <ListItemText
               primary={
@@ -129,7 +131,7 @@ const VaultAboutTabContent = () => {
           </BaseListItem>
           <BaseListItem
             secondaryAction={
-              <>{`${formatPercentage(Number(performanceFee))}%`}</>
+              <>{`${formatPercentage(Number(managementFee))}%`}</>
             }
           >
             <ListItemText

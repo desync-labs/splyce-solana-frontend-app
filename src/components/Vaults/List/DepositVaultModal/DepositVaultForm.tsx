@@ -27,6 +27,7 @@ const ManageVaultForm = styled('form')`
 
 type VaultDepositFormProps = {
   vaultItemData: IVault
+  walletBalance: string
   control: Control<
     {
       deposit: string
@@ -35,6 +36,7 @@ type VaultDepositFormProps = {
     any
   >
   setMax: () => void
+  validateMaxDepositValue: (value: string) => true | string
   handleSubmit: UseFormHandleSubmit<
     {
       deposit: string
@@ -43,18 +45,25 @@ type VaultDepositFormProps = {
     undefined
   >
   onSubmit: (values: Record<string, any>) => Promise<void>
+  minimumDeposit: number
+  depositLimitExceeded: (value: string) => string | boolean
   isDetailPage?: boolean
 }
 
 const DepositVaultForm: FC<VaultDepositFormProps> = ({
   vaultItemData,
+  walletBalance,
   control,
   setMax,
+  validateMaxDepositValue,
   handleSubmit,
   onSubmit,
+  minimumDeposit,
+  depositLimitExceeded,
   isDetailPage = false,
 }) => {
-  const { token } = vaultItemData
+  const { token, depositLimit, balanceTokens, shutdown } = vaultItemData
+  const fxdPrice = '1'
 
   return (
     <BaseDialogFormWrapper
@@ -71,14 +80,25 @@ const DepositVaultForm: FC<VaultDepositFormProps> = ({
         <Controller
           control={control}
           name="deposit"
-          rules={{ required: true }}
+          rules={{
+            required: true,
+            min: minimumDeposit,
+            validate: validateMaxDepositValue,
+          }}
           render={({ field: { onChange, value }, fieldState: { error } }) => (
             <BaseFormInputWrapper>
               <BaseFormLabelRow>
                 <BaseFormInputLabel>Deposit {token?.name}</BaseFormInputLabel>
                 <FlexBox sx={{ width: 'auto', justifyContent: 'flex-end' }}>
                   <BaseFormWalletBalance>
-                    Balance: 111 {token?.name}
+                    Balance:{' '}
+                    {formatNumber(
+                      BigNumber(walletBalance)
+                        .dividedBy(10 ** 18)
+                        .toNumber()
+                    ) +
+                      ' ' +
+                      token?.name}
                   </BaseFormWalletBalance>
                 </FlexBox>
               </BaseFormLabelRow>
@@ -88,6 +108,24 @@ const DepositVaultForm: FC<VaultDepositFormProps> = ({
                 placeholder={'0'}
                 helperText={
                   <>
+                    {!shutdown && depositLimitExceeded(value) && (
+                      <BaseFormInputErrorWrapper>
+                        <BaseInfoIcon
+                          sx={{
+                            float: 'left',
+                            width: '14px',
+                            height: '14px',
+                            marginRight: '0',
+                          }}
+                        />
+                        <Box
+                          component={'span'}
+                          sx={{ fontSize: '12px', paddingLeft: '6px' }}
+                        >
+                          {depositLimitExceeded(value)}
+                        </Box>
+                      </BaseFormInputErrorWrapper>
+                    )}
                     {error && error.type === 'required' && (
                       <BaseFormInputErrorWrapper>
                         <BaseInfoIcon
@@ -106,6 +144,43 @@ const DepositVaultForm: FC<VaultDepositFormProps> = ({
                         </Box>
                       </BaseFormInputErrorWrapper>
                     )}
+                    {error && error.type === 'validate' && (
+                      <BaseFormInputErrorWrapper>
+                        <BaseInfoIcon
+                          sx={{
+                            float: 'left',
+                            width: '14px',
+                            height: '14px',
+                            marginRight: '0',
+                          }}
+                        />
+                        <Box
+                          component={'span'}
+                          sx={{ fontSize: '12px', paddingLeft: '6px' }}
+                        >
+                          {error.message}
+                        </Box>
+                      </BaseFormInputErrorWrapper>
+                    )}
+                    {error && error.type === 'min' && (
+                      <BaseFormInputErrorWrapper>
+                        <BaseInfoIcon
+                          sx={{
+                            float: 'left',
+                            width: '14px',
+                            height: '14px',
+                            marginRight: '0',
+                          }}
+                        />
+                        <Box
+                          component={'span'}
+                          sx={{ fontSize: '12px', paddingLeft: '6px' }}
+                        >
+                          Minimum deposit is {formatNumber(minimumDeposit)}{' '}
+                          {token?.name}
+                        </Box>
+                      </BaseFormInputErrorWrapper>
+                    )}
                   </>
                 }
                 value={value}
@@ -114,8 +189,7 @@ const DepositVaultForm: FC<VaultDepositFormProps> = ({
               />
               <BaseFormInputUsdIndicator>{`$${formatNumber(
                 BigNumber(value || 0)
-                  .multipliedBy(1)
-                  .dividedBy(10 ** 18)
+                  .multipliedBy(fxdPrice)
                   .toNumber()
               )}`}</BaseFormInputUsdIndicator>
               <BaseFormInputLogo
@@ -133,7 +207,10 @@ const DepositVaultForm: FC<VaultDepositFormProps> = ({
           control={control}
           name="sharedToken"
           rules={{
-            max: 100,
+            max: BigNumber(depositLimit)
+              .minus(BigNumber(balanceTokens))
+              .dividedBy(10 ** 18)
+              .toNumber(),
           }}
           render={({ field: { onChange, value }, fieldState: { error } }) => {
             return (
@@ -161,7 +238,14 @@ const DepositVaultForm: FC<VaultDepositFormProps> = ({
                             component={'span'}
                             sx={{ fontSize: '12px', paddingLeft: '6px' }}
                           >
-                            Maximum available share token is 100.
+                            Maximum available share token is{' '}
+                            {formatNumber(
+                              BigNumber(depositLimit)
+                                .minus(BigNumber(balanceTokens))
+                                .dividedBy(10 ** 18)
+                                .toNumber()
+                            )}
+                            .
                           </Box>
                         </BaseFormInputErrorWrapper>
                       )}
@@ -173,7 +257,10 @@ const DepositVaultForm: FC<VaultDepositFormProps> = ({
                   onChange={onChange}
                   disabled
                 />
-                <BaseFormInputLogo src={getTokenLogoURL('FXD')} />
+                <BaseFormInputLogo
+                  src={getTokenLogoURL(token?.symbol)}
+                  alt={token?.name}
+                />
               </BaseFormInputWrapper>
             )
           }}

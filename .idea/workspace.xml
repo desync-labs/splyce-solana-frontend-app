@@ -5,25 +5,34 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="980c1e59-2a66-476c-8058-c1191519ba3f" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/components/Vaults/Detail/VaultLockCalculatorBlock.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.env" beforeDir="false" afterPath="$PROJECT_DIR$/.env" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/AppLayout/AppNavLayout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/AppLayout/AppNavLayout.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/AppLayout/Footer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/AppLayout/Footer.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Base/Dialog/FullScreenDialog.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Base/Dialog/FullScreenDialog.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Base/Nav/NestedNav.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Base/Nav/NestedNav.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Base/PageHeader.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Base/PageHeader.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Base/PageStatsGrid/PageStatsItem.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Base/PageStatsGrid/PageStatsItem.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Base/Table/StyledTable.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Base/Table/StyledTable.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Base/Tabs/StyledTabs.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Base/Tabs/StyledTabs.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Base/Breadcrumbs/StyledBreadcrumbs.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Base/Breadcrumbs/StyledBreadcrumbs.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Vaults/Detail/Forms/VaultDetailDepositForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Vaults/Detail/Forms/VaultDetailDepositForm.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Vaults/Detail/Tabs/AboutTabContent.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Vaults/Detail/Tabs/AboutTabContent.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Vaults/Detail/Tabs/InfoTabAbout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Vaults/Detail/Tabs/InfoTabAbout.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Vaults/Detail/Tabs/InfoTabStrategies.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Vaults/Detail/Tabs/InfoTabStrategies.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Vaults/Detail/Tabs/VaultStrategyItem.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Vaults/Detail/Tabs/VaultStrategyItem.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/Vaults/Detail/VaultPositionStats.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Vaults/Detail/VaultPositionStats.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/Vaults/Detail/VaultProfitCalculator.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Vaults/Detail/VaultProfitCalculator.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Vaults/List/DepositVaultModal/DepositVaultForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Vaults/List/DepositVaultModal/DepositVaultForm.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Vaults/List/DepositVaultModal/DepositVaultInfo.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Vaults/List/DepositVaultModal/DepositVaultInfo.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/Vaults/List/DepositVaultModal/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Vaults/List/DepositVaultModal/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Vaults/List/VaultFilters.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Vaults/List/VaultFilters.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Vaults/List/VaultListItemMobile.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Vaults/List/VaultListItemMobile.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Vaults/List/VaultsListMobile.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Vaults/List/VaultsListMobile.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Vaults/List/VaultsTotalStats.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Vaults/List/VaultsTotalStats.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Vaults/List/VaultListItem.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Vaults/List/VaultListItem.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Vaults/List/VaultListItemSkeleton.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Vaults/List/VaultListItemSkeleton.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Vaults/List/VaultsList.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Vaults/List/VaultsList.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/context/vaultDetail.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/context/vaultDetail.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/hooks/Vaults/useVaultDetail.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/hooks/Vaults/useVaultDetail.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/hooks/Vaults/useVaultOpenDeposit.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/hooks/Vaults/useVaultOpenDeposit.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/vaults/[vaultId].tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/vaults/[vaultId].tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/vaults/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/vaults/index.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/provider/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/provider/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/theme/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/theme/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/TempData.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/TempData.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/Vaults/getVaultTitleAndDescription.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/Vaults/getVaultTitleAndDescription.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/network.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/network.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -49,7 +58,7 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "master",
-    "last_opened_file_path": "/Users/aleksandrdovgopolyj/Work/splyce-frontend-app-M/src/components/Vaults/List",
+    "last_opened_file_path": "/Users/aleksandrdovgopolyj/Work/splyce-frontend-app-M/src/utils/Vaults",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.standard": "true",
     "node.js.detected.package.tslint": "true",
@@ -65,11 +74,11 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/utils/Vaults" />
+      <recent name="$PROJECT_DIR$/src/hooks/Vaults" />
+      <recent name="$PROJECT_DIR$/src" />
       <recent name="$PROJECT_DIR$/src/components/Vaults/List" />
       <recent name="$PROJECT_DIR$/src/components/AppLayout" />
-      <recent name="$PROJECT_DIR$/src/hooks/General" />
-      <recent name="$PROJECT_DIR$/src/components/Vaults/Detail" />
-      <recent name="$PROJECT_DIR$/src/utils/Vaults" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/pages/dao" />
@@ -97,7 +106,8 @@
       <workItem from="1726129744684" duration="51987000" />
       <workItem from="1726656010231" duration="28317000" />
       <workItem from="1727079716139" duration="1033000" />
-      <workItem from="1727082388526" duration="19166000" />
+      <workItem from="1727082388526" duration="23373000" />
+      <workItem from="1727427650774" duration="45534000" />
     </task>
     <servers />
   </component>

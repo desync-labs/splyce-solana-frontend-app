@@ -3,6 +3,7 @@ import BigNumber from 'bignumber.js'
 import { Box, Divider, ListItemText } from '@mui/material'
 import { formatNumber, formatPercentage } from '@/utils/format'
 import { IVault } from '@/utils/TempData'
+import { useApr } from '@/hooks/Vaults/useApr'
 import {
   BaseDialogFormInfoWrapper,
   BaseDialogSummary,
@@ -24,7 +25,7 @@ const DepositVaultInfo: FC<VaultDepositInfoProps> = ({
   performanceFee,
 }) => {
   const { token, shareToken, sharesSupply } = vaultItemData
-  const formattedApr = '10.00'
+  const formattedApr = useApr(vaultItemData)
 
   return (
     <BaseDialogFormInfoWrapper>

@@ -25,7 +25,6 @@ export type UseVaultContextReturnType = {
   historicalApr: Record<string, IVaultStrategyHistoricalApr[]>
   balanceEarned: number
   balanceToken: string
-  protocolFee: number
   performanceFee: number
   activeVaultInfoTab: VaultInfoTabs
   vaultMethods: FunctionFragment[]

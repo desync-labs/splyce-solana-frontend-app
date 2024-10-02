@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { Breadcrumbs, styled, Typography } from '@mui/material'
 import KeyboardArrowRightRoundedIcon from '@mui/icons-material/KeyboardArrowRightRounded'
 import useVaultContext from '@/context/vaultDetail'
+import { CustomSkeleton } from '@/components/Base/Skeletons/StyledSkeleton'
 
 export const BreadcrumbsWrapper = styled(Breadcrumbs)`
   margin-bottom: 36px;
@@ -44,14 +45,18 @@ export const VaultBreadcrumbsCurrentPage = styled(Typography)`
 `
 
 export const VaultBreadcrumbs = () => {
-  const { vault } = useVaultContext()
+  const { vault, vaultLoading } = useVaultContext()
   const breadcrumbs = [
     <VaultBreadcrumbsLink key="1" href={'/vaults'}>
       Vaults
     </VaultBreadcrumbsLink>,
-    <VaultBreadcrumbsCurrentPage key="2">
-      {vault?.name}
-    </VaultBreadcrumbsCurrentPage>,
+    vaultLoading || !vault.id ? (
+      <CustomSkeleton key="2" width="80px" />
+    ) : (
+      <VaultBreadcrumbsCurrentPage key="2">
+        {vault?.name}
+      </VaultBreadcrumbsCurrentPage>
+    ),
   ]
 
   return (

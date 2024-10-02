@@ -1,11 +1,14 @@
-import { FC, memo, useCallback, useMemo, useState } from 'react'
+import { FC, memo, useCallback, useMemo } from 'react'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
-import { Box, TableCell, styled, Button } from '@mui/material'
+import { Box, TableCell, styled, Button, CircularProgress } from '@mui/material'
+import BigNumber from 'bignumber.js'
 
-import { IVault } from '@/utils/TempData'
+import { IVault, IVaultPosition } from '@/utils/TempData'
 import { getTokenLogoURL } from '@/utils/tokenLogo'
 import { formatCurrency, formatNumber } from '@/utils/format'
+import useVaultListItem from '@/hooks/Vaults/useVaultListItem'
+import { useApr } from '@/hooks/Vaults/useApr'
 import { FlexBox } from '@/components/Base/Boxes/StyledBoxes'
 import { BaseTableItemRow } from '@/components/Base/Table/StyledTable'
 import VaultListItemDepositModal from '@/components/Vaults/List/DepositVaultModal'
@@ -106,32 +109,42 @@ export const VaultListItemImageWrapper = styled('div')`
 
 type VaultListItemProps = {
   vaultItemData: IVault
+  vaultPosition: IVaultPosition | null
+  performanceFee: number
 }
 
-const VaultListItem: FC<VaultListItemProps> = ({ vaultItemData }) => {
-  const { token } = vaultItemData
+const VaultListItem: FC<VaultListItemProps> = ({
+  vaultItemData,
+  vaultPosition,
+  performanceFee,
+}) => {
+  const { token, shutdown, balanceTokens, depositLimit } = vaultItemData
   const router = useRouter()
+  const formattedApr = useApr(vaultItemData)
 
-  const [newVaultDeposit, setNewVaultDeposit] = useState<boolean>(false)
-  const [manageVault, setManageVault] = useState<boolean>(false)
+  const {
+    balanceEarned,
+    manageVault,
+    newVaultDeposit,
+    setManageVault,
+    setNewVaultDeposit,
+    isTfVaultType,
+    isUserKycPassed,
+    tfVaultDepositEndDate,
+    tfVaultLockEndDate,
+    activeTfPeriod,
+    tfVaultDepositLimit,
+    handleWithdrawAll,
+    minimumDeposit,
+    isWithdrawLoading,
+    showWithdrawAllButton,
+  } = useVaultListItem({ vaultPosition, vault: vaultItemData })
 
   const redirectToVaultDetail = useCallback(() => {
     router.push(`/vaults/${vaultItemData.id}`)
   }, [vaultItemData.id])
 
-  const handleWithdrawAll = useCallback(() => {
-    alert('Withdraw all')
-  }, [])
-
-  let vaultPosition = null
-
-  if (vaultItemData.id !== '1') {
-    vaultPosition = {
-      id: '1',
-      balancePosition: '101',
-      balanceShares: '102',
-    }
-  }
+  const fxdPrice = 1
 
   return (
     <>
@@ -151,7 +164,11 @@ const VaultListItem: FC<VaultListItemProps> = ({ vaultItemData }) => {
               />
             </VaultListItemImageWrapper>
             <Box>
-              {vaultItemData.id === '4' ? (
+              {vaultPosition?.balancePosition &&
+              BigNumber(vaultPosition?.balancePosition).isGreaterThan(0) &&
+              !shutdown ? (
+                <VaultTagLabel>Earning</VaultTagLabel>
+              ) : shutdown ? (
                 <VaultTagLabel>Finished</VaultTagLabel>
               ) : (
                 <VaultTagLabel>Live</VaultTagLabel>
@@ -161,23 +178,60 @@ const VaultListItem: FC<VaultListItemProps> = ({ vaultItemData }) => {
           </FlexBox>
         </TableCell>
         <TableCell colSpan={1} sx={{ width: '11%' }}>
-          <VaultEarned>$ 100.00</VaultEarned>
+          <VaultEarned>
+            {balanceEarned && BigNumber(balanceEarned).isGreaterThan(0) ? (
+              '$' +
+              formatNumber(
+                BigNumber(balanceEarned)
+                  .multipliedBy(fxdPrice)
+                  .dividedBy(10 ** 18)
+                  .toNumber()
+              )
+            ) : balanceEarned === -1 ? (
+              <CircularProgress size={20} />
+            ) : (
+              0
+            )}
+          </VaultEarned>
         </TableCell>
         <TableCell colSpan={1} sx={{ width: '10%' }}>
-          <VaultApr>10 %</VaultApr>
+          <VaultApr>{formattedApr}%</VaultApr>
         </TableCell>
         <TableCell colSpan={2} sx={{ width: '13%' }}>
-          <VaultStackedLiquidity>{formatCurrency(100)}</VaultStackedLiquidity>
+          <VaultStackedLiquidity>
+            {formatCurrency(
+              BigNumber(fxdPrice)
+                .dividedBy(10 ** 18)
+                .multipliedBy(BigNumber(balanceTokens).dividedBy(10 ** 18))
+                .toNumber()
+            )}
+          </VaultStackedLiquidity>
         </TableCell>
         <TableCell colSpan={1} sx={{ width: '14%' }}>
           <VaultAvailable>
-            {formatNumber(50000000) + ' ' + token.name}
+            {isTfVaultType
+              ? formatNumber(
+                  BigNumber(tfVaultDepositLimit)
+                    .dividedBy(10 ** 18)
+                    .toNumber()
+                )
+              : formatNumber(
+                  Math.max(
+                    BigNumber(depositLimit)
+                      .minus(BigNumber(balanceTokens))
+                      .dividedBy(10 ** 18)
+                      .toNumber(),
+                    0
+                  )
+                )}{' '}
+            {token.symbol}
           </VaultAvailable>
         </TableCell>
         <TableCell colSpan={1} sx={{ width: '15%' }}>
           <VaultStacked>
             <Box className={'img-wrapper'}>
-              {vaultItemData.id === '1' ? (
+              {vaultPosition?.balancePosition &&
+              BigNumber(vaultPosition?.balancePosition).isGreaterThan(0) ? (
                 <Image
                   src={LockAquaSrc as string}
                   alt={'locked-active'}
@@ -193,7 +247,16 @@ const VaultListItem: FC<VaultListItemProps> = ({ vaultItemData }) => {
                 />
               )}
             </Box>
-            <Box className={'value'}>{'21 ' + token.name}</Box>
+            <Box className={'value'}>
+              {vaultPosition
+                ? formatNumber(
+                    BigNumber(vaultPosition.balancePosition)
+                      .dividedBy(10 ** 18)
+                      .toNumber()
+                  )
+                : 0}
+              {' ' + token.symbol}
+            </Box>
           </VaultStacked>
         </TableCell>
         <TableCell colSpan={4}>
@@ -205,42 +268,55 @@ const VaultListItem: FC<VaultListItemProps> = ({ vaultItemData }) => {
               width: 'inherit',
             }}
           >
-            {vaultItemData.id === '1' && (
-              <Button
-                variant="contained"
-                onClick={() => setNewVaultDeposit(true)}
-                sx={{ minWidth: '100px' }}
-              >
-                Deposit
-              </Button>
-            )}
-            {vaultItemData.id === '2' && (
-              <Button
-                variant="contained"
-                onClick={() => setManageVault(true)}
-                sx={{ minWidth: '100px' }}
-              >
-                Manage
-              </Button>
-            )}
-            {vaultItemData.id === '3' && (
-              <Button
-                variant="contained"
-                onClick={() => setManageVault(true)}
-                sx={{ minWidth: '100px' }}
-              >
-                Withdraw
-              </Button>
-            )}
-            {vaultItemData.id === '4' && (
-              <Button
-                variant="contained"
-                onClick={handleWithdrawAll}
-                sx={{ minWidth: '100px' }}
-              >
-                Withdraw all
-              </Button>
-            )}
+            {(!vaultPosition ||
+              !BigNumber(vaultPosition.balanceShares).isGreaterThan(0)) &&
+              !shutdown &&
+              activeTfPeriod !== 2 && (
+                <Button
+                  variant="contained"
+                  onClick={() => setNewVaultDeposit(true)}
+                  sx={{ minWidth: '100px' }}
+                >
+                  Deposit
+                </Button>
+              )}
+            {vaultPosition &&
+              BigNumber(vaultPosition.balanceShares).isGreaterThan(0) &&
+              !shutdown &&
+              activeTfPeriod !== 2 && (
+                <Button
+                  variant="contained"
+                  onClick={() => setManageVault(true)}
+                  sx={{ minWidth: '100px' }}
+                >
+                  Manage
+                </Button>
+              )}
+            {vaultPosition &&
+              BigNumber(vaultPosition.balanceShares).isGreaterThan(0) &&
+              shutdown &&
+              activeTfPeriod < 2 && (
+                <Button
+                  variant="contained"
+                  onClick={() => setManageVault(true)}
+                  sx={{ minWidth: '100px' }}
+                >
+                  Withdraw
+                </Button>
+              )}
+            {vaultPosition &&
+              BigNumber(vaultPosition.balanceShares).isGreaterThan(0) &&
+              isTfVaultType &&
+              activeTfPeriod === 2 && (
+                <Button
+                  variant="contained"
+                  onClick={handleWithdrawAll}
+                  disabled={isWithdrawLoading || !showWithdrawAllButton}
+                  sx={{ minWidth: '100px' }}
+                >
+                  Withdraw all
+                </Button>
+              )}
           </FlexBox>
         </TableCell>
       </BaseTableItemRow>
@@ -249,8 +325,13 @@ const VaultListItem: FC<VaultListItemProps> = ({ vaultItemData }) => {
           newVaultDeposit && (
             <VaultListItemDepositModal
               vaultItemData={vaultItemData}
-              isTfVaultType={vaultItemData.id === '1'}
-              activeTfPeriod={1}
+              performanceFee={performanceFee}
+              isTfVaultType={isTfVaultType}
+              isUserKycPassed={isUserKycPassed}
+              tfVaultDepositEndDate={tfVaultDepositEndDate}
+              tfVaultLockEndDate={tfVaultLockEndDate}
+              activeTfPeriod={activeTfPeriod}
+              minimumDeposit={minimumDeposit}
               onClose={() => setNewVaultDeposit(false)}
             />
           )
@@ -262,9 +343,9 @@ const VaultListItem: FC<VaultListItemProps> = ({ vaultItemData }) => {
             <VaultListItemManageModal
               vaultItemData={vaultItemData}
               vaultPosition={vaultPosition}
-              performanceFee={10}
-              isTfVaultType={vaultItemData.id === '1'}
-              activeTfPeriod={1}
+              performanceFee={performanceFee}
+              isTfVaultType={isTfVaultType}
+              activeTfPeriod={activeTfPeriod}
               onClose={() => setManageVault(false)}
             />
           )

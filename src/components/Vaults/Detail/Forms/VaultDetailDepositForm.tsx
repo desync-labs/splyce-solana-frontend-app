@@ -1,4 +1,4 @@
-import { FC, memo } from 'react'
+import { memo, useEffect, useState } from 'react'
 import { FormProvider } from 'react-hook-form'
 import { Box, Paper, styled, Typography } from '@mui/material'
 import useVaultContext from '@/context/vaultDetail'
@@ -33,11 +33,22 @@ const VaultDepositPaper = styled(Paper)`
   padding: 16px 24px 24px;
 `
 
-const VaultDetailDepositForm: FC<{ notLoading: boolean }> = ({
-  notLoading,
-}) => {
-  const { vault } = useVaultContext()
+const VaultDetailDepositForm = () => {
+  const [notLoading, setNotLoaded] = useState(false)
+
+  const { vault, vaultPosition, vaultLoading, vaultPositionLoading } =
+    useVaultContext()
   const { isMobile } = useSharedContext()
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setNotLoaded(vaultPosition && !vaultPositionLoading && !vaultLoading)
+    }, 300)
+
+    return () => {
+      clearTimeout(timeout)
+    }
+  }, [vaultPosition, vaultPositionLoading, vaultLoading, setNotLoaded])
 
   const onClose = () => {
     methods.reset()
@@ -56,6 +67,9 @@ const VaultDetailDepositForm: FC<{ notLoading: boolean }> = ({
     errors,
     approve,
     setMax,
+    validateMaxDepositValue,
+    minimumDeposit,
+    depositLimitExceeded,
     handleSubmit,
     onSubmit,
   } = useVaultOpenDeposit(vault, onClose)
@@ -94,10 +108,14 @@ const VaultDetailDepositForm: FC<{ notLoading: boolean }> = ({
           <VaultDetailFormColumn>
             <DepositVaultForm
               vaultItemData={vault}
+              walletBalance={walletBalance}
               control={control}
               setMax={setMax}
               handleSubmit={handleSubmit}
               onSubmit={onSubmit}
+              validateMaxDepositValue={validateMaxDepositValue}
+              minimumDeposit={minimumDeposit}
+              depositLimitExceeded={depositLimitExceeded}
               isDetailPage={true}
             />
           </VaultDetailFormColumn>

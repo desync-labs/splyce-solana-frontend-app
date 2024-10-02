@@ -1,21 +1,13 @@
 import { useRouter } from 'next/router'
 import { memo, useCallback, useEffect, useState } from 'react'
-import {
-  Box,
-  Button,
-  ButtonGroup,
-  MenuItem,
-  Select,
-  styled,
-  Typography,
-} from '@mui/material'
+import { Box, MenuItem, Select, styled, Typography } from '@mui/material'
+import { SelectChangeEvent } from '@mui/material/Select'
 import useVaultContext from '@/context/vaultDetail'
 import { IVaultStrategy } from '@/utils/TempData'
 import { strategyTitle } from '@/utils/Vaults/getStrategyTitleAndDescription'
 import VaultStrategyItem from '@/components/Vaults/Detail/Tabs/VaultStrategyItem'
 import { VaultStrategiesSkeleton } from '@/components/Base/Skeletons/VaultSkeletons'
 import { TabContentWrapper } from '@/components/Vaults/Detail/Tabs/InfoTabs'
-import { SelectChangeEvent } from '@mui/material/Select'
 
 export const StrategySelectorLabel = styled(Typography)`
   color: #a9bad0;
@@ -62,7 +54,6 @@ const InfoTabStrategies = () => {
     reports,
     historicalApr,
     isReportsLoaded,
-    urlParams,
   } = useVaultContext()
   const { strategies, balanceTokens, token } = vault
   const router = useRouter()
@@ -72,31 +63,32 @@ const InfoTabStrategies = () => {
   useEffect(() => {
     if (!strategies || !strategies.length) return
 
-    let params: string | string[] = urlParams || ''
-    params = params.split('/')
-    const strategyIndex = params.indexOf('strategy')
-    if (strategyIndex !== -1) {
-      const strategyId = params[strategyIndex + 1]
+    const strategyId = router.query.strategy as string
+
+    if (strategyId) {
       setActiveStrategy(strategyId)
     } else {
       setActiveStrategy(strategies[0].id)
     }
-  }, [urlParams, setActiveStrategy, strategies])
+  }, [setActiveStrategy, strategies, router.query.strategy])
 
-  const handleChangeActiveStrategy = (event: SelectChangeEvent) => {
-    const strategyId = event.target.value as string
+  const handleChangeActiveStrategy = useCallback(
+    (event: SelectChangeEvent) => {
+      const strategyId = event.target.value as string
 
-    router.replace(
-      {
-        pathname: router.pathname,
-        query: { ...router.query, strategy: strategyId },
-      },
-      undefined,
-      { shallow: true }
-    )
+      router.replace(
+        {
+          pathname: router.pathname,
+          query: { ...router.query, strategy: strategyId },
+        },
+        undefined,
+        { shallow: true }
+      )
 
-    setActiveStrategy(strategyId)
-  }
+      setActiveStrategy(strategyId)
+    },
+    [router, setActiveStrategy]
+  )
 
   if (!vault?.strategies?.length && !vaultLoading) {
     return (
@@ -125,7 +117,7 @@ const InfoTabStrategies = () => {
                     strategyTitle[strategy.id.toLowerCase()]
                   ) : (
                     <>
-                      SPLY: Direct Incentive - Educational Strategy {index + 1}
+                      spUSD: Direct Incentive - Educational Strategy {index + 1}
                     </>
                   )}
                 </MenuItem>
@@ -140,7 +132,6 @@ const InfoTabStrategies = () => {
               historicalApr={historicalApr[strategy.id] || []}
               vaultBalanceTokens={balanceTokens}
               tokenName={token.name}
-              performanceFee={performanceFee}
               index={index}
               isShow={activeStrategy === strategy.id}
               key={strategy.id}

@@ -131,7 +131,6 @@ const VaultProfitCalculator = () => {
   const { token } = vault
 
   const fxdPrice = 1
-  const apr = '8'
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     let period = 365
@@ -141,7 +140,7 @@ const VaultProfitCalculator = () => {
     }
 
     setTokenAmount(e.target.value)
-    setEstimatedEarning(getEstimatedEarning(e.target.value, apr, period))
+    setEstimatedEarning(getEstimatedEarning(e.target.value, vault.apr, period))
   }
 
   if (!token) {
