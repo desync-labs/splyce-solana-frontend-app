@@ -19,32 +19,15 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '18'
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: Build the app
-        run: |
-          export NODE_OPTIONS=--max-old-space-size=8192
-          if [[ $GITHUB_REF == refs/heads/main ]]; then
-            npm run build
-          else
-            npm run build
-          fi
-
       - name: Docker login
         run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
-      - name: Build Docker image
+      - name: Build Docker image (Production Stage)
         run: |
-          docker build -t intothefathom/splyce-solana-frontend-app:${{ github.sha }} .
+          docker build --target production -t intothefathom/splyce-solana-frontend-app:${{ github.sha }} .
           docker tag intothefathom/splyce-solana-frontend-app:${{ github.sha }} intothefathom/splyce-solana-frontend-app:latest
 
-      - name: Push Docker image
+      - name: Push Docker image to Docker Hub
         run: |
           docker push intothefathom/splyce-solana-frontend-app:${{ github.sha }}
           docker push intothefathom/splyce-solana-frontend-app:latest
