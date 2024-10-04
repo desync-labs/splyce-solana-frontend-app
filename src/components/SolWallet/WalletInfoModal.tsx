@@ -39,8 +39,10 @@ const WalletLogoWrapper = styled(Box)`
 
 const DisconnectButton = styled(Button)`
   height: 48px;
-  background: #072a40;
-  color: #a0f2c4;
+  font-size: 14px;
+  font-weight: 600;
+  background: rgba(55, 127, 146, 0.25);
+  color: #bbfb5b;
   border-radius: 0;
 `
 

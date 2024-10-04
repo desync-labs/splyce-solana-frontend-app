@@ -5,33 +5,29 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="980c1e59-2a66-476c-8058-c1191519ba3f" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/components/Vaults/Detail/VaultLockCalculatorBlock.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.env" beforeDir="false" afterPath="$PROJECT_DIR$/.env" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Base/Breadcrumbs/StyledBreadcrumbs.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Base/Breadcrumbs/StyledBreadcrumbs.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Vaults/Detail/Forms/VaultDetailDepositForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Vaults/Detail/Forms/VaultDetailDepositForm.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Vaults/Detail/Tabs/AboutTabContent.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Vaults/Detail/Tabs/AboutTabContent.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Vaults/Detail/Tabs/InfoTabAbout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Vaults/Detail/Tabs/InfoTabAbout.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Vaults/Detail/Tabs/InfoTabStrategies.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Vaults/Detail/Tabs/InfoTabStrategies.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Vaults/Detail/Tabs/VaultStrategyItem.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Vaults/Detail/Tabs/VaultStrategyItem.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Vaults/Detail/VaultPositionStats.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Vaults/Detail/VaultPositionStats.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Vaults/Detail/VaultProfitCalculator.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Vaults/Detail/VaultProfitCalculator.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/apollo/queries.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/apollo/queries.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Base/Boxes/StyledBoxes.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Base/Boxes/StyledBoxes.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Base/Dialog/StyledDialog.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Base/Dialog/StyledDialog.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/SolWallet/WalletInfoModal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/SolWallet/WalletInfoModal.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/Vaults/List/DepositVaultModal/DepositVaultForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Vaults/List/DepositVaultModal/DepositVaultForm.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/Vaults/List/DepositVaultModal/DepositVaultInfo.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Vaults/List/DepositVaultModal/DepositVaultInfo.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/Vaults/List/DepositVaultModal/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Vaults/List/DepositVaultModal/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Vaults/List/ManageVaultModal/ManageVaultForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Vaults/List/ManageVaultModal/ManageVaultForm.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Vaults/List/ManageVaultModal/ManageVaultInfo.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Vaults/List/ManageVaultModal/ManageVaultInfo.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Vaults/List/ManageVaultModal/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Vaults/List/ManageVaultModal/index.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/Vaults/List/VaultListItem.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Vaults/List/VaultListItem.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Vaults/List/VaultListItemSkeleton.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Vaults/List/VaultListItemSkeleton.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/Vaults/List/VaultsList.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Vaults/List/VaultsList.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/context/vaultDetail.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/context/vaultDetail.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Vaults/List/VaultsTotalStats.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Vaults/List/VaultsTotalStats.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/hooks/Vaults/useTotalStats.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/hooks/Vaults/useTotalStats.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/hooks/Vaults/useVaultDetail.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/hooks/Vaults/useVaultDetail.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/hooks/Vaults/useVaultList.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/hooks/Vaults/useVaultList.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/hooks/Vaults/useVaultManageDeposit.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/hooks/Vaults/useVaultManageDeposit.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/hooks/Vaults/useVaultOpenDeposit.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/hooks/Vaults/useVaultOpenDeposit.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/vaults/[vaultId].tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/vaults/[vaultId].tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/vaults/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/vaults/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/provider/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/provider/index.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/utils/TempData.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/TempData.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/Vaults/getVaultTitleAndDescription.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/Vaults/getVaultTitleAndDescription.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/utils/network.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/network.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -53,25 +49,25 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "master",
-    "last_opened_file_path": "/Users/aleksandrdovgopolyj/Work/splyce-frontend-app-M/src/utils/Vaults",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.standard": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.standard": "",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "prettierjs.PrettierConfiguration.Package": "/Users/aleksandrdovgopolyj/Work/splyce-frontend/node_modules/prettier",
-    "settings.editor.selected.configurable": "settings.javascript.prettier",
-    "ts.external.directory.path": "/Users/aleksandrdovgopolyj/Work/splyce-frontend-app-M/node_modules/typescript/lib",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/aleksandrdovgopolyj/Work/splyce-frontend-app-M/src/utils/Vaults&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.standard&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.standard&quot;: &quot;&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;prettierjs.PrettierConfiguration.Package&quot;: &quot;/Users/aleksandrdovgopolyj/Work/splyce-frontend/node_modules/prettier&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;settings.javascript.prettier&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/Users/aleksandrdovgopolyj/Work/splyce-frontend-app-M/node_modules/typescript/lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/utils/Vaults" />
@@ -107,7 +103,8 @@
       <workItem from="1726656010231" duration="28317000" />
       <workItem from="1727079716139" duration="1033000" />
       <workItem from="1727082388526" duration="23373000" />
-      <workItem from="1727427650774" duration="45534000" />
+      <workItem from="1727427650774" duration="81869000" />
+      <workItem from="1727950379494" duration="33552000" />
     </task>
     <servers />
   </component>
@@ -123,6 +120,12 @@
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/components/Base/Boxes/StyledBoxes.tsx</url>
           <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/utils/TempSdkMethods.ts</url>
+          <line>115</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="3" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

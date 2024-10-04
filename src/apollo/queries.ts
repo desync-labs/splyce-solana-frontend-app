@@ -80,7 +80,9 @@ export const VAULT_POSITION = gql`
     $vault: String!
     $network: String
   ) {
-    accountVaultPositions(where: { account: $account, vault: $vault }) {
+    accountVaultPositions(
+      where: { account_contains_nocase: $account, vault: $vault }
+    ) {
       id
       balancePosition
       balanceProfit
@@ -141,7 +143,10 @@ export const ACCOUNT_VAULT_POSITIONS = gql`
     $network: String
     $first: Int!
   ) {
-    accountVaultPositions(where: { account: $account }, first: $first) {
+    accountVaultPositions(
+      where: { account_contains_nocase: $account }
+      first: $first
+    ) {
       id
       balancePosition
       balanceProfit

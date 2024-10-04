@@ -94,7 +94,7 @@ const DepositVaultForm: FC<VaultDepositFormProps> = ({
                     Balance:{' '}
                     {formatNumber(
                       BigNumber(walletBalance)
-                        .dividedBy(10 ** 18)
+                        //.dividedBy(10 ** 18)
                         .toNumber()
                     ) +
                       ' ' +

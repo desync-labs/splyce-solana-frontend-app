@@ -73,19 +73,15 @@ export const BaseDialogButtonWrapper = styled(Box)`
 `
 
 export const BaseDialogNavWrapper = styled(Box)`
-  width: fit-content;
-  border-bottom: 1.5px solid #1d2d49;
+  border-bottom: 1px solid #314156;
   display: flex;
   align-items: center;
+  gap: 36px;
   padding: 0;
-  margin-top: -10px;
+  margin-top: -12px;
   ${({ theme }) => theme.breakpoints.down('sm')} {
     width: fit-content;
     padding: 0;
-
-    & button {
-      font-size: 16px;
-    }
   }
 `
 
@@ -95,17 +91,17 @@ export const BaseDialogNavItem = styled(Button)`
   justify-content: center;
   gap: 8px;
   height: 100%;
-  font-size: 16px;
+  font-size: 20px;
   font-weight: 600;
   text-transform: none;
-  color: #9fadc6;
+  color: #d1dae6;
   background: unset;
   border-radius: 0;
-  padding: 8px 18px;
+  padding: 16px 0;
 
   &.active {
-    color: #fff;
-    border-bottom: 1px solid #00fff6;
+    color: #cfff81;
+    border-bottom: 2px solid #cfff81;
   }
 
   &:hover {

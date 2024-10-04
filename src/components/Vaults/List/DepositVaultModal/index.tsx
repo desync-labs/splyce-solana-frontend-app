@@ -22,7 +22,6 @@ import {
   BaseDialogWrapper,
 } from '@/components/Base/Dialog/StyledDialog'
 import {
-  BaseInfoBox,
   BaseWarningBox,
   BaseErrorBox,
 } from '@/components/Base/Boxes/StyledBoxes'
@@ -31,7 +30,6 @@ import BigNumber from 'bignumber.js'
 
 export type VaultDepositProps = {
   vaultItemData: IVault
-  performanceFee: number
   isTfVaultType: boolean
   isUserKycPassed: boolean
   tfVaultDepositEndDate: string | null
@@ -43,7 +41,6 @@ export type VaultDepositProps = {
 
 const VaultListItemDepositModal: FC<VaultDepositProps> = ({
   vaultItemData,
-  performanceFee,
   isTfVaultType,
   isUserKycPassed,
   tfVaultDepositEndDate,
@@ -57,7 +54,9 @@ const VaultListItemDepositModal: FC<VaultDepositProps> = ({
     control,
     deposit,
     sharedToken,
+    walletBalance,
     isWalletFetching,
+    openDepositLoading,
     errors,
     setMax,
     validateMaxDepositValue,
@@ -67,15 +66,6 @@ const VaultListItemDepositModal: FC<VaultDepositProps> = ({
   } = useVaultOpenDeposit(vaultItemData, onClose)
 
   const { connected } = useWallet()
-
-  const openDepositLoading = false
-  const approveBtn = true
-  const approvalPending = false
-  const walletBalance = '0'
-
-  const approve = () => {
-    alert('Approve token')
-  }
 
   return (
     <BaseDialogWrapper
@@ -120,7 +110,6 @@ const VaultListItemDepositModal: FC<VaultDepositProps> = ({
               vaultItemData={vaultItemData}
               deposit={deposit}
               sharedToken={sharedToken}
-              performanceFee={performanceFee}
             />
             {isWalletFetching &&
               (BigNumber(walletBalance)
@@ -147,17 +136,6 @@ const VaultListItemDepositModal: FC<VaultDepositProps> = ({
                 </Box>
               </BaseWarningBox>
             )}
-            {approveBtn && walletBalance !== '0' && (
-              <BaseInfoBox>
-                <BaseInfoIcon />
-                <Box flexDirection="column">
-                  <Typography width="100%">
-                    First-time connect? Please allow token approval in your
-                    MetaMask
-                  </Typography>
-                </Box>
-              </BaseInfoBox>
-            )}
           </Box>
           <BaseDialogButtonWrapper>
             <Button variant="outlined" onClick={onClose}>
@@ -165,22 +143,13 @@ const VaultListItemDepositModal: FC<VaultDepositProps> = ({
             </Button>
             {!connected ? (
               <WalletConnectBtn />
-            ) : approveBtn && walletBalance !== '0' ? (
-              <Button variant="gradient" onClick={approve}>
-                {' '}
-                {approvalPending ? (
-                  <CircularProgress size={20} sx={{ color: '#183102' }} />
-                ) : (
-                  'Approve token'
-                )}{' '}
-              </Button>
             ) : (
               <Button
                 variant="gradient"
                 onClick={handleSubmit(onSubmit)}
                 disabled={
                   openDepositLoading ||
-                  approveBtn ||
+                  //approveBtn ||
                   !!Object.keys(errors).length ||
                   (isTfVaultType && !isUserKycPassed) ||
                   (isTfVaultType && activeTfPeriod > 0)

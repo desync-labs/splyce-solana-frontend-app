@@ -105,7 +105,7 @@ const StatItem: FC<StatItemPropsType> = memo(({ title, value, icon }) => {
           `$${formatNumber(
             BigNumber(value)
               .multipliedBy(fxdPrice)
-              .dividedBy(10 ** 36)
+              //.dividedBy(10 ** 36)
               .toNumber()
           )}`
         ) : (

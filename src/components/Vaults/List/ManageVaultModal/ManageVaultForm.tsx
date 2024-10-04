@@ -1,4 +1,4 @@
-import { FC, memo } from 'react'
+import { FC, memo, useMemo } from 'react'
 import { Box, styled } from '@mui/material'
 import BigNumber from 'bignumber.js'
 import { Control, Controller, UseFormHandleSubmit } from 'react-hook-form'
@@ -53,15 +53,23 @@ type VaultManageFormProps = {
 
 const ManageVaultForm: FC<VaultManageFormProps> = ({
   vaultItemData,
+  balanceToken,
   walletBalance,
   control,
   formType,
   setMax,
   handleSubmit,
   onSubmit,
-  dataTestIdPrefix,
 }) => {
   const { token } = vaultItemData
+  const formattedBalanceToken = useMemo(
+    () =>
+      BigNumber(balanceToken)
+        //.dividedBy(10 ** 18)
+        .toNumber(),
+    [balanceToken]
+  )
+
   const fxdPrice = 1
 
   return (
@@ -90,7 +98,7 @@ const ManageVaultForm: FC<VaultManageFormProps> = ({
                         ' ' +
                         token?.name
                       : 'Vault Available: ' +
-                        formatNumber(22) +
+                        formatNumber(formattedBalanceToken) +
                         ' ' +
                         token?.name}
                   </BaseFormWalletBalance>
@@ -204,7 +212,10 @@ const ManageVaultForm: FC<VaultManageFormProps> = ({
                   onChange={onChange}
                   disabled
                 />
-                <BaseFormInputLogo src={getTokenLogoURL('FXD')} />
+                <BaseFormInputLogo
+                  src={getTokenLogoURL('FXD')}
+                  alt={token.id}
+                />
               </BaseFormInputWrapper>
             )
           }}

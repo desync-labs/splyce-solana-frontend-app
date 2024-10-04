@@ -15,16 +15,14 @@ type VaultDepositInfoProps = {
   vaultItemData: IVault
   deposit: string
   sharedToken: string
-  performanceFee: number
 }
 
 const DepositVaultInfo: FC<VaultDepositInfoProps> = ({
   vaultItemData,
   deposit,
   sharedToken,
-  performanceFee,
 }) => {
-  const { token, shareToken, sharesSupply } = vaultItemData
+  const { token, shareToken, sharesSupply, performanceFees } = vaultItemData
   const formattedApr = useApr(vaultItemData)
 
   return (
@@ -56,10 +54,11 @@ const DepositVaultInfo: FC<VaultDepositInfoProps> = ({
                 BigNumber(sharesSupply).isGreaterThan(0)
                   ? formatNumber(
                       BigNumber(sharedToken || '0')
-                        .multipliedBy(10 ** 18)
+                        //.multipliedBy(10 ** 18)
                         .dividedBy(
                           BigNumber(sharesSupply).plus(
-                            BigNumber(sharedToken || '0').multipliedBy(10 ** 18)
+                            BigNumber(sharedToken || '0')
+                            //.multipliedBy(10 ** 18)
                           )
                         )
                         .times(100)
@@ -91,7 +90,11 @@ const DepositVaultInfo: FC<VaultDepositInfoProps> = ({
         </BaseListItem>
         <BaseListItem
           alignItems="flex-start"
-          secondaryAction={formatPercentage(Number(performanceFee)) + '%'}
+          secondaryAction={
+            formatPercentage(
+              BigNumber(performanceFees).dividedBy(100).toNumber()
+            ) + '%'
+          }
         >
           <ListItemText primary="Total Fee" />
         </BaseListItem>

@@ -109,14 +109,12 @@ export const VaultListItemImageWrapper = styled('div')`
 
 type VaultListItemProps = {
   vaultItemData: IVault
-  vaultPosition: IVaultPosition | null
-  performanceFee: number
+  vaultPosition: IVaultPosition
 }
 
 const VaultListItem: FC<VaultListItemProps> = ({
   vaultItemData,
   vaultPosition,
-  performanceFee,
 }) => {
   const { token, shutdown, balanceTokens, depositLimit } = vaultItemData
   const router = useRouter()
@@ -184,7 +182,7 @@ const VaultListItem: FC<VaultListItemProps> = ({
               formatNumber(
                 BigNumber(balanceEarned)
                   .multipliedBy(fxdPrice)
-                  .dividedBy(10 ** 18)
+                  //.dividedBy(10 ** 18)
                   .toNumber()
               )
             ) : balanceEarned === -1 ? (
@@ -201,8 +199,7 @@ const VaultListItem: FC<VaultListItemProps> = ({
           <VaultStackedLiquidity>
             {formatCurrency(
               BigNumber(fxdPrice)
-                .dividedBy(10 ** 18)
-                .multipliedBy(BigNumber(balanceTokens).dividedBy(10 ** 18))
+                .multipliedBy(BigNumber(balanceTokens))
                 .toNumber()
             )}
           </VaultStackedLiquidity>
@@ -212,14 +209,14 @@ const VaultListItem: FC<VaultListItemProps> = ({
             {isTfVaultType
               ? formatNumber(
                   BigNumber(tfVaultDepositLimit)
-                    .dividedBy(10 ** 18)
+                    //.dividedBy(10 ** 18)
                     .toNumber()
                 )
               : formatNumber(
                   Math.max(
                     BigNumber(depositLimit)
                       .minus(BigNumber(balanceTokens))
-                      .dividedBy(10 ** 18)
+                      //.dividedBy(10 ** 18)
                       .toNumber(),
                     0
                   )
@@ -250,9 +247,7 @@ const VaultListItem: FC<VaultListItemProps> = ({
             <Box className={'value'}>
               {vaultPosition
                 ? formatNumber(
-                    BigNumber(vaultPosition.balancePosition)
-                      .dividedBy(10 ** 18)
-                      .toNumber()
+                    BigNumber(vaultPosition.balancePosition).toNumber()
                   )
                 : 0}
               {' ' + token.symbol}
@@ -325,7 +320,6 @@ const VaultListItem: FC<VaultListItemProps> = ({
           newVaultDeposit && (
             <VaultListItemDepositModal
               vaultItemData={vaultItemData}
-              performanceFee={performanceFee}
               isTfVaultType={isTfVaultType}
               isUserKycPassed={isUserKycPassed}
               tfVaultDepositEndDate={tfVaultDepositEndDate}
@@ -343,7 +337,6 @@ const VaultListItem: FC<VaultListItemProps> = ({
             <VaultListItemManageModal
               vaultItemData={vaultItemData}
               vaultPosition={vaultPosition}
-              performanceFee={performanceFee}
               isTfVaultType={isTfVaultType}
               activeTfPeriod={activeTfPeriod}
               onClose={() => setManageVault(false)}

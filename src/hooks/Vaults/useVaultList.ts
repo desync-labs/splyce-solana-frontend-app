@@ -11,6 +11,7 @@ import { getDefaultVaultTitle } from '@/utils/Vaults/getVaultTitleAndDescription
 import { IVault, IVaultPosition, VaultType } from '@/utils/TempData'
 import { defaultNetWork } from '@/utils/network'
 import { vaultType } from '@/utils/Vaults/getVaultType'
+import { getUserTokenBalance, previewRedeem } from '@/utils/TempSdkMethods'
 
 interface IdToVaultIdMap {
   [key: string]: string | undefined
@@ -23,13 +24,9 @@ export enum SortType {
 }
 
 const useVaultList = () => {
-  const { wallet, publicKey } = useWallet()
+  const { publicKey } = useWallet()
 
   const network = defaultNetWork
-
-  useEffect(() => {
-    console.log(111, wallet, publicKey?.toString())
-  }, [wallet, publicKey])
 
   const [vaultSortedList, setVaultSortedList] = useState<IVault[]>([])
   const [vaultPositionsList, setVaultPositionsList] = useState<
@@ -37,7 +34,6 @@ const useVaultList = () => {
   >([])
   const [vaultCurrentPage, setVaultCurrentPage] = useState(1)
   const [vaultItemsCount, setVaultItemsCount] = useState(0)
-  const [performanceFee, setPerformanceFee] = useState(0)
 
   const [search, setSearch] = useState<string>('')
   const [sortBy, setSortBy] = useState<SortType>(SortType.TVL)
@@ -81,9 +77,9 @@ const useVaultList = () => {
 
   useEffect(() => {
     //if (account && vaultService) {
-    if (publicKey?.toString()) {
+    if (publicKey) {
       loadPositions({
-        variables: { account: publicKey?.toString().toLowerCase() },
+        variables: { account: publicKey?.toBase58().toLowerCase() },
       }).then((res) => {
         if (
           res.data?.accountVaultPositions &&
@@ -91,53 +87,50 @@ const useVaultList = () => {
         ) {
           setVaultPositionsList(res.data?.accountVaultPositions)
 
-          // const promises: Promise<any>[] = []
-          //
-          // res.data?.accountVaultPositions.forEach(
-          //   (position: IVaultPosition) => {
-          //     promises.push(
-          //       poolService.getUserTokenBalance(
-          //         account,
-          //         position.shareToken.id
-          //       )
-          //     )
-          //   }
-          // )
-          //
-          // const balancePositionsPromises: Promise<any>[] = []
-          //
-          // Promise.all(promises).then((balances) => {
-          //   const vaultPositions = res.data.accountVaultPositions.map(
-          //     (position: IVaultPosition, index: number) => {
-          //       BigNumber(balances[index].toString()).isGreaterThan(0)
-          //         ? balancePositionsPromises.push(
-          //             vaultService.previewRedeem(
-          //               balances[index].toString(),
-          //               position.vault.id
-          //             )
-          //           )
-          //         : balancePositionsPromises.push(Promise.resolve(0))
-          //       return {
-          //         ...position,
-          //         balanceShares: balances[index].toString(),
-          //       }
-          //     }
-          //   )
-          //
-          //   Promise.all(balancePositionsPromises).then((values) => {
-          //     const updatedVaultPositions = vaultPositions.map(
-          //       (position: IVaultPosition, index: number) => {
-          //         return {
-          //           ...position,
-          //           balancePosition: BigNumber(values[index].toString())
-          //             .dividedBy(10 ** 18)
-          //             .toString(),
-          //         }
-          //       }
-          //     )
-          //     setVaultPositionsList(updatedVaultPositions)
-          //   })
-          // })
+          const promises: Promise<any>[] = []
+
+          res.data?.accountVaultPositions.forEach(
+            (position: IVaultPosition) => {
+              promises.push(
+                getUserTokenBalance(publicKey, position.shareToken.id)
+              )
+            }
+          )
+
+          const balancePositionsPromises: Promise<any>[] = []
+
+          Promise.all(promises).then((balances) => {
+            const vaultPositions = res.data.accountVaultPositions.map(
+              (position: IVaultPosition, index: number) => {
+                BigNumber(balances[index].toString()).isGreaterThan(0)
+                  ? balancePositionsPromises.push(
+                      previewRedeem(
+                        balances[index].toString(),
+                        position.vault.id
+                      )
+                    )
+                  : balancePositionsPromises.push(Promise.resolve(0))
+                return {
+                  ...position,
+                  balanceShares: balances[index].toString(),
+                }
+              }
+            )
+
+            Promise.all(balancePositionsPromises).then((values) => {
+              const updatedVaultPositions = vaultPositions.map(
+                (position: IVaultPosition, index: number) => {
+                  return {
+                    ...position,
+                    balancePosition: BigNumber(values[index].toString())
+                      //.dividedBy(10 ** 18)
+                      .toString(),
+                  }
+                }
+              )
+              setVaultPositionsList(updatedVaultPositions)
+            })
+          })
         } else {
           setVaultPositionsList([])
         }
@@ -145,14 +138,7 @@ const useVaultList = () => {
     } else {
       setVaultPositionsList([])
     }
-  }, [
-    publicKey,
-    //chainId,
-    loadPositions,
-    setVaultPositionsList,
-    //poolService,
-    //vaultService,
-  ])
+  }, [publicKey, loadPositions, setVaultPositionsList])
 
   // useEffect(() => {
   //   if (syncVault && !prevSyncVault) {
@@ -164,21 +150,6 @@ const useVaultList = () => {
   //     vaultsRefetch()
   //   }
   // }, [syncVault, prevSyncVault, vaultsRefetch, positionsRefetch])
-
-  // useEffect(() => {
-  //   if (!vaultsFactoriesLoading && vaultsFactories) {
-  //     const { accountants } = vaultsFactories
-  //     const performanceFeeRes = accountants[0].performanceFee
-  //
-  //     if (performanceFeeRes) {
-  //       setPerformanceFee(performanceFeeRes / 100)
-  //     }
-  //   }
-  // }, [vaultsFactoriesLoading, vaultsFactories])
-
-  useEffect(() => {
-    setPerformanceFee(11)
-  }, [vaultSortedList, setPerformanceFee])
 
   useEffect(() => {
     if (vaultItemsData && vaultItemsData.vaults) {
@@ -333,7 +304,6 @@ const useVaultList = () => {
     vaultPositionsList,
     vaultCurrentPage,
     vaultItemsCount,
-    performanceFee,
     isShutdown,
     search,
     sortBy,

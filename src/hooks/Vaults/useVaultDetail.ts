@@ -26,6 +26,8 @@ import {
 import { defaultNetWork } from '@/utils/network'
 import { vaultType } from '@/utils/Vaults/getVaultType'
 import { WalletAdapterNetwork } from '@solana/wallet-adapter-base'
+import { getUserTokenBalance, previewRedeem } from '@/utils/TempSdkMethods'
+import { PublicKey } from '@solana/web3.js'
 
 const VAULT_REPORTS_PER_PAGE = 1000
 enum TransactionFetchType {
@@ -121,6 +123,7 @@ const useVaultDetail = () => {
     VAULT_POSITION,
     {
       context: { clientName: 'vaults', network },
+      variables: { network, first: 1000 },
       fetchPolicy: 'no-cache',
     }
   )
@@ -348,10 +351,13 @@ const useVaultDetail = () => {
   }
 
   const fetchVaultPosition = useCallback(
-    (vaultId: string, account: string): Promise<IVaultPosition> => {
+    (vaultId: string, publicKey: PublicKey): Promise<IVaultPosition> => {
       return new Promise((resolve) => {
         loadPosition({
-          variables: { account: account.toLowerCase(), vault: vaultId },
+          variables: {
+            account: publicKey.toBase58().toLowerCase(),
+            vault: vaultId,
+          },
         }).then(async (res) => {
           if (
             res.data?.accountVaultPositions &&
@@ -361,27 +367,21 @@ const useVaultDetail = () => {
 
             try {
               setUpdateVaultPositionLoading(true)
-              const balance = '0'
-              // const balance = (
-              //   await poolService.getUserTokenBalance(
-              //     account,
-              //     position.shareToken.id
-              //   )
-              // ).toString()
+              const balance = await getUserTokenBalance(
+                publicKey,
+                position.shareToken.id
+              )
 
               let previewRedeemValue = '0'
 
-              // if (BigNumber(balance).isGreaterThan(0)) {
-              //   previewRedeemValue = (
-              //     await vaultService.previewRedeem(
-              //       balance.toString(),
-              //       position.vault.id
-              //     )
-              //   ).toString()
-              //   previewRedeemValue = BigNumber(previewRedeemValue)
-              //     .dividedBy(10 ** 18)
-              //     .toString()
-              // }
+              if (BigNumber(balance).isGreaterThan(0)) {
+                previewRedeemValue = (
+                  await previewRedeem(balance as string, position.vault.id)
+                ).toString()
+                previewRedeemValue = BigNumber(previewRedeemValue)
+                  //.dividedBy(10 ** 18)
+                  .toString()
+              }
 
               const updatedVaultPosition = {
                 ...position,
@@ -412,22 +412,14 @@ const useVaultDetail = () => {
       }
 
       setFetchBalanceLoading(true)
-      // return vaultService
-      //   .previewRedeem(
-      //     BigNumber(vaultPosition?.balanceShares as string)
-      //       .dividedBy(10 ** 18)
-      //       .toString(),
-      //     vault.id
-      //   )
-      //   .catch((error) => {
-      //     console.error('Error fetching balance token:', error)
-      //     return '-1'
-      //   })
-      //   .finally(() => setFetchBalanceLoading(false))
-
-      return Promise.resolve('0').finally(() => setFetchBalanceLoading(false))
+      return previewRedeem(vaultPosition?.balanceShares as string, vault.id)
+        .catch((error) => {
+          console.error('Error fetching balance token:', error)
+          return '-1'
+        })
+        .finally(() => setFetchBalanceLoading(false))
     },
-    [vault.id, setBalanceToken, setFetchBalanceLoading]
+    [vault.id, setFetchBalanceLoading]
   )
 
   const fetchPositionTransactions = useCallback(
@@ -465,9 +457,7 @@ const useVaultDetail = () => {
 
   useEffect(() => {
     let timeout: ReturnType<typeof setTimeout>
-    if (!vaultId) {
-      router.push('/vaults')
-    } else if (!vaultLoading) {
+    if (vaultId && !vaultLoading) {
       timeout = setTimeout(() => {
         fetchVault(vaultId, network)
       }, 150)
@@ -476,7 +466,7 @@ const useVaultDetail = () => {
     return () => {
       timeout && clearTimeout(timeout)
     }
-  }, [vaultId, network, publicKey, fetchVault])
+  }, [vaultId, publicKey, fetchVault])
 
   useEffect(() => {
     let timeout: ReturnType<typeof setTimeout>
@@ -522,7 +512,7 @@ const useVaultDetail = () => {
     }
 
     if (vault.id && publicKey) {
-      fetchVaultPosition(vault.id, publicKey.toBase58()).then(
+      fetchVaultPosition(vault.id, publicKey).then(
         (vaultPosition: IVaultPosition) => {
           Promise.all([
             fetchPositionTransactions(TransactionFetchType.PROMISE, vault.id),
@@ -565,8 +555,6 @@ const useVaultDetail = () => {
         undefined,
         { shallow: true }
       )
-
-      setActiveVaultInfoTab(value)
     },
     [router, vaultId]
   )

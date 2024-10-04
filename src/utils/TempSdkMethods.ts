@@ -1,0 +1,292 @@
+import { Connection, PublicKey, Transaction } from '@solana/web3.js'
+import {
+  createAssociatedTokenAccountInstruction,
+  getAccount,
+  getAssociatedTokenAddress,
+  TOKEN_PROGRAM_ID,
+} from '@solana/spl-token'
+import { AnchorProvider, BN, Program } from '@coral-xyz/anchor'
+import { Wallet } from '@solana/wallet-adapter-react'
+import { defaultEndpoint } from '@/utils/network'
+import vaultIdl from '@/idls/tokenized_vault.json'
+import strategyIdl from '@/idls/strategy_program.json'
+
+export const getUserTokenBalance = async (
+  publicKey: PublicKey,
+  tokenMintAddress: string
+) => {
+  if (!tokenMintAddress || !publicKey) {
+    return
+  }
+
+  const connection = new Connection(defaultEndpoint)
+  const tokenMintPublicKey = new PublicKey(tokenMintAddress)
+
+  try {
+    // Associated Token Accounts
+    const accounts = await connection.getTokenAccountsByOwner(publicKey, {
+      mint: tokenMintPublicKey,
+    })
+
+    if (accounts.value.length > 0) {
+      const associatedTokenAccountPubKey = accounts.value[0].pubkey
+      const tokenAccountInfo = await getAccount(
+        connection,
+        associatedTokenAccountPubKey
+      )
+
+      return tokenAccountInfo.amount.toString()
+    } else {
+      return 0
+    }
+  } catch (error) {
+    console.error('Error getting token balance:', error)
+    return 0
+  }
+}
+
+export const depositTokens = async (
+  userPublicKey: PublicKey,
+  amount: string,
+  wallet: Wallet,
+  tokenPubKey: PublicKey,
+  shareTokenPubKey: PublicKey
+) => {
+  if (!userPublicKey || !wallet) {
+    return
+  }
+
+  const provider = new AnchorProvider(
+    new Connection(defaultEndpoint, 'confirmed'),
+    wallet.adapter,
+    {
+      preflightCommitment: 'confirmed',
+    }
+  )
+
+  const vaultProgram = new Program(vaultIdl, provider)
+
+  const index = 0
+  const vaultPDA = await PublicKey.findProgramAddressSync(
+    [
+      Buffer.from('vault'),
+      Buffer.from(new Uint8Array(new BigUint64Array([BigInt(index)]).buffer)),
+    ],
+    vaultProgram.programId
+  )[0]
+
+  const userTokenAccount = await findOrCreateTokenAccountByOwner(
+    userPublicKey,
+    tokenPubKey,
+    wallet
+  )
+
+  const userSharesAccount = await findOrCreateTokenAccountByOwner(
+    userPublicKey,
+    shareTokenPubKey,
+    wallet
+  )
+
+  try {
+    const tx = new Transaction().add(
+      await vaultProgram.methods
+        .deposit(new BN(amount))
+        .accounts({
+          vault: vaultPDA,
+          user: userPublicKey,
+          userTokenAccount: userTokenAccount,
+          userSharesAccount: userSharesAccount,
+          tokenProgram: TOKEN_PROGRAM_ID,
+        })
+        .instruction()
+    )
+
+    // Send Tx
+    const signature = await provider.sendAndConfirm(tx)
+    console.log('Deposit tx successes:', signature)
+    return signature
+  } catch (err) {
+    console.error('Error deposit tx:', err)
+  }
+}
+
+export const withdrawTokens = async (
+  userPublicKey: PublicKey,
+  amount: string,
+  wallet: Wallet,
+  tokenPubKey: PublicKey,
+  shareTokenPubKey: PublicKey
+) => {
+  if (!userPublicKey || !wallet) {
+    return
+  }
+
+  const provider = new AnchorProvider(
+    new Connection(defaultEndpoint, 'confirmed'),
+    wallet.adapter,
+    {
+      preflightCommitment: 'confirmed',
+    }
+  )
+
+  const vaultProgram = new Program(vaultIdl, provider)
+  const strategyProgram = new Program(strategyIdl, provider)
+
+  const index = 0
+  const vaultPDA = await PublicKey.findProgramAddressSync(
+    [
+      Buffer.from('vault'),
+      Buffer.from(new Uint8Array(new BigUint64Array([BigInt(index)]).buffer)),
+    ],
+    vaultProgram.programId
+  )[0]
+
+  const strategyPDA = await PublicKey.findProgramAddressSync(
+    [vaultPDA.toBuffer(), Buffer.from(new Uint8Array([0]))],
+    strategyProgram.programId
+  )[0]
+
+  const userTokenAccount = await findOrCreateTokenAccountByOwner(
+    userPublicKey,
+    tokenPubKey,
+    wallet
+  )
+
+  const userSharesAccount = await findOrCreateTokenAccountByOwner(
+    userPublicKey,
+    shareTokenPubKey,
+    wallet
+  )
+
+  const strategyAccount =
+    await strategyProgram.account.simpleStrategy.fetch(strategyPDA)
+
+  const strategyTokenAccount = await PublicKey.findProgramAddressSync(
+    [Buffer.from('underlying'), strategyPDA.toBuffer()],
+    strategyProgram.programId
+  )[0]
+
+  console.log('strategyPDA', strategyPDA.toBase58(), strategyPDA)
+  console.log('strategyAccount', strategyAccount)
+  console.log('strategyTokenAccount', strategyTokenAccount)
+
+  const remainingAccountsMap = {
+    accountsMap: [
+      {
+        strategyAcc: new BN(0),
+        strategyTokenAccount: new BN(1),
+        remainingAccountsToStrategies: [new BN(0)],
+      },
+    ],
+  }
+
+  try {
+    const tx = new Transaction().add(
+      await vaultProgram.methods
+        .withdraw(new BN(amount), new BN(10000), remainingAccountsMap)
+        .accounts({
+          vault: vaultPDA,
+          user: userPublicKey,
+          userTokenAccount: userTokenAccount,
+          userSharesAccount: userSharesAccount,
+          tokenProgram: TOKEN_PROGRAM_ID,
+          strategyProgram: strategyProgram.programId,
+        })
+        .remainingAccounts([
+          {
+            pubkey: strategyPDA,
+            isWritable: true,
+            isSigner: false,
+          },
+          { pubkey: strategyTokenAccount, isWritable: true, isSigner: false },
+        ])
+        .instruction()
+    )
+
+    // Send Tx
+    const signature = await provider.sendAndConfirm(tx)
+    console.log('Withdraw tx successes:', signature)
+    return signature
+  } catch (err) {
+    console.error('Error deposit tx:', err)
+  }
+}
+
+const findOrCreateTokenAccountByOwner = async (
+  userPubKey: PublicKey,
+  tokenMintPublicKey: PublicKey,
+  wallet: Wallet
+) => {
+  const connection = new Connection(defaultEndpoint)
+  try {
+    // Associated Token Accounts
+    const accounts = await connection.getTokenAccountsByOwner(userPubKey, {
+      mint: tokenMintPublicKey,
+    })
+
+    if (accounts.value.length > 0) {
+      return accounts.value[0].pubkey
+    } else {
+      return await createTokenAccount(userPubKey, tokenMintPublicKey, wallet)
+    }
+  } catch (error) {
+    console.error('Error getting token account:', error)
+    return
+  }
+}
+
+export const createTokenAccount = async (
+  userPubKey: PublicKey,
+  tokenMintPublicKey: PublicKey,
+  wallet: Wallet
+) => {
+  try {
+    const connection = new Connection(defaultEndpoint)
+    const provider = new AnchorProvider(connection, wallet.adapter, {
+      preflightCommitment: 'confirmed',
+    })
+
+    const associatedTokenAddress = await getAssociatedTokenAddress(
+      tokenMintPublicKey,
+      userPubKey
+    )
+
+    const accountInfo = await connection.getParsedAccountInfo(
+      associatedTokenAddress
+    )
+    if (accountInfo.value !== null) {
+      console.log(
+        `Token Account already exist: ${associatedTokenAddress.toBase58()}`
+      )
+      return associatedTokenAddress
+    }
+
+    // Create new token account
+    const transaction = new Transaction().add(
+      createAssociatedTokenAccountInstruction(
+        userPubKey, // Payer
+        associatedTokenAddress,
+        userPubKey, // token account owner
+        tokenMintPublicKey
+      )
+    )
+
+    const latestBlockhash = await connection.getLatestBlockhash()
+    transaction.recentBlockhash = latestBlockhash.blockhash
+
+    transaction.feePayer = userPubKey
+
+    // Sign transaction
+    const signedTransaction = await provider.sendAndConfirm(transaction)
+
+    console.log(`Токеновый аккаунт успешно создан: ${signedTransaction}`)
+    return associatedTokenAddress
+  } catch (error) {
+    console.error('Ошибка при создании токенового аккаунта:', error)
+  }
+}
+
+export const previewRedeem = async (shareBalance: string, vaultId: string) => {
+  // todo: implement preview redeem from program
+  return shareBalance
+}

@@ -104,3 +104,11 @@ export const BaseErrorBox = styled(Box)`
     }
   }
 `
+
+export const EmptyVaultsWrapper = styled(Box)`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 16px;
+`

@@ -1,7 +1,22 @@
 export interface IVaultPosition {
   id: string
   balancePosition: string
+  balanceProfit: string
   balanceShares: string
+  balanceTokens: string
+  vault: {
+    id: string
+  }
+  token: {
+    id: string
+    symbol: string
+    name: string
+  }
+  shareToken: {
+    id: string
+    symbol: string
+    name: string
+  }
 }
 export interface IVaultStrategy {
   id: string

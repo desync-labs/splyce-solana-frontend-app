@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
-import { Container, Paper } from '@mui/material'
+import { Container, Paper, Typography } from '@mui/material'
 import useSharedContext from '@/context/shared'
-import { IVault, SortType } from '@/utils/TempData'
 import VaultsNestedNav from '@/components/Vaults/NestedNav'
 import BasePageHeader from '@/components/Base/PageHeader'
 import VaultsTotalStats from '@/components/Vaults/List/VaultsTotalStats'
@@ -9,6 +8,7 @@ import VaultsList from '@/components/Vaults/List/VaultsList'
 import VaultFilters from '@/components/Vaults/List/VaultFilters'
 import VaultsListMobile from '@/components/Vaults/List/VaultsListMobile'
 import useVaultList from '@/hooks/Vaults/useVaultList'
+import { EmptyVaultsWrapper } from '@/components/Base/Boxes/StyledBoxes'
 
 const VaultsOverview = () => {
   const {
@@ -18,8 +18,8 @@ const VaultsOverview = () => {
     vaultsLoading,
     vaultPositionsLoading,
     vaultSortedList,
+    vaultPositionsList,
     filterCurrentPosition,
-    performanceFee,
     vaultItemsCount,
     vaultCurrentPage,
     setSearch,
@@ -49,7 +49,10 @@ const VaultsOverview = () => {
           title="Vaults"
           description="Explore existing Vaults, and deposit your assets for a sustainable yield."
         />
-        <VaultsTotalStats positionsLoading={false} positionsList={[]} />
+        <VaultsTotalStats
+          positionsList={vaultPositionsList}
+          positionsLoading={vaultPositionsLoading}
+        />
         {isMobile ? (
           <>
             <VaultFilters
@@ -60,10 +63,20 @@ const VaultsOverview = () => {
               setSortBy={setSortBy}
               handleIsShutdown={handleIsShutdown}
             />
-            <VaultsListMobile
-              vaults={vaultSortedList}
-              isLoading={listLoading}
-            />
+            {vaultSortedList.length === 0 &&
+            !(vaultsLoading || vaultPositionsLoading) ? (
+              <EmptyVaultsWrapper>
+                <Typography>
+                  No vaults found.{' '}
+                  {search && <>Please try a different search criteria.</>}
+                </Typography>
+              </EmptyVaultsWrapper>
+            ) : (
+              <VaultsListMobile
+                vaults={vaultSortedList}
+                isLoading={listLoading}
+              />
+            )}
           </>
         ) : (
           <Paper sx={{ padding: 0 }}>
@@ -75,15 +88,24 @@ const VaultsOverview = () => {
               setSortBy={setSortBy}
               handleIsShutdown={handleIsShutdown}
             />
-            <VaultsList
-              vaults={vaultSortedList}
-              isLoading={listLoading}
-              performanceFee={performanceFee}
-              filterCurrentPosition={filterCurrentPosition}
-              vaultCurrentPage={vaultCurrentPage}
-              vaultItemsCount={vaultItemsCount}
-              handlePageChange={handlePageChange}
-            />
+            {vaultSortedList.length === 0 &&
+            !(vaultsLoading || vaultPositionsLoading) ? (
+              <EmptyVaultsWrapper>
+                <Typography>
+                  No vaults found.{' '}
+                  {search && <>Please try a different search criteria.</>}
+                </Typography>
+              </EmptyVaultsWrapper>
+            ) : (
+              <VaultsList
+                vaults={vaultSortedList}
+                isLoading={listLoading}
+                filterCurrentPosition={filterCurrentPosition}
+                vaultCurrentPage={vaultCurrentPage}
+                vaultItemsCount={vaultItemsCount}
+                handlePageChange={handlePageChange}
+              />
+            )}
           </Paper>
         )}
       </Container>

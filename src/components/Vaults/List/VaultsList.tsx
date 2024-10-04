@@ -6,6 +6,8 @@ import {
   TableContainer,
   TableHead,
 } from '@mui/material'
+import { IVault, IVaultPosition } from '@/utils/TempData'
+import { COUNT_PER_PAGE_VAULT } from '@/utils/Constants'
 import BasePopover from '@/components/Base/Popover/BasePopover'
 import { VaultListItemSkeleton } from '@/components/Vaults/List/VaultListItemSkeleton'
 import VaultListItem from '@/components/Vaults/List/VaultListItem'
@@ -15,12 +17,9 @@ import {
   BaseTableHeaderRow,
   BaseTablePaginationWrapper,
 } from '@/components/Base/Table/StyledTable'
-import { IVault, IVaultPosition } from '@/utils/TempData'
-import { COUNT_PER_PAGE_VAULT } from '@/utils/Constants'
 
 type VaultListPropsType = {
   vaults: IVault[]
-  performanceFee: number
   isLoading: boolean
   filterCurrentPosition: (vaultId: string) => IVaultPosition | null
   vaultCurrentPage: number
@@ -30,7 +29,6 @@ type VaultListPropsType = {
 
 const VaultsList: FC<VaultListPropsType> = ({
   vaults,
-  performanceFee,
   isLoading,
   filterCurrentPosition,
   vaultCurrentPage,
@@ -97,7 +95,6 @@ const VaultsList: FC<VaultListPropsType> = ({
                 key={vault.id}
                 vaultItemData={vault}
                 vaultPosition={filterCurrentPosition(vault.id)}
-                performanceFee={performanceFee}
               />
             ))
           )}

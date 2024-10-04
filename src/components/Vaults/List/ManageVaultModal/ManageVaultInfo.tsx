@@ -2,14 +2,16 @@ import { FC, memo } from 'react'
 import BigNumber from 'bignumber.js'
 import { Box, Divider, ListItemText } from '@mui/material'
 
-import { FormType } from 'hooks/Vaults/useVaultManageDeposit'
-import { formatNumber, formatPercentage } from 'utils/format'
+import { useApr } from '@/hooks/Vaults/useApr'
+import { FormType } from '@/hooks/Vaults/useVaultManageDeposit'
+import { formatNumber, formatPercentage } from '@/utils/format'
+import { IVault, IVaultPosition } from '@/utils/TempData'
+
 import {
   BaseDialogFormInfoWrapper,
   BaseDialogSummary,
   BaseFormInfoList,
-} from 'components/Base/Form/StyledForm'
-import { IVault, IVaultPosition } from '@/utils/TempData'
+} from '@/components/Base/Form/StyledForm'
 import { BaseListItem } from '@/components/Base/List/StyledList'
 
 type VaultManageInfoProps = {
@@ -18,7 +20,6 @@ type VaultManageInfoProps = {
   formToken: string
   formSharedToken: string
   formType: FormType
-  performanceFee: number
 }
 
 const ManageVaultInfo: FC<VaultManageInfoProps> = ({
@@ -27,11 +28,10 @@ const ManageVaultInfo: FC<VaultManageInfoProps> = ({
   vaultPosition,
   formToken,
   formSharedToken,
-  performanceFee,
 }) => {
-  const { token, shareToken, sharesSupply } = vaultItemData
+  const { token, shareToken, sharesSupply, performanceFees } = vaultItemData
   const { balancePosition, balanceShares } = vaultPosition
-  const formattedApr = '10.00'
+  const formattedApr = useApr(vaultItemData)
 
   return (
     <BaseDialogFormInfoWrapper>
@@ -44,7 +44,7 @@ const ManageVaultInfo: FC<VaultManageInfoProps> = ({
             <>
               {formatPercentage(
                 BigNumber(balancePosition)
-                  .dividedBy(10 ** 18)
+                  //.dividedBy(10 ** 18)
                   .toNumber()
               ) +
                 ' ' +
@@ -60,7 +60,7 @@ const ManageVaultInfo: FC<VaultManageInfoProps> = ({
                 {formType === FormType.DEPOSIT
                   ? formatPercentage(
                       BigNumber(balancePosition)
-                        .dividedBy(10 ** 18)
+                        //.dividedBy(10 ** 18)
                         .plus(BigNumber(formToken || '0'))
                         .toNumber()
                     ) +
@@ -70,7 +70,7 @@ const ManageVaultInfo: FC<VaultManageInfoProps> = ({
                   : formatPercentage(
                       Math.max(
                         BigNumber(balancePosition)
-                          .dividedBy(10 ** 18)
+                          //.dividedBy(10 ** 18)
                           .minus(BigNumber(formToken || '0'))
                           .toNumber(),
                         0
@@ -106,37 +106,33 @@ const ManageVaultInfo: FC<VaultManageInfoProps> = ({
                   ? formatNumber(
                       BigNumber(balanceShares)
                         .plus(
-                          BigNumber(formSharedToken || '0').multipliedBy(
-                            10 ** 18
-                          )
+                          BigNumber(formSharedToken || '0')
+                          //.multipliedBy(10 ** 18)
                         )
                         .dividedBy(
                           BigNumber(sharesSupply).plus(
-                            BigNumber(formSharedToken || '0').multipliedBy(
-                              10 ** 18
-                            )
+                            BigNumber(formSharedToken || '0')
+                            //.multipliedBy(10 ** 18)
                           )
                         )
                         .multipliedBy(100)
                         .toNumber()
                     )
                   : BigNumber(formSharedToken)
-                        .multipliedBy(10 ** 18)
+                        //.multipliedBy(10 ** 18)
                         .isEqualTo(BigNumber(sharesSupply))
                     ? '0'
                     : formatNumber(
                         Math.max(
                           BigNumber(balanceShares)
                             .minus(
-                              BigNumber(formSharedToken || '0').multipliedBy(
-                                10 ** 18
-                              )
+                              BigNumber(formSharedToken || '0')
+                              //.multipliedBy(10 ** 18)
                             )
                             .dividedBy(
                               BigNumber(sharesSupply).minus(
-                                BigNumber(formSharedToken || '0').multipliedBy(
-                                  10 ** 18
-                                )
+                                BigNumber(formSharedToken || '0')
+                                //.multipliedBy(10 ** 18)
                               )
                             )
                             .multipliedBy(100)
@@ -157,7 +153,7 @@ const ManageVaultInfo: FC<VaultManageInfoProps> = ({
             <>
               {formatPercentage(
                 BigNumber(balanceShares)
-                  .dividedBy(10 ** 18)
+                  //.dividedBy(10 ** 18)
                   .toNumber()
               ) +
                 ' ' +
@@ -173,7 +169,7 @@ const ManageVaultInfo: FC<VaultManageInfoProps> = ({
                 {formType === FormType.DEPOSIT
                   ? formatPercentage(
                       BigNumber(balanceShares)
-                        .dividedBy(10 ** 18)
+                        //.dividedBy(10 ** 18)
                         .plus(BigNumber(formSharedToken || '0'))
                         .toNumber()
                     ) +
@@ -182,7 +178,7 @@ const ManageVaultInfo: FC<VaultManageInfoProps> = ({
                   : formatPercentage(
                       Math.max(
                         BigNumber(balanceShares)
-                          .dividedBy(10 ** 18)
+                          //.dividedBy(10 ** 18)
                           .minus(BigNumber(formSharedToken || '0'))
                           .toNumber(),
                         0
@@ -198,7 +194,11 @@ const ManageVaultInfo: FC<VaultManageInfoProps> = ({
         </BaseListItem>
         <BaseListItem
           alignItems="flex-start"
-          secondaryAction={formatPercentage(Number(performanceFee)) + '%'}
+          secondaryAction={
+            formatPercentage(
+              BigNumber(performanceFees).dividedBy(100).toNumber()
+            ) + '%'
+          }
         >
           <ListItemText primary="Total Fee" />
         </BaseListItem>
