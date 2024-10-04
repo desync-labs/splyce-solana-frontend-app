@@ -27,6 +27,7 @@ export const VAULTS = gql`
       sharesSupply
       balanceTokens
       depositLimit
+      totalShare
       apr
       shutdown
       performanceFees
@@ -59,6 +60,7 @@ export const VAULT = gql`
       sharesSupply
       balanceTokens
       depositLimit
+      totalShare
       apr
       shutdown
       performanceFees

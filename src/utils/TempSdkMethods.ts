@@ -212,7 +212,7 @@ export const withdrawTokens = async (
   }
 }
 
-const findOrCreateTokenAccountByOwner = async (
+export const findOrCreateTokenAccountByOwner = async (
   userPubKey: PublicKey,
   tokenMintPublicKey: PublicKey,
   wallet: Wallet

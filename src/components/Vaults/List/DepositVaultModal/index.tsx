@@ -1,6 +1,7 @@
 import { FC, memo } from 'react'
 import { FormProvider } from 'react-hook-form'
 import { useWallet } from '@solana/wallet-adapter-react'
+import BigNumber from 'bignumber.js'
 import {
   Box,
   Button,
@@ -26,7 +27,6 @@ import {
   BaseErrorBox,
 } from '@/components/Base/Boxes/StyledBoxes'
 import VaultModalLockingBar from '@/components/Vaults/List/DepositVaultModal/VaultModalLockingBar'
-import BigNumber from 'bignumber.js'
 
 export type VaultDepositProps = {
   vaultItemData: IVault
@@ -113,7 +113,7 @@ const VaultListItemDepositModal: FC<VaultDepositProps> = ({
             />
             {isWalletFetching &&
               (BigNumber(walletBalance)
-                .dividedBy(10 ** 18)
+                .dividedBy(10 ** 9)
                 .isLessThan(BigNumber(deposit)) ||
                 walletBalance == '0') && (
                 <BaseErrorBox sx={{ marginBottom: 0 }}>

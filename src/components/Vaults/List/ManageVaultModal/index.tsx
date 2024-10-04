@@ -64,6 +64,7 @@ const VaultListItemManageModal: FC<VaultManageProps> = ({
     handleSubmit,
     onSubmit,
     methods,
+    withdrawLimitExceeded,
   } = useVaultManageDeposit(
     vaultItemData,
     vaultPosition,
@@ -143,7 +144,7 @@ const VaultListItemManageModal: FC<VaultManageProps> = ({
             {isWalletFetching &&
               formType === FormType.DEPOSIT &&
               (BigNumber(walletBalance)
-                //.dividedBy(10 ** 18)
+                .dividedBy(10 ** 9)
                 .isLessThan(BigNumber(formToken)) ||
                 walletBalance == '0') && (
                 <BaseErrorBox sx={{ marginBottom: 0 }}>
@@ -153,12 +154,13 @@ const VaultListItemManageModal: FC<VaultManageProps> = ({
                   </Typography>
                 </BaseErrorBox>
               )}
-            {formType === FormType.WITHDRAW && (
-              <BaseErrorBox sx={{ marginBottom: 0 }}>
-                <BaseInfoIcon />
-                <Typography>withdrawLimitExceeded</Typography>
-              </BaseErrorBox>
-            )}
+            {formType === FormType.WITHDRAW &&
+              withdrawLimitExceeded(formToken) && (
+                <BaseErrorBox sx={{ marginBottom: 0 }}>
+                  <BaseInfoIcon />
+                  <Typography>{withdrawLimitExceeded(formToken)}</Typography>
+                </BaseErrorBox>
+              )}
             {activeTfPeriod === 1 && (
               <BaseWarningBox>
                 <BaseInfoIcon

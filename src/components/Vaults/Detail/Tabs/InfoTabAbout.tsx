@@ -121,7 +121,7 @@ const InfoTabAbout = () => {
 
       const currentTotalEarned = BigNumber(report.gain)
         .minus(report.loss)
-        .dividedBy(10 ** 18)
+        .dividedBy(10 ** 9)
         .plus(accumulatedTotalEarned)
         .toString()
 

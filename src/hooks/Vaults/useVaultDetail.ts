@@ -382,9 +382,7 @@ const useVaultDetail = () => {
                 previewRedeemValue = (
                   await previewRedeem(balance as string, position.vault.id)
                 ).toString()
-                previewRedeemValue = BigNumber(previewRedeemValue)
-                  //.dividedBy(10 ** 18)
-                  .toString()
+                previewRedeemValue = BigNumber(previewRedeemValue).toString()
               }
 
               const updatedVaultPosition = {
@@ -608,7 +606,7 @@ const useVaultDetail = () => {
 
     return BigNumber(balanceToken || '0')
       .minus(sumTokenDeposits.minus(sumTokenWithdrawals))
-      .dividedBy(10 ** 18)
+      .dividedBy(10 ** 9)
       .toNumber()
   }, [
     vaultPosition,

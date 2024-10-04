@@ -67,7 +67,7 @@ const ManageVaultForm: FC<VaultManageFormProps> = ({
   const formattedBalanceToken = useMemo(
     () =>
       BigNumber(balanceToken)
-        //.dividedBy(10 ** 18)
+        .dividedBy(10 ** 9)
         .toNumber(),
     [balanceToken]
   )
@@ -101,7 +101,11 @@ const ManageVaultForm: FC<VaultManageFormProps> = ({
                   <BaseFormWalletBalance>
                     {formType === FormType.DEPOSIT
                       ? 'Balance: ' +
-                        formatNumber(BigNumber(walletBalance).toNumber()) +
+                        formatNumber(
+                          BigNumber(walletBalance)
+                            .dividedBy(10 ** 9)
+                            .toNumber()
+                        ) +
                         ' ' +
                         token?.name
                       : 'Vault Available: ' +

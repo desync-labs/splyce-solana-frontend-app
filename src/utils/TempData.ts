@@ -44,6 +44,7 @@ export interface IVault {
   sharesSupply: string
   balanceTokens: string
   depositLimit: string
+  totalShare: string
   apr: string
   performanceFees: string
   shutdown: boolean
@@ -69,50 +70,6 @@ export enum VaultType {
   TRADEFI = 'TRADEFI',
   INCENTIVE = 'INCENTIVE',
   DEFAULT = 'DEFAULT',
-}
-
-export const TestVault = {
-  id: 'Ahg1opVcGX',
-  token: {
-    id: 'Bpp8p5jBbEZEMwn7ic2Nt9uwtCpo5zgQ99msacwxuvCd',
-    decimals: 18,
-    name: '',
-    symbol: '',
-  },
-  shareToken: {
-    id: '2SmYHinLR8ufAG8T7iHqiLH4XEbfXuPEb34Re1QL16jY',
-    decimals: 18,
-    name: '',
-    symbol: '',
-  },
-  sharesSupply: '0',
-  balanceTokens: '100',
-  balanceTokensIdle: '0',
-  depositLimit: '2000',
-  apr: '0',
-  shutdown: false,
-  strategies: [
-    {
-      id: 'FqiLdu9RWTJZ1EW4XALQ6gZgfwCi7gSoeaJC8jcu8QAk',
-      delegatedAssets: '0',
-      currentDebt: '0',
-      maxDebt: '1000000000',
-      apr: '0',
-    },
-  ],
-}
-
-const TestReports = {
-  strategyHistoricalAprs: [],
-  strategyReports: [
-    {
-      id: '4RPJopHmvoQm4two1sU2SJ38KxZtBV4zYdLYrLc4XnBLmUhvTEeGbDxCy1FatfuwRyFzdoEWMwo5mYdXTjh6o1v3-FqiLdu9RWTJZ1EW4XALQ6gZgfwCi7gSoeaJC8jcu8QAk',
-      timestamp: '1727358805',
-      gain: '54',
-      loss: '0',
-      currentDebt: '114',
-    },
-  ],
 }
 
 export const dummyVaultMethods = [

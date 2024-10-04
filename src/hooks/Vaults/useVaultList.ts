@@ -122,9 +122,9 @@ const useVaultList = () => {
                 (position: IVaultPosition, index: number) => {
                   return {
                     ...position,
-                    balancePosition: BigNumber(values[index].toString())
-                      //.dividedBy(10 ** 18)
-                      .toString(),
+                    balancePosition: BigNumber(
+                      values[index].toString()
+                    ).toString(),
                   }
                 }
               )

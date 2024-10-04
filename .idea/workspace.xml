@@ -6,21 +6,28 @@
   <component name="ChangeListManager">
     <list default="true" id="980c1e59-2a66-476c-8058-c1191519ba3f" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/apollo/queries.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/apollo/queries.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/Vaults/Detail/Forms/DepositVaultInfo.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Vaults/Detail/Forms/DepositVaultInfo.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/Vaults/Detail/Forms/ManageVaultInfo.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Vaults/Detail/Forms/ManageVaultInfo.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Vaults/Detail/Forms/VaultDetailDepositForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Vaults/Detail/Forms/DepositForm.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Vaults/Detail/Forms/VaultDetailManageForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Vaults/Detail/Forms/ManageForm.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Vaults/Detail/Tabs/InfoTabAbout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Vaults/Detail/Tabs/InfoTabAbout.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Vaults/Detail/Tabs/VaultStrategyItem.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Vaults/Detail/Tabs/VaultStrategyItem.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Vaults/Detail/VaultPositionStats.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Vaults/Detail/VaultPositionStats.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Vaults/List/DepositVaultModal/DepositVaultForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Vaults/List/DepositVaultModal/DepositVaultForm.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Vaults/List/DepositVaultModal/DepositVaultInfo.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Vaults/List/DepositVaultModal/DepositVaultInfo.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Vaults/List/DepositVaultModal/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Vaults/List/DepositVaultModal/index.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/Vaults/List/ManageVaultModal/ManageVaultForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Vaults/List/ManageVaultModal/ManageVaultForm.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Vaults/List/ManageVaultModal/ManageVaultInfo.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Vaults/List/ManageVaultModal/ManageVaultInfo.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/Vaults/List/ManageVaultModal/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Vaults/List/ManageVaultModal/index.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/Vaults/List/VaultListItem.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Vaults/List/VaultListItem.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Vaults/List/VaultListItemPreviewModal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Vaults/List/VaultListItemPreviewModal.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Vaults/List/VaultsTotalStats.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Vaults/List/VaultsTotalStats.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/hooks/Vaults/useVaultDetail.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/hooks/Vaults/useVaultDetail.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/hooks/Vaults/useVaultList.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/hooks/Vaults/useVaultList.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/hooks/Vaults/useVaultListItem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/hooks/Vaults/useVaultListItem.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/hooks/Vaults/useVaultManageDeposit.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/hooks/Vaults/useVaultManageDeposit.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/hooks/Vaults/useVaultOpenDeposit.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/hooks/Vaults/useVaultOpenDeposit.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/vaults/[vaultId].tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/vaults/[vaultId].tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/idls/tokenized_vault.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/idls/tokenized_vault.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/TempData.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/TempData.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/utils/TempSdkMethods.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/TempSdkMethods.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -97,7 +104,7 @@
       <workItem from="1727079716139" duration="1033000" />
       <workItem from="1727082388526" duration="23373000" />
       <workItem from="1727427650774" duration="81869000" />
-      <workItem from="1727950379494" duration="45979000" />
+      <workItem from="1727950379494" duration="56633000" />
     </task>
     <servers />
   </component>
@@ -113,12 +120,6 @@
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/components/Base/Boxes/StyledBoxes.tsx</url>
           <option name="timeStamp" value="1" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/src/utils/TempSdkMethods.ts</url>
-          <line>115</line>
-          <properties lambdaOrdinal="-1" />
-          <option name="timeStamp" value="3" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

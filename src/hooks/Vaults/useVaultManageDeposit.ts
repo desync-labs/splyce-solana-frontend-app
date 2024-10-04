@@ -85,9 +85,7 @@ const useVaultManageDeposit = (
           sharedAmount = await previewWithdraw(deposit, vault.id)
         }
 
-        const sharedConverted = BigNumber(sharedAmount)
-          //.dividedBy(10 ** 18)
-          .toString()
+        const sharedConverted = BigNumber(sharedAmount).toString()
 
         setValue('formSharedToken', sharedConverted)
       }, 500),
@@ -123,7 +121,7 @@ const useVaultManageDeposit = (
     if (formType === FormType.DEPOSIT) {
       if (type === VaultType.TRADEFI) {
         const max = BigNumber.min(walletBalance, depositLimit)
-          //.dividedBy(10 ** 18)
+          .dividedBy(10 ** 9)
           .decimalPlaces(6, BigNumber.ROUND_DOWN)
 
         const maxCapped = max.isNegative() ? BigNumber(0) : max
@@ -133,13 +131,12 @@ const useVaultManageDeposit = (
         })
       } else {
         const max = BigNumber.min(
-          BigNumber(walletBalance),
-          //.dividedBy(10 ** 18)
-          BigNumber(depositLimit).minus(balanceTokens),
-          //.dividedBy(10 ** 18)
+          BigNumber(walletBalance).dividedBy(10 ** 9),
+          BigNumber(depositLimit)
+            .minus(balanceTokens)
+            .dividedBy(10 ** 9),
           BigNumber(MAX_PERSONAL_DEPOSIT).minus(
-            BigNumber(balancePosition)
-            //.dividedBy(10 ** 18)
+            BigNumber(balancePosition).dividedBy(10 ** 9)
           )
         ).decimalPlaces(6, BigNumber.ROUND_DOWN)
         console.log('max', max.toString())
@@ -155,14 +152,14 @@ const useVaultManageDeposit = (
       setValue(
         'formToken',
         BigNumber(balancePosition)
-          //.dividedBy(10 ** 18)
+          .dividedBy(10 ** 9)
           .toString(),
         { shouldValidate: true }
       )
       setValue(
         'formSharedToken',
         BigNumber(balanceShares)
-          //.dividedBy(10 ** 18)
+          .dividedBy(10 ** 9)
           .toString(),
         { shouldValidate: true }
       )
@@ -184,7 +181,7 @@ const useVaultManageDeposit = (
      * Logic for TradeFlowVault
      */
     if (type === VaultType.TRADEFI) {
-      const maxBalanceToken = BigNumber(balancePosition).dividedBy(10 ** 18)
+      const maxBalanceToken = BigNumber(balancePosition).dividedBy(10 ** 9)
 
       if (
         BigNumber(maxBalanceToken).minus(value).isGreaterThan(0) &&
@@ -215,11 +212,14 @@ const useVaultManageDeposit = (
 
       const tokenPublicKey = new PublicKey(token.id)
       const sharedTokenPublicKey = new PublicKey(shareToken.id)
+      const formattedAmount = BigNumber(formToken)
+        .multipliedBy(10 ** 9)
+        .toString()
 
       if (formType === FormType.DEPOSIT) {
         const depositResponse = await depositTokens(
           publicKey,
-          formToken,
+          formattedAmount,
           wallet,
           tokenPublicKey,
           sharedTokenPublicKey
@@ -229,7 +229,7 @@ const useVaultManageDeposit = (
       } else {
         const withdrawResponse = await withdrawTokens(
           publicKey,
-          formToken,
+          formattedAmount,
           wallet,
           tokenPublicKey,
           sharedTokenPublicKey

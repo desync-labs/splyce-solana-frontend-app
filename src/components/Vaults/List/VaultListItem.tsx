@@ -182,7 +182,7 @@ const VaultListItem: FC<VaultListItemProps> = ({
               formatNumber(
                 BigNumber(balanceEarned)
                   .multipliedBy(fxdPrice)
-                  //.dividedBy(10 ** 18)
+                  .dividedBy(10 ** 9)
                   .toNumber()
               )
             ) : balanceEarned === -1 ? (
@@ -200,6 +200,7 @@ const VaultListItem: FC<VaultListItemProps> = ({
             {formatCurrency(
               BigNumber(fxdPrice)
                 .multipliedBy(BigNumber(balanceTokens))
+                .dividedBy(10 ** 9)
                 .toNumber()
             )}
           </VaultStackedLiquidity>
@@ -209,14 +210,14 @@ const VaultListItem: FC<VaultListItemProps> = ({
             {isTfVaultType
               ? formatNumber(
                   BigNumber(tfVaultDepositLimit)
-                    //.dividedBy(10 ** 18)
+                    .dividedBy(10 ** 9)
                     .toNumber()
                 )
               : formatNumber(
                   Math.max(
                     BigNumber(depositLimit)
                       .minus(BigNumber(balanceTokens))
-                      //.dividedBy(10 ** 18)
+                      .dividedBy(10 ** 9)
                       .toNumber(),
                     0
                   )
@@ -247,7 +248,9 @@ const VaultListItem: FC<VaultListItemProps> = ({
             <Box className={'value'}>
               {vaultPosition
                 ? formatNumber(
-                    BigNumber(vaultPosition.balancePosition).toNumber()
+                    BigNumber(vaultPosition.balancePosition)
+                      .dividedBy(10 ** 9)
+                      .toNumber()
                   )
                 : 0}
               {' ' + token.symbol}

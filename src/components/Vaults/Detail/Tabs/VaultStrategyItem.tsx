@@ -234,7 +234,7 @@ const VaultStrategyItem: FC<VaultStrategyItemPropsType> = ({
           secondaryAction={
             <>{`${formatNumber(
               BigNumber(strategyData.currentDebt)
-                .dividedBy(10 ** 18)
+                .dividedBy(10 ** 9)
                 .toNumber()
             )} ${tokenName}`}</>
           }
@@ -243,7 +243,7 @@ const VaultStrategyItem: FC<VaultStrategyItemPropsType> = ({
         </BaseListItem>
         <BaseListItem
           secondaryAction={
-            <>{`${formatNumber(totalGain.dividedBy(10 ** 18).toNumber())} ${tokenName}`}</>
+            <>{`${formatNumber(totalGain.dividedBy(10 ** 9).toNumber())} ${tokenName}`}</>
           }
         >
           <ListItemText primary="Total Gain" />

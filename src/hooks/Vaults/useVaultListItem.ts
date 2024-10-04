@@ -85,7 +85,7 @@ const useVaultListItem = ({ vaultPosition, vault }: UseVaultListItemProps) => {
     setBalanceTokenLoading(true)
     return previewRedeem(
       BigNumber(vaultPosition?.balanceShares as string)
-        //.dividedBy(10 ** 18)
+        .dividedBy(10 ** 9)
         .toString(),
       vault.id
     )
@@ -245,7 +245,7 @@ const useVaultListItem = ({ vaultPosition, vault }: UseVaultListItemProps) => {
   //     ? vaultService.getMinUserDeposit(vault.id).then((res) => {
   //         setMinimumDeposit(
   //           BigNumber(res)
-  //             .dividedBy(10 ** 18)
+  //             .dividedBy(10 ** 9)
   //             .toNumber()
   //         )
   //       })
@@ -298,7 +298,7 @@ const useVaultListItem = ({ vaultPosition, vault }: UseVaultListItemProps) => {
 
     const earnedValue = BigNumber(balanceToken || '0')
       .minus(sumTokenDeposits.minus(sumTokenWithdrawals))
-      .dividedBy(10 ** 18)
+      .dividedBy(10 ** 9)
       .toNumber()
 
     return BigNumber(earnedValue).isLessThan(0.0001) ? 0 : earnedValue
@@ -334,7 +334,7 @@ const useVaultListItem = ({ vaultPosition, vault }: UseVaultListItemProps) => {
       // try {
       //   const blockNumber = await vaultService.redeem(
       //     BigNumber(vaultPosition.balanceShares)
-      //       .dividedBy(10 ** 18)
+      //       .dividedBy(10 ** 9)
       //       .toString(),
       //     account,
       //     account,

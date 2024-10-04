@@ -54,11 +54,11 @@ const DepositVaultInfo: FC<VaultDepositInfoProps> = ({
                 BigNumber(sharesSupply).isGreaterThan(0)
                   ? formatNumber(
                       BigNumber(sharedToken || '0')
-                        //.multipliedBy(10 ** 18)
+                        .multipliedBy(10 ** 9)
                         .dividedBy(
-                          BigNumber(sharesSupply).plus(
-                            BigNumber(sharedToken || '0')
-                            //.multipliedBy(10 ** 18)
+                          // todo: chenge to sharesSupply when it will be available
+                          BigNumber(vaultItemData.totalShare).plus(
+                            BigNumber(sharedToken || '0').multipliedBy(10 ** 9)
                           )
                         )
                         .times(100)

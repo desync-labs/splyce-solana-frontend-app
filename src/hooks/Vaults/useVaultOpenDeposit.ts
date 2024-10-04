@@ -67,9 +67,7 @@ const useVaultOpenDeposit = (vault: IVault, onClose: () => void) => {
       debounce(async (deposit: string) => {
         const sharedAmount = await previewDeposit(deposit, vault.id)
 
-        const sharedConverted = BigNumber(sharedAmount)
-          //.dividedBy(10 ** 18)
-          .toFixed()
+        const sharedConverted = BigNumber(sharedAmount).toFixed()
 
         setValue('sharedToken', sharedConverted)
       }, 500),
@@ -88,11 +86,11 @@ const useVaultOpenDeposit = (vault: IVault, onClose: () => void) => {
 
   const setMax = useCallback(() => {
     const maxWalletBalance = BigNumber.min(
-      BigNumber(walletBalance).dividedBy(10 ** 18),
+      BigNumber(walletBalance).dividedBy(10 ** 9),
       BigNumber.max(
         BigNumber(depositLimit)
           .minus(balanceTokens)
-          .dividedBy(10 ** 18),
+          .dividedBy(10 ** 9),
         BigNumber(0)
       )
     ).decimalPlaces(6, BigNumber.ROUND_DOWN)
@@ -103,7 +101,7 @@ const useVaultOpenDeposit = (vault: IVault, onClose: () => void) => {
   }, [walletBalance, depositLimit, balanceTokens, setValue])
 
   const depositLimitExceeded = (value: string) => {
-    const formattedDepositLimit = BigNumber(depositLimit).dividedBy(10 ** 18)
+    const formattedDepositLimit = BigNumber(depositLimit).dividedBy(10 ** 9)
     const rule =
       type === VaultType.TRADEFI
         ? BigNumber(value).isGreaterThanOrEqualTo(formattedDepositLimit)
@@ -123,13 +121,13 @@ const useVaultOpenDeposit = (vault: IVault, onClose: () => void) => {
   const validateMaxDepositValue = useCallback(
     (value: string) => {
       const formattedMaxWalletBalance = BigNumber(walletBalance).dividedBy(
-        10 ** 18
+        10 ** 9
       )
       const formattedMaxDepositLimit = BigNumber.max(
         type === VaultType.TRADEFI
-          ? BigNumber(depositLimit).dividedBy(10 ** 18)
+          ? BigNumber(depositLimit).dividedBy(10 ** 9)
           : BigNumber(depositLimit).minus(
-              BigNumber(balanceTokens).dividedBy(10 ** 18)
+              BigNumber(balanceTokens).dividedBy(10 ** 9)
             ),
         0
       )
@@ -144,12 +142,12 @@ const useVaultOpenDeposit = (vault: IVault, onClose: () => void) => {
       // }
       // if (
       //   BigNumber(value).isGreaterThan(
-      //     BigNumber(depositLimit).dividedBy(10 ** 18)
+      //     BigNumber(depositLimit).dividedBy(10 ** 9)
       //   )
       // ) {
       //   return `The ${
       //     BigNumber(depositLimit)
-      //       .dividedBy(10 ** 18)
+      //       .dividedBy(10 ** 9)
       //       .toNumber() / 1000
       //   }k ${
       //     token.symbol
@@ -174,12 +172,12 @@ const useVaultOpenDeposit = (vault: IVault, onClose: () => void) => {
       const sharedTokenPublicKey = new PublicKey(shareToken.id)
 
       const formattedDepositAmount = BigNumber(deposit)
-        .multipliedBy(10 ** token.decimals)
+        .multipliedBy(10 ** 9)
         .toString()
 
       const depositResponse = await depositTokens(
         publicKey,
-        deposit,
+        formattedDepositAmount,
         wallet,
         tokenPublicKey,
         sharedTokenPublicKey

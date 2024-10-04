@@ -130,20 +130,25 @@ const DepositVaultInfo: FC<DepositVaultInfoProps> = ({
               0 %{' '}
               <Box component="span" sx={{ color: '#3DA329' }}>
                 →{' '}
-                {BigNumber(sharedToken).isGreaterThan(0) ||
-                BigNumber(sharesSupply).isGreaterThan(0)
-                  ? formatNumber(
-                      BigNumber(sharedToken || '0')
-                        .multipliedBy(10 ** 18)
-                        .dividedBy(
-                          BigNumber(sharesSupply).plus(
-                            BigNumber(sharedToken || '0').multipliedBy(10 ** 18)
+                {
+                  // todo: chenge to sharesSupply when it will be available
+                  BigNumber(sharedToken).isGreaterThan(0) ||
+                  BigNumber(vaultItemData.totalShare).isGreaterThan(0)
+                    ? formatNumber(
+                        BigNumber(sharedToken || '0')
+                          .multipliedBy(10 ** 9)
+                          .dividedBy(
+                            BigNumber(vaultItemData.totalShare).plus(
+                              BigNumber(sharedToken || '0').multipliedBy(
+                                10 ** 9
+                              )
+                            )
                           )
-                        )
-                        .times(100)
-                        .toNumber()
-                    )
-                  : '0'}{' '}
+                          .times(100)
+                          .toNumber()
+                      )
+                    : '0'
+                }{' '}
                 %
               </Box>
             </>
@@ -170,7 +175,7 @@ const DepositVaultInfo: FC<DepositVaultInfoProps> = ({
       </VaultList>
       {isWalletFetching &&
         (BigNumber(walletBalance)
-          .dividedBy(10 ** 18)
+          .dividedBy(10 ** 9)
           .isLessThan(BigNumber(deposit)) ||
           walletBalance == '0') && (
           <BaseErrorBox sx={{ marginBottom: 0 }}>

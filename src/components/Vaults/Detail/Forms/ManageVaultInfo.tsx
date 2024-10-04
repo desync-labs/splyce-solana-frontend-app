@@ -83,7 +83,7 @@ const ManageVaultInfo: FC<VaultManageInfoProps> = ({
             <>
               {formatPercentage(
                 BigNumber(balancePosition)
-                  //.dividedBy(10 ** 18)
+                  .dividedBy(10 ** 9)
                   .toNumber()
               ) +
                 ' ' +
@@ -99,7 +99,7 @@ const ManageVaultInfo: FC<VaultManageInfoProps> = ({
                 {formType === FormType.DEPOSIT
                   ? formatPercentage(
                       BigNumber(balancePosition)
-                        //.dividedBy(10 ** 18)
+                        .dividedBy(10 ** 9)
                         .plus(BigNumber(formToken || '0'))
                         .toNumber()
                     ) +
@@ -109,7 +109,7 @@ const ManageVaultInfo: FC<VaultManageInfoProps> = ({
                   : formatPercentage(
                       Math.max(
                         BigNumber(balancePosition)
-                          //.dividedBy(10 ** 18)
+                          .dividedBy(10 ** 9)
                           .minus(BigNumber(formToken || '0'))
                           .toNumber(),
                         0
@@ -129,7 +129,8 @@ const ManageVaultInfo: FC<VaultManageInfoProps> = ({
             <>
               {`${formatNumber(
                 BigNumber(balanceShares)
-                  .dividedBy(BigNumber(sharesSupply))
+                  // todo: chenge to sharesSupply when it will be available
+                  .dividedBy(BigNumber(vaultItemData.totalShare))
                   .multipliedBy(100)
                   .toNumber()
               )} %`}
@@ -144,33 +145,40 @@ const ManageVaultInfo: FC<VaultManageInfoProps> = ({
                   ? formatNumber(
                       BigNumber(balanceShares)
                         .plus(
-                          BigNumber(formSharedToken || '0')
-                          //.multipliedBy(10 ** 18)
+                          BigNumber(formSharedToken || '0').multipliedBy(
+                            10 ** 9
+                          )
                         )
                         .dividedBy(
-                          BigNumber(sharesSupply).plus(
-                            BigNumber(formSharedToken || '0')
-                            //.multipliedBy(10 ** 18)
+                          // todo: chenge to sharesSupply when it will be available
+                          BigNumber(vaultItemData.totalShare).plus(
+                            BigNumber(formSharedToken || '0').multipliedBy(
+                              10 ** 9
+                            )
                           )
                         )
                         .multipliedBy(100)
                         .toNumber()
                     )
                   : BigNumber(formSharedToken)
-                        //.multipliedBy(10 ** 18)
-                        .isEqualTo(BigNumber(sharesSupply))
+                        .multipliedBy(10 ** 9)
+                        // todo: chenge to sharesSupply when it will be available
+                        .isEqualTo(BigNumber(vaultItemData.totalShare))
                     ? '0'
                     : formatNumber(
                         Math.max(
                           BigNumber(balanceShares)
                             .minus(
-                              BigNumber(formSharedToken || '0')
-                              //.multipliedBy(10 ** 18)
+                              BigNumber(formSharedToken || '0').multipliedBy(
+                                10 ** 9
+                              )
                             )
                             .dividedBy(
-                              BigNumber(sharesSupply).minus(
-                                BigNumber(formSharedToken || '0')
-                                //.multipliedBy(10 ** 18)
+                              // todo: chenge to sharesSupply when it will be available
+                              BigNumber(vaultItemData.totalShare).minus(
+                                BigNumber(formSharedToken || '0').multipliedBy(
+                                  10 ** 9
+                                )
                               )
                             )
                             .multipliedBy(100)
@@ -190,7 +198,7 @@ const ManageVaultInfo: FC<VaultManageInfoProps> = ({
             <>
               {formatPercentage(
                 BigNumber(balanceShares)
-                  //.dividedBy(10 ** 18)
+                  .dividedBy(10 ** 9)
                   .toNumber()
               ) +
                 ' ' +
@@ -206,7 +214,7 @@ const ManageVaultInfo: FC<VaultManageInfoProps> = ({
                 {formType === FormType.DEPOSIT
                   ? formatPercentage(
                       BigNumber(balanceShares)
-                        //.dividedBy(10 ** 18)
+                        .dividedBy(10 ** 9)
                         .plus(BigNumber(formSharedToken || '0'))
                         .toNumber()
                     ) +
@@ -215,7 +223,7 @@ const ManageVaultInfo: FC<VaultManageInfoProps> = ({
                   : formatPercentage(
                       Math.max(
                         BigNumber(balanceShares)
-                          //.dividedBy(10 ** 18)
+                          .dividedBy(10 ** 9)
                           .minus(BigNumber(formSharedToken || '0'))
                           .toNumber(),
                         0
@@ -233,7 +241,7 @@ const ManageVaultInfo: FC<VaultManageInfoProps> = ({
       {isWalletFetching &&
         formType === FormType.DEPOSIT &&
         (BigNumber(walletBalance)
-          //.dividedBy(10 ** 18)
+          .dividedBy(10 ** 9)
           .isLessThan(formToken) ||
           walletBalance == '0') && (
           <BaseErrorBox sx={{ marginBottom: 0 }}>

@@ -94,7 +94,7 @@ const DepositVaultForm: FC<VaultDepositFormProps> = ({
                     Balance:{' '}
                     {formatNumber(
                       BigNumber(walletBalance)
-                        //.dividedBy(10 ** 18)
+                        .dividedBy(10 ** 9)
                         .toNumber()
                     ) +
                       ' ' +
@@ -209,7 +209,7 @@ const DepositVaultForm: FC<VaultDepositFormProps> = ({
           rules={{
             max: BigNumber(depositLimit)
               .minus(BigNumber(balanceTokens))
-              .dividedBy(10 ** 18)
+              .dividedBy(10 ** 9)
               .toNumber(),
           }}
           render={({ field: { onChange, value }, fieldState: { error } }) => {
@@ -242,7 +242,7 @@ const DepositVaultForm: FC<VaultDepositFormProps> = ({
                             {formatNumber(
                               BigNumber(depositLimit)
                                 .minus(BigNumber(balanceTokens))
-                                .dividedBy(10 ** 18)
+                                .dividedBy(10 ** 9)
                                 .toNumber()
                             )}
                             .
