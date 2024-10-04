@@ -1,11 +1,17 @@
-import { useCallback, useEffect, useState } from 'react'
-import { useForm } from 'react-hook-form'
-import { IVault, VaultType } from '@/utils/TempData'
-import BigNumber from 'bignumber.js'
-import { formatNumber } from '@/utils/format'
-import { useWallet } from '@solana/wallet-adapter-react'
-import { depositTokens, getUserTokenBalance } from '@/utils/TempSdkMethods'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { PublicKey } from '@solana/web3.js'
+import { useWallet } from '@solana/wallet-adapter-react'
+import { useForm } from 'react-hook-form'
+
+import BigNumber from 'bignumber.js'
+import debounce from 'lodash.debounce'
+import { formatNumber } from '@/utils/format'
+import { IVault, VaultType } from '@/utils/TempData'
+import {
+  depositTokens,
+  getUserTokenBalance,
+  previewDeposit,
+} from '@/utils/TempSdkMethods'
 
 export const MAX_PERSONAL_DEPOSIT = 50000
 export const defaultValues = {
@@ -55,6 +61,30 @@ const useVaultOpenDeposit = (vault: IVault, onClose: () => void) => {
 
     return () => clearTimeout(timeout)
   }, [publicKey, token?.id, getVaultTokenBalance])
+
+  const updateSharedAmount = useMemo(
+    () =>
+      debounce(async (deposit: string) => {
+        const sharedAmount = await previewDeposit(deposit, vault.id)
+
+        const sharedConverted = BigNumber(sharedAmount)
+          //.dividedBy(10 ** 18)
+          .toFixed()
+
+        setValue('sharedToken', sharedConverted)
+      }, 500),
+    [vault?.id, deposit, setValue]
+  )
+
+  useEffect(() => {
+    if (deposit && BigNumber(deposit).isGreaterThan(0)) {
+      updateSharedAmount(deposit)
+    } else {
+      setTimeout(() => {
+        setValue('sharedToken', '0')
+      }, 600)
+    }
+  }, [deposit, setValue, updateSharedAmount])
 
   const setMax = useCallback(() => {
     const maxWalletBalance = BigNumber.min(
@@ -156,8 +186,9 @@ const useVaultOpenDeposit = (vault: IVault, onClose: () => void) => {
       )
 
       setOpenDepositLoading(false)
-
-      console.log('Deposit Response', depositResponse)
+      if (depositResponse) {
+        onClose()
+      }
     },
     [deposit, token, shareToken, publicKey, wallet]
   )

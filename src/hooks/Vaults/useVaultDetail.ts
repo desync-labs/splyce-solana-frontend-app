@@ -199,15 +199,19 @@ const useVaultDetail = () => {
           : getDefaultVaultTitle(
               vaultType[vaultData.id.toLowerCase()] || VaultType.DEFAULT,
               //vaultData.token.name,
-              'spUSD',
+              'tspUSD',
               vaultData.id
             ),
         type,
-        token: { ...vaultData.token, symbol: 'spUSD', name: 'Splyce USD' },
+        token: {
+          ...vaultData.token,
+          symbol: 'tspUSD',
+          name: 'Test Splyce USD',
+        },
         shareToken: {
           ...vaultData.shareToken,
-          symbol: 'vSPUSD',
-          name: 'vSpUSD',
+          symbol: 'spvUSD',
+          name: 'Splyce Vault USD',
         },
       }
 

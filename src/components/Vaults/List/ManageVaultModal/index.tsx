@@ -37,6 +37,7 @@ export type VaultManageProps = {
   vaultPosition: IVaultPosition
   isTfVaultType: boolean
   activeTfPeriod: number
+  minimumDeposit: number
   onClose: () => void
 }
 
@@ -45,6 +46,7 @@ const VaultListItemManageModal: FC<VaultManageProps> = ({
   vaultPosition,
   isTfVaultType,
   activeTfPeriod,
+  minimumDeposit,
   onClose,
 }) => {
   const {
@@ -62,7 +64,12 @@ const VaultListItemManageModal: FC<VaultManageProps> = ({
     handleSubmit,
     onSubmit,
     methods,
-  } = useVaultManageDeposit(vaultItemData, vaultPosition, onClose)
+  } = useVaultManageDeposit(
+    vaultItemData,
+    vaultPosition,
+    minimumDeposit,
+    onClose
+  )
 
   const { connected } = useWallet()
   const { shutdown } = vaultItemData

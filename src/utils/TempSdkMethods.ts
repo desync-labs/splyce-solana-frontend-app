@@ -279,14 +279,24 @@ export const createTokenAccount = async (
     // Sign transaction
     const signedTransaction = await provider.sendAndConfirm(transaction)
 
-    console.log(`Токеновый аккаунт успешно создан: ${signedTransaction}`)
+    console.log(`Token account created: ${signedTransaction}`)
     return associatedTokenAddress
   } catch (error) {
-    console.error('Ошибка при создании токенового аккаунта:', error)
+    console.error('Error creation new token account:', error)
   }
 }
 
 export const previewRedeem = async (shareBalance: string, vaultId: string) => {
   // todo: implement preview redeem from program
   return shareBalance
+}
+
+export const previewDeposit = async (tokenAmount: string, vaultId: string) => {
+  // todo: implement preview deposit from program
+  return tokenAmount
+}
+
+export const previewWithdraw = async (tokenAmount: string, vaultId: string) => {
+  // todo: implement preview withdraw from program
+  return tokenAmount
 }

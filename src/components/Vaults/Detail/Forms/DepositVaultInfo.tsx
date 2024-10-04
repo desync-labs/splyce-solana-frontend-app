@@ -27,7 +27,7 @@ import {
 import { BaseListItem } from '@/components/Base/List/StyledList'
 import { BaseDialogButtonWrapper } from '@/components/Base/Dialog/StyledDialog'
 
-const ManageVaultInfoWrapper = styled(Box)`
+export const ManageVaultInfoWrapper = styled(Box)`
   position: relative;
   width: 50%;
   background: #3a4f6a;
@@ -39,7 +39,7 @@ const ManageVaultInfoWrapper = styled(Box)`
   }
 `
 
-const VaultList = styled(List)`
+export const VaultList = styled(List)`
   & li {
     color: #fff;
     align-items: flex-start;
@@ -178,16 +178,6 @@ const DepositVaultInfo: FC<DepositVaultInfoProps> = ({
             <Typography>Wallet balance is not enough to deposit.</Typography>
           </BaseErrorBox>
         )}
-      {approveBtn && BigNumber(walletBalance).isGreaterThan(0) && (
-        <BaseInfoBox>
-          <BaseInfoIcon />
-          <Box flexDirection="column">
-            <Typography width="100%">
-              First-time connect? Please allow token approval in your MetaMask
-            </Typography>
-          </Box>
-        </BaseInfoBox>
-      )}
       {isTfVaultType && !isUserKycPassed && (
         <BaseWarningBox>
           <BaseInfoIcon

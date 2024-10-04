@@ -1,44 +1,26 @@
-import { FormProvider } from "react-hook-form";
-import { Box, styled } from "@mui/material";
+import { memo } from 'react'
+import { FormProvider } from 'react-hook-form'
 import useVaultManageDeposit, {
   FormType,
-} from "hooks/Vaults/useVaultManageDeposit";
-import useVaultContext from "context/vault";
-import useSharedContext from "context/shared";
-import { VaultPaper } from "components/AppComponents/AppPaper/AppPaper";
+} from '@/hooks/Vaults/useVaultManageDeposit'
+import useVaultContext from '@/context/vaultDetail'
+import ManageVaultForm from '@/components/Vaults/List/ManageVaultModal/ManageVaultForm'
+import ManageVaultInfo from '@/components/Vaults/Detail/Forms/ManageVaultInfo'
 import {
-  AppNavItem,
-  AppNavWrapper,
-} from "components/AppComponents/AppTabs/AppTabs";
-import { AppFlexBox } from "components/AppComponents/AppBox/AppBox";
-import ManageVaultInfo from "components/Vaults/VaultDetail/VaultDetailForm/ManageVaultInfo";
-import ManageVaultForm from "components/Vaults/VaultList/ManageVaultModal/ManageVaultForm";
-import { memo } from "react";
-
-const VaultFormWrapper = styled(AppFlexBox)`
-  align-items: flex-start;
-  gap: 20px;
-  padding-top: 20px;
-  ${({ theme }) => theme.breakpoints.down("sm")} {
-    flex-direction: column;
-    padding-top: 20px;
-  }
-`;
-
-const VaultDetailFormColumn = styled(Box)`
-  width: 50%;
-  ${({ theme }) => theme.breakpoints.down("sm")} {
-    width: 100%;
-  }
-`;
+  BaseDialogNavItem,
+  BaseDialogNavWrapper,
+} from '@/components/Base/Dialog/StyledDialog'
+import { VaultFormWrapper } from '@/components/Vaults/Detail/Forms/index'
+import { VaultDetailFormColumn } from '@/components/Vaults/Detail/Forms/DepositForm'
 
 const VaultDetailManageForm = () => {
   const { vault, vaultPosition, balanceToken, minimumDeposit } =
-    useVaultContext();
+    useVaultContext()
+  const { shutdown } = vault
 
   const onClose = () => {
-    methods.reset();
-  };
+    methods.reset()
+  }
 
   const {
     formType,
@@ -60,31 +42,26 @@ const VaultDetailManageForm = () => {
     methods,
     withdrawLimitExceeded,
     depositLimitExceeded,
-  } = useVaultManageDeposit(vault, vaultPosition, minimumDeposit, onClose);
-  const { isMobile } = useSharedContext();
-
-  const { shutdown } = vault;
+  } = useVaultManageDeposit(vault, vaultPosition, minimumDeposit, onClose)
 
   return (
-    <VaultPaper sx={{ marginBottom: isMobile ? "20px" : "24px" }}>
-      <AppNavWrapper>
+    <>
+      <BaseDialogNavWrapper>
         {!shutdown && (
-          <AppNavItem
-            className={formType === FormType.DEPOSIT ? "active" : ""}
+          <BaseDialogNavItem
+            className={formType === FormType.DEPOSIT ? 'active' : ''}
             onClick={() => setFormType(FormType.DEPOSIT)}
-            data-testid="vault-detailManageModal-depositNavItem"
           >
             Deposit
-          </AppNavItem>
+          </BaseDialogNavItem>
         )}
-        <AppNavItem
-          className={formType === FormType.WITHDRAW ? "active" : ""}
+        <BaseDialogNavItem
+          className={formType === FormType.WITHDRAW ? 'active' : ''}
           onClick={() => setFormType(FormType.WITHDRAW)}
-          data-testid="vault-detailManageModal-withdrawNavItem"
         >
           Withdraw
-        </AppNavItem>
-      </AppNavWrapper>
+        </BaseDialogNavItem>
+      </BaseDialogNavWrapper>
       <VaultFormWrapper>
         <FormProvider {...methods}>
           <VaultDetailFormColumn>
@@ -100,7 +77,7 @@ const VaultDetailManageForm = () => {
               onSubmit={onSubmit}
               vaultPosition={vaultPosition}
               depositLimitExceeded={depositLimitExceeded}
-              dataTestIdPrefix="vault-detailManageModal"
+              isDetailPage={true}
             />
           </VaultDetailFormColumn>
           <ManageVaultInfo
@@ -123,8 +100,8 @@ const VaultDetailManageForm = () => {
           />
         </FormProvider>
       </VaultFormWrapper>
-    </VaultPaper>
-  );
-};
+    </>
+  )
+}
 
-export default memo(VaultDetailManageForm);
+export default memo(VaultDetailManageForm)

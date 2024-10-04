@@ -244,14 +244,18 @@ const useVaultList = () => {
             ? vaultTitle[vault.id.toLowerCase()]
             : getDefaultVaultTitle(
                 vaultType[vault.id.toLowerCase()] || VaultType.DEFAULT,
-                'spUSD',
+                'tspUSD',
                 //vault.token.name,
                 vault.id.toLowerCase()
               ),
           type: vaultType[vault.id.toLowerCase()] || VaultType.DEFAULT,
           // todo: remove this after graph fix
-          token: { ...vault.token, symbol: 'SPUSD', name: 'Splyce USD' },
-          shareToken: { ...vault.shareToken, symbol: 'vSPUSD', name: 'vSpUSD' },
+          token: { ...vault.token, symbol: 'tspUSD', name: 'Test Splyce USD' },
+          shareToken: {
+            ...vault.shareToken,
+            symbol: 'spvUSD',
+            name: 'Splyce Vault USD',
+          },
         }
       })
 

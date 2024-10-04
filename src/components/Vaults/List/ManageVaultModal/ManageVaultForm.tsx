@@ -21,7 +21,7 @@ import {
   BaseFormSetMaxButton,
   BaseFormTextField,
   BaseFormWalletBalance,
-} from 'components/Base/Form/StyledForm'
+} from '@/components/Base/Form/StyledForm'
 
 const ManageVaultFormStyled = styled('form')`
   padding-bottom: 0;
@@ -49,6 +49,7 @@ type VaultManageFormProps = {
     undefined
   >
   onSubmit: (values: Record<string, any>) => Promise<void>
+  isDetailPage?: boolean
 }
 
 const ManageVaultForm: FC<VaultManageFormProps> = ({
@@ -60,6 +61,7 @@ const ManageVaultForm: FC<VaultManageFormProps> = ({
   setMax,
   handleSubmit,
   onSubmit,
+  isDetailPage = false,
 }) => {
   const { token } = vaultItemData
   const formattedBalanceToken = useMemo(
@@ -73,7 +75,12 @@ const ManageVaultForm: FC<VaultManageFormProps> = ({
   const fxdPrice = 1
 
   return (
-    <BaseDialogFormWrapper>
+    <BaseDialogFormWrapper
+      sx={{
+        background: isDetailPage ? '#3A4F6A' : '#314156',
+        padding: isDetailPage ? '22px 16px' : '16px',
+      }}
+    >
       <ManageVaultFormStyled
         onSubmit={handleSubmit(onSubmit)}
         noValidate
@@ -184,6 +191,7 @@ const ManageVaultForm: FC<VaultManageFormProps> = ({
                 <BaseFormTextField
                   error={!!error}
                   id="outlined-helperText"
+                  className={isDetailPage ? 'lightBorder' : ''}
                   helperText={
                     <>
                       {error && error.type === 'max' && (

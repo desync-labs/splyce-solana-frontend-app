@@ -339,6 +339,7 @@ const VaultListItem: FC<VaultListItemProps> = ({
               vaultPosition={vaultPosition}
               isTfVaultType={isTfVaultType}
               activeTfPeriod={activeTfPeriod}
+              minimumDeposit={minimumDeposit}
               onClose={() => setManageVault(false)}
             />
           )

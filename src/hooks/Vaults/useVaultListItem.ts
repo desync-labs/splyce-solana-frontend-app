@@ -17,6 +17,7 @@ import {
 } from '@/utils/TempData'
 import { defaultNetWork } from '@/utils/network'
 import { useWallet } from '@solana/wallet-adapter-react'
+import { previewRedeem } from '@/utils/TempSdkMethods'
 
 interface UseVaultListItemProps {
   vaultPosition: IVaultPosition | null | undefined
@@ -82,22 +83,18 @@ const useVaultListItem = ({ vaultPosition, vault }: UseVaultListItemProps) => {
 
   const fetchBalanceToken = useCallback(() => {
     setBalanceTokenLoading(true)
-    // return vaultService
-    //   .previewRedeem(
-    //     BigNumber(vaultPosition?.balanceShares as string)
-    //       .dividedBy(10 ** 18)
-    //       .toString(),
-    //     vault.id
-    //   )
-    //   .catch(() => {
-    //     return '-1'
-    //   })
-    //   .finally(() => {
-    //     setBalanceTokenLoading(false)
-    //   })
-    return Promise.resolve('111').finally(() => {
-      setBalanceTokenLoading(false)
-    })
+    return previewRedeem(
+      BigNumber(vaultPosition?.balanceShares as string)
+        //.dividedBy(10 ** 18)
+        .toString(),
+      vault.id
+    )
+      .catch(() => {
+        return '-1'
+      })
+      .finally(() => {
+        setBalanceTokenLoading(false)
+      })
   }, [vault.id, vaultPosition, setBalanceToken])
 
   const fetchPositionTransactions = useCallback(() => {
@@ -255,34 +252,35 @@ const useVaultListItem = ({ vaultPosition, vault }: UseVaultListItemProps) => {
   //     : setMinimumDeposit(0.0000000001)
   // }, [isTfVaultType, vault.id, setMinimumDeposit])
 
-  // useEffect(() => {
-  //   if (transactionsLoading || balanceTokenLoading) return
-  //
-  //   if (
-  //     (syncVault && !prevSyncVault && vaultPosition?.balanceShares) ||
-  //     (vaultPosition?.balanceShares && vault.id)
-  //   ) {
-  //     Promise.all([fetchPositionTransactions(), fetchBalanceToken()]).then(
-  //       ([transactions, balanceToken]) => {
-  //         setBalanceToken(balanceToken as string)
-  //         transactions?.data?.deposits &&
-  //           setDepositsList(transactions?.data.deposits)
-  //         transactions?.data?.withdrawals &&
-  //           setWithdrawalsList(transactions?.data.withdrawals)
-  //       }
-  //     )
-  //   }
-  // }, [
-  //   syncVault,
-  //   prevSyncVault,
-  //   fetchPositionTransactions,
-  //   fetchBalanceToken,
-  //   vaultPosition?.balanceShares,
-  //   vault.id,
-  //   setBalanceToken,
-  //   setDepositsList,
-  //   setWithdrawalsList,
-  // ])
+  useEffect(() => {
+    if (transactionsLoading || balanceTokenLoading) return
+
+    if (
+      //(syncVault && !prevSyncVault && vaultPosition?.balanceShares) ||
+      vaultPosition?.balanceShares &&
+      vault.id
+    ) {
+      Promise.all([fetchPositionTransactions(), fetchBalanceToken()]).then(
+        ([transactions, balanceToken]) => {
+          setBalanceToken(balanceToken as string)
+          transactions?.data?.deposits &&
+            setDepositsList(transactions?.data.deposits)
+          transactions?.data?.withdrawals &&
+            setWithdrawalsList(transactions?.data.withdrawals)
+        }
+      )
+    }
+  }, [
+    //syncVault,
+    //prevSyncVault,
+    fetchPositionTransactions,
+    fetchBalanceToken,
+    vaultPosition?.balanceShares,
+    vault.id,
+    setBalanceToken,
+    setDepositsList,
+    setWithdrawalsList,
+  ])
 
   const balanceEarned = useMemo(() => {
     if (loadingEarning) return -1
