@@ -5,13 +5,14 @@ import { useForm } from 'react-hook-form'
 
 import BigNumber from 'bignumber.js'
 import debounce from 'lodash.debounce'
-import { formatNumber } from '@/utils/format'
 import { IVault, VaultType } from '@/utils/TempData'
 import {
   depositTokens,
+  getTransactionBlock,
   getUserTokenBalance,
   previewDeposit,
 } from '@/utils/TempSdkMethods'
+import useSyncContext from '@/context/sync'
 
 export const MAX_PERSONAL_DEPOSIT = 50000
 export const defaultValues = {
@@ -22,6 +23,7 @@ export const defaultValues = {
 const useVaultOpenDeposit = (vault: IVault, onClose: () => void) => {
   const { token, shareToken, depositLimit, balanceTokens, type } = vault
   const { publicKey, wallet } = useWallet()
+  const { setLastTransactionBlock } = useSyncContext()
 
   const [walletBalance, setWalletBalance] = useState<string>('0')
   const [isWalletFetching, setIsWalletFetching] = useState<boolean>(false)
@@ -175,17 +177,28 @@ const useVaultOpenDeposit = (vault: IVault, onClose: () => void) => {
         .multipliedBy(10 ** 9)
         .toString()
 
-      const depositResponse = await depositTokens(
-        publicKey,
-        formattedDepositAmount,
-        wallet,
-        tokenPublicKey,
-        sharedTokenPublicKey
-      )
+      try {
+        depositTokens(
+          publicKey,
+          formattedDepositAmount,
+          wallet,
+          tokenPublicKey,
+          sharedTokenPublicKey
+        )
+          .then(async (txSignature) => {
+            const txSlot = await getTransactionBlock(txSignature)
 
-      setOpenDepositLoading(false)
-      if (depositResponse) {
-        onClose()
+            if (txSlot) {
+              setLastTransactionBlock(txSlot)
+            }
+          })
+          .finally(() => {
+            setOpenDepositLoading(false)
+            onClose()
+          })
+      } catch (error) {
+        console.error('Error depositing tokens:', error)
+        setOpenDepositLoading(false)
       }
     },
     [deposit, token, shareToken, publicKey, wallet]

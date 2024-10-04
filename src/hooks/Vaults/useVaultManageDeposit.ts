@@ -2,18 +2,20 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useWallet } from '@solana/wallet-adapter-react'
 import { PublicKey } from '@solana/web3.js'
+import debounce from 'lodash.debounce'
+import BigNumber from 'bignumber.js'
 import { IVault, IVaultPosition, VaultType } from '@/utils/TempData'
 import {
   depositTokens,
+  getTransactionBlock,
   getUserTokenBalance,
   previewDeposit,
   previewWithdraw,
   withdrawTokens,
 } from '@/utils/TempSdkMethods'
-import debounce from 'lodash.debounce'
-import BigNumber from 'bignumber.js'
 import { formatNumber } from '@/utils/format'
 import { MAX_PERSONAL_DEPOSIT } from '@/hooks/Vaults/useVaultOpenDeposit'
+import useSyncContext from '@/context/sync'
 
 export const defaultValues = {
   formToken: '',
@@ -34,6 +36,7 @@ const useVaultManageDeposit = (
     vault
   const { balancePosition, balanceShares } = vaultPosition
   const { publicKey, wallet } = useWallet()
+  const { setLastTransactionBlock } = useSyncContext()
 
   const methods = useForm({
     defaultValues,
@@ -217,27 +220,54 @@ const useVaultManageDeposit = (
         .toString()
 
       if (formType === FormType.DEPOSIT) {
-        const depositResponse = await depositTokens(
-          publicKey,
-          formattedAmount,
-          wallet,
-          tokenPublicKey,
-          sharedTokenPublicKey
-        )
+        try {
+          depositTokens(
+            publicKey,
+            formattedAmount,
+            wallet,
+            tokenPublicKey,
+            sharedTokenPublicKey
+          )
+            .then(async (txSignature) => {
+              const txSlot = await getTransactionBlock(txSignature)
 
-        console.log('Deposit Response', depositResponse)
+              if (txSlot) {
+                setLastTransactionBlock(txSlot)
+              }
+            })
+            .finally(() => {
+              setOpenDepositLoading(false)
+              onClose()
+            })
+        } catch (error) {
+          console.error('Error depositing tokens:', error)
+          setOpenDepositLoading(false)
+        }
       } else {
-        const withdrawResponse = await withdrawTokens(
-          publicKey,
-          formattedAmount,
-          wallet,
-          tokenPublicKey,
-          sharedTokenPublicKey
-        )
-        console.log(`Withdraw response: ${withdrawResponse}`)
-      }
+        try {
+          withdrawTokens(
+            publicKey,
+            formattedAmount,
+            wallet,
+            tokenPublicKey,
+            sharedTokenPublicKey
+          )
+            .then(async (txSignature) => {
+              const txSlot = await getTransactionBlock(txSignature)
 
-      setOpenDepositLoading(false)
+              if (txSlot) {
+                setLastTransactionBlock(txSlot)
+              }
+            })
+            .finally(() => {
+              setOpenDepositLoading(false)
+              onClose()
+            })
+        } catch (error) {
+          console.error('Error withdrawing tokens:', error)
+          setOpenDepositLoading(false)
+        }
+      }
     },
     [formType]
   )

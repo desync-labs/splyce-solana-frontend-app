@@ -6,12 +6,12 @@ import BigNumber from 'bignumber.js'
 import { ACCOUNT_VAULT_POSITIONS, VAULTS } from '@/apollo/queries'
 import { COUNT_PER_PAGE_VAULT } from '@/utils/Constants'
 import { vaultTitle } from '@/utils/Vaults/getVaultTitleAndDescription'
-
 import { getDefaultVaultTitle } from '@/utils/Vaults/getVaultTitleAndDescription'
 import { IVault, IVaultPosition, VaultType } from '@/utils/TempData'
 import { defaultNetWork } from '@/utils/network'
 import { vaultType } from '@/utils/Vaults/getVaultType'
 import { getUserTokenBalance, previewRedeem } from '@/utils/TempSdkMethods'
+import useSyncContext from '@/context/sync'
 
 interface IdToVaultIdMap {
   [key: string]: string | undefined
@@ -25,6 +25,7 @@ export enum SortType {
 
 const useVaultList = () => {
   const { publicKey } = useWallet()
+  const { lastTransactionBlock } = useSyncContext()
 
   const network = defaultNetWork
 
@@ -55,17 +56,6 @@ const useVaultList = () => {
     fetchPolicy: 'network-only',
   })
 
-  // const { data: vaultsFactories, loading: vaultsFactoriesLoading } = useQuery(
-  //   VAULT_FACTORIES,
-  //   {
-  //     context: { clientName: 'vaults', network },
-  //     fetchPolicy: 'network-only',
-  //     variables: {
-  //       network,
-  //     },
-  //   }
-  // )
-
   const [
     loadPositions,
     { loading: vaultPositionsLoading, refetch: positionsRefetch },
@@ -76,7 +66,6 @@ const useVaultList = () => {
   })
 
   useEffect(() => {
-    //if (account && vaultService) {
     if (publicKey) {
       loadPositions({
         variables: { account: publicKey?.toBase58().toLowerCase() },
@@ -140,16 +129,23 @@ const useVaultList = () => {
     }
   }, [publicKey, loadPositions, setVaultPositionsList])
 
-  // useEffect(() => {
-  //   if (syncVault && !prevSyncVault) {
-  //     positionsRefetch({ account: account?.toLowerCase() }).then((res) => {
-  //       res.data?.accountVaultPositions
-  //         ? setVaultPositionsList(res.data.accountVaultPositions)
-  //         : setVaultPositionsList([])
-  //     })
-  //     vaultsRefetch()
-  //   }
-  // }, [syncVault, prevSyncVault, vaultsRefetch, positionsRefetch])
+  useEffect(() => {
+    if (lastTransactionBlock) {
+      const timer = setTimeout(() => {
+        // console.log('refetching vaults list')
+        // positionsRefetch({ account: publicKey?.toBase58().toLowerCase() }).then(
+        //   (res) => {
+        //     res.data?.accountVaultPositions
+        //       ? setVaultPositionsList(res.data.accountVaultPositions)
+        //       : setVaultPositionsList([])
+        //   }
+        // )
+        vaultsRefetch()
+      }, 1000)
+
+      return () => clearTimeout(timer)
+    }
+  }, [lastTransactionBlock, vaultsRefetch])
 
   useEffect(() => {
     if (vaultItemsData && vaultItemsData.vaults) {

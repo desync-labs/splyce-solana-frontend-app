@@ -102,9 +102,7 @@ export const depositTokens = async (
     )
 
     // Send Tx
-    const signature = await provider.sendAndConfirm(tx)
-    console.log('Deposit tx successes:', signature)
-    return signature
+    return await provider.sendAndConfirm(tx)
   } catch (err) {
     console.error('Error deposit tx:', err)
   }
@@ -158,17 +156,10 @@ export const withdrawTokens = async (
     wallet
   )
 
-  const strategyAccount =
-    await strategyProgram.account.simpleStrategy.fetch(strategyPDA)
-
   const strategyTokenAccount = await PublicKey.findProgramAddressSync(
     [Buffer.from('underlying'), strategyPDA.toBuffer()],
     strategyProgram.programId
   )[0]
-
-  console.log('strategyPDA', strategyPDA.toBase58(), strategyPDA)
-  console.log('strategyAccount', strategyAccount)
-  console.log('strategyTokenAccount', strategyTokenAccount)
 
   const remainingAccountsMap = {
     accountsMap: [
@@ -299,4 +290,22 @@ export const previewDeposit = async (tokenAmount: string, vaultId: string) => {
 export const previewWithdraw = async (tokenAmount: string, vaultId: string) => {
   // todo: implement preview withdraw from program
   return tokenAmount
+}
+
+export const getTransactionBlock = async (signature: string) => {
+  const connection = new Connection(defaultEndpoint)
+
+  try {
+    const transaction = await connection.getTransaction(signature, {
+      commitment: 'confirmed',
+      maxSupportedTransactionVersion: 0,
+    })
+    if (!transaction) {
+      return
+    }
+    return transaction.slot
+  } catch (error) {
+    console.error('Error getting transaction block:', error)
+    return
+  }
 }
