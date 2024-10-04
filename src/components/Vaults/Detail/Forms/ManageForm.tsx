@@ -1,5 +1,6 @@
 import { memo } from 'react'
 import { FormProvider } from 'react-hook-form'
+import { styled } from '@mui/material'
 import useVaultManageDeposit, {
   FormType,
 } from '@/hooks/Vaults/useVaultManageDeposit'
@@ -12,6 +13,16 @@ import {
 } from '@/components/Base/Dialog/StyledDialog'
 import { VaultFormWrapper } from '@/components/Vaults/Detail/Forms/index'
 import { VaultDetailFormColumn } from '@/components/Vaults/Detail/Forms/DepositForm'
+
+const NavWrapper = styled(BaseDialogNavWrapper)`
+  gap: 24px;
+  margin-top: 0;
+`
+
+const NavItem = styled(BaseDialogNavItem)`
+  font-size: 16px;
+  padding: 6px 0;
+`
 
 const VaultDetailManageForm = () => {
   const { vault, vaultPosition, balanceToken, minimumDeposit } =
@@ -46,22 +57,22 @@ const VaultDetailManageForm = () => {
 
   return (
     <>
-      <BaseDialogNavWrapper>
+      <NavWrapper>
         {!shutdown && (
-          <BaseDialogNavItem
+          <NavItem
             className={formType === FormType.DEPOSIT ? 'active' : ''}
             onClick={() => setFormType(FormType.DEPOSIT)}
           >
             Deposit
-          </BaseDialogNavItem>
+          </NavItem>
         )}
-        <BaseDialogNavItem
+        <NavItem
           className={formType === FormType.WITHDRAW ? 'active' : ''}
           onClick={() => setFormType(FormType.WITHDRAW)}
         >
           Withdraw
-        </BaseDialogNavItem>
-      </BaseDialogNavWrapper>
+        </NavItem>
+      </NavWrapper>
       <VaultFormWrapper>
         <FormProvider {...methods}>
           <VaultDetailFormColumn>
