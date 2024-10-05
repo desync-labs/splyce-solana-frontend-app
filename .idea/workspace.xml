@@ -6,8 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="980c1e59-2a66-476c-8058-c1191519ba3f" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/hooks/Vaults/useVaultList.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/hooks/Vaults/useVaultList.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/_app.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/_app.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Vaults/Detail/Tabs/InfoTabAbout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Vaults/Detail/Tabs/InfoTabAbout.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Vaults/Detail/Tabs/InfoTabStrategies.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Vaults/Detail/Tabs/InfoTabStrategies.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Vaults/Detail/Tabs/VaultStrategyItem.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Vaults/Detail/Tabs/VaultStrategyItem.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -94,14 +95,6 @@
       <recent name="$PROJECT_DIR$/src/theme" />
     </key>
   </component>
-  <component name="SharedIndexes">
-    <attachedChunks>
-      <set>
-        <option value="bundled-jdk-9823dce3aa75-28b599e66164-intellij.indexing.shared.core-IU-242.23339.11" />
-        <option value="bundled-js-predefined-d6986cc7102b-5c90d61e3bab-JavaScript-IU-242.23339.11" />
-      </set>
-    </attachedChunks>
-  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -125,6 +118,7 @@
       <workItem from="1727427650774" duration="81869000" />
       <workItem from="1727950379494" duration="67321000" />
       <workItem from="1728070575987" duration="38000" />
+      <workItem from="1728141811734" duration="774000" />
     </task>
     <servers />
   </component>

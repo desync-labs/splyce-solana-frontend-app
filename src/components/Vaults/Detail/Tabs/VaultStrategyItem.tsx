@@ -23,6 +23,7 @@ import { StatusLabel } from '@/components/Vaults/Detail/Managment/StrategyStatus
 import { FlexBox } from '@/components/Base/Boxes/StyledBoxes'
 import { AppListFees } from '@/components/Vaults/Detail/Tabs/InfoTabAbout'
 import { BaseListItem } from '@/components/Base/List/StyledList'
+import { tempApyData } from '@/utils/TempApyData'
 
 dayjs.extend(relativeTime)
 
@@ -170,7 +171,7 @@ const VaultStrategyItem: FC<VaultStrategyItemPropsType> = ({
     if (strategyTitle[strategyData.id.toLowerCase()]) {
       return strategyTitle[strategyData.id.toLowerCase()]
     } else {
-      return `spUSD: Direct Incentive - Educational Strategy ${index + 1}`
+      return `tspUSD: Direct Incentive - Educational Strategy ${index + 1}`
     }
   }, [strategyData.id, index])
 
@@ -199,7 +200,7 @@ const VaultStrategyItem: FC<VaultStrategyItemPropsType> = ({
         ) : (
           <>
             <p>
-              The strategy enhances returns for spUSD Vault investors by
+              The strategy enhances returns for tspUSD Vault investors by
               ensuring continuous earnings. Here's what makes it stand out:
             </p>
             <DescriptionList>
@@ -276,7 +277,7 @@ const VaultStrategyItem: FC<VaultStrategyItemPropsType> = ({
         <Box width={'100%'} pt="24px">
           <VaultHistoryChart
             title={'Historical APY'}
-            chartDataArray={aprHistoryArr}
+            chartDataArray={tempApyData}
             valueLabel="APY"
             valueUnits="%"
             isLoading={reportsLoading}
