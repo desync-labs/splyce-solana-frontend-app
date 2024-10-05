@@ -1,45 +1,47 @@
-# Base stage, shared across other stages
-FROM node:18-alpine AS base
-# Install necessary packages including eudev-dev
-RUN apk add --no-cache g++ make py3-pip libc6-compat linux-headers eudev-dev
-WORKDIR /app
-COPY package*.json ./
-EXPOSE 3000
+# Stage 1: Build the application
+FROM node:18-alpine AS builder
 
-# Build stage
-FROM base AS builder
+# Install build dependencies
+RUN apk add --no-cache \
+    g++ \
+    make \
+    python3 \
+    libc6-compat \
+    linux-headers \
+    eudev-dev
+
 WORKDIR /app
+
+# Copy package files and install all dependencies
+COPY package*.json ./
+RUN npm ci
+
+# Copy the rest of the source code
 COPY . .
-RUN npm install
+
+# Build the Next.js application
 RUN npm run build
 
-# Production stage
-FROM base AS production
+# Prune dev dependencies to keep only production dependencies
+RUN npm prune --production
+
+# Stage 2: Create the production image
+FROM node:18-alpine AS production
+
 WORKDIR /app
 
-# Set environment to production
-ENV NODE_ENV=production
-
-# Install only production dependencies
-RUN npm ci --only=production
-
-# Create a non-root user for security reasons
-RUN addgroup -g 1001 -S nodejs
-RUN adduser -S nextjs -u 1001
-USER nextjs
-
-# Copy built files and production dependencies from builder
-COPY --from=builder --chown=nextjs:nodejs /app/.next ./.next
-COPY --from=builder /app/public ./public
-COPY --from=builder /app/package.json ./package.json
+# Copy necessary files from the builder stage
+COPY --from=builder /app/package*.json ./
 COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/.next ./.next
+COPY --from=builder /app/public ./public
+
+# Use a non-root user for security
+RUN addgroup -S appgroup && adduser -S appuser -G appgroup
+USER appuser
+
+# Expose port 3000
+EXPOSE 3000
 
 # Start the application
 CMD ["npm", "start"]
-
-# Development stage
-FROM base AS dev
-ENV NODE_ENV=development
-RUN npm install
-COPY . .
-CMD ["npm", "run", "dev"]
