@@ -1,9 +1,10 @@
-version: '3.8'
-
+version: '3'
 services:
-  splyce-app-frontend:
-    image: intothefathom/splyce-solana-frontend-app:latest
-    container_name: splyce-solana-frontend
+  app:
+    image: splyce-solana-frontend-app
+    build:
+      context: .
     ports:
       - "3000:3000"
-    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
