@@ -6,10 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="980c1e59-2a66-476c-8058-c1191519ba3f" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Vaults/NestedNav.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Vaults/NestedNav.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/hooks/Vaults/useVaultDetail.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/hooks/Vaults/useVaultDetail.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/hooks/Vaults/useVaultList.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/hooks/Vaults/useVaultList.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/TempSdkMethods.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/TempSdkMethods.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/_app.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/_app.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -67,7 +65,7 @@
     "RunOnceActivity.go.formatter.settings.were.checked": "true",
     "RunOnceActivity.go.migrated.go.modules.settings": "true",
     "git-widget-placeholder": "dev",
-    "last_opened_file_path": "/Users/aleksandrdovgopolyj/Work/splyce-frontend-app-M/src/context",
+    "last_opened_file_path": "/Users/aleksandrdovgopolyj/Work/splyce-frontend-app-M/public",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.standard": "true",
     "node.js.detected.package.tslint": "true",
@@ -83,11 +81,11 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/public" />
       <recent name="$PROJECT_DIR$/src/context" />
       <recent name="$PROJECT_DIR$/src/utils/Vaults" />
       <recent name="$PROJECT_DIR$/src/hooks/Vaults" />
       <recent name="$PROJECT_DIR$/src" />
-      <recent name="$PROJECT_DIR$/src/components/Vaults/List" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/pages/dao" />

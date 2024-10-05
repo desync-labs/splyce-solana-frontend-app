@@ -15,36 +15,44 @@ const MyApp = ({ Component, pageProps, ...props }: AppProps) => {
   return (
     <>
       <Head>
+        <meta charSet="utf-8" />
+        <link rel="icon" href="/favicon.png" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="msapplication-TileColor" content="#000205" />
+        <meta name="theme-color" content="#000205" />
+        <title>Splyce Liquidity Protocol</title>
+        <meta name="title" content="Splyce Liquidity Protocol" />
         <meta
-          name="viewport"
-          content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
+          name="description"
+          content="Splyce is a borrow &amp; earn platform where users can stake SOL and tokenized real-world assets as collateral to borrow the over-collateralized price stable currency spUSD. spUSD Stablecoin - RWA Liquidity - Lending."
         />
-        <meta
-          name="twitter:image"
-          content="https://img-v1.raydium.io/share/7be7ee6c-56b2-451e-a010-6c21e0db2ee5.png"
-        />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:site" content="@SplyceFi" />
-        <meta name="twitter:creator" content="@SplyceFi" />
-        <meta name="twitter:title" content="Splyce" />
-        <meta
-          name="twitter:description"
-          content="An on-chain order book AMM powering the evolution of DeFi "
-        />
+        <meta property="og:locale" content="en_US" />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="Splyce Liquidity Protocol" />
         <meta
           property="og:description"
-          content="An on-chain order book AMM powering the evolution of DeFi "
+          content="Splyce is a borrow &amp; earn platform where users can stake SOL and tokenized real-world assets as collateral to borrow the over-collateralized price stable currency spUSD. spUSD Stablecoin - RWA Liquidity - Lending."
         />
-        <meta property="og:url" content="https://www.splyce.finance/" />
-        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://app.splyce.finance" />
+        <meta property="og:site_name" content="Splyce Liquidity Protocol" />
         <meta
-          property="og:image"
-          content="https://img-v1.raydium.io/share/7be7ee6c-56b2-451e-a010-6c21e0db2ee5.png"
+          property="article:modified_time"
+          content="2023-03-21T10:06:39+00:00"
         />
-        <meta property="og:image:alt" content="Splyce" />
-        <meta property="og:locale" content="en" />
-        <meta property="og:site_name" content="Splyce" />
-        <meta property="og:title" content="Splyce Title" />
+        <meta property="og:image" content="/splyce-site-preview.png" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:site" content="@Splycefi" />
+        <meta
+          name="keywords"
+          content="Decentralized Finance, DeFi, RWA, spUSD, stablecoins, lending, borrowing, Xdc, assets, XRC-20, smart contracts, open finance, trustless"
+        />
+        <link rel="apple-touch-icon" href="/splyce-site-preview.png" />
+        <meta
+          name="apple-mobile-web-app-title"
+          content="Splyce Liquidity Protocol"
+        />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black" />
         <title>
           {pageProps?.title ? `${pageProps.title} Splyce` : 'Splyce'}
         </title>

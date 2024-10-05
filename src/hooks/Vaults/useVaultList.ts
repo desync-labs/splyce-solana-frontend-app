@@ -56,14 +56,14 @@ const useVaultList = () => {
     fetchPolicy: 'network-only',
   })
 
-  const [
-    loadPositions,
-    { loading: vaultPositionsLoading, refetch: positionsRefetch },
-  ] = useLazyQuery(ACCOUNT_VAULT_POSITIONS, {
-    context: { clientName: 'vaults', network },
-    fetchPolicy: 'network-only',
-    variables: { network, first: 1000 },
-  })
+  const [loadPositions, { loading: vaultPositionsLoading }] = useLazyQuery(
+    ACCOUNT_VAULT_POSITIONS,
+    {
+      context: { clientName: 'vaults', network },
+      fetchPolicy: 'network-only',
+      variables: { network, first: 1000 },
+    }
+  )
 
   useEffect(() => {
     if (publicKey) {
