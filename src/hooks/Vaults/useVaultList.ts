@@ -127,19 +127,11 @@ const useVaultList = () => {
     } else {
       setVaultPositionsList([])
     }
-  }, [publicKey, loadPositions, setVaultPositionsList])
+  }, [lastTransactionBlock, publicKey, loadPositions, setVaultPositionsList])
 
   useEffect(() => {
     if (lastTransactionBlock) {
       const timer = setTimeout(() => {
-        // console.log('refetching vaults list')
-        // positionsRefetch({ account: publicKey?.toBase58().toLowerCase() }).then(
-        //   (res) => {
-        //     res.data?.accountVaultPositions
-        //       ? setVaultPositionsList(res.data.accountVaultPositions)
-        //       : setVaultPositionsList([])
-        //   }
-        // )
         vaultsRefetch()
       }, 1000)
 

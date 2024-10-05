@@ -6,12 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="980c1e59-2a66-476c-8058-c1191519ba3f" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Base/WalletConnectBtn.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Base/WalletConnectBtn.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Vaults/NestedNav.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Vaults/NestedNav.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/hooks/Vaults/useVaultDetail.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/hooks/Vaults/useVaultDetail.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/hooks/Vaults/useVaultList.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/hooks/Vaults/useVaultList.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/hooks/Vaults/useVaultManageDeposit.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/hooks/Vaults/useVaultManageDeposit.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/hooks/Vaults/useVaultOpenDeposit.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/hooks/Vaults/useVaultOpenDeposit.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/provider/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/provider/index.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/utils/TempSdkMethods.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/TempSdkMethods.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -78,7 +75,7 @@
     "node.js.selected.package.standard": "",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "prettierjs.PrettierConfiguration.Package": "/Users/aleksandrdovgopolyj/Work/splyce-frontend/node_modules/prettier",
+    "prettierjs.PrettierConfiguration.Package": "/Users/aleksandrdovgopolyj/Work/splyce-frontend-app-M/node_modules/prettier",
     "settings.editor.selected.configurable": "settings.javascript.prettier",
     "ts.external.directory.path": "/Users/aleksandrdovgopolyj/Work/splyce-frontend-app-M/node_modules/typescript/lib",
     "vue.rearranger.settings.migration": "true"

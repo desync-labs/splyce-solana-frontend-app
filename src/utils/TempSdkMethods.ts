@@ -10,6 +10,7 @@ import { Wallet } from '@solana/wallet-adapter-react'
 import { defaultEndpoint } from '@/utils/network'
 import vaultIdl from '@/idls/tokenized_vault.json'
 import strategyIdl from '@/idls/strategy_program.json'
+import faucetIdl from '@/idls/faucet.json'
 
 export const getUserTokenBalance = async (
   publicKey: PublicKey,
@@ -32,7 +33,8 @@ export const getUserTokenBalance = async (
       const associatedTokenAccountPubKey = accounts.value[0].pubkey
       const tokenAccountInfo = await getAccount(
         connection,
-        associatedTokenAccountPubKey
+        associatedTokenAccountPubKey,
+        'processed'
       )
 
       return tokenAccountInfo.amount.toString()
@@ -307,5 +309,56 @@ export const getTransactionBlock = async (signature: string) => {
   } catch (error) {
     console.error('Error getting transaction block:', error)
     return
+  }
+}
+
+export const faucetTestToken = async (
+  userPubKey: PublicKey,
+  tokenPubKey: PublicKey,
+  wallet: Wallet
+) => {
+  if (!userPubKey || !wallet || !tokenPubKey) {
+    return
+  }
+
+  const connection = new Connection(defaultEndpoint)
+  const provider = new AnchorProvider(connection, wallet.adapter, {
+    preflightCommitment: 'confirmed',
+  })
+
+  const faucetProgram = new Program(faucetIdl, provider)
+
+  const faucetData = new PublicKey(
+    'GadGcmfR95AqyhN58PeHJ46JGdJ2K9AkdfnEUCQSvNp5'
+  )
+
+  const faucetTokenAccount = new PublicKey(
+    'J6baU8waHBeAUBtfvS9mUyMhUXDJ8HBjQCEKrpkoJSgC'
+  )
+
+  const userTokenAccount = await findOrCreateTokenAccountByOwner(
+    userPubKey,
+    tokenPubKey,
+    wallet
+  )
+
+  try {
+    const tx = new Transaction().add(
+      await faucetProgram.methods
+        .sendTokens()
+        .accounts({
+          faucetData: faucetData,
+          tokenAccount: faucetTokenAccount,
+          recipient: userTokenAccount,
+          signer: userPubKey,
+          tokenProgram: TOKEN_PROGRAM_ID,
+        })
+        .instruction()
+    )
+
+    // Send Tx
+    return await provider.sendAndConfirm(tx)
+  } catch (err) {
+    console.error('Error deposit tx:', err)
   }
 }

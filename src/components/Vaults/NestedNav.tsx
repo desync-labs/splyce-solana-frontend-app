@@ -13,6 +13,11 @@ const VaultsNestedNav = () => {
     [location.pathname]
   )
 
+  const isFaucetActive = useMemo(
+    () => ['/vaults/faucet'].includes(location.pathname),
+    [location.pathname]
+  )
+
   // const isTutorialActive = useMemo(() => {
   //   return location.pathname.includes('/vaults/tutorial')
   // }, [location.pathname])
@@ -23,6 +28,12 @@ const VaultsNestedNav = () => {
         href="/vaults"
       >
         Vault Management
+      </NestedRouteLink>
+      <NestedRouteLink
+        className={isFaucetActive ? 'active' : ''}
+        href="/vaults/faucet"
+      >
+        Faucet
       </NestedRouteLink>
       {/*<NestedRouteLink*/}
       {/*  className={isTutorialActive ? 'active' : ''}*/}

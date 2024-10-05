@@ -544,6 +544,7 @@ const useVaultDetail = () => {
       setVaultPosition({} as IVaultPosition)
     }
   }, [
+    lastTransactionBlock,
     publicKey,
     vault.id,
     fetchPositionTransactions,
