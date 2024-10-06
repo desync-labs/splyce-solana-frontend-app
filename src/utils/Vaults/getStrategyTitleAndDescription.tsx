@@ -58,7 +58,9 @@ strategyDescription['0x3adf1e440657fa55d11adb6a102d140b01449139'] = (
   </>
 )
 
-strategyDescription['0xde53c24ddce2d42816450dc06b2caff6384691dc'] = (
+strategyDescription[
+  'PB3pu2GFyw8g1LBqPjuF7cU6NuGw2BJcjQac6p9AzjC'.toLowerCase()
+] = (
   <>
     <p>
       Diversify your investment through the iShares Gold Trust Micro Strategy,
@@ -203,7 +205,7 @@ strategyTitle['0xe2dea7e0c272de04e8708674dae73ebd6e5c1455'] =
 strategyTitle['0x3adf1e440657fa55d11adb6a102d140b01449139'] =
   'Newmont Corp (NEM) Strategy'
 
-strategyTitle['0xde53c24ddce2d42816450dc06b2caff6384691dc'] =
+strategyTitle['PB3pu2GFyw8g1LBqPjuF7cU6NuGw2BJcjQac6p9AzjC'.toLowerCase()] =
   'iShares Gold Trust Micro (IAUM) Strategy'
 
 strategyTitle['0xcea3c48da7aa17d5bc0a588a3e743577d94eb192'] =

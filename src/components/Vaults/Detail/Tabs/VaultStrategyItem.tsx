@@ -97,7 +97,7 @@ export const VaultIndicatorItemLabel = styled(Typography)`
 type VaultStrategyItemPropsType = {
   reports: IVaultStrategyReport[]
   historicalApr: IVaultStrategyHistoricalApr[]
-  strategyData: IVaultStrategy
+  //strategyData: IVaultStrategy
   vaultBalanceTokens: string
   tokenName: string
   index: number
@@ -106,8 +106,18 @@ type VaultStrategyItemPropsType = {
   reportsLoading?: boolean
 }
 
+const dummyStrategy = {
+  id: 'PB3pu2GFyw8g1LBqPjuF7cU6NuGw2BJcjQac6p9AzjC',
+  delegatedAssets: '0',
+  currentDebt: '80000000000',
+  maxDebt: '1000000000',
+  apr: '9',
+  performanceFees: '1000',
+  isShutdown: false,
+}
+
 const VaultStrategyItem: FC<VaultStrategyItemPropsType> = ({
-  strategyData,
+  //strategyData,
   vaultBalanceTokens,
   tokenName,
   index,
@@ -117,6 +127,7 @@ const VaultStrategyItem: FC<VaultStrategyItemPropsType> = ({
   isShow,
   reportsLoading,
 }) => {
+  const strategyData = dummyStrategy
   const [aprHistoryArr, setAprHistoryArr] = useState<HistoryChartDataType[]>([])
   const [lastReportDate, setLastReportDate] = useState<string>('')
   const [allocationShare, setAllocationShare] = useState<number>(0)
@@ -247,7 +258,8 @@ const VaultStrategyItem: FC<VaultStrategyItemPropsType> = ({
         </BaseListItem>
         <BaseListItem
           secondaryAction={
-            <>{`${formatNumber(totalGain.dividedBy(10 ** 9).toNumber())} ${tokenName}`}</>
+            // <>{`${formatNumber(totalGain.dividedBy(10 ** 9).toNumber())} ${tokenName}`}</>
+            <>{`${formatNumber(15)} ${tokenName}`}</>
           }
         >
           <ListItemText primary="Total Gain" />
