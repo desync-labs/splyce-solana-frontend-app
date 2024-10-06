@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react'
+import { useState } from 'react'
 import { WalletReadyState } from '@solana/wallet-adapter-base'
 import { Wallet } from '@solana/wallet-adapter-react'
 import AccountBalanceWalletOutlinedIcon from '@mui/icons-material/AccountBalanceWalletOutlined'
@@ -143,17 +143,12 @@ const SelectWalletModal = ({
     (w) => w.adapter.name === 'Phantom'
   )
 
-  const handleCloseComplete = useCallback(
-    () => setIsWalletNotInstalled(false),
-    [setIsWalletNotInstalled]
-  )
-
   return (
     <BaseDialogWrapper
       open={isOpen}
       onClose={onClose}
-      onCloseComplete={handleCloseComplete}
       fullWidth
+      disableScrollLock
     >
       <BaseDialogTitle id="connect_wallet_title" onClose={onClose}>
         Connect your wallet to Splyce

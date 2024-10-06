@@ -21,7 +21,7 @@ import {
   BaseFormSetMaxButton,
   BaseFormTextField,
   BaseFormWalletBalance,
-} from 'components/Base/Form/StyledForm'
+} from '@/components/Base/Form/StyledForm'
 
 const ManageVaultFormStyled = styled('form')`
   padding-bottom: 0;
@@ -41,6 +41,7 @@ type VaultManageFormProps = {
   >
   formType: FormType
   setMax: () => void
+  validateMaxValue: (value: string) => boolean | string
   handleSubmit: UseFormHandleSubmit<
     {
       formToken: string
@@ -49,6 +50,7 @@ type VaultManageFormProps = {
     undefined
   >
   onSubmit: (values: Record<string, any>) => Promise<void>
+  isDetailPage?: boolean
 }
 
 const ManageVaultForm: FC<VaultManageFormProps> = ({
@@ -60,12 +62,14 @@ const ManageVaultForm: FC<VaultManageFormProps> = ({
   setMax,
   handleSubmit,
   onSubmit,
+  validateMaxValue,
+  isDetailPage = false,
 }) => {
   const { token } = vaultItemData
   const formattedBalanceToken = useMemo(
     () =>
       BigNumber(balanceToken)
-        //.dividedBy(10 ** 18)
+        .dividedBy(10 ** 9)
         .toNumber(),
     [balanceToken]
   )
@@ -73,7 +77,12 @@ const ManageVaultForm: FC<VaultManageFormProps> = ({
   const fxdPrice = 1
 
   return (
-    <BaseDialogFormWrapper>
+    <BaseDialogFormWrapper
+      sx={{
+        background: isDetailPage ? '#3A4F6A' : '#314156',
+        padding: isDetailPage ? '22px 16px' : '16px',
+      }}
+    >
       <ManageVaultFormStyled
         onSubmit={handleSubmit(onSubmit)}
         noValidate
@@ -82,6 +91,11 @@ const ManageVaultForm: FC<VaultManageFormProps> = ({
         <Controller
           control={control}
           name="formToken"
+          rules={{
+            required: true,
+            min: 0.000000000000000000001,
+            validate: validateMaxValue,
+          }}
           render={({ field: { onChange, value }, fieldState: { error } }) => (
             <BaseFormInputWrapper>
               <BaseFormLabelRow>
@@ -94,7 +108,11 @@ const ManageVaultForm: FC<VaultManageFormProps> = ({
                   <BaseFormWalletBalance>
                     {formType === FormType.DEPOSIT
                       ? 'Balance: ' +
-                        formatNumber(BigNumber(walletBalance).toNumber()) +
+                        formatNumber(
+                          BigNumber(walletBalance)
+                            .dividedBy(10 ** 9)
+                            .toNumber()
+                        ) +
                         ' ' +
                         token?.name
                       : 'Vault Available: ' +
@@ -146,6 +164,24 @@ const ManageVaultForm: FC<VaultManageFormProps> = ({
                         </Box>
                       </BaseFormInputErrorWrapper>
                     )}
+                    {error && error.type === 'validate' && (
+                      <BaseFormInputErrorWrapper>
+                        <BaseInfoIcon
+                          sx={{
+                            float: 'left',
+                            width: '14px',
+                            height: '14px',
+                            marginRight: '0',
+                          }}
+                        />
+                        <Box
+                          component={'span'}
+                          sx={{ fontSize: '12px', paddingLeft: '6px' }}
+                        >
+                          {error.message}
+                        </Box>
+                      </BaseFormInputErrorWrapper>
+                    )}
                   </>
                 }
                 value={value}
@@ -184,6 +220,7 @@ const ManageVaultForm: FC<VaultManageFormProps> = ({
                 <BaseFormTextField
                   error={!!error}
                   id="outlined-helperText"
+                  className={isDetailPage ? 'lightBorder' : ''}
                   helperText={
                     <>
                       {error && error.type === 'max' && (

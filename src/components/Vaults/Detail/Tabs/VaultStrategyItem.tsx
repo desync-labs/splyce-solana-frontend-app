@@ -23,6 +23,8 @@ import { StatusLabel } from '@/components/Vaults/Detail/Managment/StrategyStatus
 import { FlexBox } from '@/components/Base/Boxes/StyledBoxes'
 import { AppListFees } from '@/components/Vaults/Detail/Tabs/InfoTabAbout'
 import { BaseListItem } from '@/components/Base/List/StyledList'
+import { tempApyData } from '@/utils/TempApyData'
+import { getStrategyProgramAddress } from '@/utils/Vaults/getProgramAddress'
 
 dayjs.extend(relativeTime)
 
@@ -95,7 +97,7 @@ export const VaultIndicatorItemLabel = styled(Typography)`
 type VaultStrategyItemPropsType = {
   reports: IVaultStrategyReport[]
   historicalApr: IVaultStrategyHistoricalApr[]
-  strategyData: IVaultStrategy
+  //strategyData: IVaultStrategy
   vaultBalanceTokens: string
   tokenName: string
   index: number
@@ -104,8 +106,18 @@ type VaultStrategyItemPropsType = {
   reportsLoading?: boolean
 }
 
+const dummyStrategy = {
+  id: 'PB3pu2GFyw8g1LBqPjuF7cU6NuGw2BJcjQac6p9AzjC',
+  delegatedAssets: '0',
+  currentDebt: '80000000000',
+  maxDebt: '1000000000',
+  apr: '9',
+  performanceFees: '1000',
+  isShutdown: false,
+}
+
 const VaultStrategyItem: FC<VaultStrategyItemPropsType> = ({
-  strategyData,
+  //strategyData,
   vaultBalanceTokens,
   tokenName,
   index,
@@ -115,6 +127,7 @@ const VaultStrategyItem: FC<VaultStrategyItemPropsType> = ({
   isShow,
   reportsLoading,
 }) => {
+  const strategyData = dummyStrategy
   const [aprHistoryArr, setAprHistoryArr] = useState<HistoryChartDataType[]>([])
   const [lastReportDate, setLastReportDate] = useState<string>('')
   const [allocationShare, setAllocationShare] = useState<number>(0)
@@ -170,7 +183,7 @@ const VaultStrategyItem: FC<VaultStrategyItemPropsType> = ({
     if (strategyTitle[strategyData.id.toLowerCase()]) {
       return strategyTitle[strategyData.id.toLowerCase()]
     } else {
-      return `spUSD: Direct Incentive - Educational Strategy ${index + 1}`
+      return `tspUSD: Direct Incentive - Educational Strategy ${index + 1}`
     }
   }, [strategyData.id, index])
 
@@ -181,7 +194,9 @@ const VaultStrategyItem: FC<VaultStrategyItemPropsType> = ({
         <StatusLabel strategyId={strategyData.id} />
       </VaultStrategyTitle>
       <Link
-        href={getExplorerUrl(strategyData.id as string)}
+        href={getExplorerUrl(
+          getStrategyProgramAddress(strategyData.id as string)
+        )}
         target="_blank"
         style={{
           display: 'inline-flex',
@@ -191,7 +206,7 @@ const VaultStrategyItem: FC<VaultStrategyItemPropsType> = ({
           marginBottom: '16px',
         }}
       >
-        {strategyData.id}
+        {getStrategyProgramAddress(strategyData.id as string)}
       </Link>
       <VaultStrategyDescription>
         {strategyDescription[strategyData.id.toLowerCase()] ? (
@@ -199,7 +214,7 @@ const VaultStrategyItem: FC<VaultStrategyItemPropsType> = ({
         ) : (
           <>
             <p>
-              The strategy enhances returns for spUSD Vault investors by
+              The strategy enhances returns for tspUSD Vault investors by
               ensuring continuous earnings. Here's what makes it stand out:
             </p>
             <DescriptionList>
@@ -234,7 +249,7 @@ const VaultStrategyItem: FC<VaultStrategyItemPropsType> = ({
           secondaryAction={
             <>{`${formatNumber(
               BigNumber(strategyData.currentDebt)
-                .dividedBy(10 ** 18)
+                .dividedBy(10 ** 9)
                 .toNumber()
             )} ${tokenName}`}</>
           }
@@ -243,7 +258,8 @@ const VaultStrategyItem: FC<VaultStrategyItemPropsType> = ({
         </BaseListItem>
         <BaseListItem
           secondaryAction={
-            <>{`${formatNumber(totalGain.dividedBy(10 ** 18).toNumber())} ${tokenName}`}</>
+            // <>{`${formatNumber(totalGain.dividedBy(10 ** 9).toNumber())} ${tokenName}`}</>
+            <>{`${formatNumber(15)} ${tokenName}`}</>
           }
         >
           <ListItemText primary="Total Gain" />
@@ -276,7 +292,7 @@ const VaultStrategyItem: FC<VaultStrategyItemPropsType> = ({
         <Box width={'100%'} pt="24px">
           <VaultHistoryChart
             title={'Historical APY'}
-            chartDataArray={aprHistoryArr}
+            chartDataArray={tempApyData}
             valueLabel="APY"
             valueUnits="%"
             isLoading={reportsLoading}

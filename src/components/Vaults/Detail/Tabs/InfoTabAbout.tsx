@@ -9,6 +9,7 @@ import VaultHistoryChart, {
 import VaultAboutTabContent from '@/components/Vaults/Detail/Tabs/AboutTabContent'
 import { VaultAboutSkeleton } from '@/components/Base/Skeletons/VaultSkeletons'
 import { TabContentWrapper } from '@/components/Vaults/Detail/Tabs/InfoTabs'
+import { tempEarnedData } from '@/utils/TempEarnedData'
 
 export const VaultDescriptionWrapper = styled(Box)`
   font-size: 14px;
@@ -121,7 +122,7 @@ const InfoTabAbout = () => {
 
       const currentTotalEarned = BigNumber(report.gain)
         .minus(report.loss)
-        .dividedBy(10 ** 18)
+        .dividedBy(10 ** 9)
         .plus(accumulatedTotalEarned)
         .toString()
 
@@ -150,7 +151,7 @@ const InfoTabAbout = () => {
               ? 'Expected Cumulative Earnings'
               : 'Cumulative Earnings'
           }
-          chartDataArray={earnedHistoryArr}
+          chartDataArray={tempEarnedData}
           valueLabel="Earnings"
           valueUnits={` ${vault?.token?.name}`}
           isLoading={!isReportsLoaded}

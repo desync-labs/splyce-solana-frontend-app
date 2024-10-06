@@ -37,6 +37,7 @@ export type VaultManageProps = {
   vaultPosition: IVaultPosition
   isTfVaultType: boolean
   activeTfPeriod: number
+  minimumDeposit: number
   onClose: () => void
 }
 
@@ -45,6 +46,7 @@ const VaultListItemManageModal: FC<VaultManageProps> = ({
   vaultPosition,
   isTfVaultType,
   activeTfPeriod,
+  minimumDeposit,
   onClose,
 }) => {
   const {
@@ -58,11 +60,18 @@ const VaultListItemManageModal: FC<VaultManageProps> = ({
     isWalletFetching,
     openDepositLoading,
     balancePosition,
+    validateMaxValue,
     setMax,
     handleSubmit,
     onSubmit,
     methods,
-  } = useVaultManageDeposit(vaultItemData, vaultPosition, onClose)
+    withdrawLimitExceeded,
+  } = useVaultManageDeposit(
+    vaultItemData,
+    vaultPosition,
+    minimumDeposit,
+    onClose
+  )
 
   const { connected } = useWallet()
   const { shutdown } = vaultItemData
@@ -123,6 +132,7 @@ const VaultListItemManageModal: FC<VaultManageProps> = ({
               control={control}
               formType={formType}
               setMax={setMax}
+              validateMaxValue={validateMaxValue}
               handleSubmit={handleSubmit}
               onSubmit={onSubmit}
             />
@@ -136,7 +146,7 @@ const VaultListItemManageModal: FC<VaultManageProps> = ({
             {isWalletFetching &&
               formType === FormType.DEPOSIT &&
               (BigNumber(walletBalance)
-                //.dividedBy(10 ** 18)
+                .dividedBy(10 ** 9)
                 .isLessThan(BigNumber(formToken)) ||
                 walletBalance == '0') && (
                 <BaseErrorBox sx={{ marginBottom: 0 }}>
@@ -146,12 +156,13 @@ const VaultListItemManageModal: FC<VaultManageProps> = ({
                   </Typography>
                 </BaseErrorBox>
               )}
-            {formType === FormType.WITHDRAW && (
-              <BaseErrorBox sx={{ marginBottom: 0 }}>
-                <BaseInfoIcon />
-                <Typography>withdrawLimitExceeded</Typography>
-              </BaseErrorBox>
-            )}
+            {formType === FormType.WITHDRAW &&
+              withdrawLimitExceeded(formToken) && (
+                <BaseErrorBox sx={{ marginBottom: 0 }}>
+                  <BaseInfoIcon />
+                  <Typography>{withdrawLimitExceeded(formToken)}</Typography>
+                </BaseErrorBox>
+              )}
             {activeTfPeriod === 1 && (
               <BaseWarningBox>
                 <BaseInfoIcon
@@ -172,7 +183,17 @@ const VaultListItemManageModal: FC<VaultManageProps> = ({
             {!connected ? (
               <WalletConnectBtn />
             ) : (
-              <Button variant="gradient" onClick={handleSubmit(onSubmit)}>
+              <Button
+                variant="gradient"
+                onClick={handleSubmit(onSubmit)}
+                disabled={
+                  openDepositLoading ||
+                  !!Object.keys(errors).length ||
+                  (isTfVaultType && activeTfPeriod > 0) ||
+                  (formType === FormType.WITHDRAW &&
+                    !!withdrawLimitExceeded(formToken))
+                }
+              >
                 {openDepositLoading ? (
                   <CircularProgress sx={{ color: '#183102' }} size={20} />
                 ) : formType === FormType.DEPOSIT ? (

@@ -47,6 +47,7 @@ const WalletConnectBtn: FC<WalletConnectBtnPropsTypes> = ({
       fullWidth={fullwidth}
       sx={sx}
       data-testid={testId}
+      aria-hidden={false}
     >
       {children ? children : 'Connect Wallet'}
     </WalletButton>

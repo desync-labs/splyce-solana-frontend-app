@@ -8,6 +8,7 @@ import {
 } from '@/apollo/queries'
 import { IVaultPosition } from '@/utils/TempData'
 import { defaultNetWork } from '@/utils/network'
+import useSyncContext from '@/context/sync'
 
 const TRANSACTIONS_PER_PAGE = 1000
 
@@ -31,6 +32,7 @@ const useTotalStats = (
 
   const network = defaultNetWork
   const { publicKey } = useWallet()
+  const { lastTransactionBlock } = useSyncContext()
 
   const [loadAccountDeposits, { loading: depositsLoading }] = useLazyQuery(
     VAULTS_ACCOUNT_DEPOSITS,
@@ -140,12 +142,12 @@ const useTotalStats = (
     fetchAccountWithdrawals([])
   }, [publicKey, fetchAccountDeposits, fetchAccountWithdrawals])
 
-  // useEffect(() => {
-  //   if (syncVault && !prevSyncVault) {
-  //     fetchAccountDeposits([])
-  //     fetchAccountWithdrawals([])
-  //   }
-  // }, [syncVault, prevSyncVault, fetchAccountDeposits, fetchAccountWithdrawals])
+  useEffect(() => {
+    if (lastTransactionBlock) {
+      fetchAccountDeposits([])
+      fetchAccountWithdrawals([])
+    }
+  }, [lastTransactionBlock])
 
   const balanceEarned = useMemo(() => {
     if (balanceEarnedLoading) return '-1'

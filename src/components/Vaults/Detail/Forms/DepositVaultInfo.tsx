@@ -21,13 +21,12 @@ import WalletConnectBtn from '@/components/Base/WalletConnectBtn'
 import { BaseDialogSummary } from '@/components/Base/Form/StyledForm'
 import {
   BaseErrorBox,
-  BaseInfoBox,
   BaseWarningBox,
 } from '@/components/Base/Boxes/StyledBoxes'
 import { BaseListItem } from '@/components/Base/List/StyledList'
 import { BaseDialogButtonWrapper } from '@/components/Base/Dialog/StyledDialog'
 
-const ManageVaultInfoWrapper = styled(Box)`
+export const ManageVaultInfoWrapper = styled(Box)`
   position: relative;
   width: 50%;
   background: #3a4f6a;
@@ -39,7 +38,7 @@ const ManageVaultInfoWrapper = styled(Box)`
   }
 `
 
-const VaultList = styled(List)`
+export const VaultList = styled(List)`
   & li {
     color: #fff;
     align-items: flex-start;
@@ -130,20 +129,25 @@ const DepositVaultInfo: FC<DepositVaultInfoProps> = ({
               0 %{' '}
               <Box component="span" sx={{ color: '#3DA329' }}>
                 →{' '}
-                {BigNumber(sharedToken).isGreaterThan(0) ||
-                BigNumber(sharesSupply).isGreaterThan(0)
-                  ? formatNumber(
-                      BigNumber(sharedToken || '0')
-                        .multipliedBy(10 ** 18)
-                        .dividedBy(
-                          BigNumber(sharesSupply).plus(
-                            BigNumber(sharedToken || '0').multipliedBy(10 ** 18)
+                {
+                  // todo: chenge to sharesSupply when it will be available
+                  BigNumber(sharedToken).isGreaterThan(0) ||
+                  BigNumber(vaultItemData.totalShare).isGreaterThan(0)
+                    ? formatNumber(
+                        BigNumber(sharedToken || '0')
+                          .multipliedBy(10 ** 9)
+                          .dividedBy(
+                            BigNumber(vaultItemData.totalShare).plus(
+                              BigNumber(sharedToken || '0').multipliedBy(
+                                10 ** 9
+                              )
+                            )
                           )
-                        )
-                        .times(100)
-                        .toNumber()
-                    )
-                  : '0'}{' '}
+                          .times(100)
+                          .toNumber()
+                      )
+                    : '0'
+                }{' '}
                 %
               </Box>
             </>
@@ -170,7 +174,7 @@ const DepositVaultInfo: FC<DepositVaultInfoProps> = ({
       </VaultList>
       {isWalletFetching &&
         (BigNumber(walletBalance)
-          .dividedBy(10 ** 18)
+          .dividedBy(10 ** 9)
           .isLessThan(BigNumber(deposit)) ||
           walletBalance == '0') && (
           <BaseErrorBox sx={{ marginBottom: 0 }}>
@@ -178,16 +182,6 @@ const DepositVaultInfo: FC<DepositVaultInfoProps> = ({
             <Typography>Wallet balance is not enough to deposit.</Typography>
           </BaseErrorBox>
         )}
-      {approveBtn && BigNumber(walletBalance).isGreaterThan(0) && (
-        <BaseInfoBox>
-          <BaseInfoIcon />
-          <Box flexDirection="column">
-            <Typography width="100%">
-              First-time connect? Please allow token approval in your MetaMask
-            </Typography>
-          </Box>
-        </BaseInfoBox>
-      )}
       {isTfVaultType && !isUserKycPassed && (
         <BaseWarningBox>
           <BaseInfoIcon
@@ -244,7 +238,6 @@ const DepositVaultInfo: FC<DepositVaultInfoProps> = ({
               !!Object.keys(errors).length ||
               (isTfVaultType && !isUserKycPassed)
             }
-            isLoading={openDepositLoading}
           >
             {openDepositLoading ? (
               <CircularProgress sx={{ color: '#0D1526' }} size={20} />

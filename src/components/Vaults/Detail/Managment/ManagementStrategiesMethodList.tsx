@@ -6,7 +6,7 @@ import { strategyTitle } from '@/utils/Vaults/getStrategyTitleAndDescription'
 import { formatHashShorten } from '@/utils/format'
 import {
   a11yProps,
-  ContractMethodListWrapper,
+  ProgramMethodListWrapper,
   MethodsTabPanel,
   MethodTypesTabs,
   STATE_MUTABILITY_TRANSACTIONS,
@@ -72,7 +72,7 @@ const ManagementStrategiesMethodTabs: FC<{
   }
 
   return !strategyMethods.length ? (
-    <Typography px="24px">Has no contract methods yet</Typography>
+    <Typography px="24px">Has no program methods yet</Typography>
   ) : (
     <ManagementStrategiesMethodTabsStyled>
       <MethodTypesTabs
@@ -81,13 +81,13 @@ const ManagementStrategiesMethodTabs: FC<{
         aria-label="state mutability tabs"
       >
         <Tab
-          label="Read Contract"
+          label="Read Program"
           icon={<ReadeMethodIcon color={value === 0 ? '#BBFB5B' : '#d1dae6'} />}
           iconPosition="start"
           {...a11yProps(0)}
         />
         <Tab
-          label="Write Contract"
+          label="Write Program"
           icon={<WriteMethodIcon color={value === 1 ? '#BBFB5B' : '#d1dae6'} />}
           iconPosition="start"
           {...a11yProps(1)}
@@ -159,7 +159,7 @@ const ManagementStrategiesMethodList: FC<
   }
 
   return (
-    <ContractMethodListWrapper className={isShow ? 'showing' : 'hide'}>
+    <ProgramMethodListWrapper className={isShow ? 'showing' : 'hide'}>
       <TabContentWrapper sx={{ paddingLeft: 0, paddingRight: 0 }}>
         {strategiesIds?.length && (
           <Box px={'24px'}>
@@ -201,7 +201,7 @@ const ManagementStrategiesMethodList: FC<
           currentStrategyId={currentStrategyId}
         />
       </TabContentWrapper>
-    </ContractMethodListWrapper>
+    </ProgramMethodListWrapper>
   )
 }
 

@@ -30,7 +30,6 @@ import { type WalletError } from '@solana/wallet-adapter-base'
 import { registerMoonGateWallet } from '@moongate/moongate-adapter'
 import { TipLinkWalletAdapter } from '@tiplink/wallet-adapter'
 import { WalletConnectWalletAdapter } from '@walletconnect/solana-adapter'
-//import { LedgerWalletAdapter } from './Ledger/LedgerWalletAdapter'
 import { defaultEndpoint, defaultNetWork } from '@/utils/network'
 
 initialize()

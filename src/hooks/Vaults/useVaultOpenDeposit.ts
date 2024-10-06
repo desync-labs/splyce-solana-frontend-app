@@ -1,11 +1,19 @@
-import { useCallback, useEffect, useState } from 'react'
-import { useForm } from 'react-hook-form'
-import { IVault, VaultType } from '@/utils/TempData'
-import BigNumber from 'bignumber.js'
-import { formatNumber } from '@/utils/format'
-import { useWallet } from '@solana/wallet-adapter-react'
-import { depositTokens, getUserTokenBalance } from '@/utils/TempSdkMethods'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { PublicKey } from '@solana/web3.js'
+import { useWallet } from '@solana/wallet-adapter-react'
+import { useForm } from 'react-hook-form'
+
+import BigNumber from 'bignumber.js'
+import debounce from 'lodash.debounce'
+import { IVault, VaultType } from '@/utils/TempData'
+import {
+  depositTokens,
+  getTransactionBlock,
+  getUserTokenBalance,
+  previewDeposit,
+} from '@/utils/TempSdkMethods'
+import useSyncContext from '@/context/sync'
+import { formatNumber } from '@/utils/format'
 
 export const MAX_PERSONAL_DEPOSIT = 50000
 export const defaultValues = {
@@ -16,6 +24,7 @@ export const defaultValues = {
 const useVaultOpenDeposit = (vault: IVault, onClose: () => void) => {
   const { token, shareToken, depositLimit, balanceTokens, type } = vault
   const { publicKey, wallet } = useWallet()
+  const { lastTransactionBlock, setLastTransactionBlock } = useSyncContext()
 
   const [walletBalance, setWalletBalance] = useState<string>('0')
   const [isWalletFetching, setIsWalletFetching] = useState<boolean>(false)
@@ -54,15 +63,37 @@ const useVaultOpenDeposit = (vault: IVault, onClose: () => void) => {
     }, 300)
 
     return () => clearTimeout(timeout)
-  }, [publicKey, token?.id, getVaultTokenBalance])
+  }, [publicKey, token?.id, getVaultTokenBalance, lastTransactionBlock])
+
+  const updateSharedAmount = useMemo(
+    () =>
+      debounce(async (deposit: string) => {
+        const sharedAmount = await previewDeposit(deposit, vault.id)
+
+        const sharedConverted = BigNumber(sharedAmount).toFixed()
+
+        setValue('sharedToken', sharedConverted)
+      }, 500),
+    [vault?.id, deposit, setValue]
+  )
+
+  useEffect(() => {
+    if (deposit && BigNumber(deposit).isGreaterThan(0)) {
+      updateSharedAmount(deposit)
+    } else {
+      setTimeout(() => {
+        setValue('sharedToken', '0')
+      }, 600)
+    }
+  }, [deposit, setValue, updateSharedAmount])
 
   const setMax = useCallback(() => {
     const maxWalletBalance = BigNumber.min(
-      BigNumber(walletBalance).dividedBy(10 ** 18),
+      BigNumber(walletBalance).dividedBy(10 ** 9),
       BigNumber.max(
         BigNumber(depositLimit)
           .minus(balanceTokens)
-          .dividedBy(10 ** 18),
+          .dividedBy(10 ** 9),
         BigNumber(0)
       )
     ).decimalPlaces(6, BigNumber.ROUND_DOWN)
@@ -73,7 +104,7 @@ const useVaultOpenDeposit = (vault: IVault, onClose: () => void) => {
   }, [walletBalance, depositLimit, balanceTokens, setValue])
 
   const depositLimitExceeded = (value: string) => {
-    const formattedDepositLimit = BigNumber(depositLimit).dividedBy(10 ** 18)
+    const formattedDepositLimit = BigNumber(depositLimit).dividedBy(10 ** 9)
     const rule =
       type === VaultType.TRADEFI
         ? BigNumber(value).isGreaterThanOrEqualTo(formattedDepositLimit)
@@ -93,38 +124,38 @@ const useVaultOpenDeposit = (vault: IVault, onClose: () => void) => {
   const validateMaxDepositValue = useCallback(
     (value: string) => {
       const formattedMaxWalletBalance = BigNumber(walletBalance).dividedBy(
-        10 ** 18
+        10 ** 9
       )
       const formattedMaxDepositLimit = BigNumber.max(
         type === VaultType.TRADEFI
-          ? BigNumber(depositLimit).dividedBy(10 ** 18)
+          ? BigNumber(depositLimit).dividedBy(10 ** 9)
           : BigNumber(depositLimit).minus(
-              BigNumber(balanceTokens).dividedBy(10 ** 18)
+              BigNumber(balanceTokens).dividedBy(10 ** 9)
             ),
         0
       )
-      // if (BigNumber(value).isGreaterThan(formattedMaxWalletBalance)) {
-      //   return 'You do not have enough money in your wallet'
-      // }
-      //
-      // if (BigNumber(value).isGreaterThan(formattedMaxDepositLimit)) {
-      //   return `Deposit value exceeds the maximum allowed limit ${formatNumber(
-      //     formattedMaxDepositLimit.toNumber()
-      //   )} ${token.symbol}`
-      // }
-      // if (
-      //   BigNumber(value).isGreaterThan(
-      //     BigNumber(depositLimit).dividedBy(10 ** 18)
-      //   )
-      // ) {
-      //   return `The ${
-      //     BigNumber(depositLimit)
-      //       .dividedBy(10 ** 18)
-      //       .toNumber() / 1000
-      //   }k ${
-      //     token.symbol
-      //   } limit has been exceeded. Please reduce the amount to continue.`
-      // }
+      if (BigNumber(value).isGreaterThan(formattedMaxWalletBalance)) {
+        return 'You do not have enough money in your wallet'
+      }
+
+      if (BigNumber(value).isGreaterThan(formattedMaxDepositLimit)) {
+        return `Deposit value exceeds the maximum allowed limit ${formatNumber(
+          formattedMaxDepositLimit.toNumber()
+        )} ${token.symbol}`
+      }
+      if (
+        BigNumber(value).isGreaterThan(
+          BigNumber(depositLimit).dividedBy(10 ** 9)
+        )
+      ) {
+        return `The ${
+          BigNumber(depositLimit)
+            .dividedBy(10 ** 9)
+            .toNumber() / 1000
+        }k ${
+          token.symbol
+        } limit has been exceeded. Please reduce the amount to continue.`
+      }
 
       return true
     },
@@ -144,20 +175,32 @@ const useVaultOpenDeposit = (vault: IVault, onClose: () => void) => {
       const sharedTokenPublicKey = new PublicKey(shareToken.id)
 
       const formattedDepositAmount = BigNumber(deposit)
-        .multipliedBy(10 ** token.decimals)
+        .multipliedBy(10 ** 9)
         .toString()
 
-      const depositResponse = await depositTokens(
-        publicKey,
-        deposit,
-        wallet,
-        tokenPublicKey,
-        sharedTokenPublicKey
-      )
+      try {
+        depositTokens(
+          publicKey,
+          formattedDepositAmount,
+          wallet,
+          tokenPublicKey,
+          sharedTokenPublicKey
+        )
+          .then(async (txSignature) => {
+            const txSlot = await getTransactionBlock(txSignature)
 
-      setOpenDepositLoading(false)
-
-      console.log('Deposit Response', depositResponse)
+            if (txSlot) {
+              setLastTransactionBlock(txSlot)
+            }
+          })
+          .finally(() => {
+            setOpenDepositLoading(false)
+            onClose()
+          })
+      } catch (error) {
+        console.error('Error depositing tokens:', error)
+        setOpenDepositLoading(false)
+      }
     },
     [deposit, token, shareToken, publicKey, wallet]
   )

@@ -8,4 +8,13 @@ const MainPage = () => {
   )
 }
 
+export async function getServerSideProps() {
+  return {
+    redirect: {
+      destination: '/vaults',
+      permanent: false,
+    },
+  }
+}
+
 export default MainPage

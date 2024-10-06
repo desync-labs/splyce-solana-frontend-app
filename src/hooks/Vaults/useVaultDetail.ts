@@ -1,13 +1,15 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useRouter } from 'next/router'
+import { useLazyQuery } from '@apollo/client'
 import BigNumber from 'bignumber.js'
 import { useWallet } from '@solana/wallet-adapter-react'
+import { PublicKey } from '@solana/web3.js'
+import { WalletAdapterNetwork } from '@solana/wallet-adapter-base'
 import dayjs from 'dayjs'
 import {
   getDefaultVaultTitle,
   vaultTitle,
 } from '@/utils/Vaults/getVaultTitleAndDescription'
-import { getVaultLockEndDate } from '@/utils/Vaults/getVaultLockEndDate'
 import {
   dummyVaultMethods,
   IVault,
@@ -16,7 +18,6 @@ import {
   IVaultStrategyReport,
   VaultType,
 } from '@/utils/TempData'
-import { useLazyQuery } from '@apollo/client'
 import {
   VAULT,
   VAULT_POSITION,
@@ -25,11 +26,11 @@ import {
 } from '@/apollo/queries'
 import { defaultNetWork } from '@/utils/network'
 import { vaultType } from '@/utils/Vaults/getVaultType'
-import { WalletAdapterNetwork } from '@solana/wallet-adapter-base'
 import { getUserTokenBalance, previewRedeem } from '@/utils/TempSdkMethods'
-import { PublicKey } from '@solana/web3.js'
+import useSyncContext from '@/context/sync'
 
 const VAULT_REPORTS_PER_PAGE = 1000
+
 enum TransactionFetchType {
   FETCH = 'fetch',
   PROMISE = 'promise',
@@ -51,6 +52,7 @@ export type IVaultStrategyHistoricalApr = {
 const useVaultDetail = () => {
   const router = useRouter()
   const { publicKey } = useWallet()
+  const { lastTransactionBlock } = useSyncContext()
   const { vaultId, tab } = router.query
   const network = defaultNetWork
 
@@ -199,15 +201,19 @@ const useVaultDetail = () => {
           : getDefaultVaultTitle(
               vaultType[vaultData.id.toLowerCase()] || VaultType.DEFAULT,
               //vaultData.token.name,
-              'spUSD',
+              'tspUSD',
               vaultData.id
             ),
         type,
-        token: { ...vaultData.token, symbol: 'spUSD', name: 'Splyce USD' },
+        token: {
+          ...vaultData.token,
+          symbol: 'tspUSD',
+          name: 'Test Splyce USD',
+        },
         shareToken: {
           ...vaultData.shareToken,
-          symbol: 'vSPUSD',
-          name: 'vSpUSD',
+          symbol: 'sstUSD',
+          name: 'Splyce Vault Shares Token USD',
         },
       }
 
@@ -378,9 +384,7 @@ const useVaultDetail = () => {
                 previewRedeemValue = (
                   await previewRedeem(balance as string, position.vault.id)
                 ).toString()
-                previewRedeemValue = BigNumber(previewRedeemValue)
-                  //.dividedBy(10 ** 18)
-                  .toString()
+                previewRedeemValue = BigNumber(previewRedeemValue).toString()
               }
 
               const updatedVaultPosition = {
@@ -469,6 +473,12 @@ const useVaultDetail = () => {
   }, [vaultId, publicKey, fetchVault])
 
   useEffect(() => {
+    if (lastTransactionBlock && vaultId && !vaultLoading) {
+      fetchVault(vaultId, network)
+    }
+  }, [lastTransactionBlock])
+
+  useEffect(() => {
     let timeout: ReturnType<typeof setTimeout>
     if (vault?.strategies && vault?.strategies?.length) {
       /**
@@ -534,6 +544,7 @@ const useVaultDetail = () => {
       setVaultPosition({} as IVaultPosition)
     }
   }, [
+    lastTransactionBlock,
     publicKey,
     vault.id,
     fetchPositionTransactions,
@@ -604,7 +615,7 @@ const useVaultDetail = () => {
 
     return BigNumber(balanceToken || '0')
       .minus(sumTokenDeposits.minus(sumTokenWithdrawals))
-      .dividedBy(10 ** 18)
+      .dividedBy(10 ** 9)
       .toNumber()
   }, [
     vaultPosition,

@@ -10,6 +10,7 @@ import { Wallet } from '@solana/wallet-adapter-react'
 import { defaultEndpoint } from '@/utils/network'
 import vaultIdl from '@/idls/tokenized_vault.json'
 import strategyIdl from '@/idls/strategy_program.json'
+import faucetIdl from '@/idls/faucet.json'
 
 export const getUserTokenBalance = async (
   publicKey: PublicKey,
@@ -32,7 +33,8 @@ export const getUserTokenBalance = async (
       const associatedTokenAccountPubKey = accounts.value[0].pubkey
       const tokenAccountInfo = await getAccount(
         connection,
-        associatedTokenAccountPubKey
+        associatedTokenAccountPubKey,
+        'processed'
       )
 
       return tokenAccountInfo.amount.toString()
@@ -102,9 +104,7 @@ export const depositTokens = async (
     )
 
     // Send Tx
-    const signature = await provider.sendAndConfirm(tx)
-    console.log('Deposit tx successes:', signature)
-    return signature
+    return await provider.sendAndConfirm(tx)
   } catch (err) {
     console.error('Error deposit tx:', err)
   }
@@ -158,17 +158,10 @@ export const withdrawTokens = async (
     wallet
   )
 
-  const strategyAccount =
-    await strategyProgram.account.simpleStrategy.fetch(strategyPDA)
-
   const strategyTokenAccount = await PublicKey.findProgramAddressSync(
     [Buffer.from('underlying'), strategyPDA.toBuffer()],
     strategyProgram.programId
   )[0]
-
-  console.log('strategyPDA', strategyPDA.toBase58(), strategyPDA)
-  console.log('strategyAccount', strategyAccount)
-  console.log('strategyTokenAccount', strategyTokenAccount)
 
   const remainingAccountsMap = {
     accountsMap: [
@@ -212,7 +205,7 @@ export const withdrawTokens = async (
   }
 }
 
-const findOrCreateTokenAccountByOwner = async (
+export const findOrCreateTokenAccountByOwner = async (
   userPubKey: PublicKey,
   tokenMintPublicKey: PublicKey,
   wallet: Wallet
@@ -279,14 +272,93 @@ export const createTokenAccount = async (
     // Sign transaction
     const signedTransaction = await provider.sendAndConfirm(transaction)
 
-    console.log(`Токеновый аккаунт успешно создан: ${signedTransaction}`)
+    console.log(`Token account created: ${signedTransaction}`)
     return associatedTokenAddress
   } catch (error) {
-    console.error('Ошибка при создании токенового аккаунта:', error)
+    console.error('Error creation new token account:', error)
   }
 }
 
 export const previewRedeem = async (shareBalance: string, vaultId: string) => {
   // todo: implement preview redeem from program
   return shareBalance
+}
+
+export const previewDeposit = async (tokenAmount: string, vaultId: string) => {
+  // todo: implement preview deposit from program
+  return tokenAmount
+}
+
+export const previewWithdraw = async (tokenAmount: string, vaultId: string) => {
+  // todo: implement preview withdraw from program
+  return tokenAmount
+}
+
+export const getTransactionBlock = async (signature: string) => {
+  const connection = new Connection(defaultEndpoint)
+
+  try {
+    const transaction = await connection.getTransaction(signature, {
+      commitment: 'confirmed',
+      maxSupportedTransactionVersion: 0,
+    })
+    if (!transaction) {
+      return
+    }
+    return transaction.slot
+  } catch (error) {
+    console.error('Error getting transaction block:', error)
+    return
+  }
+}
+
+export const faucetTestToken = async (
+  userPubKey: PublicKey,
+  tokenPubKey: PublicKey,
+  wallet: Wallet
+) => {
+  if (!userPubKey || !wallet || !tokenPubKey) {
+    return
+  }
+
+  const connection = new Connection(defaultEndpoint)
+  const provider = new AnchorProvider(connection, wallet.adapter, {
+    preflightCommitment: 'confirmed',
+  })
+
+  const faucetProgram = new Program(faucetIdl, provider)
+
+  const faucetData = new PublicKey(
+    'GadGcmfR95AqyhN58PeHJ46JGdJ2K9AkdfnEUCQSvNp5'
+  )
+
+  const faucetTokenAccount = new PublicKey(
+    'J6baU8waHBeAUBtfvS9mUyMhUXDJ8HBjQCEKrpkoJSgC'
+  )
+
+  const userTokenAccount = await findOrCreateTokenAccountByOwner(
+    userPubKey,
+    tokenPubKey,
+    wallet
+  )
+
+  try {
+    const tx = new Transaction().add(
+      await faucetProgram.methods
+        .sendTokens()
+        .accounts({
+          faucetData: faucetData,
+          tokenAccount: faucetTokenAccount,
+          recipient: userTokenAccount,
+          signer: userPubKey,
+          tokenProgram: TOKEN_PROGRAM_ID,
+        })
+        .instruction()
+    )
+
+    // Send Tx
+    return await provider.sendAndConfirm(tx)
+  } catch (err) {
+    console.error('Error deposit tx:', err)
+  }
 }

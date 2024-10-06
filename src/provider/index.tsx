@@ -1,10 +1,10 @@
 import { ReactNode } from 'react'
 import { ApolloProvider } from '@apollo/client'
-import WalletProvider from './WalletProvider'
-import { AppThemeProvider } from './ThemeProvider'
+import WalletProvider from '@/provider/WalletProvider'
+import { AppThemeProvider } from '@/provider/ThemeProvider'
 import { SharedProvider } from '@/context/shared'
-
 import { client } from '@/apollo/client'
+import { SyncProvider } from '@/context/sync'
 
 export { WalletProvider, AppThemeProvider }
 
@@ -13,7 +13,9 @@ export const Providers = ({ children }: { children: ReactNode }) => {
     <AppThemeProvider>
       <SharedProvider>
         <WalletProvider>
-          <ApolloProvider client={client}>{children}</ApolloProvider>
+          <ApolloProvider client={client}>
+            <SyncProvider>{children}</SyncProvider>
+          </ApolloProvider>
         </WalletProvider>
       </SharedProvider>
     </AppThemeProvider>

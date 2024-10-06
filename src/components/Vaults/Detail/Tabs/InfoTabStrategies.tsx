@@ -117,7 +117,8 @@ const InfoTabStrategies = () => {
                     strategyTitle[strategy.id.toLowerCase()]
                   ) : (
                     <>
-                      spUSD: Direct Incentive - Educational Strategy {index + 1}
+                      tspUSD: Direct Incentive - Educational Strategy{' '}
+                      {index + 1}
                     </>
                   )}
                 </MenuItem>

@@ -6,12 +6,12 @@ import BigNumber from 'bignumber.js'
 import { ACCOUNT_VAULT_POSITIONS, VAULTS } from '@/apollo/queries'
 import { COUNT_PER_PAGE_VAULT } from '@/utils/Constants'
 import { vaultTitle } from '@/utils/Vaults/getVaultTitleAndDescription'
-
 import { getDefaultVaultTitle } from '@/utils/Vaults/getVaultTitleAndDescription'
 import { IVault, IVaultPosition, VaultType } from '@/utils/TempData'
 import { defaultNetWork } from '@/utils/network'
 import { vaultType } from '@/utils/Vaults/getVaultType'
 import { getUserTokenBalance, previewRedeem } from '@/utils/TempSdkMethods'
+import useSyncContext from '@/context/sync'
 
 interface IdToVaultIdMap {
   [key: string]: string | undefined
@@ -25,6 +25,7 @@ export enum SortType {
 
 const useVaultList = () => {
   const { publicKey } = useWallet()
+  const { lastTransactionBlock } = useSyncContext()
 
   const network = defaultNetWork
 
@@ -55,28 +56,16 @@ const useVaultList = () => {
     fetchPolicy: 'network-only',
   })
 
-  // const { data: vaultsFactories, loading: vaultsFactoriesLoading } = useQuery(
-  //   VAULT_FACTORIES,
-  //   {
-  //     context: { clientName: 'vaults', network },
-  //     fetchPolicy: 'network-only',
-  //     variables: {
-  //       network,
-  //     },
-  //   }
-  // )
-
-  const [
-    loadPositions,
-    { loading: vaultPositionsLoading, refetch: positionsRefetch },
-  ] = useLazyQuery(ACCOUNT_VAULT_POSITIONS, {
-    context: { clientName: 'vaults', network },
-    fetchPolicy: 'network-only',
-    variables: { network, first: 1000 },
-  })
+  const [loadPositions, { loading: vaultPositionsLoading }] = useLazyQuery(
+    ACCOUNT_VAULT_POSITIONS,
+    {
+      context: { clientName: 'vaults', network },
+      fetchPolicy: 'network-only',
+      variables: { network, first: 1000 },
+    }
+  )
 
   useEffect(() => {
-    //if (account && vaultService) {
     if (publicKey) {
       loadPositions({
         variables: { account: publicKey?.toBase58().toLowerCase() },
@@ -122,9 +111,9 @@ const useVaultList = () => {
                 (position: IVaultPosition, index: number) => {
                   return {
                     ...position,
-                    balancePosition: BigNumber(values[index].toString())
-                      //.dividedBy(10 ** 18)
-                      .toString(),
+                    balancePosition: BigNumber(
+                      values[index].toString()
+                    ).toString(),
                   }
                 }
               )
@@ -138,18 +127,17 @@ const useVaultList = () => {
     } else {
       setVaultPositionsList([])
     }
-  }, [publicKey, loadPositions, setVaultPositionsList])
+  }, [lastTransactionBlock, publicKey, loadPositions, setVaultPositionsList])
 
-  // useEffect(() => {
-  //   if (syncVault && !prevSyncVault) {
-  //     positionsRefetch({ account: account?.toLowerCase() }).then((res) => {
-  //       res.data?.accountVaultPositions
-  //         ? setVaultPositionsList(res.data.accountVaultPositions)
-  //         : setVaultPositionsList([])
-  //     })
-  //     vaultsRefetch()
-  //   }
-  // }, [syncVault, prevSyncVault, vaultsRefetch, positionsRefetch])
+  useEffect(() => {
+    if (lastTransactionBlock) {
+      const timer = setTimeout(() => {
+        vaultsRefetch()
+      }, 1000)
+
+      return () => clearTimeout(timer)
+    }
+  }, [lastTransactionBlock, vaultsRefetch])
 
   useEffect(() => {
     if (vaultItemsData && vaultItemsData.vaults) {
@@ -244,14 +232,18 @@ const useVaultList = () => {
             ? vaultTitle[vault.id.toLowerCase()]
             : getDefaultVaultTitle(
                 vaultType[vault.id.toLowerCase()] || VaultType.DEFAULT,
-                'spUSD',
+                'tspUSD',
                 //vault.token.name,
                 vault.id.toLowerCase()
               ),
           type: vaultType[vault.id.toLowerCase()] || VaultType.DEFAULT,
           // todo: remove this after graph fix
-          token: { ...vault.token, symbol: 'SPUSD', name: 'Splyce USD' },
-          shareToken: { ...vault.shareToken, symbol: 'vSPUSD', name: 'vSpUSD' },
+          token: { ...vault.token, symbol: 'tspUSD', name: 'Test Splyce USD' },
+          shareToken: {
+            ...vault.shareToken,
+            symbol: 'sstUSD',
+            name: 'Splyce Vault Shares Token USD',
+          },
         }
       })
 

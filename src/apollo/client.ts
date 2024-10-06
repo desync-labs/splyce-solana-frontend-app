@@ -137,13 +137,6 @@ export const client = new ApolloClient({
   cache,
 })
 
-export const dexClient = new ApolloClient({
-  link: new HttpLink({
-    uri: 'https://graph.xinfin.fathom.fi/subgraphs/name/dex-subgraph',
-  }),
-  cache: new InMemoryCache(),
-})
-
 export const healthClient = new ApolloClient({
   link: new HttpLink({
     uri: 'https://graph.xinfin.fathom.fi/graphql',

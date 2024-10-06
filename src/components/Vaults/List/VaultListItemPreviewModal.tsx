@@ -175,7 +175,7 @@ const VaultListItemPreviewModal: FC<VaultListItemPreviewModalProps> = ({
                   formatNumber(
                     BigNumber(balanceEarned)
                       .multipliedBy(fxdPrice)
-                      .dividedBy(10 ** 18)
+                      .dividedBy(10 ** 9)
                       .toNumber()
                   )
                 ) : balanceEarned === -1 ? (
@@ -196,8 +196,8 @@ const VaultListItemPreviewModal: FC<VaultListItemPreviewModalProps> = ({
               <>
                 {formatCurrency(
                   BigNumber(fxdPrice)
-                    .dividedBy(10 ** 18)
-                    .multipliedBy(BigNumber(balanceTokens).dividedBy(10 ** 18))
+                    .dividedBy(10 ** 9)
+                    .multipliedBy(BigNumber(balanceTokens).dividedBy(10 ** 9))
                     .toNumber()
                 )}
               </>
@@ -212,7 +212,7 @@ const VaultListItemPreviewModal: FC<VaultListItemPreviewModalProps> = ({
                   Math.max(
                     BigNumber(depositLimit)
                       .minus(BigNumber(balanceTokens))
-                      .dividedBy(10 ** 18)
+                      .dividedBy(10 ** 9)
                       .toNumber(),
                     0
                   )
@@ -248,7 +248,7 @@ const VaultListItemPreviewModal: FC<VaultListItemPreviewModalProps> = ({
                   {vaultPosition
                     ? formatNumber(
                         BigNumber(vaultPosition.balancePosition)
-                          .dividedBy(10 ** 18)
+                          .dividedBy(10 ** 9)
                           .toNumber()
                       )
                     : 0}
