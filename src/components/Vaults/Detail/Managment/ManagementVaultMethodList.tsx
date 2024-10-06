@@ -6,7 +6,7 @@ import MethodListItem, {
 } from '@/components/Vaults/Detail/Managment/MethodListItem'
 import { TabContentWrapper } from '@/components/Vaults/Detail/Tabs/InfoTabs'
 
-export const ContractMethodListWrapper = styled(Box)`
+export const ProgramMethodListWrapper = styled(Box)`
   padding: 0;
 
   &.hide {
@@ -108,10 +108,10 @@ const ManagementVaultMethodList: FC<VaultItemManagementProps> = ({
   }
 
   return (
-    <ContractMethodListWrapper className={isShow ? 'showing' : 'hide'}>
+    <ProgramMethodListWrapper className={isShow ? 'showing' : 'hide'}>
       <TabContentWrapper sx={{ paddingLeft: 0, paddingRight: 0 }}>
         {!vaultMethods.length ? (
-          <Typography>Has no contract methods yet</Typography>
+          <Typography>Has no program methods yet</Typography>
         ) : (
           <>
             <MethodTypesTabs
@@ -120,7 +120,7 @@ const ManagementVaultMethodList: FC<VaultItemManagementProps> = ({
               aria-label="state mutability tabs"
             >
               <Tab
-                label="Read Contract"
+                label="Read Program"
                 icon={
                   <ReadeMethodIcon
                     color={value === 0 ? '#BBFB5B' : '#d1dae6'}
@@ -130,7 +130,7 @@ const ManagementVaultMethodList: FC<VaultItemManagementProps> = ({
                 {...a11yProps(0)}
               />
               <Tab
-                label="Write Contract"
+                label="Write Program"
                 icon={
                   <WriteMethodIcon
                     color={value === 1 ? '#BBFB5B' : '#d1dae6'}
@@ -184,7 +184,7 @@ const ManagementVaultMethodList: FC<VaultItemManagementProps> = ({
           </>
         )}
       </TabContentWrapper>
-    </ContractMethodListWrapper>
+    </ProgramMethodListWrapper>
   )
 }
 

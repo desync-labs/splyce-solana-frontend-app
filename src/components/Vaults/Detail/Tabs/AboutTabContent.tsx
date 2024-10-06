@@ -18,6 +18,7 @@ import {
 } from '@/components/Vaults/Detail/Tabs/InfoTabAbout'
 import BasePopover from '@/components/Base/Popover/BasePopover'
 import { BaseListItem } from '@/components/Base/List/StyledList'
+import { getVaultProgramAddress } from '@/utils/Vaults/getProgramAddress'
 
 const FeesItemWrapper = styled(Box)`
   display: flex;
@@ -46,8 +47,11 @@ const VaultAboutTabContent = () => {
       </VaultDescriptionWrapper>
       <VaultContractAddress>
         Vault Program address:{' '}
-        <Link href={getExplorerUrl(vault.id)} target="_blank">
-          {vault.id}
+        <Link
+          href={getExplorerUrl(getVaultProgramAddress(vault.id))}
+          target="_blank"
+        >
+          {getVaultProgramAddress(vault.id)}
         </Link>
       </VaultContractAddress>
       <Box>

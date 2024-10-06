@@ -24,6 +24,7 @@ import { FlexBox } from '@/components/Base/Boxes/StyledBoxes'
 import { AppListFees } from '@/components/Vaults/Detail/Tabs/InfoTabAbout'
 import { BaseListItem } from '@/components/Base/List/StyledList'
 import { tempApyData } from '@/utils/TempApyData'
+import { getStrategyProgramAddress } from '@/utils/Vaults/getProgramAddress'
 
 dayjs.extend(relativeTime)
 
@@ -182,7 +183,9 @@ const VaultStrategyItem: FC<VaultStrategyItemPropsType> = ({
         <StatusLabel strategyId={strategyData.id} />
       </VaultStrategyTitle>
       <Link
-        href={getExplorerUrl(strategyData.id as string)}
+        href={getExplorerUrl(
+          getStrategyProgramAddress(strategyData.id as string)
+        )}
         target="_blank"
         style={{
           display: 'inline-flex',
@@ -192,7 +195,7 @@ const VaultStrategyItem: FC<VaultStrategyItemPropsType> = ({
           marginBottom: '16px',
         }}
       >
-        {strategyData.id}
+        {getStrategyProgramAddress(strategyData.id as string)}
       </Link>
       <VaultStrategyDescription>
         {strategyDescription[strategyData.id.toLowerCase()] ? (

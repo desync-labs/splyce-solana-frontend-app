@@ -51,7 +51,7 @@ const MyApp = ({ Component, pageProps, ...props }: AppProps) => {
           name="apple-mobile-web-app-title"
           content="Splyce Liquidity Protocol"
         />
-        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black" />
         <title>
           {pageProps?.title ? `${pageProps.title} Splyce` : 'Splyce'}

@@ -21,7 +21,6 @@ import WalletConnectBtn from '@/components/Base/WalletConnectBtn'
 import { BaseDialogSummary } from '@/components/Base/Form/StyledForm'
 import {
   BaseErrorBox,
-  BaseInfoBox,
   BaseWarningBox,
 } from '@/components/Base/Boxes/StyledBoxes'
 import { BaseListItem } from '@/components/Base/List/StyledList'
@@ -239,7 +238,6 @@ const DepositVaultInfo: FC<DepositVaultInfoProps> = ({
               !!Object.keys(errors).length ||
               (isTfVaultType && !isUserKycPassed)
             }
-            isLoading={openDepositLoading}
           >
             {openDepositLoading ? (
               <CircularProgress sx={{ color: '#0D1526' }} size={20} />

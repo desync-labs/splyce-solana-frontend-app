@@ -276,10 +276,6 @@ const ManageVaultInfo: FC<VaultManageInfoProps> = ({
               (formType === FormType.WITHDRAW &&
                 !!withdrawLimitExceeded(formToken))
             }
-            isLoading={openDepositLoading}
-            data-testid={`vault-detailManageModal-${
-              formType === FormType.DEPOSIT ? 'depositButton' : 'withdrawButton'
-            }`}
           >
             {openDepositLoading ? (
               <CircularProgress sx={{ color: '#0D1526' }} size={20} />
