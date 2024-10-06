@@ -23,7 +23,7 @@ export const defaultValues = {
 const useVaultOpenDeposit = (vault: IVault, onClose: () => void) => {
   const { token, shareToken, depositLimit, balanceTokens, type } = vault
   const { publicKey, wallet } = useWallet()
-  const { setLastTransactionBlock } = useSyncContext()
+  const { lastTransactionBlock, setLastTransactionBlock } = useSyncContext()
 
   const [walletBalance, setWalletBalance] = useState<string>('0')
   const [isWalletFetching, setIsWalletFetching] = useState<boolean>(false)
@@ -62,7 +62,7 @@ const useVaultOpenDeposit = (vault: IVault, onClose: () => void) => {
     }, 300)
 
     return () => clearTimeout(timeout)
-  }, [publicKey, token?.id, getVaultTokenBalance])
+  }, [publicKey, token?.id, getVaultTokenBalance, lastTransactionBlock])
 
   const updateSharedAmount = useMemo(
     () =>

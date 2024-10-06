@@ -241,8 +241,8 @@ const useVaultList = () => {
           token: { ...vault.token, symbol: 'tspUSD', name: 'Test Splyce USD' },
           shareToken: {
             ...vault.shareToken,
-            symbol: 'spvUSD',
-            name: 'Splyce Vault USD',
+            symbol: 'sstUSD',
+            name: 'Splyce Vault Shares Token USD',
           },
         }
       })

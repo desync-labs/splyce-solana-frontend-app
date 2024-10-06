@@ -212,8 +212,8 @@ const useVaultDetail = () => {
         },
         shareToken: {
           ...vaultData.shareToken,
-          symbol: 'spvUSD',
-          name: 'Splyce Vault USD',
+          symbol: 'sstUSD',
+          name: 'Splyce Vault Shares Token USD',
         },
       }
 

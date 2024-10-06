@@ -36,7 +36,7 @@ const useVaultManageDeposit = (
     vault
   const { balancePosition, balanceShares } = vaultPosition
   const { publicKey, wallet } = useWallet()
-  const { setLastTransactionBlock } = useSyncContext()
+  const { lastTransactionBlock, setLastTransactionBlock } = useSyncContext()
 
   const methods = useForm({
     defaultValues,
@@ -102,7 +102,7 @@ const useVaultManageDeposit = (
     }, 300)
 
     return () => clearTimeout(timeout)
-  }, [publicKey, token?.id, getVaultTokenBalance])
+  }, [publicKey, token?.id, getVaultTokenBalance, lastTransactionBlock])
 
   useEffect(() => {
     let timeout: ReturnType<typeof setTimeout>
