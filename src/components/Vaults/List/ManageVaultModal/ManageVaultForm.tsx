@@ -41,6 +41,7 @@ type VaultManageFormProps = {
   >
   formType: FormType
   setMax: () => void
+  validateMaxValue: (value: string) => boolean | string
   handleSubmit: UseFormHandleSubmit<
     {
       formToken: string
@@ -61,6 +62,7 @@ const ManageVaultForm: FC<VaultManageFormProps> = ({
   setMax,
   handleSubmit,
   onSubmit,
+  validateMaxValue,
   isDetailPage = false,
 }) => {
   const { token } = vaultItemData
@@ -89,6 +91,11 @@ const ManageVaultForm: FC<VaultManageFormProps> = ({
         <Controller
           control={control}
           name="formToken"
+          rules={{
+            required: true,
+            min: 0.000000000000000000001,
+            validate: validateMaxValue,
+          }}
           render={({ field: { onChange, value }, fieldState: { error } }) => (
             <BaseFormInputWrapper>
               <BaseFormLabelRow>
@@ -154,6 +161,24 @@ const ManageVaultForm: FC<VaultManageFormProps> = ({
                           sx={{ fontSize: '12px', paddingLeft: '6px' }}
                         >
                           This field should be positive.
+                        </Box>
+                      </BaseFormInputErrorWrapper>
+                    )}
+                    {error && error.type === 'validate' && (
+                      <BaseFormInputErrorWrapper>
+                        <BaseInfoIcon
+                          sx={{
+                            float: 'left',
+                            width: '14px',
+                            height: '14px',
+                            marginRight: '0',
+                          }}
+                        />
+                        <Box
+                          component={'span'}
+                          sx={{ fontSize: '12px', paddingLeft: '6px' }}
+                        >
+                          {error.message}
                         </Box>
                       </BaseFormInputErrorWrapper>
                     )}

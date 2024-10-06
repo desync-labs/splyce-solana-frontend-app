@@ -13,6 +13,7 @@ import {
   previewDeposit,
 } from '@/utils/TempSdkMethods'
 import useSyncContext from '@/context/sync'
+import { formatNumber } from '@/utils/format'
 
 export const MAX_PERSONAL_DEPOSIT = 50000
 export const defaultValues = {
@@ -133,28 +134,28 @@ const useVaultOpenDeposit = (vault: IVault, onClose: () => void) => {
             ),
         0
       )
-      // if (BigNumber(value).isGreaterThan(formattedMaxWalletBalance)) {
-      //   return 'You do not have enough money in your wallet'
-      // }
-      //
-      // if (BigNumber(value).isGreaterThan(formattedMaxDepositLimit)) {
-      //   return `Deposit value exceeds the maximum allowed limit ${formatNumber(
-      //     formattedMaxDepositLimit.toNumber()
-      //   )} ${token.symbol}`
-      // }
-      // if (
-      //   BigNumber(value).isGreaterThan(
-      //     BigNumber(depositLimit).dividedBy(10 ** 9)
-      //   )
-      // ) {
-      //   return `The ${
-      //     BigNumber(depositLimit)
-      //       .dividedBy(10 ** 9)
-      //       .toNumber() / 1000
-      //   }k ${
-      //     token.symbol
-      //   } limit has been exceeded. Please reduce the amount to continue.`
-      // }
+      if (BigNumber(value).isGreaterThan(formattedMaxWalletBalance)) {
+        return 'You do not have enough money in your wallet'
+      }
+
+      if (BigNumber(value).isGreaterThan(formattedMaxDepositLimit)) {
+        return `Deposit value exceeds the maximum allowed limit ${formatNumber(
+          formattedMaxDepositLimit.toNumber()
+        )} ${token.symbol}`
+      }
+      if (
+        BigNumber(value).isGreaterThan(
+          BigNumber(depositLimit).dividedBy(10 ** 9)
+        )
+      ) {
+        return `The ${
+          BigNumber(depositLimit)
+            .dividedBy(10 ** 9)
+            .toNumber() / 1000
+        }k ${
+          token.symbol
+        } limit has been exceeded. Please reduce the amount to continue.`
+      }
 
       return true
     },

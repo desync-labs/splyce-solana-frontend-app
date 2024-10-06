@@ -18,7 +18,7 @@ export const VaultDetailFormColumn = styled(Box)`
 `
 
 const VaultDetailDepositForm = () => {
-  const { vault } = useVaultContext()
+  const { vault, minimumDeposit } = useVaultContext()
   const { isMobile } = useSharedContext()
 
   const onClose = () => {
@@ -39,7 +39,6 @@ const VaultDetailDepositForm = () => {
     approve,
     setMax,
     validateMaxDepositValue,
-    minimumDeposit,
     depositLimitExceeded,
     handleSubmit,
     onSubmit,

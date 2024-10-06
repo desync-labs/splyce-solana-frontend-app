@@ -179,6 +179,71 @@ const useVaultManageDeposit = (
     balanceShares,
   ])
 
+  const validateDeposit = (
+    value: string,
+    maxWalletBalance: BigNumber,
+    maxDepositLimit: BigNumber
+  ) => {
+    if (BigNumber(value).isGreaterThan(maxWalletBalance)) {
+      return 'You do not have enough money in your wallet'
+    }
+
+    if (BigNumber(value).isGreaterThan(maxDepositLimit)) {
+      return `Deposit value exceeds the maximum allowed limit ${formatNumber(
+        maxDepositLimit.toNumber()
+      )} ${token.symbol}`
+    }
+
+    const formattedDeposit = BigNumber(depositLimit).dividedBy(10 ** 9)
+    const rule =
+      type === VaultType.TRADEFI
+        ? BigNumber(value).isGreaterThan(formattedDeposit)
+        : BigNumber(balancePosition)
+            .dividedBy(10 ** 9)
+            .plus(value)
+            .isGreaterThan(formattedDeposit)
+
+    if (rule) {
+      return `The ${formattedDeposit.toNumber() / 1000}k ${
+        token.symbol
+      } limit has been exceeded. Please reduce the amount to continue.`
+    }
+
+    return true
+  }
+
+  const validateRepay = (value: string, maxBalanceToken: BigNumber) => {
+    if (BigNumber(value).isGreaterThan(maxBalanceToken)) {
+      return "You don't have enough to repay that amount"
+    }
+
+    return true
+  }
+
+  const validateMaxValue = useCallback(
+    (value: string) => {
+      if (formType === FormType.DEPOSIT) {
+        const maxWalletBalance = BigNumber(walletBalance).dividedBy(10 ** 9)
+        const formattedDepositLimit = BigNumber(depositLimit).dividedBy(10 ** 9)
+        const maxDepositLimit =
+          type === VaultType.TRADEFI
+            ? BigNumber.max(formattedDepositLimit, 0)
+            : BigNumber.max(
+                BigNumber(formattedDepositLimit)
+                  .minus(BigNumber(balanceTokens).dividedBy(10 ** 9))
+                  .toNumber(),
+                0
+              )
+
+        return validateDeposit(value, maxWalletBalance, maxDepositLimit)
+      } else {
+        const maxBalanceToken = BigNumber(balancePosition).dividedBy(10 ** 9)
+        return validateRepay(value, maxBalanceToken)
+      }
+    },
+    [depositLimit, balanceTokens, walletBalance, balancePosition, formType]
+  )
+
   const withdrawLimitExceeded = (value: string) => {
     /**
      * Logic for TradeFlowVault
@@ -284,6 +349,7 @@ const useVaultManageDeposit = (
     openDepositLoading,
     balancePosition,
     setMax,
+    validateMaxValue,
     handleSubmit,
     onSubmit,
     methods,

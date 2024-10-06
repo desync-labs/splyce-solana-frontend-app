@@ -60,6 +60,7 @@ const VaultListItemManageModal: FC<VaultManageProps> = ({
     isWalletFetching,
     openDepositLoading,
     balancePosition,
+    validateMaxValue,
     setMax,
     handleSubmit,
     onSubmit,
@@ -131,6 +132,7 @@ const VaultListItemManageModal: FC<VaultManageProps> = ({
               control={control}
               formType={formType}
               setMax={setMax}
+              validateMaxValue={validateMaxValue}
               handleSubmit={handleSubmit}
               onSubmit={onSubmit}
             />
@@ -181,7 +183,17 @@ const VaultListItemManageModal: FC<VaultManageProps> = ({
             {!connected ? (
               <WalletConnectBtn />
             ) : (
-              <Button variant="gradient" onClick={handleSubmit(onSubmit)}>
+              <Button
+                variant="gradient"
+                onClick={handleSubmit(onSubmit)}
+                disabled={
+                  openDepositLoading ||
+                  !!Object.keys(errors).length ||
+                  (isTfVaultType && activeTfPeriod > 0) ||
+                  (formType === FormType.WITHDRAW &&
+                    !!withdrawLimitExceeded(formToken))
+                }
+              >
                 {openDepositLoading ? (
                   <CircularProgress sx={{ color: '#183102' }} size={20} />
                 ) : formType === FormType.DEPOSIT ? (
