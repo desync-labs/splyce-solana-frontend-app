@@ -81,11 +81,8 @@ const useVaultDetail = () => {
     Record<string, IVaultStrategyHistoricalApr[]>
   >({})
 
-  const [managedStrategiesIds, setManagedStrategiesIds] = useState<string[]>([
-    '0x989a19e29cb9bc194bd35606af8f9a641a4cbce4',
-    '0x4e2fc8a4e62cf515ee7954fd01346cd2501e7e81',
-  ])
-  const [isUserManager, setIsUserManager] = useState<boolean>(true)
+  const [managedStrategiesIds, setManagedStrategiesIds] = useState<string[]>([])
+  const [isUserManager, setIsUserManager] = useState<boolean>(false)
 
   const [isTfVaultType, setIsTfVaultType] = useState<boolean>(false)
   const [isUserKycPassed, setIsUserKycPassed] = useState<boolean>(false)
