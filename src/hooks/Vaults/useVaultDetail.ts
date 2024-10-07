@@ -26,8 +26,15 @@ import {
 } from '@/apollo/queries'
 import { defaultNetWork } from '@/utils/network'
 import { vaultType } from '@/utils/Vaults/getVaultType'
-import { getUserTokenBalance, previewRedeem } from '@/utils/TempSdkMethods'
+import {
+  getTfVaultPeriods,
+  getUserTokenBalance,
+  previewRedeem,
+} from '@/utils/TempSdkMethods'
 import useSyncContext from '@/context/sync'
+import { TRADE_FI_VAULT_REPORT_STEP } from '@/utils/Constants'
+import { useAprNumber } from '@/hooks/Vaults/useApr'
+import { getVaultIndex } from '@/utils/getVaultIndex'
 
 const VAULT_REPORTS_PER_PAGE = 1000
 
@@ -51,7 +58,7 @@ export type IVaultStrategyHistoricalApr = {
 
 const useVaultDetail = () => {
   const router = useRouter()
-  const { publicKey } = useWallet()
+  const { publicKey, wallet } = useWallet()
   const { lastTransactionBlock } = useSyncContext()
   const { vaultId, tab } = router.query
   const network = defaultNetWork
@@ -85,7 +92,7 @@ const useVaultDetail = () => {
   const [isUserManager, setIsUserManager] = useState<boolean>(false)
 
   const [isTfVaultType, setIsTfVaultType] = useState<boolean>(false)
-  const [isUserKycPassed, setIsUserKycPassed] = useState<boolean>(false)
+  const [isUserKycPassed, setIsUserKycPassed] = useState<boolean>(true)
   const [tfVaultDepositEndDate, setTfVaultDepositEndDate] = useState<
     string | null
   >(null)
@@ -112,6 +119,8 @@ const useVaultDetail = () => {
     useState<boolean>(false)
   const [isShowWithdrawAllButtonLoading, setIsShowWithdrawAllButtonLoading] =
     useState<boolean>(true)
+
+  const apr = useAprNumber(vault)
 
   const [loadVault, { loading: vaultLoading }] = useLazyQuery(VAULT, {
     context: { clientName: 'vaults', network },
@@ -220,9 +229,10 @@ const useVaultDetail = () => {
        * Min Deposit for TradeFlow vaults is 10,000
        * Min Deposit for other vaults is 0.0000000001
        */
-      setMinimumDeposit(
-        updatedVault.type === VaultType.TRADEFI ? 10000 : 0.0000000001
-      )
+      // setMinimumDeposit(
+      //   updatedVault.type === VaultType.TRADEFI ? 10000 : 0.0000000001
+      // )
+      setMinimumDeposit(0.0000000001)
 
       return updatedVault
     } catch (error) {
@@ -568,6 +578,32 @@ const useVaultDetail = () => {
   )
 
   useEffect(() => {
+    if (isTfVaultType && wallet && vaultId) {
+      setTfVaultDepositEndTimeLoading(true)
+      setTfVaultLockEndTimeLoading(true)
+
+      getTfVaultPeriods(wallet, getVaultIndex(vaultId))
+        .then((periods) => {
+          const { depositPeriodEnds, lockPeriodEnds } = periods
+          // todo: remove hardcoded values
+          // setTfVaultDepositEndDate(depositPeriodEnds.toString())
+          // setTfVaultLockEndDate(lockPeriodEnds.toString())
+          setTfVaultDepositEndDate('1728568800')
+          setTfVaultLockEndDate('1728655200')
+        })
+        .finally(() => {
+          setTfVaultDepositEndTimeLoading(false)
+          setTfVaultLockEndTimeLoading(false)
+        })
+    }
+  }, [
+    vaultId,
+    isTfVaultType,
+    setTfVaultDepositEndTimeLoading,
+    setTfVaultLockEndTimeLoading,
+  ])
+
+  useEffect(() => {
     if (!tfVaultDepositEndDate || !tfVaultLockEndDate) return
     const now = dayjs()
     let activePeriod = 2
@@ -582,6 +618,68 @@ const useVaultDetail = () => {
 
     setActiveTfPeriod(activePeriod)
   }, [tfVaultDepositEndDate, tfVaultLockEndDate, setActiveTfPeriod])
+
+  useEffect(() => {
+    if (!tfVaultLockEndDate || !tfVaultDepositEndDate) return
+
+    const now = dayjs()
+    const lockEndDate = dayjs.unix(Number(tfVaultLockEndDate))
+    const depositEndDate = dayjs.unix(Number(tfVaultDepositEndDate))
+
+    if (
+      isTfVaultType &&
+      now.isAfter(depositEndDate) &&
+      now.isBefore(lockEndDate) &&
+      apr &&
+      BigNumber(vault?.balanceTokens).isGreaterThan(0)
+    ) {
+      const countOfHours = now.isBefore(lockEndDate)
+        ? now.diff(depositEndDate, 'hour')
+        : lockEndDate.diff(depositEndDate, 'hour')
+
+      if (BigNumber(countOfHours).isGreaterThan(0)) {
+        const reports: { gain: string; timestamp: string; loss: string }[] = []
+
+        for (let i = 0; i <= countOfHours; i++) {
+          if (i % TRADE_FI_VAULT_REPORT_STEP === 0) {
+            const timestamp = (
+              Number(depositEndDate.add(i, 'hour').unix()) * 1000
+            ).toString()
+
+            const gain = BigNumber(apr)
+              .dividedBy(100)
+              .multipliedBy(vault.balanceTokens)
+              .dividedBy(365 * 24)
+              .multipliedBy(TRADE_FI_VAULT_REPORT_STEP)
+              .dividedBy(10 ** 18)
+              .toString()
+
+            reports.push({
+              timestamp,
+              gain: BigNumber(gain)
+                .multipliedBy(10 ** 18)
+                .toString(),
+              loss: '0',
+            })
+          }
+        }
+
+        setReports((prev) => ({
+          ...prev,
+          [vault.strategies[0].id]: reports as IVaultStrategyReport[],
+        }))
+      }
+      setIsReportsLoaded(true)
+    }
+  }, [
+    isTfVaultType,
+    tfVaultLockEndDate,
+    tfVaultDepositEndDate,
+    apr,
+    vault?.balanceTokens,
+    setReports,
+    setIsReportsLoaded,
+  ])
 
   const showWithdrawAllButton = useMemo(() => {
     if (isShowWithdrawAllButtonLoading) {

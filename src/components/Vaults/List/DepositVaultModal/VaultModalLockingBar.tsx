@@ -12,6 +12,7 @@ import {
   StepContentCounter,
   StepLabelOptionalValue,
 } from '@/components/Vaults/Detail/VaultLockingBar'
+import { BaseDialogFormInfoWrapper } from '@/components/Base/Form/StyledForm'
 
 const CustomPaper = styled(Box)`
   position: relative;
@@ -83,7 +84,7 @@ const VaultModalLockingBar: FC<VaultModalLockingBarProps> = ({
     },
   ]
   return (
-    <CustomPaper>
+    <BaseDialogFormInfoWrapper mb={'8px'}>
       <AppStepper activeStep={activeTfPeriod} orientation="vertical">
         {steps.map((step, index) => (
           <AppStep key={step.key}>
@@ -114,7 +115,7 @@ const VaultModalLockingBar: FC<VaultModalLockingBarProps> = ({
           </AppStep>
         ))}
       </AppStepper>
-    </CustomPaper>
+    </BaseDialogFormInfoWrapper>
   )
 }
 

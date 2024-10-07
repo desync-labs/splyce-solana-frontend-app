@@ -54,17 +54,17 @@ const VaultPositionStats = () => {
   }, [vaultLoading, vaultPositionLoading, setIsLoading])
 
   const getVaultDepositLimit = () => {
-    if (isTfVaultType) {
-      return BigNumber.max(BigNumber(tfVaultDepositLimit).dividedBy(10 ** 9), 0)
-    } else {
-      return BigNumber.max(
-        BigNumber(vault?.depositLimit || 0)
-          .minus(vault?.balanceTokens || 0)
-          .dividedBy(10 ** 9)
-          .toNumber(),
-        0
-      )
-    }
+    // if (isTfVaultType) {
+    //   return BigNumber.max(BigNumber(tfVaultDepositLimit).dividedBy(10 ** 9), 0)
+    // } else {
+    return BigNumber.max(
+      BigNumber(vault?.depositLimit || 0)
+        .minus(vault?.balanceTokens || 0)
+        .dividedBy(10 ** 9)
+        .toNumber(),
+      0
+    )
+    //}
   }
 
   return (
