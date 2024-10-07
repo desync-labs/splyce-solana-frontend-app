@@ -6,8 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="980c1e59-2a66-476c-8058-c1191519ba3f" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Vaults/Detail/Tabs/InfoNav.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Vaults/Detail/Tabs/InfoNav.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/hooks/Vaults/useVaultDetail.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/hooks/Vaults/useVaultDetail.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/idls/faucet.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/idls/faucet.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/vaults/faucet.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/vaults/faucet.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/TempSdkMethods.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/TempSdkMethods.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

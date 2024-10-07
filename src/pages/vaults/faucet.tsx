@@ -29,7 +29,7 @@ const FaucetIndex: FC = () => {
     }
     setLoading(true)
     const testTokenPublicKey = new PublicKey(
-      'H6RLQCTDbiJdNP1K8Cjoc5MAabaAq5fEdcpdJjSwuXB4'
+      '4dCLhR7U8PzwXau6qfjr73tKgp5SD42aLbyo3XQNzY4V'
     )
     try {
       faucetTestToken(publicKey, testTokenPublicKey, wallet)

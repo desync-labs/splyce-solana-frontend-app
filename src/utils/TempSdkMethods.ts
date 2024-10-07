@@ -329,11 +329,11 @@ export const faucetTestToken = async (
   const faucetProgram = new Program(faucetIdl, provider)
 
   const faucetData = new PublicKey(
-    'GadGcmfR95AqyhN58PeHJ46JGdJ2K9AkdfnEUCQSvNp5'
+    'GhHAUWzijk3e3pUTJbwAFjU3v51hkrpujnEhhnxtp8Q7'
   )
 
   const faucetTokenAccount = new PublicKey(
-    'J6baU8waHBeAUBtfvS9mUyMhUXDJ8HBjQCEKrpkoJSgC'
+    'EjQxPWRJPvLFcPj4LomBwCpWxKYuig8jggVFhUq1qYQv'
   )
 
   const userTokenAccount = await findOrCreateTokenAccountByOwner(
