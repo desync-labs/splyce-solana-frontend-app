@@ -6,7 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="980c1e59-2a66-476c-8058-c1191519ba3f" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/network.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/network.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Vaults/Detail/VaultProfitCalculator.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Vaults/Detail/VaultProfitCalculator.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/hooks/Vaults/useVaultDetail.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/hooks/Vaults/useVaultDetail.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -116,7 +117,7 @@
       <workItem from="1727427650774" duration="81869000" />
       <workItem from="1727950379494" duration="67321000" />
       <workItem from="1728070575987" duration="38000" />
-      <workItem from="1728141811734" duration="25432000" />
+      <workItem from="1728141811734" duration="27352000" />
     </task>
     <servers />
   </component>

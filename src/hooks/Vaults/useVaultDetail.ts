@@ -306,7 +306,7 @@ const useVaultDetail = () => {
         }
       })
     },
-    [loadVault, setVault, router, publicKey]
+    [loadVault, setVault, router.query.vaultId, publicKey]
   )
 
   const fetchReports = (

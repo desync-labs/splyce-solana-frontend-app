@@ -7,6 +7,7 @@ import useVaultContext from '@/context/vaultDetail'
 import { formatNumber } from '@/utils/format'
 import { getTokenLogoURL } from '@/utils/tokenLogo'
 import { getPeriodInDays } from '@/utils/getPeriodInDays'
+import { useAprNumber } from '@/hooks/Vaults/useApr'
 import { CustomSkeleton } from '@/components/Base/Skeletons/StyledSkeleton'
 import { FlexBox } from '@/components/Base/Boxes/StyledBoxes'
 import { BaseInfoIcon } from '@/components/Base/Icons/StyledIcons'
@@ -90,6 +91,14 @@ const InputTokenLabelSymbol = styled('div')`
   line-height: 16px;
 `
 
+const CalcFormWrapper = styled(FlexBox)`
+  gap: 18px;
+  margin-top: 12px;
+  &.tfVault {
+    flex-direction: column;
+  }
+`
+
 const InputTokenLabel = ({ tokenSymbol }: { tokenSymbol: string }) => {
   return (
     <InputTokenLabelRow>
@@ -130,6 +139,8 @@ const VaultProfitCalculator = () => {
     useVaultContext()
   const { token } = vault
 
+  const apr = useAprNumber(vault)
+
   const fxdPrice = 1
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -140,7 +151,9 @@ const VaultProfitCalculator = () => {
     }
 
     setTokenAmount(e.target.value)
-    setEstimatedEarning(getEstimatedEarning(e.target.value, vault.apr, period))
+    setEstimatedEarning(
+      getEstimatedEarning(e.target.value, apr.toString(), period)
+    )
   }
 
   if (!token) {
@@ -151,7 +164,7 @@ const VaultProfitCalculator = () => {
             Annual Percentage Yield (APY) Calculator
           </Typography>
         </SummaryWrapper>
-        <FlexBox mt="12px" sx={{ flexDirection: 'column', gap: '18px' }}>
+        <CalcFormWrapper>
           <CustomSkeleton
             variant="rounded"
             animation={'wave'}
@@ -164,7 +177,7 @@ const VaultProfitCalculator = () => {
             width="100%"
             height="72px"
           />
-        </FlexBox>
+        </CalcFormWrapper>
       </Paper>
     )
   }
@@ -181,7 +194,7 @@ const VaultProfitCalculator = () => {
             : 'Annual Percentage Yield (APY) Calculator'}
         </Typography>
       </SummaryWrapper>
-      <FlexBox mt="12px" sx={{ flexDirection: 'column', gap: '18px' }}>
+      <CalcFormWrapper>
         <CalculatorInputWrapper>
           <BaseFormLabelRow pb={1}>
             <BaseFormInputLabel>I have</BaseFormInputLabel>
@@ -240,7 +253,7 @@ const VaultProfitCalculator = () => {
               .toNumber()
           )}`}</CalculatorUsdIndicator>
         </CalculatorInputWrapper>
-      </FlexBox>
+      </CalcFormWrapper>
     </Paper>
   )
 }
