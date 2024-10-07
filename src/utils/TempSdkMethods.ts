@@ -366,3 +366,41 @@ export const faucetTestToken = async (
     console.error('Error deposit tx:', err)
   }
 }
+
+export const getTfVaultPeriods = async (wallet: Wallet, vaultIndex: number) => {
+  const provider = new AnchorProvider(
+    new Connection(defaultEndpoint, 'confirmed'),
+    wallet.adapter,
+    {
+      preflightCommitment: 'confirmed',
+    }
+  )
+
+  const vaultProgram = new Program(vaultIdl, provider)
+  const strategyProgram = new Program(strategyIdl, provider)
+
+  const vaultPDA = await PublicKey.findProgramAddressSync(
+    [
+      Buffer.from('vault'),
+      Buffer.from(
+        new Uint8Array(new BigUint64Array([BigInt(vaultIndex)]).buffer)
+      ),
+    ],
+    vaultProgram.programId
+  )[0]
+
+  const strategyPDA = await PublicKey.findProgramAddressSync(
+    [vaultPDA.toBuffer(), Buffer.from(new Uint8Array([0]))],
+    strategyProgram.programId
+  )[0]
+
+  const strategyAccount =
+    await strategyProgram.account.tradeFintechStrategy.fetch(strategyPDA)
+  const depositPeriodEnds = strategyAccount.depositPeriodEnds
+  const lockPeriodEnds = strategyAccount.lockPeriodEnds
+
+  return {
+    depositPeriodEnds,
+    lockPeriodEnds,
+  }
+}

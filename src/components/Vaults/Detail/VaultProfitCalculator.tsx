@@ -198,7 +198,7 @@ const VaultProfitCalculator = () => {
             : 'Annual Percentage Yield (APY) Calculator'}
         </Typography>
       </SummaryWrapper>
-      <CalcFormWrapper>
+      <CalcFormWrapper className={isTfVaultType ? 'tfVault' : ''}>
         <CalculatorInputWrapper>
           <BaseFormLabelRow pb={1}>
             <BaseFormInputLabel>I have</BaseFormInputLabel>
