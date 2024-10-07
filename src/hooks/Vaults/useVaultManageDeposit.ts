@@ -16,6 +16,7 @@ import {
 import { formatNumber } from '@/utils/format'
 import { MAX_PERSONAL_DEPOSIT } from '@/hooks/Vaults/useVaultOpenDeposit'
 import useSyncContext from '@/context/sync'
+import { getVaultIndex } from '@/utils/getVaultIndex'
 
 export const defaultValues = {
   formToken: '',
@@ -291,7 +292,8 @@ const useVaultManageDeposit = (
             formattedAmount,
             wallet,
             tokenPublicKey,
-            sharedTokenPublicKey
+            sharedTokenPublicKey,
+            getVaultIndex(vault.id)
           )
             .then(async (txSignature) => {
               const txSlot = await getTransactionBlock(txSignature)
@@ -315,7 +317,8 @@ const useVaultManageDeposit = (
             formattedAmount,
             wallet,
             tokenPublicKey,
-            sharedTokenPublicKey
+            sharedTokenPublicKey,
+            getVaultIndex(vault.id)
           )
             .then(async (txSignature) => {
               const txSlot = await getTransactionBlock(txSignature)

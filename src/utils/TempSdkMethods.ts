@@ -52,7 +52,8 @@ export const depositTokens = async (
   amount: string,
   wallet: Wallet,
   tokenPubKey: PublicKey,
-  shareTokenPubKey: PublicKey
+  shareTokenPubKey: PublicKey,
+  vaultIndex: number
 ) => {
   if (!userPublicKey || !wallet) {
     return
@@ -68,11 +69,12 @@ export const depositTokens = async (
 
   const vaultProgram = new Program(vaultIdl, provider)
 
-  const index = 0
   const vaultPDA = await PublicKey.findProgramAddressSync(
     [
       Buffer.from('vault'),
-      Buffer.from(new Uint8Array(new BigUint64Array([BigInt(index)]).buffer)),
+      Buffer.from(
+        new Uint8Array(new BigUint64Array([BigInt(vaultIndex)]).buffer)
+      ),
     ],
     vaultProgram.programId
   )[0]
@@ -115,7 +117,8 @@ export const withdrawTokens = async (
   amount: string,
   wallet: Wallet,
   tokenPubKey: PublicKey,
-  shareTokenPubKey: PublicKey
+  shareTokenPubKey: PublicKey,
+  vaultIndex: number
 ) => {
   if (!userPublicKey || !wallet) {
     return
@@ -132,11 +135,12 @@ export const withdrawTokens = async (
   const vaultProgram = new Program(vaultIdl, provider)
   const strategyProgram = new Program(strategyIdl, provider)
 
-  const index = 0
   const vaultPDA = await PublicKey.findProgramAddressSync(
     [
       Buffer.from('vault'),
-      Buffer.from(new Uint8Array(new BigUint64Array([BigInt(index)]).buffer)),
+      Buffer.from(
+        new Uint8Array(new BigUint64Array([BigInt(vaultIndex)]).buffer)
+      ),
     ],
     vaultProgram.programId
   )[0]
