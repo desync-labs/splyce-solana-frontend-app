@@ -75,6 +75,10 @@ const VaultsOverview = () => {
               <VaultsListMobile
                 vaults={vaultSortedList}
                 isLoading={listLoading}
+                filterCurrentPosition={filterCurrentPosition}
+                vaultCurrentPage={vaultCurrentPage}
+                vaultItemsCount={vaultItemsCount}
+                handlePageChange={handlePageChange}
               />
             )}
           </>

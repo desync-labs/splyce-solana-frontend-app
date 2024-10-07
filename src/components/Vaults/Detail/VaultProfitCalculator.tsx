@@ -97,6 +97,10 @@ const CalcFormWrapper = styled(FlexBox)`
   &.tfVault {
     flex-direction: column;
   }
+
+  ${({ theme }) => theme.breakpoints.down('sm')} {
+    flex-direction: column;
+  }
 `
 
 const InputTokenLabel = ({ tokenSymbol }: { tokenSymbol: string }) => {

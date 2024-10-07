@@ -1,4 +1,4 @@
-import { FC, memo } from 'react'
+import { ChangeEvent, FC, memo } from 'react'
 import { styled } from '@mui/material/styles'
 import {
   Box,
@@ -43,14 +43,20 @@ const PaginationWrapper = styled(Box)`
 
 type VaultListPropsType = {
   vaults: IVault[]
-  isLoading?: boolean
-  performanceFee?: number
+  isLoading: boolean
+  filterCurrentPosition: (vaultId: string) => IVaultPosition | null
+  vaultCurrentPage: number
+  vaultItemsCount: number
+  handlePageChange: (event: ChangeEvent<unknown>, page: number) => void
 }
 
 const VaultsListMobile: FC<VaultListPropsType> = ({
   vaults,
-  isLoading = false,
-  performanceFee = 8.5,
+  isLoading,
+  filterCurrentPosition,
+  vaultCurrentPage,
+  vaultItemsCount,
+  handlePageChange,
 }) => {
   return (
     <TableContainer>
@@ -74,8 +80,7 @@ const VaultsListMobile: FC<VaultListPropsType> = ({
               <VaultListItemMobile
                 key={vault.id}
                 vaultItemData={vault}
-                vaultPosition={{} as IVaultPosition}
-                performanceFee={performanceFee}
+                vaultPosition={filterCurrentPosition(vault.id)}
               />
             ))
           )}
@@ -84,11 +89,9 @@ const VaultsListMobile: FC<VaultListPropsType> = ({
       {!isLoading && vaults.length > COUNT_PER_PAGE_VAULT && (
         <PaginationWrapper>
           <Pagination
-            count={Math.ceil(20 / COUNT_PER_PAGE_VAULT)}
-            page={1}
-            onChange={() => {
-              console.log('pagination')
-            }}
+            count={Math.ceil(vaultItemsCount / COUNT_PER_PAGE_VAULT)}
+            page={vaultCurrentPage}
+            onChange={handlePageChange}
           />
         </PaginationWrapper>
       )}

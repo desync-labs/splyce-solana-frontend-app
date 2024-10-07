@@ -1,6 +1,7 @@
 import { memo } from 'react'
 import { VaultInfoTabs } from '@/hooks/Vaults/useVaultDetail'
 import useVaultContext from '@/context/vaultDetail'
+import useSharedContext from '@/context/shared'
 import {
   BaseTabsItem,
   BaseTabsWrapper,
@@ -13,6 +14,8 @@ const VaultDetailInfoNav = () => {
     isUserManager,
     setActiveVaultInfoTabHandler,
   } = useVaultContext()
+
+  const { isMobile } = useSharedContext()
 
   return (
     <BaseTabsWrapper sx={{ marginBottom: '24px' }}>
@@ -30,7 +33,7 @@ const VaultDetailInfoNav = () => {
       >
         Strategies
       </BaseTabsItem>
-      {isUserManager && (
+      {isUserManager && !isMobile && (
         <BaseTabsItem
           onClick={() =>
             setActiveVaultInfoTabHandler(VaultInfoTabs.MANAGEMENT_VAULT)
@@ -44,7 +47,7 @@ const VaultDetailInfoNav = () => {
           Vault Manager
         </BaseTabsItem>
       )}
-      {managedStrategiesIds.length > 0 && (
+      {managedStrategiesIds.length > 0 && !isMobile && (
         <BaseTabsItem
           onClick={() =>
             setActiveVaultInfoTabHandler(VaultInfoTabs.MANAGEMENT_STRATEGY)

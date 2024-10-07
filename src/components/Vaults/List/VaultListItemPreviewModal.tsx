@@ -16,6 +16,7 @@ import CloseIcon from '@mui/icons-material/Close'
 import { getTokenLogoURL } from '@/utils/tokenLogo'
 import { formatCurrency, formatNumber } from '@/utils/format'
 import { IVault, IVaultPosition } from '@/utils/TempData'
+import { useApr } from '@/hooks/Vaults/useApr'
 import {
   VaultListItemImageWrapper,
   VaultTagLabel,
@@ -130,6 +131,7 @@ const VaultListItemPreviewModal: FC<VaultListItemPreviewModalProps> = ({
 }) => {
   const { token, shutdown, balanceTokens, depositLimit } = vault
   const location = useRouter()
+  const formattedApr = useApr(vault)
   const fxdPrice = 1
 
   const redirectToVaultDetail = useCallback(() => {
@@ -188,7 +190,7 @@ const VaultListItemPreviewModal: FC<VaultListItemPreviewModalProps> = ({
           >
             <ListItemText primary={'Earned'} />
           </BaseListItem>
-          <BaseListItem secondaryAction={<>9%</>}>
+          <BaseListItem secondaryAction={<>{formattedApr}%</>}>
             <ListItemText primary={'APY'} />
           </BaseListItem>
           <BaseListItem
@@ -196,7 +198,6 @@ const VaultListItemPreviewModal: FC<VaultListItemPreviewModalProps> = ({
               <>
                 {formatCurrency(
                   BigNumber(fxdPrice)
-                    .dividedBy(10 ** 9)
                     .multipliedBy(BigNumber(balanceTokens).dividedBy(10 ** 9))
                     .toNumber()
                 )}
