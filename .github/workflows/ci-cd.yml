@@ -15,7 +15,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      APP_NAME: splyce-solana-frontend-app
+      ARGOCD_APP_NAME: ${{ vars.ARGOCD_APP_NAME }}
+      IMAGE_REPOSITORY: ${{ vars.IMAGE_REPOSITORY }}
+      ENV_TAG: ${{ github.ref == 'refs/heads/main' && '' || 'dev-' }}
 
     steps:
       - name: Checkout code
@@ -26,13 +28,13 @@ jobs:
 
       - name: Build Docker image (Production Stage)
         run: |
-          docker build --target production -t intothefathom/${{ env.APP_NAME }}:${{ github.sha }} .
-          docker tag intothefathom/${{ env.APP_NAME }}:${{ github.sha }} intothefathom/${{ env.APP_NAME }}:latest
+          docker build --target production -t ${{ env.IMAGE_REPOSITORY }}:${{ github.sha }} .
+          docker tag ${{ env.IMAGE_REPOSITORY }}:${{ github.sha }} ${{ env.IMAGE_REPOSITORY }}:${{ env.ENV_TAG }}latest
 
       - name: Push Docker image to Docker Hub
         run: |
-          docker push intothefathom/${{ env.APP_NAME }}:${{ github.sha }}
-          docker push intothefathom/${{ env.APP_NAME }}:latest
+          docker push ${{ env.IMAGE_REPOSITORY }}:${{ github.sha }}
+          docker push ${{ env.IMAGE_REPOSITORY }}:${{ env.ENV_TAG }}latest
 
       - name: Set Argo CD secrets
         id: set-secrets
@@ -56,15 +58,15 @@ jobs:
             -e ARGOCD_AUTH_TOKEN=${{ steps.set-secrets.outputs.ARGOCD_AUTH_TOKEN }} \
             argoproj/argocd:v2.6.15 \
             /bin/sh -c \
-            "argocd app set ${{ env.APP_NAME }} \
+            "argocd app set ${{ env.ARGOCD_APP_NAME }} \
             --server ${{ steps.set-secrets.outputs.ARGOCD_API_URL }} \
             --grpc-web \
             --parameter image.tag=${{ github.sha }} && \
-            argocd app wait ${{ env.APP_NAME }} \
+            argocd app wait ${{ env.ARGOCD_APP_NAME }} \
             --server ${{ steps.set-secrets.outputs.ARGOCD_API_URL }} \
             --grpc-web \
             --operation && \
-            argocd app sync ${{ env.APP_NAME }} \
+            argocd app sync ${{ env.ARGOCD_APP_NAME }} \
             --server ${{ steps.set-secrets.outputs.ARGOCD_API_URL }} \
             --grpc-web \
             --timeout 180"
