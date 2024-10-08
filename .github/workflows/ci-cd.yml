@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       IMAGE_REPOSITORY: ${{ vars.IMAGE_REPOSITORY }}
-      ENV_TAG: ${{ github.ref == 'refs/heads/main' && '' || 'dev-' }}
+      ENV_TAG: ${{ github.ref == 'refs/heads/master' && '' || 'dev-' }}
 
     steps:
       - name: Checkout code
@@ -39,7 +39,7 @@ jobs:
         id: set-secrets
         shell: bash
         run: |
-          if [[ $GITHUB_REF == refs/heads/main ]]; then
+          if [[ $GITHUB_REF == refs/heads/master ]]; then
             {
               echo "ARGOCD_APP_NAME=${{ vars.ARGOCD_APP_NAME_PROD }}"
               echo "ARGOCD_API_URL=${{ secrets.ARGOCD_API_URL_PROD }}"
