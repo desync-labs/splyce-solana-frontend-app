@@ -36,6 +36,8 @@ export type VaultManageProps = {
   vaultItemData: IVault
   vaultPosition: IVaultPosition
   isTfVaultType: boolean
+  tfVaultDepositEndDate: string | null
+  tfVaultLockEndDate: string | null
   activeTfPeriod: number
   minimumDeposit: number
   onClose: () => void
@@ -45,6 +47,8 @@ const VaultListItemManageModal: FC<VaultManageProps> = ({
   vaultItemData,
   vaultPosition,
   isTfVaultType,
+  tfVaultDepositEndDate,
+  tfVaultLockEndDate,
   activeTfPeriod,
   minimumDeposit,
   onClose,

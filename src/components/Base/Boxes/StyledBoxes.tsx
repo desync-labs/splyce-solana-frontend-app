@@ -17,6 +17,10 @@ export const MainBox = styled(Box)`
   justify-content: flex-start;
   width: 100%;
   overflow: auto;
+
+  ${({ theme }) => theme.breakpoints.down('sm')} {
+    min-height: calc(var(--vh, 1vh) * 100 - 193px);
+  }
 `
 
 export const BaseInfoBox = styled(Box)`

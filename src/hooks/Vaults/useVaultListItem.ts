@@ -8,7 +8,6 @@ import {
   VAULT_STRATEGY_REPORTS,
 } from 'apollo/queries'
 import { vaultType } from 'utils/Vaults/getVaultType'
-import { getVaultLockEndDate } from 'utils/Vaults/getVaultLockEndDate'
 import {
   IVault,
   IVaultPosition,
@@ -17,7 +16,8 @@ import {
 } from '@/utils/TempData'
 import { defaultNetWork } from '@/utils/network'
 import { useWallet } from '@solana/wallet-adapter-react'
-import { previewRedeem } from '@/utils/TempSdkMethods'
+import { getTfVaultPeriods, previewRedeem } from '@/utils/TempSdkMethods'
+import { getVaultIndex } from '@/utils/getVaultIndex'
 
 interface UseVaultListItemProps {
   vaultPosition: IVaultPosition | null | undefined
@@ -39,13 +39,12 @@ const useVaultListItem = ({ vaultPosition, vault }: UseVaultListItemProps) => {
   const [loadingEarning, setLoadingEarning] = useState<boolean>(true)
 
   const network = defaultNetWork
-  const { balanceTokens } = vault
 
   const [depositsList, setDepositsList] = useState([])
   const [withdrawalsList, setWithdrawalsList] = useState([])
 
   const [isTfVaultType, setIsTfVaultType] = useState<boolean>(false)
-  const [isUserKycPassed, setIsUserKycPassed] = useState<boolean>(false)
+  const [isUserKycPassed, setIsUserKycPassed] = useState<boolean>(true)
   const [tfVaultDepositEndDate, setTfVaultDepositEndDate] = useState<
     string | null
   >(null)
@@ -66,7 +65,7 @@ const useVaultListItem = ({ vaultPosition, vault }: UseVaultListItemProps) => {
   const [minimumDeposit, setMinimumDeposit] = useState<number>(0.0000000001)
   const [isWithdrawLoading, setIsWithdrawLoading] = useState<boolean>(false)
 
-  const { publicKey } = useWallet()
+  const { publicKey, wallet } = useWallet()
 
   const [loadPositionTransactions, { loading: transactionsLoading }] =
     useLazyQuery(VAULT_POSITION_TRANSACTIONS, {
@@ -172,29 +171,31 @@ const useVaultListItem = ({ vaultPosition, vault }: UseVaultListItemProps) => {
     return () => clearTimeout(timeout)
   }, [balanceTokenLoading, transactionsLoading, setLoadingEarning])
 
-  // useEffect(() => {
-  //   if (isTfVaultType && vault.strategies?.length) {
-  //     setTfVaultDepositEndTimeLoading(true)
-  //     vaultService
-  //       .getTradeFlowVaultDepositEndDate(vault.strategies[0].id)
-  //       .then((res) => {
-  //         setTfVaultDepositEndDate(res)
-  //       })
-  //       .finally(() => {
-  //         setTfVaultDepositEndTimeLoading(false)
-  //       })
-  //
-  //     setTfVaultLockEndTimeLoading(true)
-  //     vaultService
-  //       .getTradeFlowVaultLockEndDate(vault.strategies[0].id)
-  //       .then((res) => {
-  //         setTfVaultLockEndDate(getVaultLockEndDate(res).toString())
-  //       })
-  //       .finally(() => {
-  //         setTfVaultLockEndTimeLoading(false)
-  //       })
-  //   }
-  // }, [vault.strategies, isTfVaultType])
+  useEffect(() => {
+    if (isTfVaultType && vault.id) {
+      setTfVaultDepositEndTimeLoading(true)
+      setTfVaultLockEndTimeLoading(true)
+
+      getTfVaultPeriods(getVaultIndex(vault.id))
+        .then((periods) => {
+          const { depositPeriodEnds, lockPeriodEnds } = periods
+          // todo: remove hardcoded values
+          // setTfVaultDepositEndDate(depositPeriodEnds.toString())
+          // setTfVaultLockEndDate(lockPeriodEnds.toString())
+          setTfVaultDepositEndDate('1728568800')
+          setTfVaultLockEndDate('1728655200')
+        })
+        .finally(() => {
+          setTfVaultDepositEndTimeLoading(false)
+          setTfVaultLockEndTimeLoading(false)
+        })
+    }
+  }, [
+    vault.id,
+    isTfVaultType,
+    setTfVaultDepositEndTimeLoading,
+    setTfVaultLockEndTimeLoading,
+  ])
 
   useEffect(() => {
     if (!tfVaultDepositEndDate || !tfVaultLockEndDate) return
@@ -214,7 +215,7 @@ const useVaultListItem = ({ vaultPosition, vault }: UseVaultListItemProps) => {
 
   // useEffect(() => {
   //   let timeout: ReturnType<typeof setTimeout>
-  //   if (account && isTfVaultType) {
+  //   if (publicKey && isTfVaultType) {
   //     timeout = setTimeout(() => {
   //       vaultService
   //         .getDepositLimit(vault.id, isTfVaultType, account)
@@ -234,7 +235,13 @@ const useVaultListItem = ({ vaultPosition, vault }: UseVaultListItemProps) => {
   //   return () => {
   //     timeout && clearTimeout(timeout)
   //   }
-  // }, [isTfVaultType, vault.id, account, balanceTokens, setTfVaultDepositLimit])
+  // }, [
+  //   isTfVaultType,
+  //   vault.id,
+  //   publicKey,
+  //   balanceTokens,
+  //   setTfVaultDepositLimit,
+  // ])
 
   // useEffect(() => {
   //   /**
@@ -271,8 +278,6 @@ const useVaultListItem = ({ vaultPosition, vault }: UseVaultListItemProps) => {
       )
     }
   }, [
-    //syncVault,
-    //prevSyncVault,
     fetchPositionTransactions,
     fetchBalanceToken,
     vaultPosition?.balanceShares,

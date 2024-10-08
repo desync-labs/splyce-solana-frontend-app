@@ -207,21 +207,24 @@ const VaultListItem: FC<VaultListItemProps> = ({
         </TableCell>
         <TableCell colSpan={1} sx={{ width: '14%' }}>
           <VaultAvailable>
-            {isTfVaultType
-              ? formatNumber(
-                  BigNumber(tfVaultDepositLimit)
+            {
+              // isTfVaultType
+              // ? formatNumber(
+              //     BigNumber(tfVaultDepositLimit)
+              //       .dividedBy(10 ** 9)
+              //       .toNumber()
+              //   )
+              // :
+              formatNumber(
+                Math.max(
+                  BigNumber(depositLimit)
+                    .minus(BigNumber(balanceTokens))
                     .dividedBy(10 ** 9)
-                    .toNumber()
+                    .toNumber(),
+                  0
                 )
-              : formatNumber(
-                  Math.max(
-                    BigNumber(depositLimit)
-                      .minus(BigNumber(balanceTokens))
-                      .dividedBy(10 ** 9)
-                      .toNumber(),
-                    0
-                  )
-                )}{' '}
+              )
+            }{' '}
             {token.symbol}
           </VaultAvailable>
         </TableCell>
@@ -341,6 +344,9 @@ const VaultListItem: FC<VaultListItemProps> = ({
               vaultItemData={vaultItemData}
               vaultPosition={vaultPosition}
               isTfVaultType={isTfVaultType}
+              isUserKycPassed={isUserKycPassed}
+              tfVaultDepositEndDate={tfVaultDepositEndDate}
+              tfVaultLockEndDate={tfVaultLockEndDate}
               activeTfPeriod={activeTfPeriod}
               minimumDeposit={minimumDeposit}
               onClose={() => setManageVault(false)}

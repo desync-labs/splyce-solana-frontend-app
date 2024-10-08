@@ -13,7 +13,6 @@ const VaultDetailInfoPaper = styled(Paper)`
   ${({ theme }) => theme.breakpoints.down('sm')} {
     position: relative;
     width: 100%;
-    padding-top: 50px;
   }
 `
 

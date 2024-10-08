@@ -9,12 +9,8 @@ import { WalletModalProvider } from '@solana/wallet-adapter-react-ui'
 import { GlowWalletAdapter } from '@solana/wallet-adapter-glow'
 import { ExodusWalletAdapter } from '@solana/wallet-adapter-exodus'
 import { SlopeWalletAdapter } from '@solana/wallet-adapter-slope'
+import { initialize } from '@solflare-wallet/wallet-adapter'
 import {
-  SolflareWalletAdapter,
-  initialize,
-} from '@solflare-wallet/wallet-adapter'
-import {
-  PhantomWalletAdapter,
   TorusWalletAdapter,
   TrustWalletAdapter,
   MathWalletAdapter,
@@ -89,8 +85,6 @@ const App: FC<PropsWithChildren<any>> = ({ children }) => {
 
   const wallets = useMemo(
     () => [
-      new PhantomWalletAdapter(),
-      new SolflareWalletAdapter(),
       new SlopeWalletAdapter({ endpoint }),
       new TorusWalletAdapter(),
       //new LedgerWalletAdapter(),

@@ -8,6 +8,67 @@
   },
   "instructions": [
     {
+      "name": "deploy_funds",
+      "discriminator": [
+        76,
+        85,
+        211,
+        80,
+        151,
+        46,
+        34,
+        72
+      ],
+      "accounts": [
+        {
+          "name": "strategy",
+          "writable": true
+        },
+        {
+          "name": "underlying_token_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  117,
+                  110,
+                  100,
+                  101,
+                  114,
+                  108,
+                  121,
+                  105,
+                  110,
+                  103
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "strategy"
+              }
+            ]
+          }
+        },
+        {
+          "name": "signer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        }
+      ],
+      "args": [
+        {
+          "name": "amount",
+          "type": "u64"
+        }
+      ]
+    },
+    {
       "name": "deposit",
       "discriminator": [
         242,
@@ -25,11 +86,7 @@
           "writable": true
         },
         {
-          "name": "signer",
-          "signer": true
-        },
-        {
-          "name": "token_account",
+          "name": "underlying_token_account",
           "writable": true,
           "pda": {
             "seeds": [
@@ -58,6 +115,10 @@
         {
           "name": "vault_token_account",
           "writable": true
+        },
+        {
+          "name": "signer",
+          "signer": true
         },
         {
           "name": "token_program",
@@ -211,8 +272,31 @@
           "writable": true
         },
         {
-          "name": "token_account",
-          "writable": true
+          "name": "underlying_token_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  117,
+                  110,
+                  100,
+                  101,
+                  114,
+                  108,
+                  121,
+                  105,
+                  110,
+                  103
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "strategy"
+              }
+            ]
+          }
         },
         {
           "name": "signer",
@@ -225,6 +309,128 @@
         }
       ],
       "args": []
+    },
+    {
+      "name": "report_loss",
+      "discriminator": [
+        120,
+        239,
+        28,
+        252,
+        98,
+        214,
+        150,
+        219
+      ],
+      "accounts": [
+        {
+          "name": "strategy",
+          "writable": true
+        },
+        {
+          "name": "underlying_token_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  117,
+                  110,
+                  100,
+                  101,
+                  114,
+                  108,
+                  121,
+                  105,
+                  110,
+                  103
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "strategy"
+              }
+            ]
+          }
+        },
+        {
+          "name": "signer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        }
+      ],
+      "args": [
+        {
+          "name": "loss",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "report_profit",
+      "discriminator": [
+        18,
+        223,
+        254,
+        230,
+        64,
+        34,
+        23,
+        57
+      ],
+      "accounts": [
+        {
+          "name": "strategy",
+          "writable": true
+        },
+        {
+          "name": "underlying_token_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  117,
+                  110,
+                  100,
+                  101,
+                  114,
+                  108,
+                  121,
+                  105,
+                  110,
+                  103
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "strategy"
+              }
+            ]
+          }
+        },
+        {
+          "name": "signer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        }
+      ],
+      "args": [
+        {
+          "name": "profit",
+          "type": "u64"
+        }
+      ]
     },
     {
       "name": "set_fee_manager",
@@ -334,7 +540,7 @@
           "writable": true
         },
         {
-          "name": "token_account",
+          "name": "underlying_token_account",
           "writable": true,
           "pda": {
             "seeds": [
@@ -398,8 +604,31 @@
           "writable": true
         },
         {
-          "name": "token_account",
-          "writable": true
+          "name": "underlying_token_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  117,
+                  110,
+                  100,
+                  101,
+                  114,
+                  108,
+                  121,
+                  105,
+                  110,
+                  103
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "strategy"
+              }
+            ]
+          }
         },
         {
           "name": "signer",
@@ -565,6 +794,11 @@
       "code": 6011,
       "name": "AccessDenied",
       "msg": "Signer has no access"
+    },
+    {
+      "code": 6012,
+      "name": "LossTooHigh",
+      "msg": "Loss is too high"
     }
   ],
   "types": [

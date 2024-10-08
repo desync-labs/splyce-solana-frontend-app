@@ -24,7 +24,8 @@ import { FlexBox } from '@/components/Base/Boxes/StyledBoxes'
 import { AppListFees } from '@/components/Vaults/Detail/Tabs/InfoTabAbout'
 import { BaseListItem } from '@/components/Base/List/StyledList'
 import { tempApyData } from '@/utils/TempApyData'
-import { getStrategyProgramAddress } from '@/utils/Vaults/getProgramAddress'
+import { getStrategyProgramAddress } from '@/utils/TempSdkMethods'
+import { getVaultIndex } from '@/utils/getVaultIndex'
 
 dayjs.extend(relativeTime)
 
@@ -97,7 +98,7 @@ export const VaultIndicatorItemLabel = styled(Typography)`
 type VaultStrategyItemPropsType = {
   reports: IVaultStrategyReport[]
   historicalApr: IVaultStrategyHistoricalApr[]
-  //strategyData: IVaultStrategy
+  strategyData: IVaultStrategy
   vaultBalanceTokens: string
   tokenName: string
   index: number
@@ -117,7 +118,7 @@ const dummyStrategy = {
 }
 
 const VaultStrategyItem: FC<VaultStrategyItemPropsType> = ({
-  //strategyData,
+  strategyData,
   vaultBalanceTokens,
   tokenName,
   index,
@@ -127,13 +128,20 @@ const VaultStrategyItem: FC<VaultStrategyItemPropsType> = ({
   isShow,
   reportsLoading,
 }) => {
-  const strategyData = dummyStrategy
+  //const strategyData = dummyStrategy
   const [aprHistoryArr, setAprHistoryArr] = useState<HistoryChartDataType[]>([])
   const [lastReportDate, setLastReportDate] = useState<string>('')
   const [allocationShare, setAllocationShare] = useState<number>(0)
+  const [strategyAddress, setStrategyAddress] = useState<string>('')
 
-  const { isTfVaultType } = useVaultContext()
+  const { vault, isTfVaultType } = useVaultContext()
   const { isMobile } = useSharedContext()
+
+  useEffect(() => {
+    if (strategyData.id) {
+      fetchStrategyData()
+    }
+  }, [strategyData])
 
   useEffect(() => {
     if (!historicalApr.length || !reports.length) return
@@ -171,6 +179,12 @@ const VaultStrategyItem: FC<VaultStrategyItemPropsType> = ({
     setAllocationShare(allocation)
   }, [strategyData, vaultBalanceTokens])
 
+  const fetchStrategyData = async () => {
+    getStrategyProgramAddress(getVaultIndex(vault.id), 0).then((address) => {
+      setStrategyAddress(address.toString())
+    })
+  }
+
   const totalGain = useMemo(
     () =>
       reports.reduce((acc: BigNumber, report: IVaultStrategyReport) => {
@@ -194,9 +208,7 @@ const VaultStrategyItem: FC<VaultStrategyItemPropsType> = ({
         <StatusLabel strategyId={strategyData.id} />
       </VaultStrategyTitle>
       <Link
-        href={getExplorerUrl(
-          getStrategyProgramAddress(strategyData.id as string)
-        )}
+        href={getExplorerUrl(strategyAddress)}
         target="_blank"
         style={{
           display: 'inline-flex',
@@ -206,7 +218,7 @@ const VaultStrategyItem: FC<VaultStrategyItemPropsType> = ({
           marginBottom: '16px',
         }}
       >
-        {getStrategyProgramAddress(strategyData.id as string)}
+        {strategyAddress}
       </Link>
       <VaultStrategyDescription>
         {strategyDescription[strategyData.id.toLowerCase()] ? (
@@ -258,8 +270,8 @@ const VaultStrategyItem: FC<VaultStrategyItemPropsType> = ({
         </BaseListItem>
         <BaseListItem
           secondaryAction={
-            // <>{`${formatNumber(totalGain.dividedBy(10 ** 9).toNumber())} ${tokenName}`}</>
-            <>{`${formatNumber(15)} ${tokenName}`}</>
+            <>{`${formatNumber(totalGain.dividedBy(10 ** 9).toNumber())} ${tokenName}`}</>
+            //<>{`${formatNumber(15)} ${tokenName}`}</>
           }
         >
           <ListItemText primary="Total Gain" />

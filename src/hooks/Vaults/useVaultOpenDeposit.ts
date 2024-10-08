@@ -14,6 +14,7 @@ import {
 } from '@/utils/TempSdkMethods'
 import useSyncContext from '@/context/sync'
 import { formatNumber } from '@/utils/format'
+import { getVaultIndex } from '@/utils/getVaultIndex'
 
 export const MAX_PERSONAL_DEPOSIT = 50000
 export const defaultValues = {
@@ -134,6 +135,7 @@ const useVaultOpenDeposit = (vault: IVault, onClose: () => void) => {
             ),
         0
       )
+
       if (BigNumber(value).isGreaterThan(formattedMaxWalletBalance)) {
         return 'You do not have enough money in your wallet'
       }
@@ -184,7 +186,8 @@ const useVaultOpenDeposit = (vault: IVault, onClose: () => void) => {
           formattedDepositAmount,
           wallet,
           tokenPublicKey,
-          sharedTokenPublicKey
+          sharedTokenPublicKey,
+          getVaultIndex(vault.id)
         )
           .then(async (txSignature) => {
             const txSlot = await getTransactionBlock(txSignature)

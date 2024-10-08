@@ -149,7 +149,6 @@ const VaultListItemDepositModal: FC<VaultDepositProps> = ({
                 onClick={handleSubmit(onSubmit)}
                 disabled={
                   openDepositLoading ||
-                  //approveBtn ||
                   !!Object.keys(errors).length ||
                   (isTfVaultType && !isUserKycPassed) ||
                   (isTfVaultType && activeTfPeriod > 0)

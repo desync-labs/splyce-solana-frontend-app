@@ -70,11 +70,11 @@ const VaultDetailForms = () => {
       </VaultDepositPaper>
     )
   }
+  if (isTfVaultType && activeTfPeriod > 0) return null
 
   return (
     <VaultDepositPaper>
-      {isTfVaultType && activeTfPeriod > 0 ? null : notLoading &&
-        BigNumber(vaultPosition.balanceShares).isGreaterThan(0) ? (
+      {notLoading && BigNumber(vaultPosition.balanceShares).isGreaterThan(0) ? (
         <VaultDetailManageForm />
       ) : !shutdown ? (
         <VaultDetailDepositForm notLoading={notLoading} />

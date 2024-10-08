@@ -18,7 +18,6 @@ import {
 } from '@/components/Vaults/Detail/Tabs/InfoTabAbout'
 import BasePopover from '@/components/Base/Popover/BasePopover'
 import { BaseListItem } from '@/components/Base/List/StyledList'
-import { getVaultProgramAddress } from '@/utils/Vaults/getProgramAddress'
 
 const FeesItemWrapper = styled(Box)`
   display: flex;
@@ -26,7 +25,7 @@ const FeesItemWrapper = styled(Box)`
 `
 
 const VaultAboutTabContent = () => {
-  const { vault, performanceFee } = useVaultContext()
+  const { vault, vaultAddress, performanceFee } = useVaultContext()
   const aprNumber = useAprNumber(vault)
 
   // todo: integrate fees for other vault types
@@ -47,11 +46,8 @@ const VaultAboutTabContent = () => {
       </VaultDescriptionWrapper>
       <VaultContractAddress>
         Vault Program address:{' '}
-        <Link
-          href={getExplorerUrl(getVaultProgramAddress(vault.id))}
-          target="_blank"
-        >
-          {getVaultProgramAddress(vault.id)}
+        <Link href={getExplorerUrl(vaultAddress)} target="_blank">
+          {vaultAddress}
         </Link>
       </VaultContractAddress>
       <Box>

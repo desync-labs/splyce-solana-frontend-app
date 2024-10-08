@@ -2,19 +2,19 @@ import { FC, memo, useMemo, useState } from 'react'
 import Image from 'next/image'
 import { styled } from '@mui/material/styles'
 import { TableCell } from '@mui/material'
+import BigNumber from 'bignumber.js'
 
 import { getTokenLogoURL } from '@/utils/tokenLogo'
 import { formatCurrency } from '@/utils/format'
 import { IVault, IVaultPosition } from '@/utils/TempData'
+import useVaultListItem from '@/hooks/Vaults/useVaultListItem'
+import { useApr } from '@/hooks/Vaults/useApr'
 
 import { BaseTableRow } from '@/components/Base/Table/StyledTable'
 import { FlexBox } from '@/components/Base/Boxes/StyledBoxes'
 import VaultListItemPreviewModal from '@/components/Vaults/List/VaultListItemPreviewModal'
 import VaultListItemDepositModal from '@/components/Vaults/List/DepositVaultModal'
 import VaultListItemManageModal from '@/components/Vaults/List/ManageVaultModal'
-// import VaultListItemPreviewModal from 'components/Vaults/List/VaultListItemPreviewModal'
-// import VaultListItemDepositModal from 'components/Vaults/List/VaultListItemDepositModal'
-// import VaultListItemManageModal from 'components/Vaults/List/VaultListItemManageModal'
 
 export const VaultItemTableRow = styled(BaseTableRow)`
   width: 100%;
@@ -84,28 +84,41 @@ export const VaultListItemImageWrapper = styled('div')`
 
 type VaultListItemMobileProps = {
   vaultItemData: IVault
+  vaultPosition: IVaultPosition | null
 }
 
 const VaultListItemMobile: FC<VaultListItemMobileProps> = ({
   vaultItemData,
   vaultPosition,
-  performanceFee,
 }) => {
-  const { token } = vaultItemData
+  const { token, balanceTokens, shutdown, performanceFees } = vaultItemData
+  const formattedApr = useApr(vaultItemData)
+  const fxdPrice = 1
 
   const [isOpenPreviewModal, setIsOpenPreviewModal] = useState<boolean>(false)
-  const [newVaultDeposit, setNewVaultDeposit] = useState<boolean>(false)
-  const [manageVault, setManageVault] = useState<boolean>(false)
+
+  const {
+    balanceEarned,
+    manageVault,
+    newVaultDeposit,
+    setManageVault,
+    setNewVaultDeposit,
+    isTfVaultType,
+    isUserKycPassed,
+    tfVaultDepositEndDate,
+    tfVaultLockEndDate,
+    activeTfPeriod,
+    tfVaultDepositLimit,
+    handleWithdrawAll,
+    minimumDeposit,
+    isWithdrawLoading,
+  } = useVaultListItem({ vaultPosition, vault: vaultItemData })
 
   const handleOpenPreviewModal = () => {
     setIsOpenPreviewModal(true)
   }
   const handleClosePreviewModal = () => {
     setIsOpenPreviewModal(false)
-  }
-
-  const handleWithdrawAll = () => {
-    alert('withdraw all')
   }
 
   return (
@@ -120,13 +133,27 @@ const VaultListItemMobile: FC<VaultListItemMobileProps> = ({
           </FlexBox>
         </TableCell>
         <TableCell colSpan={1}>
-          <VaultApr>10 %</VaultApr>
+          <VaultApr>{formattedApr}%</VaultApr>
         </TableCell>
         <TableCell colSpan={2}>
-          <VaultStackedLiquidity>{formatCurrency(10000)}</VaultStackedLiquidity>
+          <VaultStackedLiquidity>
+            {formatCurrency(
+              BigNumber(fxdPrice)
+                .multipliedBy(BigNumber(balanceTokens).dividedBy(10 ** 9))
+                .toNumber()
+            )}
+          </VaultStackedLiquidity>
         </TableCell>
         <TableCell colSpan={1}>
-          <VaultTagLabel>Live</VaultTagLabel>
+          {vaultPosition?.balancePosition &&
+          BigNumber(vaultPosition?.balancePosition).isGreaterThan(0) &&
+          !shutdown ? (
+            <VaultTagLabel>Earning</VaultTagLabel>
+          ) : shutdown ? (
+            <VaultTagLabel>Finished</VaultTagLabel>
+          ) : (
+            <VaultTagLabel>Live</VaultTagLabel>
+          )}
         </TableCell>
       </VaultItemTableRow>
       {useMemo(() => {
@@ -135,19 +162,22 @@ const VaultListItemMobile: FC<VaultListItemMobileProps> = ({
             isOpenPreviewModal={isOpenPreviewModal}
             vault={vaultItemData}
             vaultPosition={vaultPosition as IVaultPosition}
+            balanceEarned={balanceEarned}
             handleClosePreview={handleClosePreviewModal}
             setManageVault={setManageVault}
             setNewVaultDeposit={setNewVaultDeposit}
+            tfVaultDepositLimit={tfVaultDepositLimit}
             handleWithdrawAll={handleWithdrawAll}
-            isTfVaultType={false}
-            activeTfPeriod={0}
-            isWithdrawLoading={false}
+            isTfVaultType={isTfVaultType}
+            activeTfPeriod={activeTfPeriod}
+            isWithdrawLoading={isWithdrawLoading}
           />
         )
       }, [
         isOpenPreviewModal,
         vaultItemData,
         vaultPosition,
+        balanceEarned,
         setManageVault,
         setNewVaultDeposit,
       ])}
@@ -157,8 +187,13 @@ const VaultListItemMobile: FC<VaultListItemMobileProps> = ({
           newVaultDeposit && (
             <VaultListItemDepositModal
               vaultItemData={vaultItemData}
-              isTfVaultType={false}
-              activeTfPeriod={0}
+              performanceFee={performanceFees}
+              isTfVaultType={isTfVaultType}
+              isUserKycPassed={isUserKycPassed}
+              tfVaultDepositEndDate={tfVaultDepositEndDate}
+              tfVaultLockEndDate={tfVaultLockEndDate}
+              activeTfPeriod={activeTfPeriod}
+              minimumDeposit={minimumDeposit}
               onClose={() => setNewVaultDeposit(false)}
             />
           )
@@ -171,9 +206,12 @@ const VaultListItemMobile: FC<VaultListItemMobileProps> = ({
             <VaultListItemManageModal
               vaultItemData={vaultItemData}
               vaultPosition={vaultPosition}
-              performanceFee={performanceFee}
-              isTfVaultType={false}
-              activeTfPeriod={0}
+              performanceFee={performanceFees}
+              isTfVaultType={isTfVaultType}
+              tfVaultDepositEndDate={tfVaultDepositEndDate}
+              tfVaultLockEndDate={tfVaultLockEndDate}
+              activeTfPeriod={activeTfPeriod}
+              minimumDeposit={minimumDeposit}
               onClose={() => setManageVault(false)}
             />
           )

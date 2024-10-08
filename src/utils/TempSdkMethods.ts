@@ -1,4 +1,4 @@
-import { Connection, PublicKey, Transaction } from '@solana/web3.js'
+import { Connection, Keypair, PublicKey, Transaction } from '@solana/web3.js'
 import {
   createAssociatedTokenAccountInstruction,
   getAccount,
@@ -52,7 +52,8 @@ export const depositTokens = async (
   amount: string,
   wallet: Wallet,
   tokenPubKey: PublicKey,
-  shareTokenPubKey: PublicKey
+  shareTokenPubKey: PublicKey,
+  vaultIndex: number
 ) => {
   if (!userPublicKey || !wallet) {
     return
@@ -68,11 +69,12 @@ export const depositTokens = async (
 
   const vaultProgram = new Program(vaultIdl, provider)
 
-  const index = 0
   const vaultPDA = await PublicKey.findProgramAddressSync(
     [
       Buffer.from('vault'),
-      Buffer.from(new Uint8Array(new BigUint64Array([BigInt(index)]).buffer)),
+      Buffer.from(
+        new Uint8Array(new BigUint64Array([BigInt(vaultIndex)]).buffer)
+      ),
     ],
     vaultProgram.programId
   )[0]
@@ -115,7 +117,8 @@ export const withdrawTokens = async (
   amount: string,
   wallet: Wallet,
   tokenPubKey: PublicKey,
-  shareTokenPubKey: PublicKey
+  shareTokenPubKey: PublicKey,
+  vaultIndex: number
 ) => {
   if (!userPublicKey || !wallet) {
     return
@@ -132,11 +135,12 @@ export const withdrawTokens = async (
   const vaultProgram = new Program(vaultIdl, provider)
   const strategyProgram = new Program(strategyIdl, provider)
 
-  const index = 0
   const vaultPDA = await PublicKey.findProgramAddressSync(
     [
       Buffer.from('vault'),
-      Buffer.from(new Uint8Array(new BigUint64Array([BigInt(index)]).buffer)),
+      Buffer.from(
+        new Uint8Array(new BigUint64Array([BigInt(vaultIndex)]).buffer)
+      ),
     ],
     vaultProgram.programId
   )[0]
@@ -329,11 +333,11 @@ export const faucetTestToken = async (
   const faucetProgram = new Program(faucetIdl, provider)
 
   const faucetData = new PublicKey(
-    'GadGcmfR95AqyhN58PeHJ46JGdJ2K9AkdfnEUCQSvNp5'
+    'GhHAUWzijk3e3pUTJbwAFjU3v51hkrpujnEhhnxtp8Q7'
   )
 
   const faucetTokenAccount = new PublicKey(
-    'J6baU8waHBeAUBtfvS9mUyMhUXDJ8HBjQCEKrpkoJSgC'
+    'EjQxPWRJPvLFcPj4LomBwCpWxKYuig8jggVFhUq1qYQv'
   )
 
   const userTokenAccount = await findOrCreateTokenAccountByOwner(
@@ -361,4 +365,111 @@ export const faucetTestToken = async (
   } catch (err) {
     console.error('Error deposit tx:', err)
   }
+}
+
+export const getTfVaultPeriods = async (vaultIndex: number) => {
+  const connection = new Connection(defaultEndpoint, 'confirmed')
+
+  const dummyWallet = {
+    publicKey: Keypair.generate().publicKey,
+    signTransaction: async () => {},
+    signAllTransactions: async () => [],
+  }
+
+  const provider = new AnchorProvider(connection, dummyWallet, {
+    preflightCommitment: 'confirmed',
+  })
+
+  const vaultProgram = new Program(vaultIdl, provider)
+  const strategyProgram = new Program(strategyIdl, provider)
+
+  const vaultPDA = await PublicKey.findProgramAddressSync(
+    [
+      Buffer.from('vault'),
+      Buffer.from(
+        new Uint8Array(new BigUint64Array([BigInt(vaultIndex)]).buffer)
+      ),
+    ],
+    vaultProgram.programId
+  )[0]
+
+  const strategyPDA = await PublicKey.findProgramAddressSync(
+    [vaultPDA.toBuffer(), Buffer.from(new Uint8Array([0]))],
+    strategyProgram.programId
+  )[0]
+
+  const strategyAccount =
+    await strategyProgram.account.tradeFintechStrategy.fetch(strategyPDA)
+  const depositPeriodEnds = strategyAccount.depositPeriodEnds
+  const lockPeriodEnds = strategyAccount.lockPeriodEnds
+
+  return {
+    depositPeriodEnds,
+    lockPeriodEnds,
+  }
+}
+
+export const getVaultAddress = async (vaultIndex: number) => {
+  const connection = new Connection(defaultEndpoint, 'confirmed')
+
+  const dummyWallet = {
+    publicKey: Keypair.generate().publicKey,
+    signTransaction: async () => {},
+    signAllTransactions: async () => [],
+  }
+
+  const provider = new AnchorProvider(connection, dummyWallet, {
+    preflightCommitment: 'confirmed',
+  })
+
+  const vaultProgram = new Program(vaultIdl, provider)
+
+  const vaultPDA = await PublicKey.findProgramAddressSync(
+    [
+      Buffer.from('vault'),
+      Buffer.from(
+        new Uint8Array(new BigUint64Array([BigInt(vaultIndex)]).buffer)
+      ),
+    ],
+    vaultProgram.programId
+  )[0]
+
+  return vaultPDA
+}
+
+export const getStrategyProgramAddress = async (
+  vaultIndex: number,
+  strategyIndex: number
+) => {
+  const connection = new Connection(defaultEndpoint, 'confirmed')
+
+  const dummyWallet = {
+    publicKey: Keypair.generate().publicKey,
+    signTransaction: async () => {},
+    signAllTransactions: async () => [],
+  }
+
+  const provider = new AnchorProvider(connection, dummyWallet, {
+    preflightCommitment: 'confirmed',
+  })
+
+  const vaultProgram = new Program(vaultIdl, provider)
+  const strategyProgram = new Program(strategyIdl, provider)
+
+  const vaultPDA = await PublicKey.findProgramAddressSync(
+    [
+      Buffer.from('vault'),
+      Buffer.from(
+        new Uint8Array(new BigUint64Array([BigInt(vaultIndex)]).buffer)
+      ),
+    ],
+    vaultProgram.programId
+  )[0]
+
+  const strategyPDA = await PublicKey.findProgramAddressSync(
+    [vaultPDA.toBuffer(), Buffer.from(new Uint8Array([strategyIndex]))],
+    strategyProgram.programId
+  )[0]
+
+  return strategyPDA
 }
