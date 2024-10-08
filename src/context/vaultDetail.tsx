@@ -11,7 +11,7 @@ import useVaultDetail, {
   IVaultStrategyHistoricalApr,
   VaultInfoTabs,
 } from 'hooks/Vaults/useVaultDetail'
-import { IVault, IVaultPosition } from '@/utils/TempData'
+import { IVault, IVaultPosition, IVaultStrategyReport } from '@/utils/TempData'
 
 export type VaultContextType = {
   children: ReactElement
@@ -19,6 +19,7 @@ export type VaultContextType = {
 
 export type UseVaultContextReturnType = {
   vault: IVault
+  vaultAddress: string
   vaultLoading: boolean
   vaultPosition: IVaultPosition
   reports: Record<string, IVaultStrategyReport[]>

@@ -1,50 +1,62 @@
 name: CI/CD Pipeline
 
 on:
-  push:
-    branches:
-      - main
-      - dev
   pull_request:
+    types:
+      - closed
     branches:
-      - main
       - dev
+      - master
   workflow_dispatch:
 
 jobs:
   build:
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     env:
-      APP_NAME: splyce-solana-frontend-app
+      BRANCH_NAME: ${{ github.event.pull_request.base.ref }}
+      ENV_TAG: ${{ github.event.pull_request.base.ref == 'master' && '' || 'dev-' }}
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+        with:
+          ref: ${{ env.BRANCH_NAME }}
+
+      - name: Run in bash
+        shell: bash
+        run: |
+          echo "Branch name: ${{ env.BRANCH_NAME }}"
+          echo "ENV_TAG: ${{ env.ENV_TAG }}"
 
       - name: Docker login
         run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
       - name: Build Docker image (Production Stage)
         run: |
-          docker build --target production -t intothefathom/${{ env.APP_NAME }}:${{ github.sha }} .
-          docker tag intothefathom/${{ env.APP_NAME }}:${{ github.sha }} intothefathom/${{ env.APP_NAME }}:latest
+          docker build --target production -t ${{ env.IMAGE_REPOSITORY }}:${{ github.sha }} .
+          docker tag ${{ env.IMAGE_REPOSITORY }}:${{ github.sha }} ${{ env.IMAGE_REPOSITORY }}:${{ env.ENV_TAG }}latest
 
       - name: Push Docker image to Docker Hub
         run: |
-          docker push intothefathom/${{ env.APP_NAME }}:${{ github.sha }}
-          docker push intothefathom/${{ env.APP_NAME }}:latest
+          docker push ${{ env.IMAGE_REPOSITORY }}:${{ github.sha }}
+          docker push ${{ env.IMAGE_REPOSITORY }}:${{ env.ENV_TAG }}latest
 
       - name: Set Argo CD secrets
         id: set-secrets
         shell: bash
         run: |
-          if [[ $GITHUB_REF == refs/heads/main ]]; then
+          if [[ "${{ env.BRANCH_NAME }}" == "master" ]]; then
             {
+              echo "IMAGE_REPOSITORY=${{ vars.IMAGE_REPOSITORY_PROD }}"
+              echo "ARGOCD_APP_NAME=${{ vars.ARGOCD_APP_NAME_PROD }}"
               echo "ARGOCD_API_URL=${{ secrets.ARGOCD_API_URL_PROD }}"
               echo "ARGOCD_AUTH_TOKEN=${{ secrets.ARGOCD_AUTH_TOKEN_PROD }}"
             } >> "$GITHUB_OUTPUT"
           else
             {
+              echo "IMAGE_REPOSITORY=${{ vars.IMAGE_REPOSITORY_DEV }}"
+              echo "ARGOCD_APP_NAME=${{ vars.ARGOCD_APP_NAME_DEV }}"
               echo "ARGOCD_API_URL=${{ secrets.ARGOCD_API_URL_DEV }}"
               echo "ARGOCD_AUTH_TOKEN=${{ secrets.ARGOCD_AUTH_TOKEN_DEV }}"
             } >> "$GITHUB_OUTPUT"
@@ -56,15 +68,15 @@ jobs:
             -e ARGOCD_AUTH_TOKEN=${{ steps.set-secrets.outputs.ARGOCD_AUTH_TOKEN }} \
             argoproj/argocd:v2.6.15 \
             /bin/sh -c \
-            "argocd app set ${{ env.APP_NAME }} \
+            "argocd app set ${{ steps.set-secrets.outputs.ARGOCD_APP_NAME }} \
             --server ${{ steps.set-secrets.outputs.ARGOCD_API_URL }} \
             --grpc-web \
             --parameter image.tag=${{ github.sha }} && \
-            argocd app wait ${{ env.APP_NAME }} \
+            argocd app wait ${{ steps.set-secrets.outputs.ARGOCD_APP_NAME }} \
             --server ${{ steps.set-secrets.outputs.ARGOCD_API_URL }} \
             --grpc-web \
             --operation && \
-            argocd app sync ${{ env.APP_NAME }} \
+            argocd app sync ${{ steps.set-secrets.outputs.ARGOCD_APP_NAME }} \
             --server ${{ steps.set-secrets.outputs.ARGOCD_API_URL }} \
             --grpc-web \
             --timeout 180"

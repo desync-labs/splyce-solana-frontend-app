@@ -172,11 +172,11 @@ const useVaultListItem = ({ vaultPosition, vault }: UseVaultListItemProps) => {
   }, [balanceTokenLoading, transactionsLoading, setLoadingEarning])
 
   useEffect(() => {
-    if (isTfVaultType && wallet && vault.id) {
+    if (isTfVaultType && vault.id) {
       setTfVaultDepositEndTimeLoading(true)
       setTfVaultLockEndTimeLoading(true)
 
-      getTfVaultPeriods(wallet, getVaultIndex(vault.id))
+      getTfVaultPeriods(getVaultIndex(vault.id))
         .then((periods) => {
           const { depositPeriodEnds, lockPeriodEnds } = periods
           // todo: remove hardcoded values

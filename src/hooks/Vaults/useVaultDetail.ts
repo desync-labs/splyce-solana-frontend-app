@@ -29,6 +29,7 @@ import { vaultType } from '@/utils/Vaults/getVaultType'
 import {
   getTfVaultPeriods,
   getUserTokenBalance,
+  getVaultAddress,
   previewRedeem,
 } from '@/utils/TempSdkMethods'
 import useSyncContext from '@/context/sync'
@@ -64,6 +65,7 @@ const useVaultDetail = () => {
   const network = defaultNetWork
 
   const [vault, setVault] = useState<IVault>({} as IVault)
+  const [vaultAddress, setVaultAddress] = useState<string>('')
   const [vaultPosition, setVaultPosition] = useState<IVaultPosition>(
     {} as IVaultPosition
   )
@@ -310,6 +312,10 @@ const useVaultDetail = () => {
               })
             }
           }
+          /** Fethching Vault PDA address */
+          getVaultAddress(getVaultIndex(vaultId)).then((address) => {
+            setVaultAddress(address.toString())
+          })
         }
       })
     },
@@ -578,11 +584,11 @@ const useVaultDetail = () => {
   )
 
   useEffect(() => {
-    if (isTfVaultType && wallet && vaultId) {
+    if (isTfVaultType && vaultId) {
       setTfVaultDepositEndTimeLoading(true)
       setTfVaultLockEndTimeLoading(true)
 
-      getTfVaultPeriods(wallet, getVaultIndex(vaultId))
+      getTfVaultPeriods(getVaultIndex(vaultId))
         .then((periods) => {
           const { depositPeriodEnds, lockPeriodEnds } = periods
           // todo: remove hardcoded values
@@ -723,6 +729,7 @@ const useVaultDetail = () => {
 
   return {
     vault,
+    vaultAddress,
     vaultLoading,
     vaultPosition,
     vaultPositionLoading,
