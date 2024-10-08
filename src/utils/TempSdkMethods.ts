@@ -2,17 +2,17 @@ import {
   type Commitment,
   type ConfirmOptions,
   Connection,
+  Keypair,
   PublicKey,
   Transaction,
 } from "@solana/web3.js"
 import {
   createAssociatedTokenAccountInstruction,
   getAccount,
-  getOrCreateAssociatedTokenAccount,
   TOKEN_PROGRAM_ID,
 } from "@solana/spl-token"
 import { AnchorProvider, BN, Idl, Program } from "@coral-xyz/anchor"
-import { AnchorWallet } from "@solana/wallet-adapter-react"
+import { AnchorWallet, Wallet } from "@solana/wallet-adapter-react"
 import { defaultEndpoint } from "@/utils/network"
 import vaultIdl from "@/idls/tokenized_vault.json"
 import strategyIdl from "@/idls/strategy_program.json"
@@ -317,8 +317,6 @@ export const previewWithdraw = async (tokenAmount: string, vaultId: string) => {
 }
 
 export const getTransactionBlock = async (signature: string) => {
-  const connection = new Connection(defaultEndpoint)
-
   try {
     const transaction = await connection.getTransaction(signature, {
       commitment: "confirmed",
@@ -385,17 +383,12 @@ export const faucetTestToken = async (
   }
 }
 
-export const getTfVaultPeriods = async (vaultIndex: number) => {
-  const connection = new Connection(defaultEndpoint, 'confirmed')
-
-  const dummyWallet = {
-    publicKey: Keypair.generate().publicKey,
-    signTransaction: async () => {},
-    signAllTransactions: async () => [],
-  }
-
-  const provider = new AnchorProvider(connection, dummyWallet, {
-    preflightCommitment: 'confirmed',
+export const getTfVaultPeriods = async (
+  vaultIndex: number,
+  wallet: AnchorWallet
+) => {
+  const provider = new AnchorProvider(connection, wallet, {
+    preflightCommitment: "confirmed",
   })
 
   const vaultProgram = new Program(vaultIdl as Idl, provider)
@@ -411,7 +404,7 @@ export const getTfVaultPeriods = async (vaultIndex: number) => {
     vaultProgram.programId
   )[0]
 
-  const strategyPDA = await PublicKey.findProgramAddressSync(
+  const strategyPDA = PublicKey.findProgramAddressSync(
     [vaultPDA.toBuffer(), Buffer.from(new Uint8Array([0]))],
     strategyProgram.programId
   )[0]
@@ -429,23 +422,13 @@ export const getTfVaultPeriods = async (vaultIndex: number) => {
 }
 
 export const getVaultAddress = async (vaultIndex: number) => {
-  const connection = new Connection(defaultEndpoint, 'confirmed')
-
-  const dummyWallet = {
-    publicKey: Keypair.generate().publicKey,
-    signTransaction: async () => {},
-    signAllTransactions: async () => [],
-  }
-
-  const provider = new AnchorProvider(connection, dummyWallet, {
-    preflightCommitment: 'confirmed',
+  const vaultProgram = new Program(vaultIdl as Idl, {
+    connection,
   })
 
-  const vaultProgram = new Program(vaultIdl, provider)
-
-  const vaultPDA = await PublicKey.findProgramAddressSync(
+  const vaultPDA = PublicKey.findProgramAddressSync(
     [
-      Buffer.from('vault'),
+      Buffer.from("vault"),
       Buffer.from(
         new Uint8Array(new BigUint64Array([BigInt(vaultIndex)]).buffer)
       ),
@@ -460,24 +443,12 @@ export const getStrategyProgramAddress = async (
   vaultIndex: number,
   strategyIndex: number
 ) => {
-  const connection = new Connection(defaultEndpoint, 'confirmed')
+  const vaultProgram = new Program(vaultIdl as Idl)
+  const strategyProgram = new Program(strategyIdl as Idl)
 
-  const dummyWallet = {
-    publicKey: Keypair.generate().publicKey,
-    signTransaction: async () => {},
-    signAllTransactions: async () => [],
-  }
-
-  const provider = new AnchorProvider(connection, dummyWallet, {
-    preflightCommitment: 'confirmed',
-  })
-
-  const vaultProgram = new Program(vaultIdl, provider)
-  const strategyProgram = new Program(strategyIdl, provider)
-
-  const vaultPDA = await PublicKey.findProgramAddressSync(
+  const vaultPDA = PublicKey.findProgramAddressSync(
     [
-      Buffer.from('vault'),
+      Buffer.from("vault"),
       Buffer.from(
         new Uint8Array(new BigUint64Array([BigInt(vaultIndex)]).buffer)
       ),
@@ -485,7 +456,7 @@ export const getStrategyProgramAddress = async (
     vaultProgram.programId
   )[0]
 
-  const strategyPDA = await PublicKey.findProgramAddressSync(
+  const strategyPDA = PublicKey.findProgramAddressSync(
     [vaultPDA.toBuffer(), Buffer.from(new Uint8Array([strategyIndex]))],
     strategyProgram.programId
   )[0]
