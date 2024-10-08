@@ -15,7 +15,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      ARGOCD_APP_NAME: ${{ vars.ARGOCD_APP_NAME }}
       IMAGE_REPOSITORY: ${{ vars.IMAGE_REPOSITORY }}
       ENV_TAG: ${{ github.ref == 'refs/heads/main' && '' || 'dev-' }}
 
@@ -42,11 +41,13 @@ jobs:
         run: |
           if [[ $GITHUB_REF == refs/heads/main ]]; then
             {
+              echo "ARGOCD_APP_NAME=${{ secrets.ARGOCD_APP_NAME_PROD }}"
               echo "ARGOCD_API_URL=${{ secrets.ARGOCD_API_URL_PROD }}"
               echo "ARGOCD_AUTH_TOKEN=${{ secrets.ARGOCD_AUTH_TOKEN_PROD }}"
             } >> "$GITHUB_OUTPUT"
           else
             {
+              echo "ARGOCD_APP_NAME=${{ secrets.ARGOCD_APP_NAME_DEV }}"
               echo "ARGOCD_API_URL=${{ secrets.ARGOCD_API_URL_DEV }}"
               echo "ARGOCD_AUTH_TOKEN=${{ secrets.ARGOCD_AUTH_TOKEN_DEV }}"
             } >> "$GITHUB_OUTPUT"
@@ -58,15 +59,15 @@ jobs:
             -e ARGOCD_AUTH_TOKEN=${{ steps.set-secrets.outputs.ARGOCD_AUTH_TOKEN }} \
             argoproj/argocd:v2.6.15 \
             /bin/sh -c \
-            "argocd app set ${{ env.ARGOCD_APP_NAME }} \
+            "argocd app set ${{ steps.set-secrets.outputs.ARGOCD_APP_NAME }} \
             --server ${{ steps.set-secrets.outputs.ARGOCD_API_URL }} \
             --grpc-web \
             --parameter image.tag=${{ github.sha }} && \
-            argocd app wait ${{ env.ARGOCD_APP_NAME }} \
+            argocd app wait ${{ steps.set-secrets.outputs.ARGOCD_APP_NAME }} \
             --server ${{ steps.set-secrets.outputs.ARGOCD_API_URL }} \
             --grpc-web \
             --operation && \
-            argocd app sync ${{ env.ARGOCD_APP_NAME }} \
+            argocd app sync ${{ steps.set-secrets.outputs.ARGOCD_APP_NAME }} \
             --server ${{ steps.set-secrets.outputs.ARGOCD_API_URL }} \
             --grpc-web \
             --timeout 180"
