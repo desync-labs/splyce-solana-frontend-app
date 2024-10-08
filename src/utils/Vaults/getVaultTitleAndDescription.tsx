@@ -100,11 +100,11 @@ export const getDefaultVaultDescription = (
           deposited. The tspUSD vault only charges performance fees as a
           percentage of the strategies manager's fees. Strategies managers can
           set individual management fees, but only for gain. Note that the vault
-          smart contracts have been carefully audited. Nevertheless, as always
-          in DeFi, users are exposed to smart contract risk. The vault smart
-          contracts themselves are non-custodial. Splyce is not responsible for
-          the security of strategies created by a 3-rd party or in partnership
-          with a 3-rd party.
+          programs have been carefully audited. Nevertheless, as always in DeFi,
+          users are exposed to program risk. The vault programs themselves are
+          non-custodial. Splyce is not responsible for the security of
+          strategies created by a 3-rd party or in partnership with a 3-rd
+          party.
         </>
       )
     case VaultType.TRADEFI:
@@ -118,11 +118,11 @@ export const getDefaultVaultDescription = (
           tspUSD deposited. The tspUSD vault only charges performance fees as a
           percentage of the strategies manager's fees. Strategies managers can
           set individual management fees, but only for gain. Note that the vault
-          smart contracts have been carefully audited. Nevertheless, as always
-          in DeFi, users are exposed to smart contract risk. The vault smart
-          contracts themselves are non-custodial. Splyce is not responsible for
-          the security of strategies created by a 3-rd party or in partnership
-          with a 3-rd party.
+          programs have been carefully audited. Nevertheless, as always in DeFi,
+          users are exposed to program risk. The vault programs themselves are
+          non-custodial. Splyce is not responsible for the security of
+          strategies created by a 3-rd party or in partnership with a 3-rd
+          party.
         </>
       )
     case VaultType.INCENTIVE:
@@ -136,11 +136,11 @@ export const getDefaultVaultDescription = (
           equivalent with tspUSD deposited. The tspUSD vault only charges
           performance fees as a percentage of the strategies manager's fees.
           Strategies managers can set individual management fees, but only for
-          gain. Note that the vault smart contracts have been carefully audited.
-          Nevertheless, as always in DeFi, users are exposed to smart contract
-          risk. The vault smart contracts themselves are non-custodial. Splyce
-          is not responsible for the security of strategies created by a 3-rd
-          party or in partnership with a 3-rd party.
+          gain. Note that the vault programs have been carefully audited.
+          Nevertheless, as always in DeFi, users are exposed to program risk.
+          The vault programs themselves are non-custodial. Splyce is not
+          responsible for the security of strategies created by a 3-rd party or
+          in partnership with a 3-rd party.
         </>
       )
     default:
@@ -154,11 +154,11 @@ export const getDefaultVaultDescription = (
           equivalent with tspUSD deposited. The tspUSD vault only charges
           performance fees as a percentage of the strategies manager's fees.
           Strategies managers can set individual management fees, but only for
-          gain. Note that the vault smart contracts have been carefully audited.
-          Nevertheless, as always in DeFi, users are exposed to smart contract
-          risk. The vault smart contracts themselves are non-custodial. Splyce
-          is not responsible for the security of strategies created by a 3-rd
-          party or in partnership with a 3-rd party.
+          gain. Note that the vault programs have been carefully audited.
+          Nevertheless, as always in DeFi, users are exposed to program risk.
+          The vault programs themselves are non-custodial. Splyce is not
+          responsible for the security of strategies created by a 3-rd party or
+          in partnership with a 3-rd party.
         </>
       )
   }
