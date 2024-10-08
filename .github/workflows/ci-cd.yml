@@ -13,8 +13,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      BRANCH_NAME: ${{ github.event.pull_request.base.ref }}
-      ENV_TAG: ${{ github.event.pull_request.base.ref == 'master' && '' || 'dev-' }}
+      BRANCH_NAME: ${{ github.event.pull_request.base.ref != '' && github.event.pull_request.base.ref || github.ref_name || 'dev' }}
+      ENV_TAG: ${{ env.BRANCH_NAME == 'master' && '' || 'dev-' }}
 
     steps:
       - name: Checkout code
