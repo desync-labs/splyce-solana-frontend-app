@@ -14,9 +14,15 @@ jobs:
     runs-on: ubuntu-latest
     env:
       BRANCH_NAME: ${{ github.event.pull_request.base.ref != '' && github.event.pull_request.base.ref || github.ref_name || 'dev' }}
-      ENV_TAG: ${{ env.BRANCH_NAME == 'master' && '' || 'dev-' }}
 
     steps:
+      - name: Set ENV_TAG
+        run: |
+          if [ "${{ env.BRANCH_NAME }}" == "master" ]; then
+            echo "ENV_TAG=" >> $GITHUB_ENV
+          else
+            echo "ENV_TAG=dev-" >> $GITHUB_ENV
+          fi
       - name: Checkout code
         uses: actions/checkout@v2
         with:
