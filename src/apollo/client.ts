@@ -136,17 +136,3 @@ export const client = new ApolloClient({
   link: concat(authMiddleware, httpLink),
   cache,
 })
-
-export const healthClient = new ApolloClient({
-  link: new HttpLink({
-    uri: 'https://graph.xinfin.fathom.fi/graphql',
-  }),
-  cache: new InMemoryCache(),
-})
-
-export const blockClient = new ApolloClient({
-  link: new HttpLink({
-    uri: 'https://graph.xinfin.fathom.fi/subgraphs/name/blocklytics/ethereum-blocks',
-  }),
-  cache: new InMemoryCache(),
-})

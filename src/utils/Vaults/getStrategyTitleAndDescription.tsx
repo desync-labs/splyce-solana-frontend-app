@@ -10,7 +10,7 @@ export const DescriptionList = styled('ul')`
 
 strategyDescription['0xe2dea7e0c272de04e8708674dae73ebd6e5c1455'] = (
   <>
-    <p>The Strategy distributes FXD at a variable APY to depositors.</p>
+    <p>The Strategy distributes tspUSD at a variable APY to depositors.</p>
     <DescriptionList>
       <li>
         Consistent: Our approach ensures a steady flow of rewards to Vault
@@ -113,26 +113,13 @@ strategyDescription['0xcea3c48da7aa17d5bc0a588a3e743577d94eb192'] = (
     </DescriptionList>
   </>
 )
-strategyDescription['0xc0ac2e5181f90fda9e9264b5b1634b2c8bd88cdd'] = (
-  <>
-    <p>
-      The Strategy utilizes funds in the FXD liquidation process. It uses
-      several liquidity sources (Fathom DEX, XSwap, etc.) to liquidate risky
-      positions in the FXD protocol. If there is insufficient liquidity in the
-      market, the Strategy uses internally allocated funds to process the
-      liquidation. All liquidation income is considered a gain. Possible
-      liquidation debt is compensated by strategy gain and the FXD stability fee
-      reserve.
-    </p>
-  </>
-)
 
 strategyDescription[
   '3uDciMtTyUkdPtraAwXNBoDwM3cRN7XFLmVq6tK5aFfy'.toLowerCase()
 ] = (
   <>
     <p>
-      The Strategy utilizes funds in Fathom Lending. It supplies certain lending
+      The Strategy utilizes funds in Splyce Lending. It supplies certain lending
       pools to achieve the maximum possible gain.
     </p>
   </>
@@ -203,9 +190,6 @@ strategyDescription['0x676a616d4fa846c6699437a4f1209c5808e5b1ab'] = (
   </>
 )
 
-strategyTitle['0xe2dea7e0c272de04e8708674dae73ebd6e5c1455'] =
-  'FXD Strategy - 3 Months - 100.000 FXD'
-
 strategyTitle['0x3adf1e440657fa55d11adb6a102d140b01449139'] =
   'Newmont Corp (NEM) Strategy'
 
@@ -215,14 +199,8 @@ strategyTitle['PB3pu2GFyw8g1LBqPjuF7cU6NuGw2BJcjQac6p9AzjC'.toLowerCase()] =
 strategyTitle['0xcea3c48da7aa17d5bc0a588a3e743577d94eb192'] =
   'Anglogold Ashanti PLC (AU) Strategy'
 
-strategyTitle['0xc0ac2e5181f90fda9e9264b5b1634b2c8bd88cdd'] =
-  'FXD - Liquidation Strategy 1'
-
 strategyTitle['0x989a19e29cb9bc194bd35606af8f9a641a4cbce4'] =
   'Liquidation strategy'
-
-strategyTitle['0x0425b4f142059eb15cae157dac4277f89b9894c2'] =
-  'FXD - Lending Strategy 1'
 
 strategyTitle['0xBc8C9999a3D56e799Bb470D8402A9dA121FcBf14'] =
   'Splyce Trade Fintech Strategy 1'
