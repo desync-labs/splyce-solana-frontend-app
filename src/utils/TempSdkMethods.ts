@@ -114,8 +114,8 @@ export const depositTokens = async (
         .accounts({
           vault: vaultPDA,
           user: userPublicKey,
-          userTokenAccount: userTokenAccount,
-          userSharesAccount: userSharesAccount,
+          userTokenAccount: userTokenAccount.address,
+          userSharesAccount: userSharesAccount.address,
           tokenProgram: TOKEN_PROGRAM_ID,
         })
         .instruction()
@@ -200,8 +200,8 @@ export const withdrawTokens = async (
         .accounts({
           vault: vaultPDA,
           user: userPublicKey,
-          userTokenAccount: userTokenAccount,
-          userSharesAccount: userSharesAccount,
+          userTokenAccount: userTokenAccount.address,
+          userSharesAccount: userSharesAccount.address,
           tokenProgram: TOKEN_PROGRAM_ID,
           strategyProgram: strategyProgram.programId,
         })
@@ -340,8 +340,6 @@ export const faucetTestToken = async (
   if (!userPubKey || !wallet || !tokenPubKey) {
     return
   }
-
-  const connection = new Connection(defaultEndpoint)
   const provider = new AnchorProvider(connection, wallet, {
     preflightCommitment: "confirmed",
   })
@@ -369,7 +367,7 @@ export const faucetTestToken = async (
         .accounts({
           faucetData: faucetData,
           tokenAccount: faucetTokenAccount,
-          recipient: userTokenAccount,
+          recipient: userTokenAccount.address,
           signer: userPubKey,
           tokenProgram: TOKEN_PROGRAM_ID,
         })

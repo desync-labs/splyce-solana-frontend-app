@@ -6,7 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="980c1e59-2a66-476c-8058-c1191519ba3f" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/next-env.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/next-env.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/vaults/faucet.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/vaults/faucet.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/utils/TempSdkMethods.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/TempSdkMethods.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -64,7 +64,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.go.formatter.settings.were.checked": "true",
     "RunOnceActivity.go.migrated.go.modules.settings": "true",
-    "git-widget-placeholder": "refactor-get-or-create-token-associated-account",
+    "git-widget-placeholder": "#17 on refactor-get-or-create-token-asso…count",
     "last_opened_file_path": "/Users/vetalion/sites/Splyce/splyce-solana-frontend-app",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.standard": "true",
@@ -131,6 +131,17 @@
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <option name="LAST_COMMIT_MESSAGE" value="" />
