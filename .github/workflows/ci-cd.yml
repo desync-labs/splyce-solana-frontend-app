@@ -5,16 +5,15 @@ on:
     branches:
       - dev
   pull_request:
-    branches:
-      - master
-      - dev
     types:
       - closed
+    branches:
+      - dev
+      - master
   workflow_dispatch:
 
 jobs:
   build:
-    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     env:
       IMAGE_REPOSITORY: ${{ vars.IMAGE_REPOSITORY }}
