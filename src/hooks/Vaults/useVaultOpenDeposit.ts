@@ -1,40 +1,45 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
-import { PublicKey } from '@solana/web3.js'
-import { useWallet } from '@solana/wallet-adapter-react'
-import { useForm } from 'react-hook-form'
+import { useCallback, useEffect, useMemo, useState } from "react"
+import { PublicKey } from "@solana/web3.js"
+import {
+  AnchorWallet,
+  useAnchorWallet,
+  useWallet,
+} from "@solana/wallet-adapter-react"
+import { useForm } from "react-hook-form"
 
-import BigNumber from 'bignumber.js'
-import debounce from 'lodash.debounce'
-import { IVault, VaultType } from '@/utils/TempData'
+import BigNumber from "bignumber.js"
+import debounce from "lodash.debounce"
+import { IVault, VaultType } from "@/utils/TempData"
 import {
   depositTokens,
   getTransactionBlock,
   getUserTokenBalance,
   previewDeposit,
-} from '@/utils/TempSdkMethods'
-import useSyncContext from '@/context/sync'
-import { formatNumber } from '@/utils/format'
-import { getVaultIndex } from '@/utils/getVaultIndex'
+} from "@/utils/TempSdkMethods"
+import useSyncContext from "@/context/sync"
+import { formatNumber } from "@/utils/format"
+import { getVaultIndex } from "@/utils/getVaultIndex"
 
 export const MAX_PERSONAL_DEPOSIT = 50000
 export const defaultValues = {
-  deposit: '',
-  sharedToken: '',
+  deposit: "",
+  sharedToken: "",
 }
 
 const useVaultOpenDeposit = (vault: IVault, onClose: () => void) => {
   const { token, shareToken, depositLimit, balanceTokens, type } = vault
   const { publicKey, wallet } = useWallet()
+  const anchorWallet = useAnchorWallet()
   const { lastTransactionBlock, setLastTransactionBlock } = useSyncContext()
 
-  const [walletBalance, setWalletBalance] = useState<string>('0')
+  const [walletBalance, setWalletBalance] = useState<string>("0")
   const [isWalletFetching, setIsWalletFetching] = useState<boolean>(false)
   const [openDepositLoading, setOpenDepositLoading] = useState<boolean>(false)
 
   const methods = useForm({
     defaultValues,
-    reValidateMode: 'onChange',
-    mode: 'onChange',
+    reValidateMode: "onChange",
+    mode: "onChange",
   })
 
   const {
@@ -45,15 +50,15 @@ const useVaultOpenDeposit = (vault: IVault, onClose: () => void) => {
     formState: { errors },
   } = methods
 
-  const deposit = watch('deposit')
-  const sharedToken = watch('sharedToken')
+  const deposit = watch("deposit")
+  const sharedToken = watch("sharedToken")
 
   const getVaultTokenBalance = useCallback(async () => {
     if (!publicKey || !token?.id) {
       return
     }
     const balance = await getUserTokenBalance(publicKey, token.id)
-    setWalletBalance(balance)
+    setWalletBalance(balance as string)
     setIsWalletFetching(true)
   }, [publicKey, token?.id, setWalletBalance, setIsWalletFetching])
 
@@ -73,7 +78,7 @@ const useVaultOpenDeposit = (vault: IVault, onClose: () => void) => {
 
         const sharedConverted = BigNumber(sharedAmount).toFixed()
 
-        setValue('sharedToken', sharedConverted)
+        setValue("sharedToken", sharedConverted)
       }, 500),
     [vault?.id, deposit, setValue]
   )
@@ -83,7 +88,7 @@ const useVaultOpenDeposit = (vault: IVault, onClose: () => void) => {
       updateSharedAmount(deposit)
     } else {
       setTimeout(() => {
-        setValue('sharedToken', '0')
+        setValue("sharedToken", "0")
       }, 600)
     }
   }, [deposit, setValue, updateSharedAmount])
@@ -99,7 +104,7 @@ const useVaultOpenDeposit = (vault: IVault, onClose: () => void) => {
       )
     ).decimalPlaces(6, BigNumber.ROUND_DOWN)
 
-    setValue('deposit', maxWalletBalance.toString(), {
+    setValue("deposit", maxWalletBalance.toString(), {
       shouldValidate: true,
     })
   }, [walletBalance, depositLimit, balanceTokens, setValue])
@@ -137,7 +142,7 @@ const useVaultOpenDeposit = (vault: IVault, onClose: () => void) => {
       )
 
       if (BigNumber(value).isGreaterThan(formattedMaxWalletBalance)) {
-        return 'You do not have enough money in your wallet'
+        return "You do not have enough money in your wallet"
       }
 
       if (BigNumber(value).isGreaterThan(formattedMaxDepositLimit)) {
@@ -169,6 +174,7 @@ const useVaultOpenDeposit = (vault: IVault, onClose: () => void) => {
       if (!publicKey || !wallet || !token) {
         return
       }
+
       setOpenDepositLoading(true)
 
       const { deposit } = values
@@ -184,13 +190,13 @@ const useVaultOpenDeposit = (vault: IVault, onClose: () => void) => {
         depositTokens(
           publicKey,
           formattedDepositAmount,
-          wallet,
+          anchorWallet as AnchorWallet,
           tokenPublicKey,
           sharedTokenPublicKey,
           getVaultIndex(vault.id)
         )
           .then(async (txSignature) => {
-            const txSlot = await getTransactionBlock(txSignature)
+            const txSlot = await getTransactionBlock(txSignature as string)
 
             if (txSlot) {
               setLastTransactionBlock(txSlot)
@@ -201,7 +207,7 @@ const useVaultOpenDeposit = (vault: IVault, onClose: () => void) => {
             onClose()
           })
       } catch (error) {
-        console.error('Error depositing tokens:', error)
+        console.error("Error depositing tokens:", error)
         setOpenDepositLoading(false)
       }
     },

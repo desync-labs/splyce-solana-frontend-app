@@ -1,10 +1,10 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
-import { useForm } from 'react-hook-form'
-import { useWallet } from '@solana/wallet-adapter-react'
-import { PublicKey } from '@solana/web3.js'
-import debounce from 'lodash.debounce'
-import BigNumber from 'bignumber.js'
-import { IVault, IVaultPosition, VaultType } from '@/utils/TempData'
+import { useCallback, useEffect, useMemo, useState } from "react"
+import { useForm } from "react-hook-form"
+import { useWallet } from "@solana/wallet-adapter-react"
+import { PublicKey } from "@solana/web3.js"
+import debounce from "lodash.debounce"
+import BigNumber from "bignumber.js"
+import { IVault, IVaultPosition, VaultType } from "@/utils/TempData"
 import {
   depositTokens,
   getTransactionBlock,
@@ -12,15 +12,15 @@ import {
   previewDeposit,
   previewWithdraw,
   withdrawTokens,
-} from '@/utils/TempSdkMethods'
-import { formatNumber } from '@/utils/format'
-import { MAX_PERSONAL_DEPOSIT } from '@/hooks/Vaults/useVaultOpenDeposit'
-import useSyncContext from '@/context/sync'
-import { getVaultIndex } from '@/utils/getVaultIndex'
+} from "@/utils/TempSdkMethods"
+import { formatNumber } from "@/utils/format"
+import { MAX_PERSONAL_DEPOSIT } from "@/hooks/Vaults/useVaultOpenDeposit"
+import useSyncContext from "@/context/sync"
+import { getVaultIndex } from "@/utils/getVaultIndex"
 
 export const defaultValues = {
-  formToken: '',
-  formSharedToken: '',
+  formToken: "",
+  formSharedToken: "",
 }
 
 export enum FormType {
@@ -41,8 +41,8 @@ const useVaultManageDeposit = (
 
   const methods = useForm({
     defaultValues,
-    reValidateMode: 'onChange',
-    mode: 'onChange',
+    reValidateMode: "onChange",
+    mode: "onChange",
   })
 
   const {
@@ -56,13 +56,13 @@ const useVaultManageDeposit = (
   const [formType, setFormType] = useState<FormType>(
     shutdown ? FormType.WITHDRAW : FormType.DEPOSIT
   )
-  const [walletBalance, setWalletBalance] = useState<string>('0')
+  const [walletBalance, setWalletBalance] = useState<string>("0")
   const [isWalletFetching, setIsWalletFetching] = useState<boolean>(false)
   const [openDepositLoading, setOpenDepositLoading] = useState<boolean>(false)
   const [isFullWithdraw, setIsFullWithdraw] = useState<boolean>(false)
 
-  const formToken = watch('formToken')
-  const formSharedToken = watch('formSharedToken')
+  const formToken = watch("formToken")
+  const formSharedToken = watch("formSharedToken")
 
   const getVaultTokenBalance = useCallback(async () => {
     if (!publicKey || !token?.id) {
@@ -76,7 +76,7 @@ const useVaultManageDeposit = (
   const updateSharedAmount = useMemo(
     () =>
       debounce(async (deposit: string) => {
-        let sharedAmount = '0'
+        let sharedAmount = "0"
 
         if (isFullWithdraw) {
           setIsFullWithdraw(false)
@@ -91,7 +91,7 @@ const useVaultManageDeposit = (
 
         const sharedConverted = BigNumber(sharedAmount).toString()
 
-        setValue('formSharedToken', sharedConverted)
+        setValue("formSharedToken", sharedConverted)
       }, 500),
     [vault.id, formType, isFullWithdraw, setIsFullWithdraw]
   )
@@ -112,7 +112,7 @@ const useVaultManageDeposit = (
       updateSharedAmount(formToken)
     } else {
       timeout = setTimeout(() => {
-        setValue('formSharedToken', '')
+        setValue("formSharedToken", "")
       }, 600)
     }
 
@@ -130,7 +130,7 @@ const useVaultManageDeposit = (
 
         const maxCapped = max.isNegative() ? BigNumber(0) : max
 
-        setValue('formToken', maxCapped.toString(), {
+        setValue("formToken", maxCapped.toString(), {
           shouldValidate: true,
         })
       } else {
@@ -143,25 +143,25 @@ const useVaultManageDeposit = (
             BigNumber(balancePosition).dividedBy(10 ** 9)
           )
         ).decimalPlaces(6, BigNumber.ROUND_DOWN)
-        console.log('max', max.toString())
+        console.log("max", max.toString())
 
         const maxCapped = max.isNegative() ? BigNumber(0) : max
 
-        setValue('formToken', maxCapped.toString(), {
+        setValue("formToken", maxCapped.toString(), {
           shouldValidate: true,
         })
       }
     } else {
       setIsFullWithdraw(true)
       setValue(
-        'formToken',
+        "formToken",
         BigNumber(balancePosition)
           .dividedBy(10 ** 9)
           .toString(),
         { shouldValidate: true }
       )
       setValue(
-        'formSharedToken',
+        "formSharedToken",
         BigNumber(balanceShares)
           .dividedBy(10 ** 9)
           .toString(),
@@ -186,7 +186,7 @@ const useVaultManageDeposit = (
     maxDepositLimit: BigNumber
   ) => {
     if (BigNumber(value).isGreaterThan(maxWalletBalance)) {
-      return 'You do not have enough money in your wallet'
+      return "You do not have enough money in your wallet"
     }
 
     if (BigNumber(value).isGreaterThan(maxDepositLimit)) {
@@ -296,7 +296,7 @@ const useVaultManageDeposit = (
             getVaultIndex(vault.id)
           )
             .then(async (txSignature) => {
-              const txSlot = await getTransactionBlock(txSignature)
+              const txSlot = await getTransactionBlock(txSignature as string)
 
               if (txSlot) {
                 setLastTransactionBlock(txSlot)
@@ -307,7 +307,7 @@ const useVaultManageDeposit = (
               onClose()
             })
         } catch (error) {
-          console.error('Error depositing tokens:', error)
+          console.error("Error depositing tokens:", error)
           setOpenDepositLoading(false)
         }
       } else {
@@ -332,7 +332,7 @@ const useVaultManageDeposit = (
               onClose()
             })
         } catch (error) {
-          console.error('Error withdrawing tokens:', error)
+          console.error("Error withdrawing tokens:", error)
           setOpenDepositLoading(false)
         }
       }

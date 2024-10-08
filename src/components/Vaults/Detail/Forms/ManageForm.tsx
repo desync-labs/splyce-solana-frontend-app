@@ -1,18 +1,18 @@
-import { memo } from 'react'
-import { FormProvider } from 'react-hook-form'
-import { styled } from '@mui/material'
+import { memo } from "react"
+import { FormProvider } from "react-hook-form"
+import { styled } from "@mui/material"
 import useVaultManageDeposit, {
   FormType,
-} from '@/hooks/Vaults/useVaultManageDeposit'
-import useVaultContext from '@/context/vaultDetail'
-import ManageVaultForm from '@/components/Vaults/List/ManageVaultModal/ManageVaultForm'
-import ManageVaultInfo from '@/components/Vaults/Detail/Forms/ManageVaultInfo'
+} from "@/hooks/Vaults/useVaultManageDeposit"
+import useVaultContext from "@/context/vaultDetail"
+import ManageVaultForm from "@/components/Vaults/List/ManageVaultModal/ManageVaultForm"
+import ManageVaultInfo from "@/components/Vaults/Detail/Forms/ManageVaultInfo"
 import {
   BaseDialogNavItem,
   BaseDialogNavWrapper,
-} from '@/components/Base/Dialog/StyledDialog'
-import { VaultFormWrapper } from '@/components/Vaults/Detail/Forms/index'
-import { VaultDetailFormColumn } from '@/components/Vaults/Detail/Forms/DepositForm'
+} from "@/components/Base/Dialog/StyledDialog"
+import { VaultFormWrapper } from "@/components/Vaults/Detail/Forms/index"
+import { VaultDetailFormColumn } from "@/components/Vaults/Detail/Forms/DepositForm"
 
 const NavWrapper = styled(BaseDialogNavWrapper)`
   gap: 24px;
@@ -60,14 +60,14 @@ const VaultDetailManageForm = () => {
       <NavWrapper>
         {!shutdown && (
           <NavItem
-            className={formType === FormType.DEPOSIT ? 'active' : ''}
+            className={formType === FormType.DEPOSIT ? "active" : ""}
             onClick={() => setFormType(FormType.DEPOSIT)}
           >
             Deposit
           </NavItem>
         )}
         <NavItem
-          className={formType === FormType.WITHDRAW ? 'active' : ''}
+          className={formType === FormType.WITHDRAW ? "active" : ""}
           onClick={() => setFormType(FormType.WITHDRAW)}
         >
           Withdraw

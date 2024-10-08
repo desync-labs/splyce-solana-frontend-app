@@ -1,16 +1,33 @@
-import { Connection, PublicKey, Transaction } from '@solana/web3.js'
+import {
+  type Commitment,
+  type ConfirmOptions,
+  Connection,
+  PublicKey,
+  Transaction,
+} from "@solana/web3.js"
 import {
   createAssociatedTokenAccountInstruction,
   getAccount,
-  getAssociatedTokenAddress,
+  getOrCreateAssociatedTokenAccount,
   TOKEN_PROGRAM_ID,
-} from '@solana/spl-token'
-import { AnchorProvider, BN, Program } from '@coral-xyz/anchor'
-import { Wallet } from '@solana/wallet-adapter-react'
-import { defaultEndpoint } from '@/utils/network'
-import vaultIdl from '@/idls/tokenized_vault.json'
-import strategyIdl from '@/idls/strategy_program.json'
-import faucetIdl from '@/idls/faucet.json'
+} from "@solana/spl-token"
+import { AnchorProvider, BN, Idl, Program } from "@coral-xyz/anchor"
+import { AnchorWallet } from "@solana/wallet-adapter-react"
+import { defaultEndpoint } from "@/utils/network"
+import vaultIdl from "@/idls/tokenized_vault.json"
+import strategyIdl from "@/idls/strategy_program.json"
+import faucetIdl from "@/idls/faucet.json"
+import { ASSOCIATED_TOKEN_PROGRAM_ID } from "@solana/spl-token"
+import type { Account } from "@solana/spl-token"
+import { getAssociatedTokenAddressSync } from "@solana/spl-token"
+import {
+  TokenAccountNotFoundError,
+  TokenInvalidAccountOwnerError,
+  TokenInvalidMintError,
+  TokenInvalidOwnerError,
+} from "@solana/spl-token"
+
+const connection = new Connection(defaultEndpoint)
 
 export const getUserTokenBalance = async (
   publicKey: PublicKey,
@@ -20,7 +37,6 @@ export const getUserTokenBalance = async (
     return
   }
 
-  const connection = new Connection(defaultEndpoint)
   const tokenMintPublicKey = new PublicKey(tokenMintAddress)
 
   try {
@@ -34,7 +50,7 @@ export const getUserTokenBalance = async (
       const tokenAccountInfo = await getAccount(
         connection,
         associatedTokenAccountPubKey,
-        'processed'
+        "processed"
       )
 
       return tokenAccountInfo.amount.toString()
@@ -42,7 +58,7 @@ export const getUserTokenBalance = async (
       return 0
     }
   } catch (error) {
-    console.error('Error getting token balance:', error)
+    console.error("Error getting token balance:", error)
     return 0
   }
 }
@@ -50,7 +66,7 @@ export const getUserTokenBalance = async (
 export const depositTokens = async (
   userPublicKey: PublicKey,
   amount: string,
-  wallet: Wallet,
+  wallet: AnchorWallet,
   tokenPubKey: PublicKey,
   shareTokenPubKey: PublicKey,
   vaultIndex: number
@@ -60,18 +76,18 @@ export const depositTokens = async (
   }
 
   const provider = new AnchorProvider(
-    new Connection(defaultEndpoint, 'confirmed'),
-    wallet.adapter,
+    new Connection(defaultEndpoint, "confirmed"),
+    wallet,
     {
-      preflightCommitment: 'confirmed',
+      preflightCommitment: "confirmed",
     }
   )
 
-  const vaultProgram = new Program(vaultIdl, provider)
+  const vaultProgram = new Program(vaultIdl as Idl, provider)
 
-  const vaultPDA = await PublicKey.findProgramAddressSync(
+  const vaultPDA = PublicKey.findProgramAddressSync(
     [
-      Buffer.from('vault'),
+      Buffer.from("vault"),
       Buffer.from(
         new Uint8Array(new BigUint64Array([BigInt(vaultIndex)]).buffer)
       ),
@@ -79,16 +95,16 @@ export const depositTokens = async (
     vaultProgram.programId
   )[0]
 
-  const userTokenAccount = await findOrCreateTokenAccountByOwner(
-    userPublicKey,
+  const userTokenAccount = await getOrCreateTokenAssociatedAccount(
+    wallet,
     tokenPubKey,
-    wallet
+    userPublicKey
   )
 
-  const userSharesAccount = await findOrCreateTokenAccountByOwner(
-    userPublicKey,
+  const userSharesAccount = await getOrCreateTokenAssociatedAccount(
+    wallet,
     shareTokenPubKey,
-    wallet
+    userPublicKey
   )
 
   try {
@@ -108,14 +124,14 @@ export const depositTokens = async (
     // Send Tx
     return await provider.sendAndConfirm(tx)
   } catch (err) {
-    console.error('Error deposit tx:', err)
+    console.error("Error deposit tx:", err)
   }
 }
 
 export const withdrawTokens = async (
   userPublicKey: PublicKey,
   amount: string,
-  wallet: Wallet,
+  wallet: AnchorWallet,
   tokenPubKey: PublicKey,
   shareTokenPubKey: PublicKey,
   vaultIndex: number
@@ -125,19 +141,19 @@ export const withdrawTokens = async (
   }
 
   const provider = new AnchorProvider(
-    new Connection(defaultEndpoint, 'confirmed'),
-    wallet.adapter,
+    new Connection(defaultEndpoint, "confirmed"),
+    wallet,
     {
-      preflightCommitment: 'confirmed',
+      preflightCommitment: "confirmed",
     }
   )
 
-  const vaultProgram = new Program(vaultIdl, provider)
-  const strategyProgram = new Program(strategyIdl, provider)
+  const vaultProgram = new Program(vaultIdl as Idl, provider)
+  const strategyProgram = new Program(strategyIdl as Idl, provider)
 
-  const vaultPDA = await PublicKey.findProgramAddressSync(
+  const vaultPDA = PublicKey.findProgramAddressSync(
     [
-      Buffer.from('vault'),
+      Buffer.from("vault"),
       Buffer.from(
         new Uint8Array(new BigUint64Array([BigInt(vaultIndex)]).buffer)
       ),
@@ -145,25 +161,25 @@ export const withdrawTokens = async (
     vaultProgram.programId
   )[0]
 
-  const strategyPDA = await PublicKey.findProgramAddressSync(
+  const strategyPDA = PublicKey.findProgramAddressSync(
     [vaultPDA.toBuffer(), Buffer.from(new Uint8Array([0]))],
     strategyProgram.programId
   )[0]
 
-  const userTokenAccount = await findOrCreateTokenAccountByOwner(
-    userPublicKey,
+  const userTokenAccount = await getOrCreateTokenAssociatedAccount(
+    wallet,
     tokenPubKey,
-    wallet
+    userPublicKey
   )
 
-  const userSharesAccount = await findOrCreateTokenAccountByOwner(
-    userPublicKey,
+  const userSharesAccount = await getOrCreateTokenAssociatedAccount(
+    wallet,
     shareTokenPubKey,
-    wallet
+    userPublicKey
   )
 
-  const strategyTokenAccount = await PublicKey.findProgramAddressSync(
-    [Buffer.from('underlying'), strategyPDA.toBuffer()],
+  const strategyTokenAccount = PublicKey.findProgramAddressSync(
+    [Buffer.from("underlying"), strategyPDA.toBuffer()],
     strategyProgram.programId
   )[0]
 
@@ -202,85 +218,87 @@ export const withdrawTokens = async (
 
     // Send Tx
     const signature = await provider.sendAndConfirm(tx)
-    console.log('Withdraw tx successes:', signature)
+    console.log("Withdraw tx successes:", signature)
     return signature
   } catch (err) {
-    console.error('Error deposit tx:', err)
+    console.error("Error deposit tx:", err)
   }
 }
 
-export const findOrCreateTokenAccountByOwner = async (
-  userPubKey: PublicKey,
-  tokenMintPublicKey: PublicKey,
-  wallet: Wallet
+export const getOrCreateTokenAssociatedAccount = async (
+  wallet: AnchorWallet,
+  mint: PublicKey,
+  owner: PublicKey,
+  allowOwnerOffCurve = false,
+  commitment?: Commitment,
+  programId = TOKEN_PROGRAM_ID,
+  associatedTokenProgramId = ASSOCIATED_TOKEN_PROGRAM_ID
 ) => {
-  const connection = new Connection(defaultEndpoint)
-  try {
-    // Associated Token Accounts
-    const accounts = await connection.getTokenAccountsByOwner(userPubKey, {
-      mint: tokenMintPublicKey,
-    })
+  const provider = new AnchorProvider(connection, wallet, {
+    preflightCommitment: "confirmed",
+  })
 
-    if (accounts.value.length > 0) {
-      return accounts.value[0].pubkey
+  const associatedToken = getAssociatedTokenAddressSync(
+    mint,
+    owner,
+    allowOwnerOffCurve,
+    programId,
+    associatedTokenProgramId
+  )
+
+  // This is the optimal logic, considering TX fee, client-side computation, RPC roundtrips and guaranteed idempotent.
+  // Sadly we can't do this atomically.
+  let account: Account
+  try {
+    account = await getAccount(
+      connection,
+      associatedToken,
+      commitment,
+      programId
+    )
+  } catch (error: unknown) {
+    // TokenAccountNotFoundError can be possible if the associated address has already received some lamports,
+    // becoming a system account. Assuming program derived addressing is safe, this is the only case for the
+    // TokenInvalidAccountOwnerError in this code path.
+    if (
+      error instanceof TokenAccountNotFoundError ||
+      error instanceof TokenInvalidAccountOwnerError
+    ) {
+      // As this isn't atomic, it's possible others can create associated accounts meanwhile.
+      try {
+        const transaction = new Transaction().add(
+          createAssociatedTokenAccountInstruction(
+            wallet.publicKey,
+            associatedToken,
+            owner,
+            mint,
+            programId,
+            associatedTokenProgramId
+          )
+        )
+
+        await provider.sendAndConfirm(transaction)
+      } catch (error: unknown) {
+        // Ignore all errors; for now there is no API-compatible way to selectively ignore the expected
+        // instruction error if the associated account exists already.
+      }
+
+      // Now this should always succeed
+      account = await getAccount(
+        connection,
+        associatedToken,
+        commitment,
+        programId
+      )
     } else {
-      return await createTokenAccount(userPubKey, tokenMintPublicKey, wallet)
+      throw error
     }
-  } catch (error) {
-    console.error('Error getting token account:', error)
-    return
   }
-}
 
-export const createTokenAccount = async (
-  userPubKey: PublicKey,
-  tokenMintPublicKey: PublicKey,
-  wallet: Wallet
-) => {
-  try {
-    const connection = new Connection(defaultEndpoint)
-    const provider = new AnchorProvider(connection, wallet.adapter, {
-      preflightCommitment: 'confirmed',
-    })
+  if (!account.mint.equals(mint)) throw new TokenInvalidMintError()
+  if (!account.owner.equals(owner)) throw new TokenInvalidOwnerError()
 
-    const associatedTokenAddress = await getAssociatedTokenAddress(
-      tokenMintPublicKey,
-      userPubKey
-    )
-
-    const accountInfo = await connection.getParsedAccountInfo(
-      associatedTokenAddress
-    )
-    if (accountInfo.value !== null) {
-      console.log(
-        `Token Account already exist: ${associatedTokenAddress.toBase58()}`
-      )
-      return associatedTokenAddress
-    }
-
-    // Create new token account
-    const transaction = new Transaction().add(
-      createAssociatedTokenAccountInstruction(
-        userPubKey, // Payer
-        associatedTokenAddress,
-        userPubKey, // token account owner
-        tokenMintPublicKey
-      )
-    )
-
-    const latestBlockhash = await connection.getLatestBlockhash()
-    transaction.recentBlockhash = latestBlockhash.blockhash
-
-    transaction.feePayer = userPubKey
-
-    // Sign transaction
-    const signedTransaction = await provider.sendAndConfirm(transaction)
-
-    console.log(`Token account created: ${signedTransaction}`)
-    return associatedTokenAddress
-  } catch (error) {
-    console.error('Error creation new token account:', error)
-  }
+  return account
 }
 
 export const previewRedeem = async (shareBalance: string, vaultId: string) => {
@@ -303,7 +321,7 @@ export const getTransactionBlock = async (signature: string) => {
 
   try {
     const transaction = await connection.getTransaction(signature, {
-      commitment: 'confirmed',
+      commitment: "confirmed",
       maxSupportedTransactionVersion: 0,
     })
     if (!transaction) {
@@ -311,7 +329,7 @@ export const getTransactionBlock = async (signature: string) => {
     }
     return transaction.slot
   } catch (error) {
-    console.error('Error getting transaction block:', error)
+    console.error("Error getting transaction block:", error)
     return
   }
 }
@@ -319,31 +337,31 @@ export const getTransactionBlock = async (signature: string) => {
 export const faucetTestToken = async (
   userPubKey: PublicKey,
   tokenPubKey: PublicKey,
-  wallet: Wallet
+  wallet: AnchorWallet
 ) => {
   if (!userPubKey || !wallet || !tokenPubKey) {
     return
   }
 
   const connection = new Connection(defaultEndpoint)
-  const provider = new AnchorProvider(connection, wallet.adapter, {
-    preflightCommitment: 'confirmed',
+  const provider = new AnchorProvider(connection, wallet, {
+    preflightCommitment: "confirmed",
   })
 
-  const faucetProgram = new Program(faucetIdl, provider)
+  const faucetProgram = new Program(faucetIdl as Idl, provider)
 
   const faucetData = new PublicKey(
-    'GhHAUWzijk3e3pUTJbwAFjU3v51hkrpujnEhhnxtp8Q7'
+    "GhHAUWzijk3e3pUTJbwAFjU3v51hkrpujnEhhnxtp8Q7"
   )
 
   const faucetTokenAccount = new PublicKey(
-    'EjQxPWRJPvLFcPj4LomBwCpWxKYuig8jggVFhUq1qYQv'
+    "EjQxPWRJPvLFcPj4LomBwCpWxKYuig8jggVFhUq1qYQv"
   )
 
-  const userTokenAccount = await findOrCreateTokenAccountByOwner(
-    userPubKey,
+  const userTokenAccount = await getOrCreateTokenAssociatedAccount(
+    wallet,
     tokenPubKey,
-    wallet
+    userPubKey
   )
 
   try {
@@ -363,25 +381,28 @@ export const faucetTestToken = async (
     // Send Tx
     return await provider.sendAndConfirm(tx)
   } catch (err) {
-    console.error('Error deposit tx:', err)
+    console.error("Error deposit tx:", err)
   }
 }
 
-export const getTfVaultPeriods = async (wallet: Wallet, vaultIndex: number) => {
+export const getTfVaultPeriods = async (
+  wallet: AnchorWallet,
+  vaultIndex: number
+) => {
   const provider = new AnchorProvider(
-    new Connection(defaultEndpoint, 'confirmed'),
-    wallet.adapter,
+    new Connection(defaultEndpoint, "confirmed"),
+    wallet,
     {
-      preflightCommitment: 'confirmed',
+      preflightCommitment: "confirmed",
     }
   )
 
-  const vaultProgram = new Program(vaultIdl, provider)
-  const strategyProgram = new Program(strategyIdl, provider)
+  const vaultProgram = new Program(vaultIdl as Idl, provider)
+  const strategyProgram = new Program(strategyIdl as Idl, provider)
 
-  const vaultPDA = await PublicKey.findProgramAddressSync(
+  const vaultPDA = PublicKey.findProgramAddressSync(
     [
-      Buffer.from('vault'),
+      Buffer.from("vault"),
       Buffer.from(
         new Uint8Array(new BigUint64Array([BigInt(vaultIndex)]).buffer)
       ),
@@ -395,6 +416,7 @@ export const getTfVaultPeriods = async (wallet: Wallet, vaultIndex: number) => {
   )[0]
 
   const strategyAccount =
+    // @ts-ignore
     await strategyProgram.account.tradeFintechStrategy.fetch(strategyPDA)
   const depositPeriodEnds = strategyAccount.depositPeriodEnds
   const lockPeriodEnds = strategyAccount.lockPeriodEnds
