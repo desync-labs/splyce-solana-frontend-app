@@ -1,4 +1,4 @@
-import { Connection, PublicKey, Transaction } from '@solana/web3.js'
+import { Connection, Keypair, PublicKey, Transaction } from '@solana/web3.js'
 import {
   createAssociatedTokenAccountInstruction,
   getAccount,
@@ -367,14 +367,18 @@ export const faucetTestToken = async (
   }
 }
 
-export const getTfVaultPeriods = async (wallet: Wallet, vaultIndex: number) => {
-  const provider = new AnchorProvider(
-    new Connection(defaultEndpoint, 'confirmed'),
-    wallet.adapter,
-    {
-      preflightCommitment: 'confirmed',
-    }
-  )
+export const getTfVaultPeriods = async (vaultIndex: number) => {
+  const connection = new Connection(defaultEndpoint, 'confirmed')
+
+  const dummyWallet = {
+    publicKey: Keypair.generate().publicKey,
+    signTransaction: async () => {},
+    signAllTransactions: async () => [],
+  }
+
+  const provider = new AnchorProvider(connection, dummyWallet, {
+    preflightCommitment: 'confirmed',
+  })
 
   const vaultProgram = new Program(vaultIdl, provider)
   const strategyProgram = new Program(strategyIdl, provider)
@@ -403,4 +407,69 @@ export const getTfVaultPeriods = async (wallet: Wallet, vaultIndex: number) => {
     depositPeriodEnds,
     lockPeriodEnds,
   }
+}
+
+export const getVaultAddress = async (vaultIndex: number) => {
+  const connection = new Connection(defaultEndpoint, 'confirmed')
+
+  const dummyWallet = {
+    publicKey: Keypair.generate().publicKey,
+    signTransaction: async () => {},
+    signAllTransactions: async () => [],
+  }
+
+  const provider = new AnchorProvider(connection, dummyWallet, {
+    preflightCommitment: 'confirmed',
+  })
+
+  const vaultProgram = new Program(vaultIdl, provider)
+
+  const vaultPDA = await PublicKey.findProgramAddressSync(
+    [
+      Buffer.from('vault'),
+      Buffer.from(
+        new Uint8Array(new BigUint64Array([BigInt(vaultIndex)]).buffer)
+      ),
+    ],
+    vaultProgram.programId
+  )[0]
+
+  return vaultPDA
+}
+
+export const getStrategyProgramAddress = async (
+  vaultIndex: number,
+  strategyIndex: number
+) => {
+  const connection = new Connection(defaultEndpoint, 'confirmed')
+
+  const dummyWallet = {
+    publicKey: Keypair.generate().publicKey,
+    signTransaction: async () => {},
+    signAllTransactions: async () => [],
+  }
+
+  const provider = new AnchorProvider(connection, dummyWallet, {
+    preflightCommitment: 'confirmed',
+  })
+
+  const vaultProgram = new Program(vaultIdl, provider)
+  const strategyProgram = new Program(strategyIdl, provider)
+
+  const vaultPDA = await PublicKey.findProgramAddressSync(
+    [
+      Buffer.from('vault'),
+      Buffer.from(
+        new Uint8Array(new BigUint64Array([BigInt(vaultIndex)]).buffer)
+      ),
+    ],
+    vaultProgram.programId
+  )[0]
+
+  const strategyPDA = await PublicKey.findProgramAddressSync(
+    [vaultPDA.toBuffer(), Buffer.from(new Uint8Array([strategyIndex]))],
+    strategyProgram.programId
+  )[0]
+
+  return strategyPDA
 }
