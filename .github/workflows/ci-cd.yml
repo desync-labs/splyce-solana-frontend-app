@@ -41,13 +41,13 @@ jobs:
         run: |
           if [[ $GITHUB_REF == refs/heads/main ]]; then
             {
-              echo "ARGOCD_APP_NAME=${{ secrets.ARGOCD_APP_NAME_PROD }}"
+              echo "ARGOCD_APP_NAME=${{ vars.ARGOCD_APP_NAME_PROD }}"
               echo "ARGOCD_API_URL=${{ secrets.ARGOCD_API_URL_PROD }}"
               echo "ARGOCD_AUTH_TOKEN=${{ secrets.ARGOCD_AUTH_TOKEN_PROD }}"
             } >> "$GITHUB_OUTPUT"
           else
             {
-              echo "ARGOCD_APP_NAME=${{ secrets.ARGOCD_APP_NAME_DEV }}"
+              echo "ARGOCD_APP_NAME=${{ vars.ARGOCD_APP_NAME_DEV }}"
               echo "ARGOCD_API_URL=${{ secrets.ARGOCD_API_URL_DEV }}"
               echo "ARGOCD_AUTH_TOKEN=${{ secrets.ARGOCD_AUTH_TOKEN_DEV }}"
             } >> "$GITHUB_OUTPUT"
