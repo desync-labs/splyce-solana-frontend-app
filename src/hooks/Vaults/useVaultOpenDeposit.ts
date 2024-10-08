@@ -135,6 +135,7 @@ const useVaultOpenDeposit = (vault: IVault, onClose: () => void) => {
             ),
         0
       )
+
       if (BigNumber(value).isGreaterThan(formattedMaxWalletBalance)) {
         return 'You do not have enough money in your wallet'
       }

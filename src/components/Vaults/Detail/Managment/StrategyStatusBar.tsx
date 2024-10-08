@@ -51,7 +51,7 @@ const StatusBoxStyled = styled(Box)`
 //ToDo: Implement the StatusLabel component
 export const StatusLabel: FC<{ strategyId?: string }> = memo(
   ({ strategyId }) => {
-    const [isShutDown, setIsShutDown] = useState(true)
+    const [isShutDown, setIsShutDown] = useState(false)
     const { vault } = useVaultContext()
     const { strategies } = vault
 

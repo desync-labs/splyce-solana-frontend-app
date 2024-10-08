@@ -185,7 +185,21 @@ const DepositVaultForm: FC<VaultDepositFormProps> = ({
                 }
                 value={value}
                 type="number"
-                onChange={onChange}
+                onChange={(e) => {
+                  let inputValue = e.target.value
+
+                  const regex = /^\d+(\.\d{0,9})?$/
+
+                  if (regex.test(inputValue)) {
+                    onChange(inputValue)
+                  } else {
+                    const truncatedValue = inputValue.slice(
+                      0,
+                      inputValue.indexOf('.') + 10
+                    )
+                    onChange(truncatedValue)
+                  }
+                }}
               />
               <BaseFormInputUsdIndicator>{`$${formatNumber(
                 BigNumber(value || 0)

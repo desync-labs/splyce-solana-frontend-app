@@ -93,7 +93,7 @@ const ManageVaultForm: FC<VaultManageFormProps> = ({
           name="formToken"
           rules={{
             required: true,
-            min: 0.000000000000000000001,
+            min: 0.000000001,
             validate: validateMaxValue,
           }}
           render={({ field: { onChange, value }, fieldState: { error } }) => (
@@ -186,7 +186,21 @@ const ManageVaultForm: FC<VaultManageFormProps> = ({
                 }
                 value={value}
                 type="number"
-                onChange={onChange}
+                onChange={(e) => {
+                  let inputValue = e.target.value
+
+                  const regex = /^\d+(\.\d{0,9})?$/
+
+                  if (regex.test(inputValue)) {
+                    onChange(inputValue)
+                  } else {
+                    const truncatedValue = inputValue.slice(
+                      0,
+                      inputValue.indexOf('.') + 10
+                    )
+                    onChange(truncatedValue)
+                  }
+                }}
               />
               <BaseFormInputUsdIndicator>{`$${formatNumber(
                 BigNumber(value || 0)
