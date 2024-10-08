@@ -25,7 +25,7 @@ type ITitleItem = { title: string; index: number; type: VaultType }
 
 export const getDefaultVaultTitle = (
   vaultType: VaultType = VaultType.INCENTIVE,
-  asset = 'spUSD',
+  asset = 'tspUSD',
   vaultId: string
 ) => {
   const vaultTitles: { [key: string]: ITitleItem } = sessionStorage.getItem(
@@ -93,11 +93,11 @@ export const getDefaultVaultDescription = (
       return (
         <>
           This vault functions as a pool of funds with an automated management
-          of various DeFi product strategies. Users can deposit spUSD into this
+          of various DeFi product strategies. Users can deposit tspUSD into this
           vault, which distributes funds between strategies such as yield
           farming, lending, borrowing, etc. In return, the user receives a vault
-          share token. Note that this token is not 1:1 equivalent with spUSD
-          deposited. The spUSD vault only charges performance fees as a
+          share token. Note that this token is not 1:1 equivalent with tspUSD
+          deposited. The tspUSD vault only charges performance fees as a
           percentage of the strategies manager's fees. Strategies managers can
           set individual management fees, but only for gain. Note that the vault
           smart contracts have been carefully audited. Nevertheless, as always
@@ -111,11 +111,11 @@ export const getDefaultVaultDescription = (
       return (
         <>
           This vault functions as a pool of funds with an automated management
-          of various TradeFi product strategies. Users can deposit spUSD into
+          of various TradeFi product strategies. Users can deposit tspUSD into
           this vault, which distributes funds between strategies such as
           commodity-backed cash alterfiative. In return, the user receives a
           vault share token. Note that this token is not 1:1 equivalent with
-          spUSD deposited. The spUSD vault only charges performance fees as a
+          tspUSD deposited. The tspUSD vault only charges performance fees as a
           percentage of the strategies manager's fees. Strategies managers can
           set individual management fees, but only for gain. Note that the vault
           smart contracts have been carefully audited. Nevertheless, as always
@@ -129,11 +129,11 @@ export const getDefaultVaultDescription = (
       return (
         <>
           This vault functions as a pool of funds with an automated management
-          of various incentive strategies. Users can deposit spUSD into this
+          of various incentive strategies. Users can deposit tspUSD into this
           vault, which distributes funds between strategies created to
           incentivize users to participate in the Fathom protocol. In return,
           the user receives a vault share token. Note that this token is not 1:1
-          equivalent with spUSD deposited. The spUSD vault only charges
+          equivalent with tspUSD deposited. The tspUSD vault only charges
           performance fees as a percentage of the strategies manager's fees.
           Strategies managers can set individual management fees, but only for
           gain. Note that the vault smart contracts have been carefully audited.
@@ -147,11 +147,11 @@ export const getDefaultVaultDescription = (
       return (
         <>
           This vault functions as a pool of funds with an automated management
-          of various incentive strategies. Users can deposit spUSD into this
+          of various incentive strategies. Users can deposit tspUSD into this
           vault, which distributes funds between strategies created to
           incentivize users to participate in the Fathom protocol. In return,
           the user receives a vault share token. Note that this token is not 1:1
-          equivalent with spUSD deposited. The spUSD vault only charges
+          equivalent with tspUSD deposited. The tspUSD vault only charges
           performance fees as a percentage of the strategies manager's fees.
           Strategies managers can set individual management fees, but only for
           gain. Note that the vault smart contracts have been carefully audited.

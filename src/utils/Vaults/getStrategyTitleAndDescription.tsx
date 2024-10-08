@@ -127,7 +127,9 @@ strategyDescription['0xc0ac2e5181f90fda9e9264b5b1634b2c8bd88cdd'] = (
   </>
 )
 
-strategyDescription['0x0425b4f142059eb15cae157dac4277f89b9894c2'] = (
+strategyDescription[
+  '3uDciMtTyUkdPtraAwXNBoDwM3cRN7XFLmVq6tK5aFfy'.toLowerCase()
+] = (
   <>
     <p>
       The Strategy utilizes funds in Fathom Lending. It supplies certain lending
@@ -136,7 +138,9 @@ strategyDescription['0x0425b4f142059eb15cae157dac4277f89b9894c2'] = (
   </>
 )
 
-strategyDescription['0xb2f928bfd9d2107a7c5b8a2208de4a017cdf1bfc'] = (
+strategyDescription[
+  '6FMbL6GhocnXfqXmM3H3c2musKFqWtqmoHfY6cCbTc36'.toLowerCase()
+] = (
   <>
     <p>Strategy based on off-chain TradeFi products.</p>
   </>
@@ -217,21 +221,16 @@ strategyTitle['0xc0ac2e5181f90fda9e9264b5b1634b2c8bd88cdd'] =
 strategyTitle['0x989a19e29cb9bc194bd35606af8f9a641a4cbce4'] =
   'Liquidation strategy'
 
-strategyTitle['0x4e2fc8a4e62cf515ee7954fd01346cd2501e7e81'] = 'Lending strategy'
-
 strategyTitle['0x0425b4f142059eb15cae157dac4277f89b9894c2'] =
   'FXD - Lending Strategy 1'
 
 strategyTitle['0xBc8C9999a3D56e799Bb470D8402A9dA121FcBf14'] =
-  'Fathom Trade Fintech Strategy 1'
+  'Splyce Trade Fintech Strategy 1'
 
-strategyTitle['0xb2f928bfd9d2107a7c5b8a2208de4a017cdf1bfc'] =
+strategyTitle['6FMbL6GhocnXfqXmM3H3c2musKFqWtqmoHfY6cCbTc36'.toLowerCase()] =
   'TradeFlow strategy #1'
 
-strategyTitle['0x676a616d4fa846c6699437a4f1209c5808e5b1ab'] =
-  'TradeFlow strategy #1'
-
-strategyTitle['0x00587ac51a5bf897bc8b253e4d49fbea5e62a5cb'] =
-  'TradeFlow strategy #1'
+strategyTitle['3uDciMtTyUkdPtraAwXNBoDwM3cRN7XFLmVq6tK5aFfy'.toLowerCase()] =
+  'Lending strategy'
 
 export { strategyTitle, strategyDescription }
