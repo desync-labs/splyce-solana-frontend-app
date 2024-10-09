@@ -363,7 +363,7 @@ export const faucetTestToken = async (
     // Send Tx
     return await provider.sendAndConfirm(tx)
   } catch (err) {
-    console.error('Error deposit tx:', err)
+    throw err
   }
 }
 
