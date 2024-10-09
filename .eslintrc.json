@@ -13,7 +13,6 @@
     "sourceType": "module",
     "tsconfigRootDir": "."
   },
-  "plugins": ["@typescript-eslint", "prettier", "import"],
   "extends": [
     "eslint:recommended",
     "plugin:prettier/recommended"

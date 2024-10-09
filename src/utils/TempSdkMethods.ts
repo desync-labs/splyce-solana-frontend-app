@@ -1,67 +1,69 @@
 import {
   type Commitment,
-  type ConfirmOptions,
   Connection,
-  Keypair,
   PublicKey,
   Transaction,
-} from "@solana/web3.js"
+} from "@solana/web3.js";
 import {
   createAssociatedTokenAccountInstruction,
   getAccount,
   TOKEN_PROGRAM_ID,
-} from "@solana/spl-token"
-import { AnchorProvider, BN, Idl, Program } from "@coral-xyz/anchor"
-import { AnchorWallet, Wallet } from "@solana/wallet-adapter-react"
-import { defaultEndpoint } from "@/utils/network"
-import vaultIdl from "@/idls/tokenized_vault.json"
-import strategyIdl from "@/idls/strategy_program.json"
-import faucetIdl from "@/idls/faucet.json"
-import { ASSOCIATED_TOKEN_PROGRAM_ID } from "@solana/spl-token"
-import type { Account } from "@solana/spl-token"
-import { getAssociatedTokenAddressSync } from "@solana/spl-token"
+} from "@solana/spl-token";
+import { AnchorProvider, BN, Idl, Program } from "@coral-xyz/anchor";
+import { AnchorWallet } from "@solana/wallet-adapter-react";
+import { defaultEndpoint } from "@/utils/network";
+import vaultIdl from "@/idls/tokenized_vault.json";
+import strategyIdl from "@/idls/strategy_program.json";
+import faucetIdl from "@/idls/faucet.json";
+import { ASSOCIATED_TOKEN_PROGRAM_ID } from "@solana/spl-token";
+import type { Account } from "@solana/spl-token";
+import { getAssociatedTokenAddressSync } from "@solana/spl-token";
 import {
   TokenAccountNotFoundError,
   TokenInvalidAccountOwnerError,
   TokenInvalidMintError,
   TokenInvalidOwnerError,
-} from "@solana/spl-token"
+} from "@solana/spl-token";
 
-const connection = new Connection(defaultEndpoint)
+const connection = new Connection(defaultEndpoint);
+
+const FAUCET_DATA_PUB_KEY = "GhHAUWzijk3e3pUTJbwAFjU3v51hkrpujnEhhnxtp8Q7";
+const FAUCET_TOKE_ACCOUNT_PUB_KEY =
+  "EjQxPWRJPvLFcPj4LomBwCpWxKYuig8jggVFhUq1qYQv";
 
 export const getUserTokenBalance = async (
   publicKey: PublicKey,
   tokenMintAddress: string
 ) => {
   if (!tokenMintAddress || !publicKey) {
-    return
+    return;
   }
 
-  const tokenMintPublicKey = new PublicKey(tokenMintAddress)
+  const tokenMintPublicKey = new PublicKey(tokenMintAddress);
 
   try {
     // Associated Token Accounts
     const accounts = await connection.getTokenAccountsByOwner(publicKey, {
       mint: tokenMintPublicKey,
-    })
+    });
 
     if (accounts.value.length > 0) {
-      const associatedTokenAccountPubKey = accounts.value[0].pubkey
+      const associatedTokenAccountPubKey = accounts.value[0].pubkey;
       const tokenAccountInfo = await getAccount(
         connection,
         associatedTokenAccountPubKey,
         "processed"
-      )
+      );
 
-      return tokenAccountInfo.amount.toString()
+      return tokenAccountInfo.amount.toString();
     } else {
-      return 0
+      return 0;
     }
   } catch (error) {
-    console.error("Error getting token balance:", error)
-    return 0
+    console.error("Error getting token balance:", error);
+    return 0;
   }
-}
+};
 
 export const depositTokens = async (
   userPublicKey: PublicKey,
@@ -72,7 +74,7 @@ export const depositTokens = async (
   vaultIndex: number
 ) => {
   if (!userPublicKey || !wallet) {
-    return
+    return;
   }
 
   const provider = new AnchorProvider(
@@ -81,9 +83,9 @@ export const depositTokens = async (
     {
       preflightCommitment: "confirmed",
     }
-  )
+  );
 
-  const vaultProgram = new Program(vaultIdl as Idl, provider)
+  const vaultProgram = new Program(vaultIdl as Idl, provider);
 
   const vaultPDA = PublicKey.findProgramAddressSync(
     [
@@ -93,19 +95,19 @@ export const depositTokens = async (
       ),
     ],
     vaultProgram.programId
-  )[0]
+  )[0];
 
   const userTokenAccount = await getOrCreateTokenAssociatedAccount(
     wallet,
     tokenPubKey,
     userPublicKey
-  )
+  );
 
   const userSharesAccount = await getOrCreateTokenAssociatedAccount(
     wallet,
     shareTokenPubKey,
     userPublicKey
-  )
+  );
 
   try {
     const tx = new Transaction().add(
@@ -119,14 +121,14 @@ export const depositTokens = async (
           tokenProgram: TOKEN_PROGRAM_ID,
         })
         .instruction()
-    )
+    );
 
     // Send Tx
-    return await provider.sendAndConfirm(tx)
+    return await provider.sendAndConfirm(tx);
   } catch (err) {
-    console.error("Error deposit tx:", err)
+    console.error("Error deposit tx:", err);
   }
-}
+};
 
 export const withdrawTokens = async (
   userPublicKey: PublicKey,
@@ -137,7 +139,7 @@ export const withdrawTokens = async (
   vaultIndex: number
 ) => {
   if (!userPublicKey || !wallet) {
-    return
+    return;
   }
 
   const provider = new AnchorProvider(
@@ -146,10 +148,10 @@ export const withdrawTokens = async (
     {
       preflightCommitment: "confirmed",
     }
-  )
+  );
 
-  const vaultProgram = new Program(vaultIdl as Idl, provider)
-  const strategyProgram = new Program(strategyIdl as Idl, provider)
+  const vaultProgram = new Program(vaultIdl as Idl, provider);
+  const strategyProgram = new Program(strategyIdl as Idl, provider);
 
   const vaultPDA = PublicKey.findProgramAddressSync(
     [
@@ -159,29 +161,29 @@ export const withdrawTokens = async (
       ),
     ],
     vaultProgram.programId
-  )[0]
+  )[0];
 
   const strategyPDA = PublicKey.findProgramAddressSync(
     [vaultPDA.toBuffer(), Buffer.from(new Uint8Array([0]))],
     strategyProgram.programId
-  )[0]
+  )[0];
 
   const userTokenAccount = await getOrCreateTokenAssociatedAccount(
     wallet,
     tokenPubKey,
     userPublicKey
-  )
+  );
 
   const userSharesAccount = await getOrCreateTokenAssociatedAccount(
     wallet,
     shareTokenPubKey,
     userPublicKey
-  )
+  );
 
   const strategyTokenAccount = PublicKey.findProgramAddressSync(
     [Buffer.from("underlying"), strategyPDA.toBuffer()],
     strategyProgram.programId
-  )[0]
+  )[0];
 
   const remainingAccountsMap = {
     accountsMap: [
@@ -191,7 +193,7 @@ export const withdrawTokens = async (
         remainingAccountsToStrategies: [new BN(0)],
       },
     ],
-  }
+  };
 
   try {
     const tx = new Transaction().add(
@@ -214,16 +216,16 @@ export const withdrawTokens = async (
           { pubkey: strategyTokenAccount, isWritable: true, isSigner: false },
         ])
         .instruction()
-    )
+    );
 
     // Send Tx
-    const signature = await provider.sendAndConfirm(tx)
-    console.log("Withdraw tx successes:", signature)
-    return signature
+    const signature = await provider.sendAndConfirm(tx);
+    console.log("Withdraw tx successes:", signature);
+    return signature;
   } catch (err) {
-    console.error("Error deposit tx:", err)
+    console.error("Error deposit tx:", err);
   }
-}
+};
 
 export const getOrCreateTokenAssociatedAccount = async (
   wallet: AnchorWallet,
@@ -236,7 +238,7 @@ export const getOrCreateTokenAssociatedAccount = async (
 ) => {
   const provider = new AnchorProvider(connection, wallet, {
     preflightCommitment: "confirmed",
-  })
+  });
 
   const associatedToken = getAssociatedTokenAddressSync(
     mint,
@@ -244,18 +246,18 @@ export const getOrCreateTokenAssociatedAccount = async (
     allowOwnerOffCurve,
     programId,
     associatedTokenProgramId
-  )
+  );
 
   // This is the optimal logic, considering TX fee, client-side computation, RPC roundtrips and guaranteed idempotent.
   // Sadly we can't do this atomically.
-  let account: Account
+  let account: Account;
   try {
     account = await getAccount(
       connection,
       associatedToken,
       commitment,
       programId
-    )
+    );
   } catch (error: unknown) {
     // TokenAccountNotFoundError can be possible if the associated address has already received some lamports,
     // becoming a system account. Assuming program derived addressing is safe, this is the only case for the
@@ -275,9 +277,9 @@ export const getOrCreateTokenAssociatedAccount = async (
             programId,
             associatedTokenProgramId
           )
-        )
+        );
 
-        await provider.sendAndConfirm(transaction)
+        await provider.sendAndConfirm(transaction);
       } catch (error: unknown) {
         // Ignore all errors; for now there is no API-compatible way to selectively ignore the expected
         // instruction error if the associated account exists already.
@@ -289,48 +291,48 @@ export const getOrCreateTokenAssociatedAccount = async (
         associatedToken,
         commitment,
         programId
-      )
+      );
     } else {
-      throw error
+      throw error;
     }
   }
 
-  if (!account.mint.equals(mint)) throw new TokenInvalidMintError()
-  if (!account.owner.equals(owner)) throw new TokenInvalidOwnerError()
+  if (!account.mint.equals(mint)) throw new TokenInvalidMintError();
+  if (!account.owner.equals(owner)) throw new TokenInvalidOwnerError();
 
-  return account
-}
+  return account;
+};
 
 export const previewRedeem = async (shareBalance: string, vaultId: string) => {
   // todo: implement preview redeem from program
-  return shareBalance
-}
+  return shareBalance;
+};
 
 export const previewDeposit = async (tokenAmount: string, vaultId: string) => {
   // todo: implement preview deposit from program
-  return tokenAmount
-}
+  return tokenAmount;
+};
 
 export const previewWithdraw = async (tokenAmount: string, vaultId: string) => {
   // todo: implement preview withdraw from program
-  return tokenAmount
-}
+  return tokenAmount;
+};
 
 export const getTransactionBlock = async (signature: string) => {
   try {
     const transaction = await connection.getTransaction(signature, {
       commitment: "confirmed",
       maxSupportedTransactionVersion: 0,
-    })
+    });
     if (!transaction) {
-      return
+      return;
     }
-    return transaction.slot
+    return transaction.slot;
   } catch (error) {
-    console.error("Error getting transaction block:", error)
-    return
+    console.error("Error getting transaction block:", error);
+    return;
   }
-}
+};
 
 export const faucetTestToken = async (
   userPubKey: PublicKey,
@@ -338,27 +340,22 @@ export const faucetTestToken = async (
   wallet: AnchorWallet
 ) => {
   if (!userPubKey || !wallet || !tokenPubKey) {
-    return
+    return;
   }
   const provider = new AnchorProvider(connection, wallet, {
     preflightCommitment: "confirmed",
-  })
+  });
 
-  const faucetProgram = new Program(faucetIdl as Idl, provider)
+  const faucetProgram = new Program(faucetIdl as Idl, provider);
 
-  const faucetData = new PublicKey(
-    "GhHAUWzijk3e3pUTJbwAFjU3v51hkrpujnEhhnxtp8Q7"
-  )
-
-  const faucetTokenAccount = new PublicKey(
-    "EjQxPWRJPvLFcPj4LomBwCpWxKYuig8jggVFhUq1qYQv"
-  )
+  const faucetData = new PublicKey(FAUCET_DATA_PUB_KEY);
+  const faucetTokenAccount = new PublicKey(FAUCET_TOKE_ACCOUNT_PUB_KEY);
 
   const userTokenAccount = await getOrCreateTokenAssociatedAccount(
     wallet,
     tokenPubKey,
     userPubKey
-  )
+  );
 
   try {
     const tx = new Transaction().add(
@@ -372,25 +369,22 @@ export const faucetTestToken = async (
           tokenProgram: TOKEN_PROGRAM_ID,
         })
         .instruction()
-    )
+    );
 
     // Send Tx
-    return await provider.sendAndConfirm(tx)
+    return provider.sendAndConfirm(tx);
   } catch (err) {
-    console.error("Error deposit tx:", err)
+    console.error("Error deposit tx:", err);
   }
-}
+};
 
-export const getTfVaultPeriods = async (
-  vaultIndex: number,
-  wallet: AnchorWallet
-) => {
-  const provider = new AnchorProvider(connection, wallet, {
-    preflightCommitment: "confirmed",
-  })
-
-  const vaultProgram = new Program(vaultIdl as Idl, provider)
-  const strategyProgram = new Program(strategyIdl as Idl, provider)
+export const getTfVaultPeriods = async (vaultIndex: number) => {
+  const vaultProgram = new Program(vaultIdl as Idl, {
+    connection,
+  });
+  const strategyProgram = new Program(strategyIdl as Idl, {
+    connection,
+  });
 
   const vaultPDA = PublicKey.findProgramAddressSync(
     [
@@ -400,29 +394,29 @@ export const getTfVaultPeriods = async (
       ),
     ],
     vaultProgram.programId
-  )[0]
+  )[0];
 
   const strategyPDA = PublicKey.findProgramAddressSync(
     [vaultPDA.toBuffer(), Buffer.from(new Uint8Array([0]))],
     strategyProgram.programId
-  )[0]
+  )[0];
 
   const strategyAccount =
     // @ts-ignore
-    await strategyProgram.account.tradeFintechStrategy.fetch(strategyPDA)
-  const depositPeriodEnds = strategyAccount.depositPeriodEnds
-  const lockPeriodEnds = strategyAccount.lockPeriodEnds
+    await strategyProgram.account.tradeFintechStrategy.fetch(strategyPDA);
+  const depositPeriodEnds = strategyAccount.depositPeriodEnds;
+  const lockPeriodEnds = strategyAccount.lockPeriodEnds;
 
   return {
     depositPeriodEnds,
     lockPeriodEnds,
-  }
-}
+  };
+};
 
 export const getVaultAddress = async (vaultIndex: number) => {
   const vaultProgram = new Program(vaultIdl as Idl, {
     connection,
-  })
+  });
 
   const vaultPDA = PublicKey.findProgramAddressSync(
     [
@@ -432,17 +426,22 @@ export const getVaultAddress = async (vaultIndex: number) => {
       ),
     ],
     vaultProgram.programId
-  )[0]
+  )[0];
 
-  return vaultPDA
-}
+  return vaultPDA;
+};
 
 export const getStrategyProgramAddress = async (
   vaultIndex: number,
   strategyIndex: number
 ) => {
-  const vaultProgram = new Program(vaultIdl as Idl)
-  const strategyProgram = new Program(strategyIdl as Idl)
+  const vaultProgram = new Program(vaultIdl as Idl, {
+    connection,
+  });
+
+  const strategyProgram = new Program(strategyIdl as Idl, {
+    connection,
+  });
 
   const vaultPDA = PublicKey.findProgramAddressSync(
     [
@@ -452,12 +451,12 @@ export const getStrategyProgramAddress = async (
       ),
     ],
     vaultProgram.programId
-  )[0]
+  )[0];
 
   const strategyPDA = PublicKey.findProgramAddressSync(
     [vaultPDA.toBuffer(), Buffer.from(new Uint8Array([strategyIndex]))],
     strategyProgram.programId
-  )[0]
+  )[0];
 
-  return strategyPDA
-}
+  return strategyPDA;
+};

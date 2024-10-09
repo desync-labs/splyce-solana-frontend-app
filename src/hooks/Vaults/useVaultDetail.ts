@@ -1,15 +1,15 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
-import { useRouter } from 'next/router'
-import { useLazyQuery } from '@apollo/client'
-import BigNumber from 'bignumber.js'
-import { useWallet } from '@solana/wallet-adapter-react'
-import { PublicKey } from '@solana/web3.js'
-import { WalletAdapterNetwork } from '@solana/wallet-adapter-base'
-import dayjs from 'dayjs'
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { useRouter } from "next/router";
+import { useLazyQuery } from "@apollo/client";
+import BigNumber from "bignumber.js";
+import { useWallet } from "@solana/wallet-adapter-react";
+import { PublicKey } from "@solana/web3.js";
+import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
+import dayjs from "dayjs";
 import {
   getDefaultVaultTitle,
   vaultTitle,
-} from '@/utils/Vaults/getVaultTitleAndDescription'
+} from "@/utils/Vaults/getVaultTitleAndDescription";
 import {
   dummyVaultMethods,
   IVault,
@@ -17,142 +17,148 @@ import {
   IVaultStrategy,
   IVaultStrategyReport,
   VaultType,
-} from '@/utils/TempData'
+} from "@/utils/TempData";
 import {
   VAULT,
   VAULT_POSITION,
   VAULT_POSITION_TRANSACTIONS,
   VAULT_STRATEGY_REPORTS,
-} from '@/apollo/queries'
-import { defaultNetWork } from '@/utils/network'
-import { vaultType } from '@/utils/Vaults/getVaultType'
+} from "@/apollo/queries";
+import { defaultNetWork } from "@/utils/network";
+import { vaultType } from "@/utils/Vaults/getVaultType";
 import {
   getTfVaultPeriods,
   getUserTokenBalance,
   getVaultAddress,
   previewRedeem,
-} from '@/utils/TempSdkMethods'
-import useSyncContext from '@/context/sync'
-import { TRADE_FI_VAULT_REPORT_STEP } from '@/utils/Constants'
-import { useAprNumber } from '@/hooks/Vaults/useApr'
-import { getVaultIndex } from '@/utils/getVaultIndex'
+} from "@/utils/TempSdkMethods";
+import useSyncContext from "@/context/sync";
+import { TRADE_FI_VAULT_REPORT_STEP } from "@/utils/Constants";
+import { useAprNumber } from "@/hooks/Vaults/useApr";
+import { getVaultIndex } from "@/utils/getVaultIndex";
 
-const VAULT_REPORTS_PER_PAGE = 1000
+const VAULT_REPORTS_PER_PAGE = 1000;
 
 enum TransactionFetchType {
-  FETCH = 'fetch',
-  PROMISE = 'promise',
+  FETCH = "fetch",
+  PROMISE = "promise",
 }
 
 export enum VaultInfoTabs {
-  ABOUT = 'about',
-  STRATEGIES = 'strategies',
-  MANAGEMENT_VAULT = 'management-vault',
-  MANAGEMENT_STRATEGY = 'management-strategy',
+  ABOUT = "about",
+  STRATEGIES = "strategies",
+  MANAGEMENT_VAULT = "management-vault",
+  MANAGEMENT_STRATEGY = "management-strategy",
 }
 
 export type IVaultStrategyHistoricalApr = {
-  id: string
-  apr: string
-  timestamp: string
-}
+  id: string;
+  apr: string;
+  timestamp: string;
+};
 
 const useVaultDetail = () => {
-  const router = useRouter()
-  const { publicKey, wallet } = useWallet()
-  const { lastTransactionBlock } = useSyncContext()
-  const { vaultId, tab } = router.query
-  const network = defaultNetWork
+  const router = useRouter();
+  const { publicKey } = useWallet();
+  const { lastTransactionBlock } = useSyncContext();
 
-  const [vault, setVault] = useState<IVault>({} as IVault)
-  const [vaultAddress, setVaultAddress] = useState<string>('')
+  const vaultId = router.query.vaultId as string;
+  const tab = router.query.tab as string;
+
+  const network = defaultNetWork;
+
+  const [vault, setVault] = useState<IVault>({} as IVault);
+  const [vaultAddress, setVaultAddress] = useState<string>("");
   const [vaultPosition, setVaultPosition] = useState<IVaultPosition>(
     {} as IVaultPosition
-  )
-  const [balanceToken, setBalanceToken] = useState<string>('0')
+  );
+  const [balanceToken, setBalanceToken] = useState<string>("0");
 
-  const [depositsList, setDepositsList] = useState([])
-  const [withdrawalsList, setWithdrawalsList] = useState([])
-  const [performanceFee, setPerformanceFee] = useState('0')
+  const [depositsList, setDepositsList] = useState([]);
+  const [withdrawalsList, setWithdrawalsList] = useState([]);
+  const [performanceFee, setPerformanceFee] = useState("0");
 
-  const [minimumDeposit, setMinimumDeposit] = useState<number>(0.0000000001)
+  const [minimumDeposit, setMinimumDeposit] = useState<number>(0.0000000001);
 
   const [updateVaultPositionLoading, setUpdateVaultPositionLoading] =
-    useState<boolean>(false)
-  const [fetchBalanceLoading, setFetchBalanceLoading] = useState<boolean>(false)
+    useState<boolean>(false);
+  const [fetchBalanceLoading, setFetchBalanceLoading] =
+    useState<boolean>(false);
 
   const [reports, setReports] = useState<
     Record<string, IVaultStrategyReport[]>
-  >({})
-  const [isReportsLoaded, setIsReportsLoaded] = useState<boolean>(false)
+  >({});
+  const [isReportsLoaded, setIsReportsLoaded] = useState<boolean>(false);
 
   const [historicalApr, setHistoricalApr] = useState<
     Record<string, IVaultStrategyHistoricalApr[]>
-  >({})
+  >({});
 
-  const [managedStrategiesIds, setManagedStrategiesIds] = useState<string[]>([])
-  const [isUserManager, setIsUserManager] = useState<boolean>(false)
+  const [managedStrategiesIds, setManagedStrategiesIds] = useState<string[]>(
+    []
+  );
+  const [isUserManager, setIsUserManager] = useState<boolean>(false);
 
-  const [isTfVaultType, setIsTfVaultType] = useState<boolean>(false)
-  const [isUserKycPassed, setIsUserKycPassed] = useState<boolean>(true)
+  const [isTfVaultType, setIsTfVaultType] = useState<boolean>(false);
+  const [isUserKycPassed, setIsUserKycPassed] = useState<boolean>(true);
   const [tfVaultDepositEndDate, setTfVaultDepositEndDate] = useState<
     string | null
-  >(null)
+  >(null);
   const [tfVaultLockEndDate, setTfVaultLockEndDate] = useState<string | null>(
     null
-  )
+  );
 
   const [tfVaultDepositEndTimeLoading, setTfVaultDepositEndTimeLoading] =
-    useState<boolean>(false)
+    useState<boolean>(false);
   const [tfVaultLockEndTimeLoading, setTfVaultLockEndTimeLoading] =
-    useState<boolean>(false)
+    useState<boolean>(false);
 
-  const [activeTfPeriod, setActiveTfPeriod] = useState<number>(1)
-  const [tfVaultDepositLimit, setTfVaultDepositLimit] = useState<string>('0')
+  const [activeTfPeriod, setActiveTfPeriod] = useState<number>(1);
+  const [tfVaultDepositLimit, setTfVaultDepositLimit] = useState<string>("0");
 
   const [activeVaultInfoTab, setActiveVaultInfoTab] = useState<VaultInfoTabs>(
     VaultInfoTabs.ABOUT
-  )
+  );
 
-  const [vaultMethods, setVaultMethods] = useState<any[]>(dummyVaultMethods)
+  const [vaultMethods, setVaultMethods] = useState<any[]>(dummyVaultMethods);
   const [strategyMethods, setStrategyMethods] =
-    useState<any[]>(dummyVaultMethods)
+    useState<any[]>(dummyVaultMethods);
   const [isWithdrawAllLoading, setIsWithdrawAllLoading] =
-    useState<boolean>(false)
+    useState<boolean>(false);
   const [isShowWithdrawAllButtonLoading, setIsShowWithdrawAllButtonLoading] =
-    useState<boolean>(true)
+    useState<boolean>(true);
 
-  const apr = useAprNumber(vault)
+  const apr = useAprNumber(vault);
 
   const [loadVault, { loading: vaultLoading }] = useLazyQuery(VAULT, {
-    context: { clientName: 'vaults', network },
-    fetchPolicy: 'no-cache',
-  })
+    context: { clientName: "vaults", network },
+    fetchPolicy: "no-cache",
+  });
 
   const [loadPosition, { loading: vaultPositionLoading }] = useLazyQuery(
     VAULT_POSITION,
     {
-      context: { clientName: 'vaults', network },
+      context: { clientName: "vaults", network },
       variables: { network, first: 1000 },
-      fetchPolicy: 'no-cache',
+      fetchPolicy: "no-cache",
     }
-  )
+  );
 
   const [loadReports, { loading: reportsLoading }] = useLazyQuery(
     VAULT_STRATEGY_REPORTS,
     {
-      context: { clientName: 'vaults', network },
+      context: { clientName: "vaults", network },
       variables: { network },
-      fetchPolicy: 'no-cache',
+      fetchPolicy: "no-cache",
     }
-  )
+  );
 
   const [loadPositionTransactions, { loading: transactionsLoading }] =
     useLazyQuery(VAULT_POSITION_TRANSACTIONS, {
-      context: { clientName: 'vaults', network },
+      context: { clientName: "vaults", network },
       variables: { network, first: 1000 },
-      fetchPolicy: 'no-cache',
-    })
+      fetchPolicy: "no-cache",
+    });
 
   useEffect(() => {
     if (
@@ -160,25 +166,25 @@ const useVaultDetail = () => {
       vaultType[vaultId.toLowerCase()] &&
       vaultType[vaultId.toLowerCase()] === VaultType.TRADEFI
     ) {
-      setIsTfVaultType(true)
+      setIsTfVaultType(true);
     } else {
-      setIsTfVaultType(false)
+      setIsTfVaultType(false);
     }
-  }, [vaultId])
+  }, [vaultId]);
 
   useEffect(() => {
     if (tab) {
-      setActiveVaultInfoTab(tab as VaultInfoTabs)
+      setActiveVaultInfoTab(tab as VaultInfoTabs);
     }
-  }, [tab])
+  }, [tab]);
 
   const updateVaultDepositLimit = async (
     vaultData: IVault,
     account: string
   ) => {
-    let depositLimitValue = vaultData.depositLimit
+    let depositLimitValue = vaultData.depositLimit;
     try {
-      const type = vaultType[vaultData.id.toLowerCase()] || VaultType.DEFAULT
+      const type = vaultType[vaultData.id.toLowerCase()] || VaultType.DEFAULT;
 
       // depositLimitValue = await vaultService.getDepositLimit(
       //   vaultData.id,
@@ -187,7 +193,7 @@ const useVaultDetail = () => {
       // )
 
       if (type === VaultType.TRADEFI && !account) {
-        depositLimitValue = '0'
+        depositLimitValue = "0";
       }
 
       if (
@@ -196,10 +202,10 @@ const useVaultDetail = () => {
       ) {
         depositLimitValue = BigNumber(vaultData.strategies[0].maxDebt)
           .minus(vaultData.balanceTokens)
-          .toString()
+          .toString();
       }
 
-      setTfVaultDepositLimit(depositLimitValue)
+      setTfVaultDepositLimit(depositLimitValue);
 
       const updatedVault = {
         ...vaultData,
@@ -209,23 +215,23 @@ const useVaultDetail = () => {
           : getDefaultVaultTitle(
               vaultType[vaultData.id.toLowerCase()] || VaultType.DEFAULT,
               //vaultData.token.name,
-              'tspUSD',
+              "tspUSD",
               vaultData.id
             ),
         type,
         token: {
           ...vaultData.token,
-          symbol: 'tspUSD',
-          name: 'Test Splyce USD',
+          symbol: "tspUSD",
+          name: "Test Splyce USD",
         },
         shareToken: {
           ...vaultData.shareToken,
-          symbol: 'sstUSD',
-          name: 'Splyce Vault Shares Token USD',
+          symbol: "sstUSD",
+          name: "Splyce Vault Shares Token USD",
         },
-      }
+      };
 
-      setVault(updatedVault)
+      setVault(updatedVault);
 
       /**
        * Min Deposit for TradeFlow vaults is 10,000
@@ -234,15 +240,15 @@ const useVaultDetail = () => {
       // setMinimumDeposit(
       //   updatedVault.type === VaultType.TRADEFI ? 10000 : 0.0000000001
       // )
-      setMinimumDeposit(0.0000000001)
+      setMinimumDeposit(0.0000000001);
 
-      return updatedVault
+      return updatedVault;
     } catch (error) {
-      console.error('Error updating vault deposit limit:', error)
-      setVault(vaultData)
-      return vaultData
+      console.error("Error updating vault deposit limit:", error);
+      setVault(vaultData);
+      return vaultData;
     }
-  }
+  };
 
   const fetchVault = useCallback(
     (vaultId: string, network: WalletAdapterNetwork) => {
@@ -253,19 +259,19 @@ const useVaultDetail = () => {
         },
       }).then(async (res) => {
         if (!res.data?.vault) {
-          router.push('/vaults')
+          router.push("/vaults");
         } else {
-          let vaultData = res.data.vault
+          let vaultData = res.data.vault;
 
-          setVault(vaultData)
+          setVault(vaultData);
           setPerformanceFee(
             BigNumber(vaultData.performanceFees).dividedBy(100).toString()
-          )
+          );
 
           vaultData = await updateVaultDepositLimit(
             vaultData,
-            publicKey?.toBase58() || ''
-          )
+            publicKey?.toBase58() || ""
+          );
           /**
            * Fetch additional data for strategies
            */
@@ -280,20 +286,20 @@ const useVaultDetail = () => {
                   return {
                     ...strategy,
                     isShutdown: false,
-                  }
+                  };
                 }
-              )
+              );
 
               setVault({
                 ...vaultData,
                 strategies,
-              })
+              });
             } else {
-              const promises: Promise<boolean>[] = []
+              const promises: Promise<boolean>[] = [];
               vaultData?.strategies.forEach((strategy: IVaultStrategy) => {
                 //promises.push(vaultService.isStrategyShutdown(strategy.id))
-                promises.push(Promise.resolve(false))
-              })
+                promises.push(Promise.resolve(false));
+              });
 
               Promise.all(promises).then((response) => {
                 const strategies = vaultData?.strategies.map(
@@ -301,26 +307,26 @@ const useVaultDetail = () => {
                     return {
                       ...strategy,
                       isShutdown: response[index],
-                    }
+                    };
                   }
-                )
+                );
 
                 setVault({
                   ...vaultData,
                   strategies,
-                })
-              })
+                });
+              });
             }
           }
-          /** Fethching Vault PDA address */
+          /** Fetching Vault PDA address */
           getVaultAddress(getVaultIndex(vaultId)).then((address) => {
-            setVaultAddress(address.toString())
-          })
+            setVaultAddress(address.toString());
+          });
         }
-      })
+      });
     },
     [loadVault, setVault, router.query.vaultId, publicKey]
-  )
+  );
 
   const fetchReports = (
     strategyId: string,
@@ -336,7 +342,7 @@ const useVaultDetail = () => {
         network: network,
       },
     }).then((response) => {
-      const { data } = response
+      const { data } = response;
 
       if (
         data?.strategyReports &&
@@ -348,12 +354,12 @@ const useVaultDetail = () => {
           [...prevStateReports, ...(data?.strategyReports || [])],
           [...prevStateApr, ...(data?.strategyHistoricalAprs || [])],
           isTfVault
-        )
+        );
       } else {
         setReports((prev) => ({
           ...prev,
           [strategyId]: [...prevStateReports, ...(data?.strategyReports || [])],
-        }))
+        }));
         if (!isTfVault) {
           setHistoricalApr((prev) => ({
             ...prev,
@@ -361,13 +367,13 @@ const useVaultDetail = () => {
               ...prevStateApr,
               ...(data?.strategyHistoricalAprs || []),
             ],
-          }))
+          }));
         }
 
-        setIsReportsLoaded(true)
+        setIsReportsLoaded(true);
       }
-    })
-  }
+    });
+  };
 
   const fetchVaultPosition = useCallback(
     (vaultId: string, publicKey: PublicKey): Promise<IVaultPosition> => {
@@ -382,62 +388,62 @@ const useVaultDetail = () => {
             res.data?.accountVaultPositions &&
             res.data?.accountVaultPositions.length
           ) {
-            const position = res.data.accountVaultPositions[0]
+            const position = res.data.accountVaultPositions[0];
 
             try {
-              setUpdateVaultPositionLoading(true)
-              const balance = await getUserTokenBalance(
+              setUpdateVaultPositionLoading(true);
+              const balance = (await getUserTokenBalance(
                 publicKey,
                 position.shareToken.id
-              )
+              )) as string;
 
-              let previewRedeemValue = '0'
+              let previewRedeemValue = "0";
 
               if (BigNumber(balance).isGreaterThan(0)) {
                 previewRedeemValue = (
                   await previewRedeem(balance as string, position.vault.id)
-                ).toString()
-                previewRedeemValue = BigNumber(previewRedeemValue).toString()
+                ).toString();
+                previewRedeemValue = BigNumber(previewRedeemValue).toString();
               }
 
               const updatedVaultPosition = {
                 ...position,
                 balanceShares: balance,
                 balancePosition: previewRedeemValue,
-              }
+              };
 
-              resolve(updatedVaultPosition)
+              resolve(updatedVaultPosition);
             } catch (error) {
-              console.error('Error updating vault position:', error)
-              resolve(position)
+              console.error("Error updating vault position:", error);
+              resolve(position);
             } finally {
-              setUpdateVaultPositionLoading(false)
+              setUpdateVaultPositionLoading(false);
             }
           } else {
-            resolve({} as IVaultPosition)
+            resolve({} as IVaultPosition);
           }
-        })
-      })
+        });
+      });
     },
     [loadPosition, setUpdateVaultPositionLoading]
-  )
+  );
 
   const fetchBalanceToken = useCallback(
     (vaultPosition: IVaultPosition) => {
       if (!vaultPosition?.balanceShares) {
-        return Promise.resolve('0')
+        return Promise.resolve("0");
       }
 
-      setFetchBalanceLoading(true)
+      setFetchBalanceLoading(true);
       return previewRedeem(vaultPosition?.balanceShares as string, vault.id)
         .catch((error) => {
-          console.error('Error fetching balance token:', error)
-          return '-1'
+          console.error("Error fetching balance token:", error);
+          return "-1";
         })
-        .finally(() => setFetchBalanceLoading(false))
+        .finally(() => setFetchBalanceLoading(false));
     },
     [vault.id, setFetchBalanceLoading]
-  )
+  );
 
   const fetchPositionTransactions = useCallback(
     (
@@ -451,7 +457,7 @@ const useVaultDetail = () => {
               account: publicKey.toBase58().toLowerCase(),
               vault: vaultId,
             },
-          })
+          });
         }
 
         return loadPositionTransactions({
@@ -460,45 +466,45 @@ const useVaultDetail = () => {
             vault: vaultId,
           },
         }).then((res) => {
-          res.data?.deposits && setDepositsList(res.data.deposits)
-          res.data?.withdrawals && setWithdrawalsList(res.data.withdrawals)
-        })
+          res.data?.deposits && setDepositsList(res.data.deposits);
+          res.data?.withdrawals && setWithdrawalsList(res.data.withdrawals);
+        });
       } else {
-        setDepositsList([])
-        setWithdrawalsList([])
-        return
+        setDepositsList([]);
+        setWithdrawalsList([]);
+        return;
       }
     },
     [publicKey, setDepositsList, setWithdrawalsList, loadPositionTransactions]
-  )
+  );
 
   useEffect(() => {
-    let timeout: ReturnType<typeof setTimeout>
+    let timeout: ReturnType<typeof setTimeout>;
     if (vaultId && !vaultLoading) {
       timeout = setTimeout(() => {
-        fetchVault(vaultId, network)
-      }, 150)
+        fetchVault(vaultId, network);
+      }, 150);
     }
 
     return () => {
-      timeout && clearTimeout(timeout)
-    }
-  }, [vaultId, publicKey, fetchVault])
+      timeout && clearTimeout(timeout);
+    };
+  }, [vaultId, publicKey, fetchVault]);
 
   useEffect(() => {
     if (lastTransactionBlock && vaultId && !vaultLoading) {
-      fetchVault(vaultId, network)
+      fetchVault(vaultId, network);
     }
-  }, [lastTransactionBlock])
+  }, [lastTransactionBlock]);
 
   useEffect(() => {
-    let timeout: ReturnType<typeof setTimeout>
+    let timeout: ReturnType<typeof setTimeout>;
     if (vault?.strategies && vault?.strategies?.length) {
       /**
        * Fetch reports for TradeFi vault only after the lock period is end.
        */
       if (isTfVaultType && activeTfPeriod < 2) {
-        return
+        return;
       }
       timeout = setTimeout(() => {
         vault?.strategies.forEach((strategy: IVaultStrategy) => {
@@ -508,20 +514,20 @@ const useVaultDetail = () => {
           setReports((prev) => ({
             ...prev,
             [strategy.id]: [],
-          }))
+          }));
           setHistoricalApr((prev) => ({
             ...prev,
             [strategy.id]: [],
-          }))
-          fetchReports(strategy.id, [], [], isTfVaultType)
-        })
-      }, 300)
+          }));
+          fetchReports(strategy.id, [], [], isTfVaultType);
+        });
+      }, 300);
     }
 
     return () => {
-      timeout && clearTimeout(timeout)
-    }
-  }, [vault?.strategies, network, isTfVaultType, activeTfPeriod])
+      timeout && clearTimeout(timeout);
+    };
+  }, [vault?.strategies, network, isTfVaultType, activeTfPeriod]);
 
   useEffect(() => {
     if (
@@ -531,7 +537,7 @@ const useVaultDetail = () => {
       transactionsLoading ||
       fetchBalanceLoading
     ) {
-      return
+      return;
     }
 
     if (vault.id && publicKey) {
@@ -542,19 +548,19 @@ const useVaultDetail = () => {
             fetchBalanceToken(vaultPosition),
           ])
             .then(([transactions, balanceToken]) => {
-              setBalanceToken(balanceToken as string)
+              setBalanceToken(balanceToken as string);
               transactions?.data?.deposits &&
-                setDepositsList(transactions?.data.deposits)
+                setDepositsList(transactions?.data.deposits);
               transactions?.data?.withdrawals &&
-                setWithdrawalsList(transactions?.data.withdrawals)
+                setWithdrawalsList(transactions?.data.withdrawals);
             })
             .finally(() => {
-              setVaultPosition(vaultPosition)
-            })
+              setVaultPosition(vaultPosition);
+            });
         }
-      )
+      );
     } else {
-      setVaultPosition({} as IVaultPosition)
+      setVaultPosition({} as IVaultPosition);
     }
   }, [
     lastTransactionBlock,
@@ -567,7 +573,7 @@ const useVaultDetail = () => {
     setDepositsList,
     setWithdrawalsList,
     setVaultPosition,
-  ])
+  ]);
 
   const setActiveVaultInfoTabHandler = useCallback(
     (value: VaultInfoTabs) => {
@@ -578,59 +584,59 @@ const useVaultDetail = () => {
         },
         undefined,
         { shallow: true }
-      )
+      );
     },
     [router, vaultId]
-  )
+  );
 
   useEffect(() => {
     if (isTfVaultType && vaultId) {
-      setTfVaultDepositEndTimeLoading(true)
-      setTfVaultLockEndTimeLoading(true)
+      setTfVaultDepositEndTimeLoading(true);
+      setTfVaultLockEndTimeLoading(true);
 
       getTfVaultPeriods(getVaultIndex(vaultId))
         .then((periods) => {
-          const { depositPeriodEnds, lockPeriodEnds } = periods
+          const { depositPeriodEnds, lockPeriodEnds } = periods;
           // todo: remove hardcoded values
           // setTfVaultDepositEndDate(depositPeriodEnds.toString())
           // setTfVaultLockEndDate(lockPeriodEnds.toString())
-          setTfVaultDepositEndDate('1728568800')
-          setTfVaultLockEndDate('1728655200')
+          setTfVaultDepositEndDate("1728568800");
+          setTfVaultLockEndDate("1728655200");
         })
         .finally(() => {
-          setTfVaultDepositEndTimeLoading(false)
-          setTfVaultLockEndTimeLoading(false)
-        })
+          setTfVaultDepositEndTimeLoading(false);
+          setTfVaultLockEndTimeLoading(false);
+        });
     }
   }, [
     vaultId,
     isTfVaultType,
     setTfVaultDepositEndTimeLoading,
     setTfVaultLockEndTimeLoading,
-  ])
+  ]);
 
   useEffect(() => {
-    if (!tfVaultDepositEndDate || !tfVaultLockEndDate) return
-    const now = dayjs()
-    let activePeriod = 2
+    if (!tfVaultDepositEndDate || !tfVaultLockEndDate) return;
+    const now = dayjs();
+    let activePeriod = 2;
 
     if (now.isBefore(dayjs.unix(Number(tfVaultLockEndDate)))) {
-      activePeriod = 1
+      activePeriod = 1;
     }
 
     if (now.isBefore(dayjs.unix(Number(tfVaultDepositEndDate)))) {
-      activePeriod = 0
+      activePeriod = 0;
     }
 
-    setActiveTfPeriod(activePeriod)
-  }, [tfVaultDepositEndDate, tfVaultLockEndDate, setActiveTfPeriod])
+    setActiveTfPeriod(activePeriod);
+  }, [tfVaultDepositEndDate, tfVaultLockEndDate, setActiveTfPeriod]);
 
   useEffect(() => {
-    if (!tfVaultLockEndDate || !tfVaultDepositEndDate) return
+    if (!tfVaultLockEndDate || !tfVaultDepositEndDate) return;
 
-    const now = dayjs()
-    const lockEndDate = dayjs.unix(Number(tfVaultLockEndDate))
-    const depositEndDate = dayjs.unix(Number(tfVaultDepositEndDate))
+    const now = dayjs();
+    const lockEndDate = dayjs.unix(Number(tfVaultLockEndDate));
+    const depositEndDate = dayjs.unix(Number(tfVaultDepositEndDate));
 
     if (
       isTfVaultType &&
@@ -640,17 +646,17 @@ const useVaultDetail = () => {
       BigNumber(vault?.balanceTokens).isGreaterThan(0)
     ) {
       const countOfHours = now.isBefore(lockEndDate)
-        ? now.diff(depositEndDate, 'hour')
-        : lockEndDate.diff(depositEndDate, 'hour')
+        ? now.diff(depositEndDate, "hour")
+        : lockEndDate.diff(depositEndDate, "hour");
 
       if (BigNumber(countOfHours).isGreaterThan(0)) {
-        const reports: { gain: string; timestamp: string; loss: string }[] = []
+        const reports: { gain: string; timestamp: string; loss: string }[] = [];
 
         for (let i = 0; i <= countOfHours; i++) {
           if (i % TRADE_FI_VAULT_REPORT_STEP === 0) {
             const timestamp = (
-              Number(depositEndDate.add(i, 'hour').unix()) * 1000
-            ).toString()
+              Number(depositEndDate.add(i, "hour").unix()) * 1000
+            ).toString();
 
             const gain = BigNumber(apr)
               .dividedBy(100)
@@ -658,24 +664,24 @@ const useVaultDetail = () => {
               .dividedBy(365 * 24)
               .multipliedBy(TRADE_FI_VAULT_REPORT_STEP)
               .dividedBy(10 ** 18)
-              .toString()
+              .toString();
 
             reports.push({
               timestamp,
               gain: BigNumber(gain)
                 .multipliedBy(10 ** 18)
                 .toString(),
-              loss: '0',
-            })
+              loss: "0",
+            });
           }
         }
 
         setReports((prev) => ({
           ...prev,
           [vault.strategies[0].id]: reports as IVaultStrategyReport[],
-        }))
+        }));
       }
-      setIsReportsLoaded(true)
+      setIsReportsLoaded(true);
     }
   }, [
     isTfVaultType,
@@ -685,39 +691,39 @@ const useVaultDetail = () => {
     vault?.balanceTokens,
     setReports,
     setIsReportsLoaded,
-  ])
+  ]);
 
   const showWithdrawAllButton = useMemo(() => {
     if (isShowWithdrawAllButtonLoading) {
-      return false
+      return false;
     }
-    return vaultId === '2'
-  }, [isShowWithdrawAllButtonLoading, vaultId])
+    return vaultId === "2";
+  }, [isShowWithdrawAllButtonLoading, vaultId]);
 
   const handleWithdrawAll = useCallback(async () => {
-    alert('handleWithdrawAll')
-  }, [vaultPosition])
+    alert("handleWithdrawAll");
+  }, [vaultPosition]);
 
   const balanceEarned = useMemo(() => {
-    if (balanceToken === '-1') return 0
+    if (balanceToken === "-1") return 0;
     if (transactionsLoading || fetchBalanceLoading) {
-      return -1
+      return -1;
     }
 
     const sumTokenDeposits = depositsList.reduce(
       (acc: BigNumber, deposit: any) => acc.plus(deposit.tokenAmount),
       new BigNumber(0)
-    )
+    );
 
     const sumTokenWithdrawals = withdrawalsList.reduce(
       (acc: BigNumber, withdrawal: any) => acc.plus(withdrawal.tokenAmount),
       new BigNumber(0)
-    )
+    );
 
-    return BigNumber(balanceToken || '0')
+    return BigNumber(balanceToken || "0")
       .minus(sumTokenDeposits.minus(sumTokenWithdrawals))
       .dividedBy(10 ** 9)
-      .toNumber()
+      .toNumber();
   }, [
     vaultPosition,
     balanceToken,
@@ -725,7 +731,7 @@ const useVaultDetail = () => {
     withdrawalsList,
     transactionsLoading,
     fetchBalanceLoading,
-  ])
+  ]);
 
   return {
     vault,
@@ -761,7 +767,7 @@ const useVaultDetail = () => {
     showWithdrawAllButton,
     isShowWithdrawAllButtonLoading,
     setActiveVaultInfoTabHandler,
-  }
-}
+  };
+};
 
-export default useVaultDetail
+export default useVaultDetail;
