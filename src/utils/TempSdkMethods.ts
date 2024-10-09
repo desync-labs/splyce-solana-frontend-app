@@ -27,9 +27,13 @@ import {
 
 const connection = new Connection(defaultEndpoint);
 
-const FAUCET_DATA_PUB_KEY = "GhHAUWzijk3e3pUTJbwAFjU3v51hkrpujnEhhnxtp8Q7";
-const FAUCET_TOKE_ACCOUNT_PUB_KEY =
-  "EjQxPWRJPvLFcPj4LomBwCpWxKYuig8jggVFhUq1qYQv";
+const FAUCET_DATA_PUB_KEY = new PublicKey(
+  "GhHAUWzijk3e3pUTJbwAFjU3v51hkrpujnEhhnxtp8Q7"
+);
+
+const FAUCET_TOKE_ACCOUNT_PUB_KEY = new PublicKey(
+  "EjQxPWRJPvLFcPj4LomBwCpWxKYuig8jggVFhUq1qYQv"
+);
 
 export const getUserTokenBalance = async (
   publicKey: PublicKey,
@@ -348,9 +352,6 @@ export const faucetTestToken = async (
 
   const faucetProgram = new Program(faucetIdl as Idl, provider);
 
-  const faucetData = new PublicKey(FAUCET_DATA_PUB_KEY);
-  const faucetTokenAccount = new PublicKey(FAUCET_TOKE_ACCOUNT_PUB_KEY);
-
   const userTokenAccount = await getOrCreateTokenAssociatedAccount(
     wallet,
     tokenPubKey,
@@ -362,8 +363,8 @@ export const faucetTestToken = async (
       await faucetProgram.methods
         .sendTokens()
         .accounts({
-          faucetData: faucetData,
-          tokenAccount: faucetTokenAccount,
+          faucetData: FAUCET_DATA_PUB_KEY,
+          tokenAccount: FAUCET_TOKE_ACCOUNT_PUB_KEY,
           recipient: userTokenAccount.address,
           signer: userPubKey,
           tokenProgram: TOKEN_PROGRAM_ID,

@@ -7,9 +7,6 @@ import CheckCircleOutlineOutlinedIcon from "@mui/icons-material/CheckCircleOutli
 import ErrorOutlineOutlinedIcon from "@mui/icons-material/ErrorOutlineOutlined";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 
-// @ts-ignore
-import { ColorPartial } from "@mui/material/styles/createPalette";
-
 const theme = createTheme();
 const {
   typography: { pxToRem },
