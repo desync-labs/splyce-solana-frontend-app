@@ -1,5 +1,5 @@
-import { styled } from '@mui/material/styles'
-import { Box } from '@mui/material'
+import { styled } from "@mui/material/styles";
+import { Box } from "@mui/material";
 
 export const FlexBox = styled(Box)`
   display: flex;
@@ -8,7 +8,7 @@ export const FlexBox = styled(Box)`
   justify-content: space-between;
   gap: 8px;
   width: 100%;
-`
+`;
 
 export const MainBox = styled(Box)`
   min-height: calc(var(--vh, 1vh) * 100 - 125px);
@@ -18,10 +18,10 @@ export const MainBox = styled(Box)`
   width: 100%;
   overflow: auto;
 
-  ${({ theme }) => theme.breakpoints.down('sm')} {
+  ${({ theme }) => theme.breakpoints.down("sm")} {
     min-height: calc(var(--vh, 1vh) * 100 - 193px);
   }
-`
+`;
 
 export const BaseInfoBox = styled(Box)`
   display: flex;
@@ -49,7 +49,7 @@ export const BaseInfoBox = styled(Box)`
       text-decoration: underline;
     }
   }
-`
+`;
 
 export const BaseWarningBox = styled(Box)`
   background: #452508;
@@ -77,7 +77,7 @@ export const BaseWarningBox = styled(Box)`
       text-decoration: underline;
     }
   }
-`
+`;
 
 export const BaseErrorBox = styled(Box)`
   display: flex;
@@ -107,7 +107,7 @@ export const BaseErrorBox = styled(Box)`
       text-decoration: underline;
     }
   }
-`
+`;
 
 export const EmptyVaultsWrapper = styled(Box)`
   display: flex;
@@ -115,4 +115,4 @@ export const EmptyVaultsWrapper = styled(Box)`
   align-items: center;
   width: 100%;
   padding: 16px;
-`
+`;

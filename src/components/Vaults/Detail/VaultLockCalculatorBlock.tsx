@@ -1,10 +1,10 @@
-import { Grid } from '@mui/material'
-import VaultLockingBar from '@/components/Vaults/Detail/VaultLockingBar'
-import VaultProfitCalculator from '@/components/Vaults/Detail/VaultProfitCalculator'
-import useVaultContext from '@/context/vaultDetail'
+import { Grid } from "@mui/material";
+import VaultLockingBar from "@/components/Vaults/Detail/VaultLockingBar";
+import VaultProfitCalculator from "@/components/Vaults/Detail/VaultProfitCalculator";
+import useVaultContext from "@/context/vaultDetail";
 
 const VaultLockCalculatorBlock = () => {
-  const { isTfVaultType } = useVaultContext()
+  const { isTfVaultType } = useVaultContext();
   return (
     <Grid container spacing={2} pt="12px" alignItems="stretch">
       {isTfVaultType && (
@@ -16,7 +16,7 @@ const VaultLockCalculatorBlock = () => {
         <VaultProfitCalculator />
       </Grid>
     </Grid>
-  )
-}
+  );
+};
 
-export default VaultLockCalculatorBlock
+export default VaultLockCalculatorBlock;

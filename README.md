@@ -1,4 +1,5 @@
 This is a web application built using Next.js, a React framework. It provides functionality for interacting with the Solana blockchain.
+
 ## Requirements
 
 - Node.js (recommended version: 18.x or higher)
@@ -29,6 +30,7 @@ To create a production build:
 ```bash
 npm run build
 ```
+
 To start the application after building:
 
 ```bash
@@ -42,20 +44,20 @@ Next.js applications can be deployed to various platforms, including Vercel, Her
 ### Deploying to Vercel
 
 1. Install the [Vercel CLI](https://vercel.com/docs/cli) :
-    
-    ```bash
+   ```bash
    npm install -g vercel
-    ```
+   ```
 2. Log in to Vercel:
 
-    ```bash
-    vercel login
-    ```
+   ```bash
+   vercel login
+   ```
+
 3. Deploy the project:
 
-    ```bash
-    vercel
-    ```
+   ```bash
+   vercel
+   ```
 
    Follow the instructions to complete the deployment. Vercel will automatically optimize and configure your Next.js project for production.
 

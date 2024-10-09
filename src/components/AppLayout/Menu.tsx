@@ -1,12 +1,12 @@
-import { FC, memo, useMemo } from 'react'
-import { useRouter } from 'next/router'
-import { Button, styled } from '@mui/material'
+import { FC, memo, useMemo } from "react";
+import { useRouter } from "next/router";
+import { Button, styled } from "@mui/material";
 
-const MenuWrapper = styled('nav')`
+const MenuWrapper = styled("nav")`
   display: flex;
   justify-content: flex-start;
   gap: 0;
-`
+`;
 
 const MenuItem = styled(Button)`
   height: 40px;
@@ -27,45 +27,45 @@ const MenuItem = styled(Button)`
     color: #fff;
     background: #314156;
   }
-`
+`;
 
 export const Menu: FC = memo(() => {
-  const location = useRouter()
+  const location = useRouter();
 
   const isLendingActive = useMemo(
-    () => location.pathname.includes('lending'),
+    () => location.pathname.includes("lending"),
     [location.pathname]
-  )
+  );
   const isVaultsActive = useMemo(
-    () => location.pathname.includes('vaults'),
+    () => location.pathname.includes("vaults"),
     [location.pathname]
-  )
+  );
   const isDaoActive = useMemo(
-    () => location.pathname.includes('dao'),
+    () => location.pathname.includes("dao"),
     [location.pathname]
-  )
+  );
 
   const appMenuItems = [
     {
-      name: 'Lending',
-      link: '/lending',
+      name: "Lending",
+      link: "/lending",
       isActive: isLendingActive,
     },
     {
-      name: 'Vaults',
-      link: '/vaults',
+      name: "Vaults",
+      link: "/vaults",
       isActive: isVaultsActive,
     },
     {
-      name: 'DAO',
-      link: '/dao',
+      name: "DAO",
+      link: "/dao",
       isActive: isDaoActive,
     },
-  ]
+  ];
 
   const handleClickMenuItem = (link: string) => {
-    location.push(link)
-  }
+    location.push(link);
+  };
 
   return (
     <MenuWrapper>
@@ -73,11 +73,11 @@ export const Menu: FC = memo(() => {
         <MenuItem
           key={item.name}
           onClick={() => handleClickMenuItem(item.link)}
-          className={item.isActive ? 'active' : ''}
+          className={item.isActive ? "active" : ""}
         >
           {item.name}
         </MenuItem>
       ))}
     </MenuWrapper>
-  )
-})
+  );
+});

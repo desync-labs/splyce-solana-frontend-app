@@ -1,24 +1,24 @@
-import { FC, memo } from 'react'
-import Image from 'next/image'
-import { Box, styled } from '@mui/material'
-import BigNumber from 'bignumber.js'
-import { formatNumber } from '@/utils/format'
-import useSharedContext from '@/context/shared'
-import useTotalStats from '@/hooks/Vaults/useTotalStats'
-import { BaseSkeletonValue } from '@/components/Base/Skeletons/StyledSkeleton'
-import { FlexBox } from '@/components/Base/Boxes/StyledBoxes'
+import { FC, memo } from "react";
+import Image from "next/image";
+import { Box, styled } from "@mui/material";
+import BigNumber from "bignumber.js";
+import { formatNumber } from "@/utils/format";
+import useSharedContext from "@/context/shared";
+import useTotalStats from "@/hooks/Vaults/useTotalStats";
+import { BaseSkeletonValue } from "@/components/Base/Skeletons/StyledSkeleton";
+import { FlexBox } from "@/components/Base/Boxes/StyledBoxes";
 
-import DepositedIcon from '@/assets/svg/icons/vault-stats-deposited.svg'
-import EarnedIcon from '@/assets/svg/icons/vault-stats-earning.svg'
+import DepositedIcon from "@/assets/svg/icons/vault-stats-deposited.svg";
+import EarnedIcon from "@/assets/svg/icons/vault-stats-earning.svg";
 
 const StatsWrapper = styled(FlexBox)`
   gap: 16px;
   margin: 36px 0;
-  ${({ theme }) => theme.breakpoints.down('sm')} {
+  ${({ theme }) => theme.breakpoints.down("sm")} {
     gap: 4px;
     margin: 20px 0;
   }
-`
+`;
 
 const StatItemWrapper = styled(Box)`
   display: flex;
@@ -30,20 +30,20 @@ const StatItemWrapper = styled(Box)`
   border-radius: 12px;
   background: ${({ theme }) => theme.palette.background.paper};
   padding: 16px 24px;
-  ${({ theme }) => theme.breakpoints.down('sm')} {
+  ${({ theme }) => theme.breakpoints.down("sm")} {
     width: 50%;
     & img {
       width: 24px;
       height: 24px;
     }
   }
-`
+`;
 
 const StatItemInfo = styled(FlexBox)`
   gap: 12px;
   justify-content: flex-start;
   width: 100%;
-  ${({ theme }) => theme.breakpoints.down('sm')} {
+  ${({ theme }) => theme.breakpoints.down("sm")} {
     flex-direction: column;
     justify-content: center;
     align-items: center;
@@ -54,17 +54,17 @@ const StatItemInfo = styled(FlexBox)`
       margin-left: -4px;
     }
   }
-`
+`;
 const StatItemLabel = styled(Box)`
   color: #a9bad0;
   font-size: 20px;
   font-weight: 600;
   line-height: 16px;
   text-transform: capitalize;
-  ${({ theme }) => theme.breakpoints.down('sm')} {
+  ${({ theme }) => theme.breakpoints.down("sm")} {
     font-size: 12px;
   }
-`
+`;
 
 const StatItemValue = styled(Box)`
   color: #fff;
@@ -72,22 +72,22 @@ const StatItemValue = styled(Box)`
   font-size: 24px;
   font-weight: 600;
   line-height: 20px;
-  ${({ theme }) => theme.breakpoints.down('sm')} {
+  ${({ theme }) => theme.breakpoints.down("sm")} {
     font-size: 14px;
   }
-`
+`;
 
 type VaultsTotalStatsType = {
-  positionsList: any[]
-  positionsLoading: boolean
-}
+  positionsList: any[];
+  positionsLoading: boolean;
+};
 
-type StatItemPropsType = { title: string; value: string; icon: string }
+type StatItemPropsType = { title: string; value: string; icon: string };
 
 const StatItem: FC<StatItemPropsType> = memo(({ title, value, icon }) => {
-  const fxdPrice = 1
-  const fetchPricesInProgress = false
-  const { isMobile } = useSharedContext()
+  const fxdPrice = 1;
+  const fetchPricesInProgress = false;
+  const { isMobile } = useSharedContext();
   return (
     <StatItemWrapper>
       <StatItemInfo>
@@ -95,9 +95,9 @@ const StatItem: FC<StatItemPropsType> = memo(({ title, value, icon }) => {
         <StatItemLabel>{title}</StatItemLabel>
       </StatItemInfo>
       <StatItemValue>
-        {value === '-1' || fetchPricesInProgress ? (
+        {value === "-1" || fetchPricesInProgress ? (
           <BaseSkeletonValue
-            animation={'wave'}
+            animation={"wave"}
             width={isMobile ? 80 : 110}
             height={isMobile ? 24 : 28}
           />
@@ -109,12 +109,12 @@ const StatItem: FC<StatItemPropsType> = memo(({ title, value, icon }) => {
               .toNumber()
           )}`
         ) : (
-          '$0'
+          "$0"
         )}
       </StatItemValue>
     </StatItemWrapper>
-  )
-})
+  );
+});
 
 const VaultsTotalStats: FC<VaultsTotalStatsType> = ({
   positionsList,
@@ -123,7 +123,7 @@ const VaultsTotalStats: FC<VaultsTotalStatsType> = ({
   const { totalBalance, balanceEarned } = useTotalStats(
     positionsList,
     positionsLoading
-  )
+  );
 
   return (
     <StatsWrapper>
@@ -138,7 +138,7 @@ const VaultsTotalStats: FC<VaultsTotalStatsType> = ({
         icon={EarnedIcon as string}
       />
     </StatsWrapper>
-  )
-}
+  );
+};
 
-export default memo(VaultsTotalStats)
+export default memo(VaultsTotalStats);

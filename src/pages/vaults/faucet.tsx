@@ -1,22 +1,18 @@
 import { FC, useEffect, useState } from "react";
 import { Button, CircularProgress, Container, Typography } from "@mui/material";
-import {
-  AnchorWallet,
-  useAnchorWallet,
-  useWallet,
-} from "@solana/wallet-adapter-react";
+import { useWallet } from "@solana/wallet-adapter-react";
 import { PublicKey } from "@solana/web3.js";
 
 import { faucetTestToken } from "@/utils/TempSdkMethods";
 import BasePageHeader from "@/components/Base/PageHeader";
 import VaultsNestedNav from "@/components/Vaults/NestedNav";
 import { BaseInfoIcon } from "@/components/Base/Icons/StyledIcons";
-import { BaseInfoBox } from "@/components/Base/Boxes/StyledBoxes";
+import { BaseErrorBox, BaseInfoBox } from "@/components/Base/Boxes/StyledBoxes";
 
 const FaucetIndex: FC = () => {
   const [loading, setLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState(false);
-  const anchorWallet = useAnchorWallet() as AnchorWallet;
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const { publicKey, wallet } = useWallet();
 
   useEffect(() => {
@@ -28,7 +24,16 @@ const FaucetIndex: FC = () => {
     }
   }, [successMessage]);
 
-  const handleGetTestTokens = () => {
+  useEffect(() => {
+    if (errorMessage) {
+      const timer = setTimeout(() => {
+        setErrorMessage(null);
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [errorMessage]);
+
+  const handleGetTestTokens = async () => {
     if (!publicKey || !wallet) {
       return;
     }
@@ -37,16 +42,13 @@ const FaucetIndex: FC = () => {
       "4dCLhR7U8PzwXau6qfjr73tKgp5SD42aLbyo3XQNzY4V"
     );
     try {
-      faucetTestToken(publicKey, testTokenPublicKey, anchorWallet)
-        .then((res) => {
-          console.log("Tx signature:", res);
-        })
-        .finally(() => {
-          setLoading(false);
-          setSuccessMessage(true);
-        });
-    } catch (error) {
-      console.error("Error getting test tokens:", error);
+      const res = await faucetTestToken(publicKey, testTokenPublicKey, wallet);
+      console.log("Tx signature:", res);
+      setSuccessMessage(true);
+    } catch (error: any) {
+      setErrorMessage(error.message);
+    } finally {
+      setLoading(false);
     }
   };
   return (
@@ -71,6 +73,12 @@ const FaucetIndex: FC = () => {
             <BaseInfoIcon />
             <Typography>You have received 100 Test Splyce USD</Typography>
           </BaseInfoBox>
+        )}
+        {errorMessage && (
+          <BaseErrorBox sx={{ marginTop: "24px", maxWidth: "400px" }}>
+            <BaseInfoIcon />
+            <Typography>{errorMessage}</Typography>
+          </BaseErrorBox>
         )}
       </Container>
     </>

@@ -7,53 +7,53 @@ import {
   useEffect,
   useMemo,
   useState,
-} from 'react'
-import { Connection } from '@solana/web3.js'
-import { defaultEndpoint } from '@/utils/network'
+} from "react";
+import { Connection } from "@solana/web3.js";
+import { defaultEndpoint } from "@/utils/network";
 
 type StakingProviderType = {
-  children: ReactNode
-}
+  children: ReactNode;
+};
 
 type UseSyncContextReturn = {
-  setLastTransactionBlock: Dispatch<number>
-  lastTransactionBlock: number
-}
+  setLastTransactionBlock: Dispatch<number>;
+  lastTransactionBlock: number;
+};
 
 export const SyncContext = createContext<UseSyncContextReturn>(
   {} as UseSyncContextReturn
-)
+);
 
 export const SyncProvider: FC<StakingProviderType> = ({ children }) => {
-  const [lastTransactionBlock, setLastTransactionBlock] = useState<number>(0)
+  const [lastTransactionBlock, setLastTransactionBlock] = useState<number>(0);
 
-  const connection = new Connection(defaultEndpoint, 'confirmed')
+  const connection = new Connection(defaultEndpoint, "confirmed");
 
   const getLatestSlot = async () => {
-    if (connection === null) return
-    const slot = await connection.getSlot()
-    setLastTransactionBlock(slot)
-    console.log('INIT Last block:', slot)
-  }
+    if (connection === null) return;
+    const slot = await connection.getSlot();
+    setLastTransactionBlock(slot);
+    console.log("INIT Last block:", slot);
+  };
 
   useEffect(() => {
-    getLatestSlot()
-  }, [])
+    getLatestSlot();
+  }, []);
 
   useEffect(() => {
-    console.log('Last block changed:', lastTransactionBlock)
-  }, [lastTransactionBlock])
+    console.log("Last block changed:", lastTransactionBlock);
+  }, [lastTransactionBlock]);
 
   const values = useMemo(() => {
     return {
       lastTransactionBlock,
       setLastTransactionBlock,
-    }
-  }, [setLastTransactionBlock, lastTransactionBlock])
+    };
+  }, [setLastTransactionBlock, lastTransactionBlock]);
 
-  return <SyncContext.Provider value={values}>{children}</SyncContext.Provider>
-}
+  return <SyncContext.Provider value={values}>{children}</SyncContext.Provider>;
+};
 
-const useSyncContext = () => useContext(SyncContext)
+const useSyncContext = () => useContext(SyncContext);
 
-export default useSyncContext
+export default useSyncContext;

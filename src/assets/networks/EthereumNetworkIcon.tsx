@@ -1,4 +1,4 @@
-import { Box } from '@mui/material'
+import { Box } from "@mui/material";
 
 export default function EthereumNetworkIcon() {
   return (
@@ -87,5 +87,5 @@ export default function EthereumNetworkIcon() {
         </defs>
       </svg>
     </Box>
-  )
+  );
 }

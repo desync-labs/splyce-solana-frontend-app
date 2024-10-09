@@ -1,7 +1,7 @@
-import { FC, ReactNode, useMemo } from 'react'
-import { createTheme, ThemeProvider } from '@mui/material/styles'
-import { deepmerge } from '@mui/utils'
-import { getDesignTokens, getThemedComponents } from '@/theme'
+import { FC, ReactNode, useMemo } from "react";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { deepmerge } from "@mui/utils";
+import { getDesignTokens, getThemedComponents } from "@/theme";
 
 /**
  * Main Layout component which wrapps around the whole app
@@ -10,9 +10,9 @@ import { getDesignTokens, getThemedComponents } from '@/theme'
  */
 export const AppThemeProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const theme = useMemo(() => {
-    const themeCreate = createTheme(getDesignTokens())
-    return deepmerge(themeCreate, getThemedComponents(themeCreate))
-  }, [])
+    const themeCreate = createTheme(getDesignTokens());
+    return deepmerge(themeCreate, getThemedComponents(themeCreate));
+  }, []);
 
-  return <ThemeProvider theme={theme}>{children}</ThemeProvider>
-}
+  return <ThemeProvider theme={theme}>{children}</ThemeProvider>;
+};

@@ -1,37 +1,37 @@
-import Link from 'next/link'
-import BigNumber from 'bignumber.js'
-import { Box, ListItemText, styled, Typography } from '@mui/material'
+import Link from "next/link";
+import BigNumber from "bignumber.js";
+import { Box, ListItemText, styled, Typography } from "@mui/material";
 import {
   VaultAboutTitle,
   vaultDescription,
-} from '@/utils/Vaults/getVaultTitleAndDescription'
-import { getExplorerUrl } from '@/utils/explorer'
-import { formatNumber, formatPercentage } from '@/utils/format'
-import { getDefaultVaultDescription } from '@/utils/Vaults/getVaultTitleAndDescription'
-import useVaultContext from '@/context/vaultDetail'
-import { useAprNumber } from '@/hooks/Vaults/useApr'
+} from "@/utils/Vaults/getVaultTitleAndDescription";
+import { getExplorerUrl } from "@/utils/explorer";
+import { formatNumber, formatPercentage } from "@/utils/format";
+import { getDefaultVaultDescription } from "@/utils/Vaults/getVaultTitleAndDescription";
+import useVaultContext from "@/context/vaultDetail";
+import { useAprNumber } from "@/hooks/Vaults/useApr";
 import {
   AppListApy,
   AppListFees,
   VaultContractAddress,
   VaultDescriptionWrapper,
-} from '@/components/Vaults/Detail/Tabs/InfoTabAbout'
-import BasePopover from '@/components/Base/Popover/BasePopover'
-import { BaseListItem } from '@/components/Base/List/StyledList'
+} from "@/components/Vaults/Detail/Tabs/InfoTabAbout";
+import BasePopover from "@/components/Base/Popover/BasePopover";
+import { BaseListItem } from "@/components/Base/List/StyledList";
 
 const FeesItemWrapper = styled(Box)`
   display: flex;
   gap: 4px;
-`
+`;
 
 const VaultAboutTabContent = () => {
-  const { vault, vaultAddress, performanceFee } = useVaultContext()
-  const aprNumber = useAprNumber(vault)
+  const { vault, vaultAddress, performanceFee } = useVaultContext();
+  const aprNumber = useAprNumber(vault);
 
   // todo: integrate fees for other vault types
-  const totalFee = performanceFee
-  const depositFee = '0'
-  const managementFee = '0'
+  const totalFee = performanceFee;
+  const depositFee = "0";
+  const managementFee = "0";
   return (
     <>
       <VaultDescriptionWrapper>
@@ -45,7 +45,7 @@ const VaultAboutTabContent = () => {
         )}
       </VaultDescriptionWrapper>
       <VaultContractAddress>
-        Vault Program address:{' '}
+        Vault Program address:{" "}
         <Link href={getExplorerUrl(vaultAddress)} target="_blank">
           {vaultAddress}
         </Link>
@@ -54,7 +54,7 @@ const VaultAboutTabContent = () => {
         <VaultAboutTitle variant="h5" sx={{ marginBottom: 0 }}>
           APY
         </VaultAboutTitle>
-        <Box width={'100%'}>
+        <Box width={"100%"}>
           <AppListApy>
             <BaseListItem
               secondaryAction={
@@ -63,7 +63,7 @@ const VaultAboutTabContent = () => {
                 </>
               }
             >
-              <ListItemText primary={'Weekly APY'} />
+              <ListItemText primary={"Weekly APY"} />
             </BaseListItem>
             <BaseListItem
               secondaryAction={
@@ -72,14 +72,14 @@ const VaultAboutTabContent = () => {
                 </>
               }
             >
-              <ListItemText primary={'Monthly APY'} />
+              <ListItemText primary={"Monthly APY"} />
             </BaseListItem>
             <BaseListItem
               secondaryAction={
                 <>{formatNumber(BigNumber(aprNumber).toNumber())}%</>
               }
             >
-              <ListItemText primary={'Yearly APY'} />
+              <ListItemText primary={"Yearly APY"} />
             </BaseListItem>
             {/*<BaseListItem secondaryAction={<>{formatNumber(aprNumber)}%</>}>*/}
             {/*  <ListItemText primary={'Estimated APY'} />*/}
@@ -101,11 +101,11 @@ const VaultAboutTabContent = () => {
                 <FeesItemWrapper>
                   Total Fee
                   <BasePopover
-                    id={'protocol-fee'}
+                    id={"protocol-fee"}
                     text={
-                      'Taken from the performance fee as a percentage of it.'
+                      "Taken from the performance fee as a percentage of it."
                     }
-                    iconSize={'15px'}
+                    iconSize={"15px"}
                   />
                 </FeesItemWrapper>
               }
@@ -119,11 +119,11 @@ const VaultAboutTabContent = () => {
                 <FeesItemWrapper>
                   Deposit/Withdrawal Fee
                   <BasePopover
-                    id={'total-fee'}
+                    id={"total-fee"}
                     text={
-                      'The fee is charged from the gain (performance fee) and shared between the manager and protocol.'
+                      "The fee is charged from the gain (performance fee) and shared between the manager and protocol."
                     }
-                    iconSize={'15px'}
+                    iconSize={"15px"}
                   />
                 </FeesItemWrapper>
               }
@@ -139,11 +139,11 @@ const VaultAboutTabContent = () => {
                 <FeesItemWrapper>
                   Management Fee
                   <BasePopover
-                    id={'total-fee'}
+                    id={"total-fee"}
                     text={
-                      'The fee is charged from the gain (performance fee) and shared between the manager and protocol.'
+                      "The fee is charged from the gain (performance fee) and shared between the manager and protocol."
                     }
-                    iconSize={'15px'}
+                    iconSize={"15px"}
                   />
                 </FeesItemWrapper>
               }
@@ -159,11 +159,11 @@ const VaultAboutTabContent = () => {
                 <FeesItemWrapper>
                   Performance Fee
                   <BasePopover
-                    id={'total-fee'}
+                    id={"total-fee"}
                     text={
-                      'The fee is charged from the gain (performance fee) and shared between the manager and protocol.'
+                      "The fee is charged from the gain (performance fee) and shared between the manager and protocol."
                     }
-                    iconSize={'15px'}
+                    iconSize={"15px"}
                   />
                 </FeesItemWrapper>
               }
@@ -172,7 +172,7 @@ const VaultAboutTabContent = () => {
         </AppListFees>
       </Box>
     </>
-  )
-}
+  );
+};
 
-export default VaultAboutTabContent
+export default VaultAboutTabContent;

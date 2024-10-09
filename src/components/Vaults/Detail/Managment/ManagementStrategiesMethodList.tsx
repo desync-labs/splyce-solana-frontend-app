@@ -1,29 +1,29 @@
-import { FC, memo, SyntheticEvent, useMemo, useState } from 'react'
-import { Box, Divider, MenuItem, styled, Tab, Typography } from '@mui/material'
-import { SelectChangeEvent } from '@mui/material/Select'
+import { FC, memo, SyntheticEvent, useMemo, useState } from "react";
+import { Box, Divider, MenuItem, styled, Tab, Typography } from "@mui/material";
+import { SelectChangeEvent } from "@mui/material/Select";
 
-import { strategyTitle } from '@/utils/Vaults/getStrategyTitleAndDescription'
-import { formatHashShorten } from '@/utils/format'
+import { strategyTitle } from "@/utils/Vaults/getStrategyTitleAndDescription";
+import { formatHashShorten } from "@/utils/format";
 import {
   a11yProps,
   ProgramMethodListWrapper,
   MethodsTabPanel,
   MethodTypesTabs,
   STATE_MUTABILITY_TRANSACTIONS,
-} from '@/components/Vaults/Detail/Managment/ManagementVaultMethodList'
+} from "@/components/Vaults/Detail/Managment/ManagementVaultMethodList";
 import MethodListItem, {
   ReadeMethodIcon,
   WriteMethodIcon,
-} from '@/components/Vaults/Detail/Managment/MethodListItem'
-import StrategyStatusBar from '@/components/Vaults/Detail/Managment/StrategyStatusBar'
-import { FlexBox } from '@/components/Base/Boxes/StyledBoxes'
-import { TabContentWrapper } from '@/components/Vaults/Detail/Tabs/InfoTabs'
+} from "@/components/Vaults/Detail/Managment/MethodListItem";
+import StrategyStatusBar from "@/components/Vaults/Detail/Managment/StrategyStatusBar";
+import { FlexBox } from "@/components/Base/Boxes/StyledBoxes";
+import { TabContentWrapper } from "@/components/Vaults/Detail/Tabs/InfoTabs";
 import {
   StrategySelector,
   StrategySelectorLabel,
-} from '@/components/Vaults/Detail/Tabs/InfoTabStrategies'
+} from "@/components/Vaults/Detail/Tabs/InfoTabStrategies";
 
-const StrategyManagerDescription = styled('div')`
+const StrategyManagerDescription = styled("div")`
   color: #fff;
   font-size: 14px;
   font-style: normal;
@@ -37,39 +37,39 @@ const StrategyManagerDescription = styled('div')`
     text-decoration-line: underline;
   }
 
-  ${({ theme }) => theme.breakpoints.down('sm')} {
+  ${({ theme }) => theme.breakpoints.down("sm")} {
     padding: 0;
   }
-`
+`;
 
 const StrategyManagerDescriptionDivider = styled(Divider)`
   display: none;
   border-color: #3d5580;
-  ${({ theme }) => theme.breakpoints.down('sm')} {
+  ${({ theme }) => theme.breakpoints.down("sm")} {
     display: block;
     padding-top: 20px;
   }
-`
+`;
 
 type ManagementStrategiesMethodListProps = {
-  isShow: boolean
-  strategiesIds: string[]
-  strategyMethods: any[]
-}
+  isShow: boolean;
+  strategiesIds: string[];
+  strategyMethods: any[];
+};
 
 const ManagementStrategiesMethodTabsStyled = styled(Box)`
   margin-top: 20px;
-`
+`;
 
 const ManagementStrategiesMethodTabs: FC<{
-  strategyMethods: any[]
-  currentStrategyId: string
+  strategyMethods: any[];
+  currentStrategyId: string;
 }> = memo(({ strategyMethods, currentStrategyId }) => {
-  const [value, setValue] = useState(0)
+  const [value, setValue] = useState(0);
 
   const handleChange = (event: SyntheticEvent, newValue: number) => {
-    setValue(newValue)
-  }
+    setValue(newValue);
+  };
 
   return !strategyMethods.length ? (
     <Typography px="24px">Has no program methods yet</Typography>
@@ -82,13 +82,13 @@ const ManagementStrategiesMethodTabs: FC<{
       >
         <Tab
           label="Read Program"
-          icon={<ReadeMethodIcon color={value === 0 ? '#BBFB5B' : '#d1dae6'} />}
+          icon={<ReadeMethodIcon color={value === 0 ? "#BBFB5B" : "#d1dae6"} />}
           iconPosition="start"
           {...a11yProps(0)}
         />
         <Tab
           label="Write Program"
-          icon={<WriteMethodIcon color={value === 1 ? '#BBFB5B' : '#d1dae6'} />}
+          icon={<WriteMethodIcon color={value === 1 ? "#BBFB5B" : "#d1dae6"} />}
           iconPosition="start"
           {...a11yProps(1)}
         />
@@ -133,36 +133,36 @@ const ManagementStrategiesMethodTabs: FC<{
         )}
       </MethodsTabPanel>
     </ManagementStrategiesMethodTabsStyled>
-  )
-})
+  );
+});
 
 const ManagementStrategiesMethodList: FC<
   ManagementStrategiesMethodListProps
 > = ({ isShow, strategiesIds, strategyMethods }) => {
   const [currentStrategyId, setCurrentStrategyId] = useState<string>(
     strategiesIds[0]
-  )
+  );
   const [currentStrategyName, setCurrentStrategyName] = useState<string>(
     strategyTitle[strategiesIds[0].toLowerCase()] ||
       `SPLY: Direct Incentive - Educational Strategy 1`
-  )
+  );
 
   const handleStrategyChange = (event: SelectChangeEvent<unknown>) => {
-    const { value } = event.target as HTMLInputElement
-    setCurrentStrategyId(value as string)
+    const { value } = event.target as HTMLInputElement;
+    setCurrentStrategyId(value as string);
 
-    const index = strategiesIds.findIndex((id) => id === value)
+    const index = strategiesIds.findIndex((id) => id === value);
     setCurrentStrategyName(
       strategyTitle[value.toLowerCase()] ||
         `SPLY: Direct Incentive - Educational Strategy ${index + 1}`
-    )
-  }
+    );
+  };
 
   return (
-    <ProgramMethodListWrapper className={isShow ? 'showing' : 'hide'}>
+    <ProgramMethodListWrapper className={isShow ? "showing" : "hide"}>
       <TabContentWrapper sx={{ paddingLeft: 0, paddingRight: 0 }}>
         {strategiesIds?.length && (
-          <Box px={'24px'}>
+          <Box px={"24px"}>
             <StrategyManagerDescription>
               The strategy manager for a vault is responsible for overseeing and
               managing various investment strategies within the vault. This
@@ -185,7 +185,7 @@ const ManagementStrategiesMethodList: FC<
                     <>
                       FXD: Direct Incentive - Educational Strategy {index + 1}
                     </>
-                  )}{' '}
+                  )}{" "}
                   {`(${formatHashShorten(id)})`}
                 </MenuItem>
               ))}
@@ -202,7 +202,7 @@ const ManagementStrategiesMethodList: FC<
         />
       </TabContentWrapper>
     </ProgramMethodListWrapper>
-  )
-}
+  );
+};
 
-export default memo(ManagementStrategiesMethodList)
+export default memo(ManagementStrategiesMethodList);

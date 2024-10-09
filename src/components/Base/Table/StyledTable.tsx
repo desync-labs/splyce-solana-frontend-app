@@ -1,5 +1,5 @@
-import { styled } from '@mui/material/styles'
-import { Box, TableCell, TableRow } from '@mui/material'
+import { styled } from "@mui/material/styles";
+import { Box, TableCell, TableRow } from "@mui/material";
 
 export const BaseTableRow = styled(TableRow)`
   td {
@@ -20,12 +20,12 @@ export const BaseTableRow = styled(TableRow)`
   td:last-of-type {
     border-radius: 0 8px 8px 0;
   }
-`
+`;
 
 export const BaseTableHeaderRow = styled(TableRow)`
   height: 36px;
   border-bottom: 1px solid ${({ theme }) => theme.palette.divider};
-`
+`;
 
 export const BaseTableCell = styled(TableCell)`
   color: #a9bad0;
@@ -39,11 +39,11 @@ export const BaseTableCell = styled(TableCell)`
   &:first-of-type {
     padding: 10px 24px;
 
-    ${({ theme }) => theme.breakpoints.down('sm')} {
+    ${({ theme }) => theme.breakpoints.down("sm")} {
       padding: 10px 16px;
     }
   }
-`
+`;
 
 export const BaseTableCellPopover = styled(Box)`
   display: flex;
@@ -52,7 +52,7 @@ export const BaseTableCellPopover = styled(Box)`
   gap: 7px;
   width: max-content;
   line-height: 1rem;
-`
+`;
 
 export const BaseTableItemRow = styled(BaseTableRow)`
   background: transparent;
@@ -68,7 +68,7 @@ export const BaseTableItemRow = styled(BaseTableRow)`
     border-bottom: 1px solid #4f658c4d;
     padding: 16px 8px;
   }
-`
+`;
 
 export const BaseTablePaginationWrapper = styled(Box)`
   display: flex;
@@ -76,7 +76,7 @@ export const BaseTablePaginationWrapper = styled(Box)`
   border-top: 1px solid ${({ theme }) => theme.palette.divider};
   padding: 12px 0 20px;
 
-  ${({ theme }) => theme.breakpoints.down('sm')} {
+  ${({ theme }) => theme.breakpoints.down("sm")} {
     border-top: none;
   }
-`
+`;

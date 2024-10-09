@@ -1,4 +1,4 @@
-import { styled } from '@mui/material/styles'
+import { styled } from "@mui/material/styles";
 import {
   Box,
   FormLabel as MuiFormLabel,
@@ -6,8 +6,8 @@ import {
   List as MuiList,
   TextField as MuiTextField,
   Typography,
-} from '@mui/material'
-import Image from 'next/image'
+} from "@mui/material";
+import Image from "next/image";
 
 export const BaseTextField = styled(MuiTextField)`
   width: 100%;
@@ -38,7 +38,7 @@ export const BaseTextField = styled(MuiTextField)`
     line-height: 20px;
   }
 
-  input[type='number'] {
+  input[type="number"] {
     &::-webkit-inner-spin-button,
     &::-webkit-outer-spin-button {
       -webkit-appearance: none;
@@ -89,7 +89,7 @@ export const BaseTextField = styled(MuiTextField)`
       padding-left: 0;
     }
   }
-`
+`;
 
 export const BaseDialogFormWrapper = styled(Box)`
   position: relative;
@@ -97,7 +97,7 @@ export const BaseDialogFormWrapper = styled(Box)`
   border-radius: 12px;
   background: #314156;
   padding: 16px;
-`
+`;
 
 export const BaseDialogFormInfoWrapper = styled(Box)`
   position: relative;
@@ -106,7 +106,7 @@ export const BaseDialogFormInfoWrapper = styled(Box)`
   background: #314156;
   padding: 16px;
   margin-top: 8px;
-`
+`;
 
 export const BaseDialogSummary = styled(Typography)`
   color: #a9bad0;
@@ -115,16 +115,16 @@ export const BaseDialogSummary = styled(Typography)`
   font-weight: 600;
   line-height: 24px;
   padding-bottom: 12px;
-`
+`;
 
-export const BaseFormInputWrapper = styled('div')`
+export const BaseFormInputWrapper = styled("div")`
   position: relative;
   margin-bottom: 16px;
 
   &:last-child {
     margin-bottom: 0;
   }
-`
+`;
 
 export const BaseFormInputLogo = styled(Image)`
   position: absolute;
@@ -139,7 +139,7 @@ export const BaseFormInputLogo = styled(Image)`
     top: 43px;
   }
 
-  ${({ theme }) => theme.breakpoints.down('sm')} {
+  ${({ theme }) => theme.breakpoints.down("sm")} {
     width: 18px;
     height: 18px;
     top: 35px;
@@ -148,7 +148,7 @@ export const BaseFormInputLogo = styled(Image)`
       top: 40px;
     }
   }
-`
+`;
 
 export const BaseFormWalletBalance = styled(Typography)`
   font-size: 12px;
@@ -156,24 +156,24 @@ export const BaseFormWalletBalance = styled(Typography)`
   float: right;
   color: #bbfb5b;
   text-align: end;
-  ${({ theme }) => theme.breakpoints.down('sm')} {
+  ${({ theme }) => theme.breakpoints.down("sm")} {
     font-size: 11px;
   }
-`
+`;
 
-export const BaseFormInputUsdIndicator = styled('div')`
+export const BaseFormInputUsdIndicator = styled("div")`
   position: absolute;
   top: 58px;
   left: 40px;
   color: #a9bad0;
   font-size: 14px;
   font-weight: 400;
-  ${({ theme }) => theme.breakpoints.down('sm')} {
+  ${({ theme }) => theme.breakpoints.down("sm")} {
     top: 50px;
     left: 35px;
     font-size: 11px;
   }
-`
+`;
 
 export const BaseFormLabelRow = styled(Box)`
   display: flex;
@@ -182,7 +182,7 @@ export const BaseFormLabelRow = styled(Box)`
   justify-content: space-between;
   align-items: flex-end;
   height: 20px;
-`
+`;
 
 export const BaseFormInputLabel = styled(MuiFormLabel)`
   color: #a9bad0;
@@ -191,7 +191,7 @@ export const BaseFormInputLabel = styled(MuiFormLabel)`
   line-height: 16px;
   letter-spacing: 0.44px;
   text-transform: uppercase;
-`
+`;
 
 export const BaseFormTextField = styled(MuiTextField)`
   width: 100%;
@@ -225,7 +225,7 @@ export const BaseFormTextField = styled(MuiTextField)`
     line-height: 20px;
   }
 
-  input[type='number'] {
+  input[type="number"] {
     &::-webkit-inner-spin-button,
     &::-webkit-outer-spin-button {
       -webkit-appearance: none;
@@ -290,7 +290,7 @@ export const BaseFormTextField = styled(MuiTextField)`
     }
   }
 
-  ${({ theme }) => theme.breakpoints.down('sm')} {
+  ${({ theme }) => theme.breakpoints.down("sm")} {
     input,
     textarea {
       height: 34px;
@@ -304,7 +304,7 @@ export const BaseFormTextField = styled(MuiTextField)`
       padding: 0 52px 0 34px;
     }
   }
-`
+`;
 
 export const RangeTextFields = styled(BaseFormTextField)`
   input,
@@ -335,7 +335,7 @@ export const RangeTextFields = styled(BaseFormTextField)`
       padding-left: 0;
     }
   }
-`
+`;
 
 export const BaseFormSetMaxButton = styled(MuiButton)`
   position: absolute;
@@ -358,7 +358,7 @@ export const BaseFormSetMaxButton = styled(MuiButton)`
     background: transparent;
   }
 
-  ${({ theme }) => theme.breakpoints.down('sm')} {
+  ${({ theme }) => theme.breakpoints.down("sm")} {
     top: 32px;
     right: 8px;
     height: 32px;
@@ -367,14 +367,14 @@ export const BaseFormSetMaxButton = styled(MuiButton)`
     border: 0.7px solid #2c4066;
     background: #243454;
   }
-`
+`;
 
-export const BaseFormInputErrorWrapper = styled('span')`
+export const BaseFormInputErrorWrapper = styled("span")`
   display: flex;
   justify-content: flex-start;
   align-items: center;
   padding-top: 4px;
-`
+`;
 
 export const BaseFormInfoList = styled(MuiList)`
   width: 100%;
@@ -390,7 +390,7 @@ export const BaseFormInfoList = styled(MuiList)`
       font-weight: 600;
     }
   }
-  ${({ theme }) => theme.breakpoints.down('sm')} {
+  ${({ theme }) => theme.breakpoints.down("sm")} {
     > .MuiListItem-root {
       padding-left: 0;
       > .MuiListItemText-root {
@@ -401,4 +401,4 @@ export const BaseFormInfoList = styled(MuiList)`
       }
     }
   }
-`
+`;

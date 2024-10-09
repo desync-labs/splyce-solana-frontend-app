@@ -1,5 +1,5 @@
-import { Container } from '@mui/material'
-import LendingNestedNav from '@/components/Lending/NestedNav'
+import { Container } from "@mui/material";
+import LendingNestedNav from "@/components/Lending/NestedNav";
 
 const Index = () => {
   return (
@@ -7,7 +7,7 @@ const Index = () => {
       <LendingNestedNav />
       <Container>Lending</Container>
     </>
-  )
-}
+  );
+};
 
-export default Index
+export default Index;

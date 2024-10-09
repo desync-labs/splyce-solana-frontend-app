@@ -1,14 +1,14 @@
-import { useEffect, useState } from 'react'
-import { Container, Paper, Typography } from '@mui/material'
-import useSharedContext from '@/context/shared'
-import VaultsNestedNav from '@/components/Vaults/NestedNav'
-import BasePageHeader from '@/components/Base/PageHeader'
-import VaultsTotalStats from '@/components/Vaults/List/VaultsTotalStats'
-import VaultsList from '@/components/Vaults/List/VaultsList'
-import VaultFilters from '@/components/Vaults/List/VaultFilters'
-import VaultsListMobile from '@/components/Vaults/List/VaultsListMobile'
-import useVaultList from '@/hooks/Vaults/useVaultList'
-import { EmptyVaultsWrapper } from '@/components/Base/Boxes/StyledBoxes'
+import { useEffect, useState } from "react";
+import { Container, Paper, Typography } from "@mui/material";
+import useSharedContext from "@/context/shared";
+import VaultsNestedNav from "@/components/Vaults/NestedNav";
+import BasePageHeader from "@/components/Base/PageHeader";
+import VaultsTotalStats from "@/components/Vaults/List/VaultsTotalStats";
+import VaultsList from "@/components/Vaults/List/VaultsList";
+import VaultFilters from "@/components/Vaults/List/VaultFilters";
+import VaultsListMobile from "@/components/Vaults/List/VaultsListMobile";
+import useVaultList from "@/hooks/Vaults/useVaultList";
+import { EmptyVaultsWrapper } from "@/components/Base/Boxes/StyledBoxes";
 
 const VaultsOverview = () => {
   const {
@@ -26,20 +26,20 @@ const VaultsOverview = () => {
     setSortBy,
     handlePageChange,
     handleIsShutdown,
-  } = useVaultList()
-  const { isMobile } = useSharedContext()
+  } = useVaultList();
+  const { isMobile } = useSharedContext();
 
-  const [listLoading, setListLoading] = useState<boolean>(true)
+  const [listLoading, setListLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const timeout = setTimeout(() => {
-      setListLoading(vaultsLoading || vaultPositionsLoading)
-    }, 50)
+      setListLoading(vaultsLoading || vaultPositionsLoading);
+    }, 50);
 
     return () => {
-      clearTimeout(timeout)
-    }
-  }, [vaultsLoading, vaultPositionsLoading, setListLoading])
+      clearTimeout(timeout);
+    };
+  }, [vaultsLoading, vaultPositionsLoading, setListLoading]);
 
   return (
     <>
@@ -67,7 +67,7 @@ const VaultsOverview = () => {
             !(vaultsLoading || vaultPositionsLoading) ? (
               <EmptyVaultsWrapper>
                 <Typography>
-                  No vaults found.{' '}
+                  No vaults found.{" "}
                   {search && <>Please try a different search criteria.</>}
                 </Typography>
               </EmptyVaultsWrapper>
@@ -96,7 +96,7 @@ const VaultsOverview = () => {
             !(vaultsLoading || vaultPositionsLoading) ? (
               <EmptyVaultsWrapper>
                 <Typography>
-                  No vaults found.{' '}
+                  No vaults found.{" "}
                   {search && <>Please try a different search criteria.</>}
                 </Typography>
               </EmptyVaultsWrapper>
@@ -114,7 +114,7 @@ const VaultsOverview = () => {
         )}
       </Container>
     </>
-  )
-}
+  );
+};
 
-export default VaultsOverview
+export default VaultsOverview;

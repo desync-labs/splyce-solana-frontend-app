@@ -1,9 +1,9 @@
-import { FC } from 'react'
-import { Box, StepContent, StepLabel, styled } from '@mui/material'
-import { getPeriodInDays } from '@/utils/getPeriodInDays'
-import { FlexBox } from '@/components/Base/Boxes/StyledBoxes'
-import BasePopover from '@/components/Base/Popover/BasePopover'
-import { CustomSkeleton } from '@/components/Base/Skeletons/StyledSkeleton'
+import { FC } from "react";
+import { Box, StepContent, StepLabel, styled } from "@mui/material";
+import { getPeriodInDays } from "@/utils/getPeriodInDays";
+import { FlexBox } from "@/components/Base/Boxes/StyledBoxes";
+import BasePopover from "@/components/Base/Popover/BasePopover";
+import { CustomSkeleton } from "@/components/Base/Skeletons/StyledSkeleton";
 import {
   AppStep,
   AppStepper,
@@ -11,8 +11,8 @@ import {
   QontoStepIcon,
   StepContentCounter,
   StepLabelOptionalValue,
-} from '@/components/Vaults/Detail/VaultLockingBar'
-import { BaseDialogFormInfoWrapper } from '@/components/Base/Form/StyledForm'
+} from "@/components/Vaults/Detail/VaultLockingBar";
+import { BaseDialogFormInfoWrapper } from "@/components/Base/Form/StyledForm";
 
 const CustomPaper = styled(Box)`
   position: relative;
@@ -21,13 +21,13 @@ const CustomPaper = styled(Box)`
   background: #1e2f4d;
   padding: 16px;
   margin-bottom: 20px;
-`
+`;
 
 type VaultModalLockingBarProps = {
-  activeTfPeriod: number
-  tfVaultDepositEndDate: string | null
-  tfVaultLockEndDate: string | null
-}
+  activeTfPeriod: number;
+  tfVaultDepositEndDate: string | null;
+  tfVaultLockEndDate: string | null;
+};
 
 const VaultModalLockingBar: FC<VaultModalLockingBarProps> = ({
   activeTfPeriod,
@@ -36,19 +36,19 @@ const VaultModalLockingBar: FC<VaultModalLockingBarProps> = ({
 }) => {
   const steps = [
     {
-      key: 'deposit-time', // added key to the object
+      key: "deposit-time", // added key to the object
       label: (
         <LockWrapper>
           Deposit Time
           <BasePopover
-            id={'deposit-time'}
+            id={"deposit-time"}
             text={
               <>
                 Deposit Time - the period when users are allowed to deposit and
                 withdraw funds.
               </>
             }
-            iconSize={'14px'}
+            iconSize={"14px"}
           />
         </LockWrapper>
       ),
@@ -58,22 +58,22 @@ const VaultModalLockingBar: FC<VaultModalLockingBarProps> = ({
           : new Date(Number(tfVaultDepositEndDate) * 1000),
     },
     {
-      key: 'lock-time', // added key to the object
+      key: "lock-time", // added key to the object
       label: (
         <LockWrapper>
           Lock Time (
           {getPeriodInDays(tfVaultDepositEndDate, tfVaultLockEndDate)} days)
           <BasePopover
-            id={'lock-time'}
+            id={"lock-time"}
             text={
               <>
                 Lock Time - the period of time when deposited funds are used to
                 generate yield according to the strategy. <br />
-                Users can’t withdraw and deposit any funds within this period.{' '}
+                Users can’t withdraw and deposit any funds within this period.{" "}
                 After the lock period ends, users can withdraw funds.
               </>
             }
-            iconSize={'14px'}
+            iconSize={"14px"}
           />
         </LockWrapper>
       ),
@@ -82,9 +82,9 @@ const VaultModalLockingBar: FC<VaultModalLockingBarProps> = ({
           ? tfVaultLockEndDate
           : new Date(Number(tfVaultLockEndDate) * 1000),
     },
-  ]
+  ];
   return (
-    <BaseDialogFormInfoWrapper mb={'8px'}>
+    <BaseDialogFormInfoWrapper mb={"8px"}>
       <AppStepper activeStep={activeTfPeriod} orientation="vertical">
         {steps.map((step, index) => (
           <AppStep key={step.key}>
@@ -102,7 +102,7 @@ const VaultModalLockingBar: FC<VaultModalLockingBarProps> = ({
               <StepContent>
                 {step.date === null ? (
                   <CustomSkeleton
-                    animation={'wave'}
+                    animation={"wave"}
                     variant="rounded"
                     width={100}
                     height={20}
@@ -116,7 +116,7 @@ const VaultModalLockingBar: FC<VaultModalLockingBarProps> = ({
         ))}
       </AppStepper>
     </BaseDialogFormInfoWrapper>
-  )
-}
+  );
+};
 
-export default VaultModalLockingBar
+export default VaultModalLockingBar;

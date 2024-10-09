@@ -1,6 +1,6 @@
-import { FC, memo } from 'react'
-import BigNumber from 'bignumber.js'
-import { FieldErrors, UseFormHandleSubmit } from 'react-hook-form'
+import { FC, memo } from "react";
+import BigNumber from "bignumber.js";
+import { FieldErrors, UseFormHandleSubmit } from "react-hook-form";
 import {
   Box,
   Button,
@@ -10,21 +10,21 @@ import {
   ListItemText,
   styled,
   Typography,
-} from '@mui/material'
+} from "@mui/material";
 
-import { formatNumber, formatPercentage } from '@/utils/format'
-import useVaultContext from '@/context/vaultDetail'
-import { BaseInfoIcon } from '@/components/Base/Icons/StyledIcons'
-import { IVault } from '@/utils/TempData'
-import { useWallet } from '@solana/wallet-adapter-react'
-import WalletConnectBtn from '@/components/Base/WalletConnectBtn'
-import { BaseDialogSummary } from '@/components/Base/Form/StyledForm'
+import { formatNumber, formatPercentage } from "@/utils/format";
+import useVaultContext from "@/context/vaultDetail";
+import { BaseInfoIcon } from "@/components/Base/Icons/StyledIcons";
+import { IVault } from "@/utils/TempData";
+import { useWallet } from "@solana/wallet-adapter-react";
+import WalletConnectBtn from "@/components/Base/WalletConnectBtn";
+import { BaseDialogSummary } from "@/components/Base/Form/StyledForm";
 import {
   BaseErrorBox,
   BaseWarningBox,
-} from '@/components/Base/Boxes/StyledBoxes'
-import { BaseListItem } from '@/components/Base/List/StyledList'
-import { BaseDialogButtonWrapper } from '@/components/Base/Dialog/StyledDialog'
+} from "@/components/Base/Boxes/StyledBoxes";
+import { BaseListItem } from "@/components/Base/List/StyledList";
+import { BaseDialogButtonWrapper } from "@/components/Base/Dialog/StyledDialog";
 
 export const ManageVaultInfoWrapper = styled(Box)`
   position: relative;
@@ -33,10 +33,10 @@ export const ManageVaultInfoWrapper = styled(Box)`
   border-radius: 12px;
   padding: 16px;
 
-  ${({ theme }) => theme.breakpoints.down('sm')} {
+  ${({ theme }) => theme.breakpoints.down("sm")} {
     width: 100%;
   }
-`
+`;
 
 export const VaultList = styled(List)`
   & li {
@@ -44,7 +44,7 @@ export const VaultList = styled(List)`
     align-items: flex-start;
     padding: 4px 0;
   }
-  ${({ theme }) => theme.breakpoints.down('sm')} {
+  ${({ theme }) => theme.breakpoints.down("sm")} {
     & li {
       font-size: 12px;
       font-weight: 400;
@@ -56,32 +56,32 @@ export const VaultList = styled(List)`
       }
     }
   }
-`
+`;
 
 type DepositVaultInfoProps = {
-  vaultItemData: IVault
-  deposit: string
-  sharedToken: string
-  isWalletFetching: boolean
-  walletBalance: string
-  onClose: () => void
-  openDepositLoading: boolean
+  vaultItemData: IVault;
+  deposit: string;
+  sharedToken: string;
+  isWalletFetching: boolean;
+  walletBalance: string;
+  onClose: () => void;
+  openDepositLoading: boolean;
   errors: FieldErrors<{
-    formToken: string
-    formSharedToken: string
-  }>
-  approveBtn: boolean
-  approve: () => void
-  approvalPending: boolean
+    formToken: string;
+    formSharedToken: string;
+  }>;
+  approveBtn: boolean;
+  approve: () => void;
+  approvalPending: boolean;
   handleSubmit: UseFormHandleSubmit<
     {
-      deposit: string
-      sharedToken: string
+      deposit: string;
+      sharedToken: string;
     },
     undefined
-  >
-  onSubmit: (values: Record<string, any>) => Promise<void>
-}
+  >;
+  onSubmit: (values: Record<string, any>) => Promise<void>;
+};
 
 const DepositVaultInfo: FC<DepositVaultInfoProps> = ({
   vaultItemData,
@@ -98,47 +98,47 @@ const DepositVaultInfo: FC<DepositVaultInfoProps> = ({
   handleSubmit,
   onSubmit,
 }) => {
-  const { isTfVaultType, isUserKycPassed } = useVaultContext()
-  const { token, shareToken, sharesSupply } = vaultItemData
-  const { connected } = useWallet()
+  const { isTfVaultType, isUserKycPassed } = useVaultContext();
+  const { token, shareToken, sharesSupply } = vaultItemData;
+  const { connected } = useWallet();
 
   return (
     <ManageVaultInfoWrapper>
-      <BaseDialogSummary sx={{ paddingBottom: '4px' }}>
+      <BaseDialogSummary sx={{ paddingBottom: "4px" }}>
         Summary
       </BaseDialogSummary>
-      <Divider sx={{ borderColor: '#5A799D' }} />
+      <Divider sx={{ borderColor: "#5A799D" }} />
       <VaultList>
         <BaseListItem
           alignItems="flex-start"
           secondaryAction={
             <>
-              0 {token?.name + ' '}
-              <Box component="span" sx={{ color: '#3DA329' }}>
-                → {formatPercentage(Number(deposit || '0')) + ' ' + token?.name}
+              0 {token?.name + " "}
+              <Box component="span" sx={{ color: "#3DA329" }}>
+                → {formatPercentage(Number(deposit || "0")) + " " + token?.name}
               </Box>
             </>
           }
         >
-          <ListItemText primary={token?.name + ' Deposited'} />
+          <ListItemText primary={token?.name + " Deposited"} />
         </BaseListItem>
         <BaseListItem
           alignItems="flex-start"
           secondaryAction={
             <>
-              0 %{' '}
-              <Box component="span" sx={{ color: '#3DA329' }}>
-                →{' '}
+              0 %{" "}
+              <Box component="span" sx={{ color: "#3DA329" }}>
+                →{" "}
                 {
                   // todo: chenge to sharesSupply when it will be available
                   BigNumber(sharedToken).isGreaterThan(0) ||
                   BigNumber(vaultItemData.totalShare).isGreaterThan(0)
                     ? formatNumber(
-                        BigNumber(sharedToken || '0')
+                        BigNumber(sharedToken || "0")
                           .multipliedBy(10 ** 9)
                           .dividedBy(
                             BigNumber(vaultItemData.totalShare).plus(
-                              BigNumber(sharedToken || '0').multipliedBy(
+                              BigNumber(sharedToken || "0").multipliedBy(
                                 10 ** 9
                               )
                             )
@@ -146,8 +146,8 @@ const DepositVaultInfo: FC<DepositVaultInfoProps> = ({
                           .times(100)
                           .toNumber()
                       )
-                    : '0'
-                }{' '}
+                    : "0"
+                }{" "}
                 %
               </Box>
             </>
@@ -160,10 +160,10 @@ const DepositVaultInfo: FC<DepositVaultInfoProps> = ({
           secondaryAction={
             <>
               {`0 ${shareToken?.symbol} `}
-              <Box component="span" sx={{ color: '#3DA329' }}>
-                →{' '}
-                {formatPercentage(Number(sharedToken || '0')) +
-                  ' ' +
+              <Box component="span" sx={{ color: "#3DA329" }}>
+                →{" "}
+                {formatPercentage(Number(sharedToken || "0")) +
+                  " " +
                   shareToken?.symbol}
               </Box>
             </>
@@ -176,7 +176,7 @@ const DepositVaultInfo: FC<DepositVaultInfoProps> = ({
         (BigNumber(walletBalance)
           .dividedBy(10 ** 9)
           .isLessThan(BigNumber(deposit)) ||
-          walletBalance == '0') && (
+          walletBalance == "0") && (
           <BaseErrorBox sx={{ marginBottom: 0 }}>
             <BaseInfoIcon />
             <Typography>Wallet balance is not enough to deposit.</Typography>
@@ -185,15 +185,15 @@ const DepositVaultInfo: FC<DepositVaultInfoProps> = ({
       {isTfVaultType && !isUserKycPassed && (
         <BaseWarningBox>
           <BaseInfoIcon
-            sx={{ width: '20px', color: '#F5953D', height: '20px' }}
+            sx={{ width: "20px", color: "#F5953D", height: "20px" }}
           />
           <Box flexDirection="column">
             <Typography width="100%">
-              Only KYC-verified users can deposit. Please completing KYC at{' '}
+              Only KYC-verified users can deposit. Please completing KYC at{" "}
               <a
-                href={'https://kyc.tradeflow.network/'}
-                target={'_blank'}
-                rel={'noreferrer'}
+                href={"https://kyc.tradeflow.network/"}
+                target={"_blank"}
+                rel={"noreferrer"}
               >
                 https://kyc.tradeflow.network/
               </a>
@@ -201,7 +201,7 @@ const DepositVaultInfo: FC<DepositVaultInfoProps> = ({
           </Box>
         </BaseWarningBox>
       )}
-      <BaseDialogButtonWrapper sx={{ paddingTop: '8px' }}>
+      <BaseDialogButtonWrapper sx={{ paddingTop: "8px" }}>
         <Button
           variant="outlined"
           onClick={onClose}
@@ -211,7 +211,7 @@ const DepositVaultInfo: FC<DepositVaultInfoProps> = ({
         </Button>
         {!connected ? (
           <WalletConnectBtn />
-        ) : approveBtn && walletBalance !== '0' ? (
+        ) : approveBtn && walletBalance !== "0" ? (
           <Button
             variant="gradient"
             onClick={approve}
@@ -221,12 +221,12 @@ const DepositVaultInfo: FC<DepositVaultInfoProps> = ({
               approvalPending
             }
           >
-            {' '}
+            {" "}
             {approvalPending ? (
-              <CircularProgress size={20} sx={{ color: '#0D1526' }} />
+              <CircularProgress size={20} sx={{ color: "#0D1526" }} />
             ) : (
-              'Approve token'
-            )}{' '}
+              "Approve token"
+            )}{" "}
           </Button>
         ) : (
           <Button
@@ -240,15 +240,15 @@ const DepositVaultInfo: FC<DepositVaultInfoProps> = ({
             }
           >
             {openDepositLoading ? (
-              <CircularProgress sx={{ color: '#0D1526' }} size={20} />
+              <CircularProgress sx={{ color: "#0D1526" }} size={20} />
             ) : (
-              'Deposit'
+              "Deposit"
             )}
           </Button>
         )}
       </BaseDialogButtonWrapper>
     </ManageVaultInfoWrapper>
-  )
-}
+  );
+};
 
-export default memo(DepositVaultInfo)
+export default memo(DepositVaultInfo);

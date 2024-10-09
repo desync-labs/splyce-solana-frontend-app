@@ -1,5 +1,5 @@
-import { Container } from '@mui/material'
-import DaoNestedNav from '@/components/Dao/NestedNav'
+import { Container } from "@mui/material";
+import DaoNestedNav from "@/components/Dao/NestedNav";
 
 const DaoTutorial = () => {
   return (
@@ -7,7 +7,7 @@ const DaoTutorial = () => {
       <DaoNestedNav />
       <Container>Dao tutorial</Container>
     </>
-  )
-}
+  );
+};
 
-export default DaoTutorial
+export default DaoTutorial;

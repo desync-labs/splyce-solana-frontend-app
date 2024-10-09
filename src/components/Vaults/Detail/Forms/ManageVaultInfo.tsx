@@ -1,7 +1,7 @@
-import { FC, memo } from 'react'
-import BigNumber from 'bignumber.js'
-import { FieldErrors, UseFormHandleSubmit } from 'react-hook-form'
-import { useWallet } from '@solana/wallet-adapter-react'
+import { FC, memo } from "react";
+import BigNumber from "bignumber.js";
+import { FieldErrors, UseFormHandleSubmit } from "react-hook-form";
+import { useWallet } from "@solana/wallet-adapter-react";
 import {
   Box,
   Button,
@@ -9,47 +9,47 @@ import {
   Divider,
   ListItemText,
   Typography,
-} from '@mui/material'
+} from "@mui/material";
 
-import { FormType } from '@/hooks/Vaults/useVaultManageDeposit'
-import { formatNumber, formatPercentage } from '@/utils/format'
-import { IVault, IVaultPosition } from '@/utils/TempData'
+import { FormType } from "@/hooks/Vaults/useVaultManageDeposit";
+import { formatNumber, formatPercentage } from "@/utils/format";
+import { IVault, IVaultPosition } from "@/utils/TempData";
 import {
   ManageVaultInfoWrapper,
   VaultList,
-} from '@/components/Vaults/Detail/Forms/DepositVaultInfo'
-import { BaseDialogSummary } from '@/components/Base/Form/StyledForm'
-import { BaseListItem } from '@/components/Base/List/StyledList'
-import WalletConnectBtn from '@/components/Base/WalletConnectBtn'
-import { BaseDialogButtonWrapper } from '@/components/Base/Dialog/StyledDialog'
-import { BaseErrorBox } from '@/components/Base/Boxes/StyledBoxes'
-import { BaseInfoIcon } from '@/components/Base/Icons/StyledIcons'
+} from "@/components/Vaults/Detail/Forms/DepositVaultInfo";
+import { BaseDialogSummary } from "@/components/Base/Form/StyledForm";
+import { BaseListItem } from "@/components/Base/List/StyledList";
+import WalletConnectBtn from "@/components/Base/WalletConnectBtn";
+import { BaseDialogButtonWrapper } from "@/components/Base/Dialog/StyledDialog";
+import { BaseErrorBox } from "@/components/Base/Boxes/StyledBoxes";
+import { BaseInfoIcon } from "@/components/Base/Icons/StyledIcons";
 
 type VaultManageInfoProps = {
-  vaultItemData: IVault
-  vaultPosition: IVaultPosition
-  formToken: string
-  formSharedToken: string
-  formType: FormType
-  isWalletFetching: boolean
-  walletBalance: string
-  onClose: () => void
-  openDepositLoading: boolean
+  vaultItemData: IVault;
+  vaultPosition: IVaultPosition;
+  formToken: string;
+  formSharedToken: string;
+  formType: FormType;
+  isWalletFetching: boolean;
+  walletBalance: string;
+  onClose: () => void;
+  openDepositLoading: boolean;
   errors: FieldErrors<{
-    formToken: string
-    formSharedToken: string
-  }>
-  approveBtn: boolean
+    formToken: string;
+    formSharedToken: string;
+  }>;
+  approveBtn: boolean;
   handleSubmit: UseFormHandleSubmit<
     {
-      formToken: string
-      formSharedToken: string
+      formToken: string;
+      formSharedToken: string;
     },
     undefined
-  >
-  onSubmit: (values: Record<string, any>) => Promise<void>
-  withdrawLimitExceeded: (value: string) => string | boolean
-}
+  >;
+  onSubmit: (values: Record<string, any>) => Promise<void>;
+  withdrawLimitExceeded: (value: string) => string | boolean;
+};
 
 const ManageVaultInfo: FC<VaultManageInfoProps> = ({
   formType,
@@ -67,16 +67,16 @@ const ManageVaultInfo: FC<VaultManageInfoProps> = ({
   onSubmit,
   withdrawLimitExceeded,
 }) => {
-  const { token, shareToken, sharesSupply } = vaultItemData
-  const { balancePosition, balanceShares } = vaultPosition
-  const { publicKey } = useWallet()
+  const { token, shareToken, sharesSupply } = vaultItemData;
+  const { balancePosition, balanceShares } = vaultPosition;
+  const { publicKey } = useWallet();
 
   return (
     <ManageVaultInfoWrapper>
-      <BaseDialogSummary sx={{ paddingBottom: '4px' }}>
+      <BaseDialogSummary sx={{ paddingBottom: "4px" }}>
         Summary
       </BaseDialogSummary>
-      <Divider sx={{ borderColor: '#5A799D' }} />
+      <Divider sx={{ borderColor: "#5A799D" }} />
       <VaultList>
         <BaseListItem
           secondaryAction={
@@ -86,43 +86,43 @@ const ManageVaultInfo: FC<VaultManageInfoProps> = ({
                   .dividedBy(10 ** 9)
                   .toNumber()
               ) +
-                ' ' +
+                " " +
                 token?.name +
-                ' '}
+                " "}
               <Box
                 component="span"
                 sx={{
-                  color: formType === FormType.DEPOSIT ? '#29C20A' : '#F76E6E',
+                  color: formType === FormType.DEPOSIT ? "#29C20A" : "#F76E6E",
                 }}
               >
-                →{' '}
+                →{" "}
                 {formType === FormType.DEPOSIT
                   ? formatPercentage(
                       BigNumber(balancePosition)
                         .dividedBy(10 ** 9)
-                        .plus(BigNumber(formToken || '0'))
+                        .plus(BigNumber(formToken || "0"))
                         .toNumber()
                     ) +
-                    ' ' +
+                    " " +
                     token?.name +
-                    ' '
+                    " "
                   : formatPercentage(
                       Math.max(
                         BigNumber(balancePosition)
                           .dividedBy(10 ** 9)
-                          .minus(BigNumber(formToken || '0'))
+                          .minus(BigNumber(formToken || "0"))
                           .toNumber(),
                         0
                       )
                     ) +
-                    ' ' +
+                    " " +
                     token?.name +
-                    ' '}
+                    " "}
               </Box>
             </>
           }
         >
-          <ListItemText primary={token?.name + ' Deposited'} />
+          <ListItemText primary={token?.name + " Deposited"} />
         </BaseListItem>
         <BaseListItem
           secondaryAction={
@@ -137,22 +137,22 @@ const ManageVaultInfo: FC<VaultManageInfoProps> = ({
               <Box
                 component="span"
                 sx={{
-                  color: formType === FormType.DEPOSIT ? '#29C20A' : '#F76E6E',
+                  color: formType === FormType.DEPOSIT ? "#29C20A" : "#F76E6E",
                 }}
               >
-                →{' '}
+                →{" "}
                 {formType === FormType.DEPOSIT
                   ? formatNumber(
                       BigNumber(balanceShares)
                         .plus(
-                          BigNumber(formSharedToken || '0').multipliedBy(
+                          BigNumber(formSharedToken || "0").multipliedBy(
                             10 ** 9
                           )
                         )
                         .dividedBy(
                           // todo: chenge to sharesSupply when it will be available
                           BigNumber(vaultItemData.totalShare).plus(
-                            BigNumber(formSharedToken || '0').multipliedBy(
+                            BigNumber(formSharedToken || "0").multipliedBy(
                               10 ** 9
                             )
                           )
@@ -164,19 +164,19 @@ const ManageVaultInfo: FC<VaultManageInfoProps> = ({
                         .multipliedBy(10 ** 9)
                         // todo: chenge to sharesSupply when it will be available
                         .isEqualTo(BigNumber(vaultItemData.totalShare))
-                    ? '0'
+                    ? "0"
                     : formatNumber(
                         Math.max(
                           BigNumber(balanceShares)
                             .minus(
-                              BigNumber(formSharedToken || '0').multipliedBy(
+                              BigNumber(formSharedToken || "0").multipliedBy(
                                 10 ** 9
                               )
                             )
                             .dividedBy(
                               // todo: chenge to sharesSupply when it will be available
                               BigNumber(vaultItemData.totalShare).minus(
-                                BigNumber(formSharedToken || '0').multipliedBy(
+                                BigNumber(formSharedToken || "0").multipliedBy(
                                   10 ** 9
                                 )
                               )
@@ -185,7 +185,7 @@ const ManageVaultInfo: FC<VaultManageInfoProps> = ({
                             .toNumber(),
                           0
                         )
-                      )}{' '}
+                      )}{" "}
                 %
               </Box>
             </>
@@ -201,36 +201,36 @@ const ManageVaultInfo: FC<VaultManageInfoProps> = ({
                   .dividedBy(10 ** 9)
                   .toNumber()
               ) +
-                ' ' +
+                " " +
                 shareToken?.symbol +
-                ' '}
+                " "}
               <Box
                 component="span"
                 sx={{
-                  color: formType === FormType.DEPOSIT ? '#29C20A' : '#F76E6E',
+                  color: formType === FormType.DEPOSIT ? "#29C20A" : "#F76E6E",
                 }}
               >
-                →{' '}
+                →{" "}
                 {formType === FormType.DEPOSIT
                   ? formatPercentage(
                       BigNumber(balanceShares)
                         .dividedBy(10 ** 9)
-                        .plus(BigNumber(formSharedToken || '0'))
+                        .plus(BigNumber(formSharedToken || "0"))
                         .toNumber()
                     ) +
-                    ' ' +
+                    " " +
                     shareToken?.symbol
                   : formatPercentage(
                       Math.max(
                         BigNumber(balanceShares)
                           .dividedBy(10 ** 9)
-                          .minus(BigNumber(formSharedToken || '0'))
+                          .minus(BigNumber(formSharedToken || "0"))
                           .toNumber(),
                         0
                       )
                     ) +
-                    ' ' +
-                    shareToken?.symbol}{' '}
+                    " " +
+                    shareToken?.symbol}{" "}
               </Box>
             </>
           }
@@ -243,7 +243,7 @@ const ManageVaultInfo: FC<VaultManageInfoProps> = ({
         (BigNumber(walletBalance)
           .dividedBy(10 ** 9)
           .isLessThan(formToken) ||
-          walletBalance == '0') && (
+          walletBalance == "0") && (
           <BaseErrorBox sx={{ marginBottom: 0 }}>
             <BaseInfoIcon />
             <Typography>Wallet balance is not enough to deposit.</Typography>
@@ -255,7 +255,7 @@ const ManageVaultInfo: FC<VaultManageInfoProps> = ({
           <Typography>{withdrawLimitExceeded(formToken)}</Typography>
         </BaseErrorBox>
       )}
-      <BaseDialogButtonWrapper sx={{ paddingTop: '8px' }}>
+      <BaseDialogButtonWrapper sx={{ paddingTop: "8px" }}>
         <Button
           variant="outlined"
           onClick={onClose}
@@ -278,17 +278,17 @@ const ManageVaultInfo: FC<VaultManageInfoProps> = ({
             }
           >
             {openDepositLoading ? (
-              <CircularProgress sx={{ color: '#0D1526' }} size={20} />
+              <CircularProgress sx={{ color: "#0D1526" }} size={20} />
             ) : formType === FormType.DEPOSIT ? (
-              'Deposit'
+              "Deposit"
             ) : (
-              'Withdraw'
+              "Withdraw"
             )}
           </Button>
         )}
       </BaseDialogButtonWrapper>
     </ManageVaultInfoWrapper>
-  )
-}
+  );
+};
 
-export default memo(ManageVaultInfo)
+export default memo(ManageVaultInfo);
