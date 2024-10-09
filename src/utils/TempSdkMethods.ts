@@ -4,26 +4,22 @@ import {
   PublicKey,
   Transaction,
 } from "@solana/web3.js";
+import type { Account } from "@solana/spl-token";
 import {
+  ASSOCIATED_TOKEN_PROGRAM_ID,
   createAssociatedTokenAccountInstruction,
   getAccount,
+  getAssociatedTokenAddressSync,
   TOKEN_PROGRAM_ID,
-} from "@solana/spl-token";
-import { AnchorProvider, BN, Idl, Program } from "@coral-xyz/anchor";
-import { AnchorWallet } from "@solana/wallet-adapter-react";
-import { defaultEndpoint } from "@/utils/network";
-import vaultIdl from "@/idls/tokenized_vault.json";
-import strategyIdl from "@/idls/strategy_program.json";
-import faucetIdl from "@/idls/faucet.json";
-import { ASSOCIATED_TOKEN_PROGRAM_ID } from "@solana/spl-token";
-import type { Account } from "@solana/spl-token";
-import { getAssociatedTokenAddressSync } from "@solana/spl-token";
-import {
   TokenAccountNotFoundError,
   TokenInvalidAccountOwnerError,
   TokenInvalidMintError,
   TokenInvalidOwnerError,
 } from "@solana/spl-token";
+import { AnchorProvider, BN, Program } from "@coral-xyz/anchor";
+import { AnchorWallet } from "@solana/wallet-adapter-react";
+import { defaultEndpoint } from "@/utils/network";
+import { getIdl, IdlTypes } from "@/utils/getIdl";
 
 const connection = new Connection(defaultEndpoint);
 
@@ -85,7 +81,7 @@ export const depositTokens = async (
     }
   );
 
-  const vaultProgram = new Program(vaultIdl as Idl, provider);
+  const vaultProgram = new Program(getIdl(IdlTypes.VAULT), provider);
 
   const vaultPDA = PublicKey.findProgramAddressSync(
     [
@@ -150,8 +146,8 @@ export const withdrawTokens = async (
     }
   );
 
-  const vaultProgram = new Program(vaultIdl as Idl, provider);
-  const strategyProgram = new Program(strategyIdl as Idl, provider);
+  const vaultProgram = new Program(getIdl(IdlTypes.VAULT), provider);
+  const strategyProgram = new Program(getIdl(IdlTypes.STRATEGY), provider);
 
   const vaultPDA = PublicKey.findProgramAddressSync(
     [
@@ -346,7 +342,7 @@ export const faucetTestToken = async (
     preflightCommitment: "confirmed",
   });
 
-  const faucetProgram = new Program(faucetIdl as Idl, provider);
+  const faucetProgram = new Program(getIdl(IdlTypes.FAUCET), provider);
 
   const faucetData = new PublicKey(FAUCET_DATA_PUB_KEY);
   const faucetTokenAccount = new PublicKey(FAUCET_TOKE_ACCOUNT_PUB_KEY);
@@ -379,10 +375,10 @@ export const faucetTestToken = async (
 };
 
 export const getTfVaultPeriods = async (vaultIndex: number) => {
-  const vaultProgram = new Program(vaultIdl as Idl, {
+  const vaultProgram = new Program(getIdl(IdlTypes.VAULT), {
     connection,
   });
-  const strategyProgram = new Program(strategyIdl as Idl, {
+  const strategyProgram = new Program(getIdl(IdlTypes.STRATEGY), {
     connection,
   });
 
@@ -414,7 +410,7 @@ export const getTfVaultPeriods = async (vaultIndex: number) => {
 };
 
 export const getVaultAddress = async (vaultIndex: number) => {
-  const vaultProgram = new Program(vaultIdl as Idl, {
+  const vaultProgram = new Program(getIdl(IdlTypes.VAULT), {
     connection,
   });
 
@@ -435,11 +431,11 @@ export const getStrategyProgramAddress = async (
   vaultIndex: number,
   strategyIndex: number
 ) => {
-  const vaultProgram = new Program(vaultIdl as Idl, {
+  const vaultProgram = new Program(getIdl(IdlTypes.VAULT), {
     connection,
   });
 
-  const strategyProgram = new Program(strategyIdl as Idl, {
+  const strategyProgram = new Program(getIdl(IdlTypes.STRATEGY), {
     connection,
   });
 

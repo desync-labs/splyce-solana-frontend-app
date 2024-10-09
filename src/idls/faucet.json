@@ -1,5 +1,5 @@
 {
-  "address": "BnjdeSt6reRowzTYp5KQFWXnqBymUe4oNRwjfBW3g5Bu",
+  "address": "4rza9AifAapN4SKho3teAuLhc1TPpNWp9DHNPEMzVqgp",
   "metadata": {
     "name": "faucet",
     "version": "0.1.0",
@@ -9,7 +9,16 @@
   "instructions": [
     {
       "name": "initialize",
-      "discriminator": [175, 175, 109, 31, 13, 152, 155, 237],
+      "discriminator": [
+        175,
+        175,
+        109,
+        31,
+        13,
+        152,
+        155,
+        237
+      ],
       "accounts": [
         {
           "name": "faucet_data",
@@ -18,7 +27,12 @@
             "seeds": [
               {
                 "kind": "const",
-                "value": [100, 97, 116, 97]
+                "value": [
+                  100,
+                  97,
+                  116,
+                  97
+                ]
               }
             ]
           }
@@ -30,7 +44,18 @@
             "seeds": [
               {
                 "kind": "const",
-                "value": [117, 110, 100, 101, 114, 108, 121, 105, 110, 103]
+                "value": [
+                  117,
+                  110,
+                  100,
+                  101,
+                  114,
+                  108,
+                  121,
+                  105,
+                  110,
+                  103
+                ]
               }
             ]
           }
@@ -60,7 +85,16 @@
     },
     {
       "name": "send_tokens",
-      "discriminator": [52, 223, 177, 235, 135, 171, 73, 96],
+      "discriminator": [
+        52,
+        223,
+        177,
+        235,
+        135,
+        171,
+        73,
+        96
+      ],
       "accounts": [
         {
           "name": "faucet_data",
@@ -68,7 +102,12 @@
             "seeds": [
               {
                 "kind": "const",
-                "value": [100, 97, 116, 97]
+                "value": [
+                  100,
+                  97,
+                  116,
+                  97
+                ]
               }
             ]
           }
@@ -80,7 +119,18 @@
             "seeds": [
               {
                 "kind": "const",
-                "value": [117, 110, 100, 101, 114, 108, 121, 105, 110, 103]
+                "value": [
+                  117,
+                  110,
+                  100,
+                  101,
+                  114,
+                  108,
+                  121,
+                  105,
+                  110,
+                  103
+                ]
               }
             ]
           }
@@ -103,7 +153,16 @@
     },
     {
       "name": "set_distribution_amount",
-      "discriminator": [203, 141, 37, 99, 5, 177, 0, 7],
+      "discriminator": [
+        203,
+        141,
+        37,
+        99,
+        5,
+        177,
+        0,
+        7
+      ],
       "accounts": [
         {
           "name": "faucet_data",
@@ -112,7 +171,12 @@
             "seeds": [
               {
                 "kind": "const",
-                "value": [100, 97, 116, 97]
+                "value": [
+                  100,
+                  97,
+                  116,
+                  97
+                ]
               }
             ]
           }
@@ -134,7 +198,16 @@
   "accounts": [
     {
       "name": "FaucetData",
-      "discriminator": [162, 18, 55, 198, 220, 151, 9, 227]
+      "discriminator": [
+        162,
+        18,
+        55,
+        198,
+        220,
+        151,
+        9,
+        227
+      ]
     }
   ],
   "errors": [
