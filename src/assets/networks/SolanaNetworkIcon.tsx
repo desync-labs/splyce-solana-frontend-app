@@ -1,4 +1,4 @@
-import { Box } from '@mui/material'
+import { Box } from "@mui/material";
 
 export default function SolanaNetworkIcon() {
   return (
@@ -91,5 +91,5 @@ export default function SolanaNetworkIcon() {
         </defs>
       </svg>
     </Box>
-  )
+  );
 }

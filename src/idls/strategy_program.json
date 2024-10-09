@@ -9,16 +9,7 @@
   "instructions": [
     {
       "name": "deploy_funds",
-      "discriminator": [
-        76,
-        85,
-        211,
-        80,
-        151,
-        46,
-        34,
-        72
-      ],
+      "discriminator": [76, 85, 211, 80, 151, 46, 34, 72],
       "accounts": [
         {
           "name": "strategy",
@@ -31,18 +22,7 @@
             "seeds": [
               {
                 "kind": "const",
-                "value": [
-                  117,
-                  110,
-                  100,
-                  101,
-                  114,
-                  108,
-                  121,
-                  105,
-                  110,
-                  103
-                ]
+                "value": [117, 110, 100, 101, 114, 108, 121, 105, 110, 103]
               },
               {
                 "kind": "account",
@@ -70,16 +50,7 @@
     },
     {
       "name": "deposit",
-      "discriminator": [
-        242,
-        35,
-        198,
-        137,
-        82,
-        225,
-        242,
-        182
-      ],
+      "discriminator": [242, 35, 198, 137, 82, 225, 242, 182],
       "accounts": [
         {
           "name": "strategy",
@@ -92,18 +63,7 @@
             "seeds": [
               {
                 "kind": "const",
-                "value": [
-                  117,
-                  110,
-                  100,
-                  101,
-                  114,
-                  108,
-                  121,
-                  105,
-                  110,
-                  103
-                ]
+                "value": [117, 110, 100, 101, 114, 108, 121, 105, 110, 103]
               },
               {
                 "kind": "account",
@@ -134,16 +94,7 @@
     },
     {
       "name": "init_strategy",
-      "discriminator": [
-        154,
-        74,
-        215,
-        216,
-        229,
-        204,
-        141,
-        241
-      ],
+      "discriminator": [154, 74, 215, 216, 229, 204, 141, 241],
       "accounts": [
         {
           "name": "strategy",
@@ -168,18 +119,7 @@
             "seeds": [
               {
                 "kind": "const",
-                "value": [
-                  117,
-                  110,
-                  100,
-                  101,
-                  114,
-                  108,
-                  121,
-                  105,
-                  110,
-                  103
-                ]
+                "value": [117, 110, 100, 101, 114, 108, 121, 105, 110, 103]
               },
               {
                 "kind": "account",
@@ -234,16 +174,7 @@
     },
     {
       "name": "register_accounts",
-      "discriminator": [
-        46,
-        144,
-        12,
-        106,
-        125,
-        176,
-        56,
-        191
-      ],
+      "discriminator": [46, 144, 12, 106, 125, 176, 56, 191],
       "accounts": [
         {
           "name": "simple_strategy"
@@ -256,16 +187,7 @@
     },
     {
       "name": "report",
-      "discriminator": [
-        96,
-        121,
-        245,
-        84,
-        178,
-        45,
-        48,
-        91
-      ],
+      "discriminator": [96, 121, 245, 84, 178, 45, 48, 91],
       "accounts": [
         {
           "name": "strategy",
@@ -278,18 +200,7 @@
             "seeds": [
               {
                 "kind": "const",
-                "value": [
-                  117,
-                  110,
-                  100,
-                  101,
-                  114,
-                  108,
-                  121,
-                  105,
-                  110,
-                  103
-                ]
+                "value": [117, 110, 100, 101, 114, 108, 121, 105, 110, 103]
               },
               {
                 "kind": "account",
@@ -312,16 +223,7 @@
     },
     {
       "name": "report_loss",
-      "discriminator": [
-        120,
-        239,
-        28,
-        252,
-        98,
-        214,
-        150,
-        219
-      ],
+      "discriminator": [120, 239, 28, 252, 98, 214, 150, 219],
       "accounts": [
         {
           "name": "strategy",
@@ -334,18 +236,7 @@
             "seeds": [
               {
                 "kind": "const",
-                "value": [
-                  117,
-                  110,
-                  100,
-                  101,
-                  114,
-                  108,
-                  121,
-                  105,
-                  110,
-                  103
-                ]
+                "value": [117, 110, 100, 101, 114, 108, 121, 105, 110, 103]
               },
               {
                 "kind": "account",
@@ -373,16 +264,7 @@
     },
     {
       "name": "report_profit",
-      "discriminator": [
-        18,
-        223,
-        254,
-        230,
-        64,
-        34,
-        23,
-        57
-      ],
+      "discriminator": [18, 223, 254, 230, 64, 34, 23, 57],
       "accounts": [
         {
           "name": "strategy",
@@ -395,18 +277,7 @@
             "seeds": [
               {
                 "kind": "const",
-                "value": [
-                  117,
-                  110,
-                  100,
-                  101,
-                  114,
-                  108,
-                  121,
-                  105,
-                  110,
-                  103
-                ]
+                "value": [117, 110, 100, 101, 114, 108, 121, 105, 110, 103]
               },
               {
                 "kind": "account",
@@ -434,16 +305,7 @@
     },
     {
       "name": "set_fee_manager",
-      "discriminator": [
-        227,
-        69,
-        94,
-        158,
-        190,
-        192,
-        59,
-        203
-      ],
+      "discriminator": [227, 69, 94, 158, 190, 192, 59, 203],
       "accounts": [
         {
           "name": "strategy",
@@ -464,16 +326,7 @@
     },
     {
       "name": "set_performance_fee",
-      "discriminator": [
-        129,
-        89,
-        113,
-        1,
-        18,
-        68,
-        109,
-        22
-      ],
+      "discriminator": [129, 89, 113, 1, 18, 68, 109, 22],
       "accounts": [
         {
           "name": "strategy",
@@ -494,16 +347,7 @@
     },
     {
       "name": "transfer_management",
-      "discriminator": [
-        11,
-        192,
-        211,
-        7,
-        126,
-        237,
-        24,
-        243
-      ],
+      "discriminator": [11, 192, 211, 7, 126, 237, 24, 243],
       "accounts": [
         {
           "name": "strategy",
@@ -524,16 +368,7 @@
     },
     {
       "name": "withdraw",
-      "discriminator": [
-        183,
-        18,
-        70,
-        156,
-        148,
-        109,
-        161,
-        34
-      ],
+      "discriminator": [183, 18, 70, 156, 148, 109, 161, 34],
       "accounts": [
         {
           "name": "strategy",
@@ -546,18 +381,7 @@
             "seeds": [
               {
                 "kind": "const",
-                "value": [
-                  117,
-                  110,
-                  100,
-                  101,
-                  114,
-                  108,
-                  121,
-                  105,
-                  110,
-                  103
-                ]
+                "value": [117, 110, 100, 101, 114, 108, 121, 105, 110, 103]
               },
               {
                 "kind": "account",
@@ -588,16 +412,7 @@
     },
     {
       "name": "withdraw_fee",
-      "discriminator": [
-        14,
-        122,
-        231,
-        218,
-        31,
-        238,
-        223,
-        150
-      ],
+      "discriminator": [14, 122, 231, 218, 31, 238, 223, 150],
       "accounts": [
         {
           "name": "strategy",
@@ -610,18 +425,7 @@
             "seeds": [
               {
                 "kind": "const",
-                "value": [
-                  117,
-                  110,
-                  100,
-                  101,
-                  114,
-                  108,
-                  121,
-                  105,
-                  110,
-                  103
-                ]
+                "value": [117, 110, 100, 101, 114, 108, 121, 105, 110, 103]
               },
               {
                 "kind": "account",
@@ -655,83 +459,29 @@
   "accounts": [
     {
       "name": "SimpleStrategy",
-      "discriminator": [
-        59,
-        122,
-        229,
-        89,
-        175,
-        46,
-        176,
-        128
-      ]
+      "discriminator": [59, 122, 229, 89, 175, 46, 176, 128]
     },
     {
       "name": "TradeFintechStrategy",
-      "discriminator": [
-        190,
-        73,
-        62,
-        99,
-        215,
-        188,
-        108,
-        89
-      ]
+      "discriminator": [190, 73, 62, 99, 215, 188, 108, 89]
     }
   ],
   "events": [
     {
       "name": "SetPerformanceFeeEvent",
-      "discriminator": [
-        117,
-        19,
-        95,
-        92,
-        168,
-        28,
-        243,
-        109
-      ]
+      "discriminator": [117, 19, 95, 92, 168, 28, 243, 109]
     },
     {
       "name": "StrategyDepositEvent",
-      "discriminator": [
-        44,
-        150,
-        97,
-        77,
-        190,
-        106,
-        76,
-        237
-      ]
+      "discriminator": [44, 150, 97, 77, 190, 106, 76, 237]
     },
     {
       "name": "StrategyInitEvent",
-      "discriminator": [
-        33,
-        61,
-        4,
-        77,
-        20,
-        107,
-        154,
-        62
-      ]
+      "discriminator": [33, 61, 4, 77, 20, 107, 154, 62]
     },
     {
       "name": "StrategyWithdrawEvent",
-      "discriminator": [
-        120,
-        188,
-        132,
-        45,
-        215,
-        160,
-        115,
-        81
-      ]
+      "discriminator": [120, 188, 132, 45, 215, 160, 115, 81]
     }
   ],
   "errors": [
@@ -845,30 +595,20 @@
         "fields": [
           {
             "name": "bump",
-            "docs": [
-              "Bump to identify PDA"
-            ],
+            "docs": ["Bump to identify PDA"],
             "type": {
-              "array": [
-                "u8",
-                1
-              ]
+              "array": ["u8", 1]
             }
           },
           {
             "name": "index_bytes",
             "type": {
-              "array": [
-                "u8",
-                1
-              ]
+              "array": ["u8", 1]
             }
           },
           {
             "name": "vault",
-            "docs": [
-              "vault"
-            ],
+            "docs": ["vault"],
             "type": "pubkey"
           },
           {
@@ -1023,30 +763,20 @@
         "fields": [
           {
             "name": "bump",
-            "docs": [
-              "Bump to identify PDA"
-            ],
+            "docs": ["Bump to identify PDA"],
             "type": {
-              "array": [
-                "u8",
-                1
-              ]
+              "array": ["u8", 1]
             }
           },
           {
             "name": "index_bytes",
             "type": {
-              "array": [
-                "u8",
-                1
-              ]
+              "array": ["u8", 1]
             }
           },
           {
             "name": "vault",
-            "docs": [
-              "vault"
-            ],
+            "docs": ["vault"],
             "type": "pubkey"
           },
           {

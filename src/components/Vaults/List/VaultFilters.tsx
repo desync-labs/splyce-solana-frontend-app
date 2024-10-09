@@ -1,29 +1,29 @@
-import { Dispatch, FC, memo, SetStateAction } from 'react'
-import { MenuItem, Box } from '@mui/material'
-import { styled } from '@mui/material/styles'
-import { SelectChangeEvent } from '@mui/material/Select'
+import { Dispatch, FC, memo, SetStateAction } from "react";
+import { MenuItem, Box } from "@mui/material";
+import { styled } from "@mui/material/styles";
+import { SelectChangeEvent } from "@mui/material/Select";
 import {
   BaseSearchTextField,
   BaseSortSelect,
   SearchFieldLogo,
-} from '@/components/Base/Form/Filters'
-import { FlexBox } from '@/components/Base/Boxes/StyledBoxes'
-import { SortType } from '@/utils/TempData'
-import useSharedContext from '@/context/shared'
+} from "@/components/Base/Form/Filters";
+import { FlexBox } from "@/components/Base/Boxes/StyledBoxes";
+import { SortType } from "@/utils/TempData";
+import useSharedContext from "@/context/shared";
 
 const SearchFieldWrapper = styled(Box)`
   position: relative;
   flex: 1 1 50%;
-`
+`;
 
 export type VaultFiltersPropsType = {
-  isShutdown: boolean
-  search: string
-  sortBy: SortType
-  handleIsShutdown: (value: boolean) => void
-  setSearch: Dispatch<SetStateAction<string>>
-  setSortBy: Dispatch<SetStateAction<SortType>>
-}
+  isShutdown: boolean;
+  search: string;
+  sortBy: SortType;
+  handleIsShutdown: (value: boolean) => void;
+  setSearch: Dispatch<SetStateAction<string>>;
+  setSortBy: Dispatch<SetStateAction<SortType>>;
+};
 
 const VaultFilters: FC<VaultFiltersPropsType> = ({
   isShutdown,
@@ -33,13 +33,13 @@ const VaultFilters: FC<VaultFiltersPropsType> = ({
   setSearch,
   setSortBy,
 }) => {
-  const { isMobile } = useSharedContext()
+  const { isMobile } = useSharedContext();
   return (
     <FlexBox
       sx={{
-        width: '100%',
-        justifyContent: 'space-between',
-        padding: isMobile ? '0 0 16px 0' : '16px 24px 24px',
+        width: "100%",
+        justifyContent: "space-between",
+        padding: isMobile ? "0 0 16px 0" : "16px 24px 24px",
       }}
     >
       <SearchFieldWrapper>
@@ -52,18 +52,18 @@ const VaultFilters: FC<VaultFiltersPropsType> = ({
         <SearchFieldLogo />
       </SearchFieldWrapper>
       <BaseSortSelect
-        value={isShutdown ? 'finished' : 'live'}
+        value={isShutdown ? "finished" : "live"}
         onChange={(event: SelectChangeEvent<unknown>) => {
-          handleIsShutdown(event.target.value !== 'live')
+          handleIsShutdown(event.target.value !== "live");
         }}
       >
-        <MenuItem value={'live'}>Live Now</MenuItem>
-        <MenuItem value={'finished'}>Finished</MenuItem>
+        <MenuItem value={"live"}>Live Now</MenuItem>
+        <MenuItem value={"finished"}>Finished</MenuItem>
       </BaseSortSelect>
       <BaseSortSelect
         value={sortBy}
         onChange={(event: SelectChangeEvent<unknown>) => {
-          setSortBy(event.target.value as SortType)
+          setSortBy(event.target.value as SortType);
         }}
       >
         <MenuItem value={SortType.TVL}>TVL</MenuItem>
@@ -71,7 +71,7 @@ const VaultFilters: FC<VaultFiltersPropsType> = ({
         <MenuItem value={SortType.STAKED}>Staked</MenuItem>
       </BaseSortSelect>
     </FlexBox>
-  )
-}
+  );
+};
 
-export default memo(VaultFilters)
+export default memo(VaultFilters);

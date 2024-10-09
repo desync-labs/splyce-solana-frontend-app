@@ -1,4 +1,4 @@
-import { Box } from '@mui/material'
+import { Box } from "@mui/material";
 
 export default function BinanceNetworkIcon() {
   return (
@@ -44,5 +44,5 @@ export default function BinanceNetworkIcon() {
         </defs>
       </svg>
     </Box>
-  )
+  );
 }

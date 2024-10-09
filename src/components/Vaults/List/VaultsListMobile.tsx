@@ -1,5 +1,5 @@
-import { ChangeEvent, FC, memo } from 'react'
-import { styled } from '@mui/material/styles'
+import { ChangeEvent, FC, memo } from "react";
+import { styled } from "@mui/material/styles";
 import {
   Box,
   Pagination,
@@ -9,17 +9,17 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-} from '@mui/material'
-import { COUNT_PER_PAGE_VAULT } from '@/utils/Constants'
-import { IVault, IVaultPosition } from '@/utils/TempData'
-import VaultListItemMobile from '@/components/Vaults/List/VaultListItemMobile'
-import { VaultListItemMobileSkeleton } from '@/components/Vaults/List/VaultListItemSkeleton'
+} from "@mui/material";
+import { COUNT_PER_PAGE_VAULT } from "@/utils/Constants";
+import { IVault, IVaultPosition } from "@/utils/TempData";
+import VaultListItemMobile from "@/components/Vaults/List/VaultListItemMobile";
+import { VaultListItemMobileSkeleton } from "@/components/Vaults/List/VaultListItemSkeleton";
 
 const VaultListTableHeaderRow = styled(TableRow)`
   height: 16px;
   background: transparent;
   padding: 8px 0;
-`
+`;
 
 const VaultListTableCell = styled(TableCell)`
   color: #a9bad0;
@@ -34,21 +34,21 @@ const VaultListTableCell = styled(TableCell)`
   &:first-of-type {
     padding: 8px 0 8px 16px;
   }
-`
+`;
 
 const PaginationWrapper = styled(Box)`
   display: flex;
   justify-content: center;
-`
+`;
 
 type VaultListPropsType = {
-  vaults: IVault[]
-  isLoading: boolean
-  filterCurrentPosition: (vaultId: string) => IVaultPosition | null
-  vaultCurrentPage: number
-  vaultItemsCount: number
-  handlePageChange: (event: ChangeEvent<unknown>, page: number) => void
-}
+  vaults: IVault[];
+  isLoading: boolean;
+  filterCurrentPosition: (vaultId: string) => IVaultPosition | null;
+  vaultCurrentPage: number;
+  vaultItemsCount: number;
+  handlePageChange: (event: ChangeEvent<unknown>, page: number) => void;
+};
 
 const VaultsListMobile: FC<VaultListPropsType> = ({
   vaults,
@@ -96,7 +96,7 @@ const VaultsListMobile: FC<VaultListPropsType> = ({
         </PaginationWrapper>
       )}
     </TableContainer>
-  )
-}
+  );
+};
 
-export default memo(VaultsListMobile)
+export default memo(VaultsListMobile);

@@ -1,4 +1,4 @@
-import { List, ListItem, styled } from '@mui/material'
+import { List, ListItem, styled } from "@mui/material";
 
 export const BaseListPreviewModal = styled(List)`
   padding: 0;
@@ -25,7 +25,7 @@ export const BaseListPreviewModal = styled(List)`
       border: none;
     }
   }
-`
+`;
 
 export const BaseListItem = styled(ListItem)`
   &.MuiListItem-root {
@@ -43,7 +43,7 @@ export const BaseListItem = styled(ListItem)`
       max-width: 120px;
     }
   }
-  ${({ theme }) => theme.breakpoints.down('sm')} {
+  ${({ theme }) => theme.breakpoints.down("sm")} {
     justify-content: space-between;
   }
-`
+`;

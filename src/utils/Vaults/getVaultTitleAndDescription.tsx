@@ -1,13 +1,13 @@
-import { ReactElement } from 'react'
-import { styled, Typography } from '@mui/material'
-import { VaultType } from '@/utils/TempData'
+import { ReactElement } from "react";
+import { styled, Typography } from "@mui/material";
+import { VaultType } from "@/utils/TempData";
 
-const vaultTitle: { [key: string]: string } = {}
-const vaultDescription: { [key: string]: ReactElement } = {}
+const vaultTitle: { [key: string]: string } = {};
+const vaultDescription: { [key: string]: ReactElement } = {};
 
-export const DescriptionList = styled('ul')`
+export const DescriptionList = styled("ul")`
   padding-inline-start: 20px;
-`
+`;
 
 export const VaultAboutTitle = styled(Typography)`
   font-size: 16px;
@@ -16,74 +16,74 @@ export const VaultAboutTitle = styled(Typography)`
   color: #fff;
   margin-bottom: 12px;
 
-  ${({ theme }) => theme.breakpoints.down('sm')} {
+  ${({ theme }) => theme.breakpoints.down("sm")} {
     font-size: 14px;
   }
-`
+`;
 
-type ITitleItem = { title: string; index: number; type: VaultType }
+type ITitleItem = { title: string; index: number; type: VaultType };
 
 export const getDefaultVaultTitle = (
   vaultType: VaultType = VaultType.INCENTIVE,
-  asset = 'tspUSD',
+  asset = "tspUSD",
   vaultId: string
 ) => {
   const vaultTitles: { [key: string]: ITitleItem } = sessionStorage.getItem(
-    'vaultTitles'
+    "vaultTitles"
   )
-    ? JSON.parse(sessionStorage.getItem('vaultTitles') as string)
-    : {}
+    ? JSON.parse(sessionStorage.getItem("vaultTitles") as string)
+    : {};
 
   if (vaultTitles && vaultTitles[vaultId]) {
-    return vaultTitles[vaultId]?.title
+    return vaultTitles[vaultId]?.title;
   }
 
-  let title = ''
-  let index = 0
-  let type = vaultType
-  let indexes: number[] = []
+  let title = "";
+  let index = 0;
+  let type = vaultType;
+  let indexes: number[] = [];
   switch (vaultType) {
     case VaultType.DEFI:
       indexes = Object.values(vaultTitles)
         .filter((item) => item.type === VaultType.DEFI)
-        .map((item) => item.index as number)
-      index = indexes.length ? Math.max(...indexes) : 0
-      index++
-      title = `DeFi vault (${asset}) #${index}`
-      break
+        .map((item) => item.index as number);
+      index = indexes.length ? Math.max(...indexes) : 0;
+      index++;
+      title = `DeFi vault (${asset}) #${index}`;
+      break;
     case VaultType.TRADEFI:
       indexes = Object.values(vaultTitles)
         .filter((item) => item.type === VaultType.TRADEFI)
-        .map((item) => item.index as number)
-      index = indexes.length ? Math.max(...indexes) : 0
-      index++
-      title = `TradeFi vault (${asset}) #${index}`
-      break
+        .map((item) => item.index as number);
+      index = indexes.length ? Math.max(...indexes) : 0;
+      index++;
+      title = `TradeFi vault (${asset}) #${index}`;
+      break;
     case VaultType.INCENTIVE:
       indexes = Object.values(vaultTitles)
         .filter((item) => item.type === VaultType.INCENTIVE)
-        .map((item) => item.index as number)
-      index = indexes.length ? Math.max(...indexes) : 0
-      index++
-      title = `Incentive vault (${asset}) #${index}`
-      break
+        .map((item) => item.index as number);
+      index = indexes.length ? Math.max(...indexes) : 0;
+      index++;
+      title = `Incentive vault (${asset}) #${index}`;
+      break;
     default:
       indexes = Object.values(vaultTitles)
         .filter((item) => item.type === VaultType.INCENTIVE)
-        .map((item) => item.index as number)
-      index = indexes.length ? Math.max(...indexes) : 0
-      index++
-      type = VaultType.INCENTIVE
-      title = `Incentive vault (${asset}) #${index}`
-      break
+        .map((item) => item.index as number);
+      index = indexes.length ? Math.max(...indexes) : 0;
+      index++;
+      type = VaultType.INCENTIVE;
+      title = `Incentive vault (${asset}) #${index}`;
+      break;
   }
 
-  vaultTitles[vaultId] = { title, index, type }
+  vaultTitles[vaultId] = { title, index, type };
 
-  sessionStorage.setItem('vaultTitles', JSON.stringify(vaultTitles))
+  sessionStorage.setItem("vaultTitles", JSON.stringify(vaultTitles));
 
-  return title
-}
+  return title;
+};
 
 export const getDefaultVaultDescription = (
   vaultType: VaultType = VaultType.INCENTIVE
@@ -106,7 +106,7 @@ export const getDefaultVaultDescription = (
           strategies created by a 3-rd party or in partnership with a 3-rd
           party.
         </>
-      )
+      );
     case VaultType.TRADEFI:
       return (
         <>
@@ -124,7 +124,7 @@ export const getDefaultVaultDescription = (
           strategies created by a 3-rd party or in partnership with a 3-rd
           party.
         </>
-      )
+      );
     case VaultType.INCENTIVE:
       return (
         <>
@@ -142,7 +142,7 @@ export const getDefaultVaultDescription = (
           responsible for the security of strategies created by a 3-rd party or
           in partnership with a 3-rd party.
         </>
-      )
+      );
     default:
       return (
         <>
@@ -160,11 +160,11 @@ export const getDefaultVaultDescription = (
           responsible for the security of strategies created by a 3-rd party or
           in partnership with a 3-rd party.
         </>
-      )
+      );
   }
-}
+};
 
-vaultDescription['1'.toLowerCase()] = (
+vaultDescription["1".toLowerCase()] = (
   <>
     <ul>
       <li>
@@ -177,7 +177,7 @@ vaultDescription['1'.toLowerCase()] = (
         deals.
       </li>
       <li>
-        <strong>2. Know Your Customer (KYC) and Terms Agreement: </strong>{' '}
+        <strong>2. Know Your Customer (KYC) and Terms Agreement: </strong>{" "}
         <br />
         All participants in the Splyce Vault must undergo and pass the KYC
         process conducted by TradeFlow Capital. By participating, investors
@@ -230,9 +230,9 @@ vaultDescription['1'.toLowerCase()] = (
       </li>
     </ul>
   </>
-)
+);
 
-vaultDescription['11111111'.toLowerCase()] = (
+vaultDescription["11111111".toLowerCase()] = (
   <>
     <VaultAboutTitle>
       Gold World ETF Vault: Bridging Traditional Assets and Decentralized
@@ -283,8 +283,8 @@ vaultDescription['11111111'.toLowerCase()] = (
       together.
     </p>
   </>
-)
+);
 
-vaultTitle['11111111'.toLowerCase()] = 'Gold World ETF'
+vaultTitle["11111111".toLowerCase()] = "Gold World ETF";
 
-export { vaultTitle, vaultDescription }
+export { vaultTitle, vaultDescription };

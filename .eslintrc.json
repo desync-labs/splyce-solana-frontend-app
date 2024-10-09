@@ -4,10 +4,16 @@
     "node": true
   },
   "parser": "@typescript-eslint/parser",
-  "extends": [
-    "eslint:recommended",
-    "plugin:prettier/recommended"
-  ],
+  "parserOptions": {
+    "ecmaFeatures": {
+      "impliedStrict": true
+    },
+    "ecmaVersion": 6,
+    "project": "./tsconfig.eslint.json",
+    "sourceType": "module",
+    "tsconfigRootDir": "."
+  },
+  "extends": ["eslint:recommended", "plugin:prettier/recommended"],
   "rules": {
     "@typescript-eslint/no-use-before-define": "off",
 

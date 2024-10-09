@@ -1,14 +1,14 @@
-import { ReactElement } from 'react'
-import { styled } from '@mui/material'
+import { ReactElement } from "react";
+import { styled } from "@mui/material";
 
-const strategyTitle: { [key: string]: string } = {}
-const strategyDescription: { [key: string]: ReactElement } = {}
+const strategyTitle: { [key: string]: string } = {};
+const strategyDescription: { [key: string]: ReactElement } = {};
 
-export const DescriptionList = styled('ul')`
+export const DescriptionList = styled("ul")`
   padding-inline-start: 20px;
-`
+`;
 
-strategyDescription['0xe2dea7e0c272de04e8708674dae73ebd6e5c1455'] = (
+strategyDescription["0xe2dea7e0c272de04e8708674dae73ebd6e5c1455"] = (
   <>
     <p>The Strategy distributes tspUSD at a variable APY to depositors.</p>
     <DescriptionList>
@@ -27,9 +27,9 @@ strategyDescription['0xe2dea7e0c272de04e8708674dae73ebd6e5c1455'] = (
       </li>
     </DescriptionList>
   </>
-)
+);
 
-strategyDescription['0x3adf1e440657fa55d11adb6a102d140b01449139'] = (
+strategyDescription["0x3adf1e440657fa55d11adb6a102d140b01449139"] = (
   <>
     <p>
       Invest directly in one of the world's leading gold mining companies with
@@ -56,10 +56,10 @@ strategyDescription['0x3adf1e440657fa55d11adb6a102d140b01449139'] = (
       </li>
     </DescriptionList>
   </>
-)
+);
 
 strategyDescription[
-  'PB3pu2GFyw8g1LBqPjuF7cU6NuGw2BJcjQac6p9AzjC'.toLowerCase()
+  "PB3pu2GFyw8g1LBqPjuF7cU6NuGw2BJcjQac6p9AzjC".toLowerCase()
 ] = (
   <>
     <p>
@@ -85,9 +85,9 @@ strategyDescription[
       </li>
     </DescriptionList>
   </>
-)
+);
 
-strategyDescription['0xcea3c48da7aa17d5bc0a588a3e743577d94eb192'] = (
+strategyDescription["0xcea3c48da7aa17d5bc0a588a3e743577d94eb192"] = (
   <>
     <p>
       Engage in the global gold market through Anglogold Ashanti PLC, one of the
@@ -112,10 +112,10 @@ strategyDescription['0xcea3c48da7aa17d5bc0a588a3e743577d94eb192'] = (
       </li>
     </DescriptionList>
   </>
-)
+);
 
 strategyDescription[
-  '3uDciMtTyUkdPtraAwXNBoDwM3cRN7XFLmVq6tK5aFfy'.toLowerCase()
+  "3uDciMtTyUkdPtraAwXNBoDwM3cRN7XFLmVq6tK5aFfy".toLowerCase()
 ] = (
   <>
     <p>
@@ -123,17 +123,17 @@ strategyDescription[
       pools to achieve the maximum possible gain.
     </p>
   </>
-)
+);
 
 strategyDescription[
-  '6FMbL6GhocnXfqXmM3H3c2musKFqWtqmoHfY6cCbTc36'.toLowerCase()
+  "6FMbL6GhocnXfqXmM3H3c2musKFqWtqmoHfY6cCbTc36".toLowerCase()
 ] = (
   <>
     <p>Strategy based on off-chain TradeFi products.</p>
   </>
-)
+);
 
-strategyDescription['0x676a616d4fa846c6699437a4f1209c5808e5b1ab'] = (
+strategyDescription["0x676a616d4fa846c6699437a4f1209c5808e5b1ab"] = (
   <>
     <h3>Investment description</h3>
     <ul>
@@ -175,8 +175,8 @@ strategyDescription['0x676a616d4fa846c6699437a4f1209c5808e5b1ab'] = (
       APEX Fund Services based in the DIFC Dubai. APEX group is a regulated fund
       administration group which currently administers over US$2 Trillion
       dollars of assets with over 13,000 employees across 112 offices worldwide.
-      TradeFlow Capital Management Pte Ltd, based in Singapore{' '}
-      <a href={'https://www.tradeflow.capital'} target={'_blank'}>
+      TradeFlow Capital Management Pte Ltd, based in Singapore{" "}
+      <a href={"https://www.tradeflow.capital"} target={"_blank"}>
         (www.tradeflow.capital)
       </a>
       , is the investment advisor to the fund and manages the day-to-day
@@ -188,27 +188,27 @@ strategyDescription['0x676a616d4fa846c6699437a4f1209c5808e5b1ab'] = (
       vault.
     </p>
   </>
-)
+);
 
-strategyTitle['0x3adf1e440657fa55d11adb6a102d140b01449139'] =
-  'Newmont Corp (NEM) Strategy'
+strategyTitle["0x3adf1e440657fa55d11adb6a102d140b01449139"] =
+  "Newmont Corp (NEM) Strategy";
 
-strategyTitle['PB3pu2GFyw8g1LBqPjuF7cU6NuGw2BJcjQac6p9AzjC'.toLowerCase()] =
-  'iShares Gold Trust Micro (IAUM) Strategy'
+strategyTitle["PB3pu2GFyw8g1LBqPjuF7cU6NuGw2BJcjQac6p9AzjC".toLowerCase()] =
+  "iShares Gold Trust Micro (IAUM) Strategy";
 
-strategyTitle['0xcea3c48da7aa17d5bc0a588a3e743577d94eb192'] =
-  'Anglogold Ashanti PLC (AU) Strategy'
+strategyTitle["0xcea3c48da7aa17d5bc0a588a3e743577d94eb192"] =
+  "Anglogold Ashanti PLC (AU) Strategy";
 
-strategyTitle['0x989a19e29cb9bc194bd35606af8f9a641a4cbce4'] =
-  'Liquidation strategy'
+strategyTitle["0x989a19e29cb9bc194bd35606af8f9a641a4cbce4"] =
+  "Liquidation strategy";
 
-strategyTitle['0xBc8C9999a3D56e799Bb470D8402A9dA121FcBf14'] =
-  'Splyce Trade Fintech Strategy 1'
+strategyTitle["0xBc8C9999a3D56e799Bb470D8402A9dA121FcBf14"] =
+  "Splyce Trade Fintech Strategy 1";
 
-strategyTitle['6FMbL6GhocnXfqXmM3H3c2musKFqWtqmoHfY6cCbTc36'.toLowerCase()] =
-  'TradeFlow strategy #1'
+strategyTitle["6FMbL6GhocnXfqXmM3H3c2musKFqWtqmoHfY6cCbTc36".toLowerCase()] =
+  "TradeFlow strategy #1";
 
-strategyTitle['3uDciMtTyUkdPtraAwXNBoDwM3cRN7XFLmVq6tK5aFfy'.toLowerCase()] =
-  'Lending strategy'
+strategyTitle["3uDciMtTyUkdPtraAwXNBoDwM3cRN7XFLmVq6tK5aFfy".toLowerCase()] =
+  "Lending strategy";
 
-export { strategyTitle, strategyDescription }
+export { strategyTitle, strategyDescription };

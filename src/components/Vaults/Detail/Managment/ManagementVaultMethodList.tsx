@@ -1,10 +1,10 @@
-import { FC, useState, SyntheticEvent, useMemo, memo, ReactNode } from 'react'
-import { Box, styled, Tab, Tabs, Typography } from '@mui/material'
+import { FC, useState, SyntheticEvent, useMemo, memo, ReactNode } from "react";
+import { Box, styled, Tab, Tabs, Typography } from "@mui/material";
 import MethodListItem, {
   ReadeMethodIcon,
   WriteMethodIcon,
-} from '@/components/Vaults/Detail/Managment/MethodListItem'
-import { TabContentWrapper } from '@/components/Vaults/Detail/Tabs/InfoTabs'
+} from "@/components/Vaults/Detail/Managment/MethodListItem";
+import { TabContentWrapper } from "@/components/Vaults/Detail/Tabs/InfoTabs";
 
 export const ProgramMethodListWrapper = styled(Box)`
   padding: 0;
@@ -13,10 +13,10 @@ export const ProgramMethodListWrapper = styled(Box)`
     display: none;
   }
 
-  ${({ theme }) => theme.breakpoints.down('sm')} {
+  ${({ theme }) => theme.breakpoints.down("sm")} {
     padding: 24px 0 0;
   }
-`
+`;
 
 export const MethodTypesTabs = styled(Tabs)`
   border-bottom: 1px solid #3a4f6a;
@@ -49,7 +49,7 @@ export const MethodTypesTabs = styled(Tabs)`
     }
   }
 
-  ${({ theme }) => theme.breakpoints.down('sm')} {
+  ${({ theme }) => theme.breakpoints.down("sm")} {
     width: 100%;
     margin-top: 0;
 
@@ -57,14 +57,14 @@ export const MethodTypesTabs = styled(Tabs)`
       width: 50%;
     }
   }
-`
+`;
 
-export const STATE_MUTABILITY_TRANSACTIONS = ['nonpayable', 'payable']
+export const STATE_MUTABILITY_TRANSACTIONS = ["nonpayable", "payable"];
 
 interface TabPanelProps {
-  children?: ReactNode
-  index: number
-  value: number
+  children?: ReactNode;
+  index: number;
+  value: number;
 }
 
 export const MethodsTabPanel: FC<TabPanelProps> = memo(
@@ -77,38 +77,38 @@ export const MethodsTabPanel: FC<TabPanelProps> = memo(
         aria-labelledby={`method-tab-${index}`}
         {...other}
       >
-        {value === index && <Box sx={{ pt: '24px' }}>{children}</Box>}
+        {value === index && <Box sx={{ pt: "24px" }}>{children}</Box>}
       </div>
-    )
+    );
   }
-)
+);
 
 export const a11yProps = (index: number) => {
   return {
     id: `method-tab-${index}`,
-    'aria-controls': `method-tabpanel-${index}`,
-  }
-}
+    "aria-controls": `method-tabpanel-${index}`,
+  };
+};
 
 type VaultItemManagementProps = {
-  isShow: boolean
-  vaultId: string
-  vaultMethods: any
-}
+  isShow: boolean;
+  vaultId: string;
+  vaultMethods: any;
+};
 
 const ManagementVaultMethodList: FC<VaultItemManagementProps> = ({
   isShow,
   vaultId,
   vaultMethods,
 }) => {
-  const [value, setValue] = useState(0)
+  const [value, setValue] = useState(0);
 
   const handleChange = (event: SyntheticEvent, newValue: number) => {
-    setValue(newValue)
-  }
+    setValue(newValue);
+  };
 
   return (
-    <ProgramMethodListWrapper className={isShow ? 'showing' : 'hide'}>
+    <ProgramMethodListWrapper className={isShow ? "showing" : "hide"}>
       <TabContentWrapper sx={{ paddingLeft: 0, paddingRight: 0 }}>
         {!vaultMethods.length ? (
           <Typography>Has no program methods yet</Typography>
@@ -123,7 +123,7 @@ const ManagementVaultMethodList: FC<VaultItemManagementProps> = ({
                 label="Read Program"
                 icon={
                   <ReadeMethodIcon
-                    color={value === 0 ? '#BBFB5B' : '#d1dae6'}
+                    color={value === 0 ? "#BBFB5B" : "#d1dae6"}
                   />
                 }
                 iconPosition="start"
@@ -133,7 +133,7 @@ const ManagementVaultMethodList: FC<VaultItemManagementProps> = ({
                 label="Write Program"
                 icon={
                   <WriteMethodIcon
-                    color={value === 1 ? '#BBFB5B' : '#d1dae6'}
+                    color={value === 1 ? "#BBFB5B" : "#d1dae6"}
                   />
                 }
                 iconPosition="start"
@@ -185,7 +185,7 @@ const ManagementVaultMethodList: FC<VaultItemManagementProps> = ({
         )}
       </TabContentWrapper>
     </ProgramMethodListWrapper>
-  )
-}
+  );
+};
 
-export default memo(ManagementVaultMethodList)
+export default memo(ManagementVaultMethodList);

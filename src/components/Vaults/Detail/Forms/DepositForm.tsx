@@ -1,29 +1,29 @@
-import { memo } from 'react'
-import { FormProvider } from 'react-hook-form'
-import { Box, styled, Typography } from '@mui/material'
-import useVaultContext from '@/context/vaultDetail'
-import useSharedContext from '@/context/shared'
-import useVaultOpenDeposit from '@/hooks/Vaults/useVaultOpenDeposit'
+import { memo } from "react";
+import { FormProvider } from "react-hook-form";
+import { Box, styled, Typography } from "@mui/material";
+import useVaultContext from "@/context/vaultDetail";
+import useSharedContext from "@/context/shared";
+import useVaultOpenDeposit from "@/hooks/Vaults/useVaultOpenDeposit";
 
-import DepositVaultForm from '@/components/Vaults/List/DepositVaultModal/DepositVaultForm'
-import DepositVaultInfo from '@/components/Vaults/Detail/Forms/DepositVaultInfo'
-import { VaultFormWrapper } from '@/components/Vaults/Detail/Forms/index'
+import DepositVaultForm from "@/components/Vaults/List/DepositVaultModal/DepositVaultForm";
+import DepositVaultInfo from "@/components/Vaults/Detail/Forms/DepositVaultInfo";
+import { VaultFormWrapper } from "@/components/Vaults/Detail/Forms/index";
 
 export const VaultDetailFormColumn = styled(Box)`
   width: 50%;
   height: 100%;
-  ${({ theme }) => theme.breakpoints.down('sm')} {
+  ${({ theme }) => theme.breakpoints.down("sm")} {
     width: 100%;
   }
-`
+`;
 
 const VaultDetailDepositForm = () => {
-  const { vault, minimumDeposit } = useVaultContext()
-  const { isMobile } = useSharedContext()
+  const { vault, minimumDeposit } = useVaultContext();
+  const { isMobile } = useSharedContext();
 
   const onClose = () => {
-    methods.reset()
-  }
+    methods.reset();
+  };
 
   const {
     methods,
@@ -42,11 +42,11 @@ const VaultDetailDepositForm = () => {
     depositLimitExceeded,
     handleSubmit,
     onSubmit,
-  } = useVaultOpenDeposit(vault, onClose)
+  } = useVaultOpenDeposit(vault, onClose);
 
   return (
     <>
-      <Typography variant="h3" sx={{ fontSize: isMobile ? '14px' : '16px' }}>
+      <Typography variant="h3" sx={{ fontSize: isMobile ? "14px" : "16px" }}>
         Deposit
       </Typography>
       <VaultFormWrapper>
@@ -83,7 +83,7 @@ const VaultDetailDepositForm = () => {
         </FormProvider>
       </VaultFormWrapper>
     </>
-  )
-}
+  );
+};
 
-export default memo(VaultDetailDepositForm)
+export default memo(VaultDetailDepositForm);

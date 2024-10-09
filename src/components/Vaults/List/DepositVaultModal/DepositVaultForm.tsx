@@ -1,12 +1,12 @@
-import { FC } from 'react'
-import { Box, styled } from '@mui/material'
-import { Control, Controller, UseFormHandleSubmit } from 'react-hook-form'
-import BigNumber from 'bignumber.js'
+import { FC } from "react";
+import { Box, styled } from "@mui/material";
+import { Control, Controller, UseFormHandleSubmit } from "react-hook-form";
+import BigNumber from "bignumber.js";
 
-import { getTokenLogoURL } from '@/utils/tokenLogo'
-import { formatNumber } from '@/utils/format'
-import { IVault } from '@/utils/TempData'
-import { FlexBox } from '@/components/Base/Boxes/StyledBoxes'
+import { getTokenLogoURL } from "@/utils/tokenLogo";
+import { formatNumber } from "@/utils/format";
+import { IVault } from "@/utils/TempData";
+import { FlexBox } from "@/components/Base/Boxes/StyledBoxes";
 import {
   BaseDialogFormWrapper,
   BaseFormInputErrorWrapper,
@@ -18,37 +18,37 @@ import {
   BaseFormSetMaxButton,
   BaseFormTextField,
   BaseFormWalletBalance,
-} from '@/components/Base/Form/StyledForm'
-import { BaseInfoIcon } from '@/components/Base/Icons/StyledIcons'
+} from "@/components/Base/Form/StyledForm";
+import { BaseInfoIcon } from "@/components/Base/Icons/StyledIcons";
 
-const ManageVaultForm = styled('form')`
+const ManageVaultForm = styled("form")`
   padding-bottom: 0;
-`
+`;
 
 type VaultDepositFormProps = {
-  vaultItemData: IVault
-  walletBalance: string
+  vaultItemData: IVault;
+  walletBalance: string;
   control: Control<
     {
-      deposit: string
-      sharedToken: string
+      deposit: string;
+      sharedToken: string;
     },
     any
-  >
-  setMax: () => void
-  validateMaxDepositValue: (value: string) => true | string
+  >;
+  setMax: () => void;
+  validateMaxDepositValue: (value: string) => true | string;
   handleSubmit: UseFormHandleSubmit<
     {
-      deposit: string
-      sharedToken: string
+      deposit: string;
+      sharedToken: string;
     },
     undefined
-  >
-  onSubmit: (values: Record<string, any>) => Promise<void>
-  minimumDeposit: number
-  depositLimitExceeded: (value: string) => string | boolean
-  isDetailPage?: boolean
-}
+  >;
+  onSubmit: (values: Record<string, any>) => Promise<void>;
+  minimumDeposit: number;
+  depositLimitExceeded: (value: string) => string | boolean;
+  isDetailPage?: boolean;
+};
 
 const DepositVaultForm: FC<VaultDepositFormProps> = ({
   vaultItemData,
@@ -62,14 +62,14 @@ const DepositVaultForm: FC<VaultDepositFormProps> = ({
   depositLimitExceeded,
   isDetailPage = false,
 }) => {
-  const { token, depositLimit, balanceTokens, shutdown } = vaultItemData
-  const fxdPrice = '1'
+  const { token, depositLimit, balanceTokens, shutdown } = vaultItemData;
+  const fxdPrice = "1";
 
   return (
     <BaseDialogFormWrapper
       sx={{
-        background: isDetailPage ? '#3A4F6A' : '#314156',
-        padding: isDetailPage ? '22px 16px' : '16px',
+        background: isDetailPage ? "#3A4F6A" : "#314156",
+        padding: isDetailPage ? "22px 16px" : "16px",
       }}
     >
       <ManageVaultForm
@@ -89,15 +89,15 @@ const DepositVaultForm: FC<VaultDepositFormProps> = ({
             <BaseFormInputWrapper>
               <BaseFormLabelRow>
                 <BaseFormInputLabel>Deposit {token?.name}</BaseFormInputLabel>
-                <FlexBox sx={{ width: 'auto', justifyContent: 'flex-end' }}>
+                <FlexBox sx={{ width: "auto", justifyContent: "flex-end" }}>
                   <BaseFormWalletBalance>
-                    Balance:{' '}
+                    Balance:{" "}
                     {formatNumber(
                       BigNumber(walletBalance)
                         .dividedBy(10 ** 9)
                         .toNumber()
                     ) +
-                      ' ' +
+                      " " +
                       token?.name}
                   </BaseFormWalletBalance>
                 </FlexBox>
@@ -105,78 +105,78 @@ const DepositVaultForm: FC<VaultDepositFormProps> = ({
               <BaseFormTextField
                 error={!!error}
                 id="outlined-helperText"
-                placeholder={'0'}
+                placeholder={"0"}
                 helperText={
                   <>
                     {!shutdown && depositLimitExceeded(value) && (
                       <BaseFormInputErrorWrapper>
                         <BaseInfoIcon
                           sx={{
-                            float: 'left',
-                            width: '14px',
-                            height: '14px',
-                            marginRight: '0',
+                            float: "left",
+                            width: "14px",
+                            height: "14px",
+                            marginRight: "0",
                           }}
                         />
                         <Box
-                          component={'span'}
-                          sx={{ fontSize: '12px', paddingLeft: '6px' }}
+                          component={"span"}
+                          sx={{ fontSize: "12px", paddingLeft: "6px" }}
                         >
                           {depositLimitExceeded(value)}
                         </Box>
                       </BaseFormInputErrorWrapper>
                     )}
-                    {error && error.type === 'required' && (
+                    {error && error.type === "required" && (
                       <BaseFormInputErrorWrapper>
                         <BaseInfoIcon
                           sx={{
-                            float: 'left',
-                            width: '14px',
-                            height: '14px',
-                            marginRight: '0',
+                            float: "left",
+                            width: "14px",
+                            height: "14px",
+                            marginRight: "0",
                           }}
                         />
                         <Box
-                          component={'span'}
-                          sx={{ fontSize: '12px', paddingLeft: '6px' }}
+                          component={"span"}
+                          sx={{ fontSize: "12px", paddingLeft: "6px" }}
                         >
                           This field is required
                         </Box>
                       </BaseFormInputErrorWrapper>
                     )}
-                    {error && error.type === 'validate' && (
+                    {error && error.type === "validate" && (
                       <BaseFormInputErrorWrapper>
                         <BaseInfoIcon
                           sx={{
-                            float: 'left',
-                            width: '14px',
-                            height: '14px',
-                            marginRight: '0',
+                            float: "left",
+                            width: "14px",
+                            height: "14px",
+                            marginRight: "0",
                           }}
                         />
                         <Box
-                          component={'span'}
-                          sx={{ fontSize: '12px', paddingLeft: '6px' }}
+                          component={"span"}
+                          sx={{ fontSize: "12px", paddingLeft: "6px" }}
                         >
                           {error.message}
                         </Box>
                       </BaseFormInputErrorWrapper>
                     )}
-                    {error && error.type === 'min' && (
+                    {error && error.type === "min" && (
                       <BaseFormInputErrorWrapper>
                         <BaseInfoIcon
                           sx={{
-                            float: 'left',
-                            width: '14px',
-                            height: '14px',
-                            marginRight: '0',
+                            float: "left",
+                            width: "14px",
+                            height: "14px",
+                            marginRight: "0",
                           }}
                         />
                         <Box
-                          component={'span'}
-                          sx={{ fontSize: '12px', paddingLeft: '6px' }}
+                          component={"span"}
+                          sx={{ fontSize: "12px", paddingLeft: "6px" }}
                         >
-                          Minimum deposit is {formatNumber(minimumDeposit)}{' '}
+                          Minimum deposit is {formatNumber(minimumDeposit)}{" "}
                           {token?.name}
                         </Box>
                       </BaseFormInputErrorWrapper>
@@ -186,18 +186,18 @@ const DepositVaultForm: FC<VaultDepositFormProps> = ({
                 value={value}
                 type="number"
                 onChange={(e) => {
-                  let inputValue = e.target.value
+                  let inputValue = e.target.value;
 
-                  const regex = /^\d+(\.\d{0,9})?$/
+                  const regex = /^\d+(\.\d{0,9})?$/;
 
                   if (regex.test(inputValue)) {
-                    onChange(inputValue)
+                    onChange(inputValue);
                   } else {
                     const truncatedValue = inputValue.slice(
                       0,
-                      inputValue.indexOf('.') + 10
-                    )
-                    onChange(truncatedValue)
+                      inputValue.indexOf(".") + 10
+                    );
+                    onChange(truncatedValue);
                   }
                 }}
               />
@@ -207,7 +207,7 @@ const DepositVaultForm: FC<VaultDepositFormProps> = ({
                   .toNumber()
               )}`}</BaseFormInputUsdIndicator>
               <BaseFormInputLogo
-                className={'extendedInput'}
+                className={"extendedInput"}
                 src={getTokenLogoURL(token?.name)}
                 alt={token?.name}
               />
@@ -235,24 +235,24 @@ const DepositVaultForm: FC<VaultDepositFormProps> = ({
                 <BaseFormTextField
                   error={!!error}
                   id="outlined-helperText"
-                  className={isDetailPage ? 'lightBorder' : ''}
+                  className={isDetailPage ? "lightBorder" : ""}
                   helperText={
                     <>
-                      {error && error.type === 'max' && (
+                      {error && error.type === "max" && (
                         <BaseFormInputErrorWrapper>
                           <BaseInfoIcon
                             sx={{
-                              float: 'left',
-                              width: '14px',
-                              height: '14px',
-                              marginRight: '0',
+                              float: "left",
+                              width: "14px",
+                              height: "14px",
+                              marginRight: "0",
                             }}
                           />
                           <Box
-                            component={'span'}
-                            sx={{ fontSize: '12px', paddingLeft: '6px' }}
+                            component={"span"}
+                            sx={{ fontSize: "12px", paddingLeft: "6px" }}
                           >
-                            Maximum available share token is{' '}
+                            Maximum available share token is{" "}
                             {formatNumber(
                               BigNumber(depositLimit)
                                 .minus(BigNumber(balanceTokens))
@@ -267,7 +267,7 @@ const DepositVaultForm: FC<VaultDepositFormProps> = ({
                   }
                   value={value}
                   type="number"
-                  placeholder={'0'}
+                  placeholder={"0"}
                   onChange={onChange}
                   disabled
                 />
@@ -276,12 +276,12 @@ const DepositVaultForm: FC<VaultDepositFormProps> = ({
                   alt={token?.name}
                 />
               </BaseFormInputWrapper>
-            )
+            );
           }}
         />
       </ManageVaultForm>
     </BaseDialogFormWrapper>
-  )
-}
+  );
+};
 
-export default DepositVaultForm
+export default DepositVaultForm;

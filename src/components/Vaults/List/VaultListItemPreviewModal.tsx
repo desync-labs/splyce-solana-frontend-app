@@ -1,7 +1,7 @@
-import { FC, memo, useCallback } from 'react'
-import Image from 'next/image'
-import { useRouter } from 'next/router'
-import BigNumber from 'bignumber.js'
+import { FC, memo, useCallback } from "react";
+import Image from "next/image";
+import { useRouter } from "next/router";
+import BigNumber from "bignumber.js";
 import {
   Box,
   Button,
@@ -9,44 +9,44 @@ import {
   ListItemText,
   Paper,
   styled,
-} from '@mui/material'
-import KeyboardArrowRightRoundedIcon from '@mui/icons-material/KeyboardArrowRightRounded'
-import CloseIcon from '@mui/icons-material/Close'
+} from "@mui/material";
+import KeyboardArrowRightRoundedIcon from "@mui/icons-material/KeyboardArrowRightRounded";
+import CloseIcon from "@mui/icons-material/Close";
 
-import { getTokenLogoURL } from '@/utils/tokenLogo'
-import { formatCurrency, formatNumber } from '@/utils/format'
-import { IVault, IVaultPosition } from '@/utils/TempData'
-import { useApr } from '@/hooks/Vaults/useApr'
+import { getTokenLogoURL } from "@/utils/tokenLogo";
+import { formatCurrency, formatNumber } from "@/utils/format";
+import { IVault, IVaultPosition } from "@/utils/TempData";
+import { useApr } from "@/hooks/Vaults/useApr";
 import {
   VaultListItemImageWrapper,
   VaultTagLabel,
   VaultTitle,
-} from '@/components/Vaults/List/VaultListItemMobile'
-import { FlexBox } from '@/components/Base/Boxes/StyledBoxes'
-import { VaultStacked } from '@/components/Vaults/List/VaultListItem'
-import BaseDialogFullScreen from '@/components/Base/Dialog/FullScreenDialog'
-import { BaseDialogButtonWrapper } from '@/components/Base/Dialog/StyledDialog'
+} from "@/components/Vaults/List/VaultListItemMobile";
+import { FlexBox } from "@/components/Base/Boxes/StyledBoxes";
+import { VaultStacked } from "@/components/Vaults/List/VaultListItem";
+import BaseDialogFullScreen from "@/components/Base/Dialog/FullScreenDialog";
+import { BaseDialogButtonWrapper } from "@/components/Base/Dialog/StyledDialog";
 import {
   BreadcrumbsWrapper,
   VaultBreadcrumbsCurrentPage,
-} from '@/components/Base/Breadcrumbs/StyledBreadcrumbs'
+} from "@/components/Base/Breadcrumbs/StyledBreadcrumbs";
 import {
   BaseListItem,
   BaseListPreviewModal,
-} from '@/components/Base/List/StyledList'
+} from "@/components/Base/List/StyledList";
 
-import LockAquaSrc from '@/assets/svg/lock-aqua.svg'
-import LockSrc from '@/assets/svg/lock.svg'
+import LockAquaSrc from "@/assets/svg/lock-aqua.svg";
+import LockSrc from "@/assets/svg/lock.svg";
 
-const VaultBreadcrumbsCloseModal = styled('div')`
+const VaultBreadcrumbsCloseModal = styled("div")`
   color: #6d86b2;
   font-size: 12px;
   font-weight: 600;
   line-height: 20px;
   cursor: pointer;
-`
+`;
 
-const LockedIconWrapper = styled('div')`
+const LockedIconWrapper = styled("div")`
   display: flex;
   width: 16px;
   height: 16px;
@@ -56,7 +56,7 @@ const LockedIconWrapper = styled('div')`
   flex-shrink: 0;
   border-radius: 4px;
   background: rgba(79, 101, 140, 0.2);
-`
+`;
 
 const ButtonsWrapper = styled(BaseDialogButtonWrapper)`
   gap: 8px;
@@ -67,12 +67,12 @@ const ButtonsWrapper = styled(BaseDialogButtonWrapper)`
     font-weight: 600;
     padding: 10px 16px;
   }
-`
+`;
 
 type PseudoBreadcrumbsProps = {
-  vaultName: string
-  handleCloseModal: () => void
-}
+  vaultName: string;
+  handleCloseModal: () => void;
+};
 
 const PseudoBreadcrumbs: FC<PseudoBreadcrumbsProps> = memo(
   ({ vaultName, handleCloseModal }) => {
@@ -83,7 +83,7 @@ const PseudoBreadcrumbs: FC<PseudoBreadcrumbsProps> = memo(
       <VaultBreadcrumbsCurrentPage key="2">
         {vaultName}
       </VaultBreadcrumbsCurrentPage>,
-    ]
+    ];
 
     return (
       <BreadcrumbsWrapper
@@ -92,29 +92,29 @@ const PseudoBreadcrumbs: FC<PseudoBreadcrumbsProps> = memo(
       >
         {breadcrumbs}
       </BreadcrumbsWrapper>
-    )
+    );
   }
-)
+);
 
 interface VaultListItemPreviewModalProps {
-  isOpenPreviewModal: boolean
-  vault: IVault
-  vaultPosition: IVaultPosition | undefined
-  balanceEarned?: number
-  handleClosePreview: () => void
-  setNewVaultDeposit: (value: boolean) => void
-  setManageVault: (value: boolean) => void
-  handleWithdrawAll: () => void
-  isTfVaultType: boolean
-  activeTfPeriod: number
-  isWithdrawLoading: boolean
+  isOpenPreviewModal: boolean;
+  vault: IVault;
+  vaultPosition: IVaultPosition | undefined;
+  balanceEarned?: number;
+  handleClosePreview: () => void;
+  setNewVaultDeposit: (value: boolean) => void;
+  setManageVault: (value: boolean) => void;
+  handleWithdrawAll: () => void;
+  isTfVaultType: boolean;
+  activeTfPeriod: number;
+  isWithdrawLoading: boolean;
 }
 
 const BreadcrumbsContainer = styled(Box)`
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-`
+`;
 
 const VaultListItemPreviewModal: FC<VaultListItemPreviewModalProps> = ({
   vault,
@@ -129,14 +129,14 @@ const VaultListItemPreviewModal: FC<VaultListItemPreviewModalProps> = ({
   activeTfPeriod,
   isWithdrawLoading,
 }) => {
-  const { token, shutdown, balanceTokens, depositLimit } = vault
-  const location = useRouter()
-  const formattedApr = useApr(vault)
-  const fxdPrice = 1
+  const { token, shutdown, balanceTokens, depositLimit } = vault;
+  const location = useRouter();
+  const formattedApr = useApr(vault);
+  const fxdPrice = 1;
 
   const redirectToVaultDetail = useCallback(() => {
-    location.push(`/vaults/${vault.id}`)
-  }, [vault.id, location])
+    location.push(`/vaults/${vault.id}`);
+  }, [vault.id, location]);
 
   return (
     <BaseDialogFullScreen
@@ -148,10 +148,10 @@ const VaultListItemPreviewModal: FC<VaultListItemPreviewModalProps> = ({
           vaultName={vault.name}
           handleCloseModal={handleClosePreview}
         />
-        <CloseIcon sx={{ color: '#fff' }} onClick={handleClosePreview} />
+        <CloseIcon sx={{ color: "#fff" }} onClick={handleClosePreview} />
       </BreadcrumbsContainer>
       <FlexBox>
-        <FlexBox sx={{ justifyContent: 'flex-start', gap: '4px' }}>
+        <FlexBox sx={{ justifyContent: "flex-start", gap: "4px" }}>
           <VaultListItemImageWrapper>
             <Image src={getTokenLogoURL(token.symbol)} alt={token.name} />
           </VaultListItemImageWrapper>
@@ -167,13 +167,13 @@ const VaultListItemPreviewModal: FC<VaultListItemPreviewModalProps> = ({
           <VaultTagLabel>Live</VaultTagLabel>
         )}
       </FlexBox>
-      <Paper sx={{ marginTop: '10px' }}>
+      <Paper sx={{ marginTop: "10px" }}>
         <BaseListPreviewModal>
           <BaseListItem
             secondaryAction={
               <>
                 {balanceEarned && BigNumber(balanceEarned).isGreaterThan(0) ? (
-                  '$' +
+                  "$" +
                   formatNumber(
                     BigNumber(balanceEarned)
                       .multipliedBy(fxdPrice)
@@ -188,10 +188,10 @@ const VaultListItemPreviewModal: FC<VaultListItemPreviewModalProps> = ({
               </>
             }
           >
-            <ListItemText primary={'Earned'} />
+            <ListItemText primary={"Earned"} />
           </BaseListItem>
           <BaseListItem secondaryAction={<>{formattedApr}%</>}>
-            <ListItemText primary={'APY'} />
+            <ListItemText primary={"APY"} />
           </BaseListItem>
           <BaseListItem
             secondaryAction={
@@ -204,7 +204,7 @@ const VaultListItemPreviewModal: FC<VaultListItemPreviewModalProps> = ({
               </>
             }
           >
-            <ListItemText primary={'TVL'} />
+            <ListItemText primary={"TVL"} />
           </BaseListItem>
           <BaseListItem
             secondaryAction={
@@ -217,12 +217,12 @@ const VaultListItemPreviewModal: FC<VaultListItemPreviewModalProps> = ({
                       .toNumber(),
                     0
                   )
-                )}{' '}
+                )}{" "}
                 {token.symbol}
               </>
             }
           >
-            <ListItemText primary={'Available'} />
+            <ListItemText primary={"Available"} />
           </BaseListItem>
           <BaseListItem
             secondaryAction={
@@ -232,20 +232,20 @@ const VaultListItemPreviewModal: FC<VaultListItemPreviewModalProps> = ({
                   BigNumber(vaultPosition?.balancePosition).isGreaterThan(0) ? (
                     <Image
                       src={LockAquaSrc as string}
-                      alt={'locked-active'}
+                      alt={"locked-active"}
                       width={10}
                       height={10}
                     />
                   ) : (
                     <Image
                       src={LockSrc as string}
-                      alt={'locked'}
+                      alt={"locked"}
                       width={10}
                       height={10}
                     />
                   )}
                 </LockedIconWrapper>
-                <Box className={'value'}>
+                <Box className={"value"}>
                   {vaultPosition
                     ? formatNumber(
                         BigNumber(vaultPosition.balancePosition)
@@ -253,12 +253,12 @@ const VaultListItemPreviewModal: FC<VaultListItemPreviewModalProps> = ({
                           .toNumber()
                       )
                     : 0}
-                  {' ' + token.symbol}
+                  {" " + token.symbol}
                 </Box>
               </VaultStacked>
             }
           >
-            <ListItemText primary={'Staked'} />
+            <ListItemText primary={"Staked"} />
           </BaseListItem>
         </BaseListPreviewModal>
       </Paper>
@@ -273,7 +273,7 @@ const VaultListItemPreviewModal: FC<VaultListItemPreviewModalProps> = ({
             <Button
               variant="contained"
               onClick={() => setNewVaultDeposit(true)}
-              sx={{ height: '36px', minWidth: '100px' }}
+              sx={{ height: "36px", minWidth: "100px" }}
             >
               Deposit
             </Button>
@@ -285,7 +285,7 @@ const VaultListItemPreviewModal: FC<VaultListItemPreviewModalProps> = ({
             <Button
               variant="contained"
               onClick={() => setManageVault(true)}
-              sx={{ height: '36px', minWidth: '100px' }}
+              sx={{ height: "36px", minWidth: "100px" }}
             >
               Manage
             </Button>
@@ -297,7 +297,7 @@ const VaultListItemPreviewModal: FC<VaultListItemPreviewModalProps> = ({
             <Button
               variant="contained"
               onClick={() => setManageVault(true)}
-              sx={{ height: '36px', minWidth: '100px' }}
+              sx={{ height: "36px", minWidth: "100px" }}
             >
               Withdraw
             </Button>
@@ -310,14 +310,14 @@ const VaultListItemPreviewModal: FC<VaultListItemPreviewModalProps> = ({
               variant="contained"
               onClick={handleWithdrawAll}
               disabled={isWithdrawLoading}
-              sx={{ height: '36px', minWidth: '100px' }}
+              sx={{ height: "36px", minWidth: "100px" }}
             >
               Withdraw all
             </Button>
           )}
       </ButtonsWrapper>
     </BaseDialogFullScreen>
-  )
-}
+  );
+};
 
-export default memo(VaultListItemPreviewModal)
+export default memo(VaultListItemPreviewModal);

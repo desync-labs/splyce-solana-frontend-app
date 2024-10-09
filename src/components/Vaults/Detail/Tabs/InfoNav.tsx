@@ -1,10 +1,10 @@
-import { memo } from 'react'
-import { VaultInfoTabs } from '@/hooks/Vaults/useVaultDetail'
-import useVaultContext from '@/context/vaultDetail'
+import { memo } from "react";
+import { VaultInfoTabs } from "@/hooks/Vaults/useVaultDetail";
+import useVaultContext from "@/context/vaultDetail";
 import {
   BaseTabsItem,
   BaseTabsWrapper,
-} from '@/components/Base/Tabs/StyledTabs'
+} from "@/components/Base/Tabs/StyledTabs";
 
 const VaultDetailInfoNav = () => {
   const {
@@ -12,20 +12,20 @@ const VaultDetailInfoNav = () => {
     managedStrategiesIds,
     isUserManager,
     setActiveVaultInfoTabHandler,
-  } = useVaultContext()
+  } = useVaultContext();
 
   return (
-    <BaseTabsWrapper sx={{ marginBottom: '24px' }}>
+    <BaseTabsWrapper sx={{ marginBottom: "24px" }}>
       <BaseTabsItem
         onClick={() => setActiveVaultInfoTabHandler(VaultInfoTabs.ABOUT)}
-        className={activeVaultInfoTab === VaultInfoTabs.ABOUT ? 'active' : ''}
+        className={activeVaultInfoTab === VaultInfoTabs.ABOUT ? "active" : ""}
       >
         About
       </BaseTabsItem>
       <BaseTabsItem
         onClick={() => setActiveVaultInfoTabHandler(VaultInfoTabs.STRATEGIES)}
         className={
-          activeVaultInfoTab === VaultInfoTabs.STRATEGIES ? 'active' : ''
+          activeVaultInfoTab === VaultInfoTabs.STRATEGIES ? "active" : ""
         }
       >
         Strategies
@@ -37,8 +37,8 @@ const VaultDetailInfoNav = () => {
           }
           className={
             activeVaultInfoTab === VaultInfoTabs.MANAGEMENT_VAULT
-              ? 'active'
-              : ''
+              ? "active"
+              : ""
           }
         >
           Vault Manager
@@ -51,15 +51,15 @@ const VaultDetailInfoNav = () => {
           }
           className={
             activeVaultInfoTab === VaultInfoTabs.MANAGEMENT_STRATEGY
-              ? 'active'
-              : ''
+              ? "active"
+              : ""
           }
         >
           Strategies Manager
         </BaseTabsItem>
       )}
     </BaseTabsWrapper>
-  )
-}
+  );
+};
 
-export default memo(VaultDetailInfoNav)
+export default memo(VaultDetailInfoNav);

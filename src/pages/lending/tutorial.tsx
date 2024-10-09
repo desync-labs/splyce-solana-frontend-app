@@ -1,5 +1,5 @@
-import { Container } from '@mui/material'
-import LendingNestedNav from '@/components/Lending/NestedNav'
+import { Container } from "@mui/material";
+import LendingNestedNav from "@/components/Lending/NestedNav";
 
 const LendingTutorial = () => {
   return (
@@ -7,7 +7,7 @@ const LendingTutorial = () => {
       <LendingNestedNav />
       <Container>Lending tutorial</Container>
     </>
-  )
-}
+  );
+};
 
-export default LendingTutorial
+export default LendingTutorial;
