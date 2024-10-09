@@ -1,22 +1,22 @@
-import { Paper, styled } from '@mui/material'
-import useVaultContext from '@/context/vaultDetail'
-import { VaultInfoTabs } from '@/hooks/Vaults/useVaultDetail'
-import VaultDetailInfoNav from '@/components/Vaults/Detail/Tabs/InfoNav'
-import VaultDetailInfoTabAbout from '@/components/Vaults/Detail/Tabs/InfoTabAbout'
-import VaultDetailInfoTabStrategies from '@/components/Vaults/Detail/Tabs/InfoTabStrategies'
-import ManagementVaultMethodList from '@/components/Vaults/Detail/Managment/ManagementVaultMethodList'
-import ManagementStrategiesMethodList from '@/components/Vaults/Detail/Managment/ManagementStrategiesMethodList'
+import { Paper, styled } from "@mui/material";
+import useVaultContext from "@/context/vaultDetail";
+import { VaultInfoTabs } from "@/hooks/Vaults/useVaultDetail";
+import VaultDetailInfoNav from "@/components/Vaults/Detail/Tabs/InfoNav";
+import VaultDetailInfoTabAbout from "@/components/Vaults/Detail/Tabs/InfoTabAbout";
+import VaultDetailInfoTabStrategies from "@/components/Vaults/Detail/Tabs/InfoTabStrategies";
+import ManagementVaultMethodList from "@/components/Vaults/Detail/Managment/ManagementVaultMethodList";
+import ManagementStrategiesMethodList from "@/components/Vaults/Detail/Managment/ManagementStrategiesMethodList";
 
 const VaultDetailInfoPaper = styled(Paper)`
   overflow: hidden;
   margin-top: 12px;
-  ${({ theme }) => theme.breakpoints.down('sm')} {
+  ${({ theme }) => theme.breakpoints.down("sm")} {
     position: relative;
     width: 100%;
   }
-`
+`;
 
-export const TabContentWrapper = styled('div')`
+export const TabContentWrapper = styled("div")`
   display: flex;
   flex-direction: column;
   gap: 24px;
@@ -25,11 +25,11 @@ export const TabContentWrapper = styled('div')`
   border: 1px solid #476182;
   padding: 24px;
 
-  ${({ theme }) => theme.breakpoints.down('sm')} {
+  ${({ theme }) => theme.breakpoints.down("sm")} {
     gap: 20px;
     padding: 16px;
   }
-`
+`;
 
 const VaultDetailInfoTabs = () => {
   const {
@@ -39,7 +39,7 @@ const VaultDetailInfoTabs = () => {
     managedStrategiesIds,
     vaultMethods,
     strategyMethods,
-  } = useVaultContext()
+  } = useVaultContext();
   return (
     <VaultDetailInfoPaper>
       <VaultDetailInfoNav />
@@ -64,7 +64,7 @@ const VaultDetailInfoTabs = () => {
         />
       )}
     </VaultDetailInfoPaper>
-  )
-}
+  );
+};
 
-export default VaultDetailInfoTabs
+export default VaultDetailInfoTabs;

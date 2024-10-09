@@ -1,6 +1,6 @@
-import { FC, ReactNode } from 'react'
-import { Box, Grid, styled } from '@mui/material'
-import BasePopover from 'components/Base/Popover/BasePopover'
+import { FC, ReactNode } from "react";
+import { Box, Grid, styled } from "@mui/material";
+import BasePopover from "components/Base/Popover/BasePopover";
 
 const PositionStatItem = styled(Grid)`
   & > .MuiBox-root {
@@ -8,17 +8,17 @@ const PositionStatItem = styled(Grid)`
     border: 1px solid #476182;
     padding: 16px 24px;
   }
-  ${({ theme }) => theme.breakpoints.down('sm')} {
+  ${({ theme }) => theme.breakpoints.down("sm")} {
     height: auto !important;
     margin: 0 !important;
     & > .MuiBox-root {
       padding: 16px;
     }
   }
-`
+`;
 
 const PositionStatWrapper = styled(Box)`
-  ${({ theme }) => theme.breakpoints.down('sm')} {
+  ${({ theme }) => theme.breakpoints.down("sm")} {
     &.mobileRow {
       display: flex;
       flex-direction: row;
@@ -30,7 +30,7 @@ const PositionStatWrapper = styled(Box)`
       padding: 16px;
     }
   }
-`
+`;
 
 const PositionStatItemTitle = styled(Box)`
   display: flex;
@@ -45,13 +45,13 @@ const PositionStatItemTitle = styled(Box)`
   letter-spacing: 0.13px;
   text-transform: uppercase;
   margin-bottom: 4px;
-  ${({ theme }) => theme.breakpoints.down('sm')} {
+  ${({ theme }) => theme.breakpoints.down("sm")} {
     font-size: 12px;
     line-height: 16px;
     letter-spacing: 0.48px;
     margin-bottom: 0;
   }
-`
+`;
 
 const PositionStatItemValue = styled(Box)`
   color: #fff;
@@ -59,22 +59,22 @@ const PositionStatItemValue = styled(Box)`
   font-weight: 600;
   line-height: 36px;
   word-wrap: break-word;
-  ${({ theme }) => theme.breakpoints.down('sm')} {
+  ${({ theme }) => theme.breakpoints.down("sm")} {
     font-size: 14px;
     line-height: 20px;
     letter-spacing: 0.14px;
   }
-`
+`;
 
 interface PageStatsItemProps {
-  title: string
-  helpText?: string | null
-  value: ReactNode
-  xs?: number
-  sm?: number
-  md?: number
-  isMobileRow?: boolean
-  testId?: string
+  title: string;
+  helpText?: string | null;
+  value: ReactNode;
+  xs?: number;
+  sm?: number;
+  md?: number;
+  isMobileRow?: boolean;
+  testId?: string;
 }
 
 const BasePageStatsItem: FC<PageStatsItemProps> = ({
@@ -92,23 +92,23 @@ const BasePageStatsItem: FC<PageStatsItemProps> = ({
       xs={xs}
       sm={sm}
       md={md}
-      className={'page-stats-item'}
+      className={"page-stats-item"}
     >
-      <PositionStatWrapper className={isMobileRow ? 'mobileRow' : ''}>
+      <PositionStatWrapper className={isMobileRow ? "mobileRow" : ""}>
         <PositionStatItemTitle>
           {title}
           {helpText && (
             <BasePopover
               id={title.toLowerCase()}
               text={helpText}
-              iconSize={'16px'}
+              iconSize={"16px"}
             />
           )}
         </PositionStatItemTitle>
         <PositionStatItemValue>{value}</PositionStatItemValue>
       </PositionStatWrapper>
     </PositionStatItem>
-  )
-}
+  );
+};
 
-export default BasePageStatsItem
+export default BasePageStatsItem;

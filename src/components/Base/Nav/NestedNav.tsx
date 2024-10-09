@@ -1,7 +1,7 @@
-import Link from 'next/link'
-import { styled } from '@mui/material'
+import Link from "next/link";
+import { styled } from "@mui/material";
 
-export const NestedRouteNav = styled('nav')`
+export const NestedRouteNav = styled("nav")`
   display: flex;
   align-items: center;
   gap: 36px;
@@ -10,11 +10,11 @@ export const NestedRouteNav = styled('nav')`
   background: #232e3d;
   border-bottom: 1px solid #3a4f6a;
   padding: 0 40px;
-  ${({ theme }) => theme.breakpoints.down('sm')} {
+  ${({ theme }) => theme.breakpoints.down("sm")} {
     display: grid;
     grid-template-columns: 1fr 1fr;
   }
-`
+`;
 
 export const NestedRouteLink = styled(Link)<{ span?: number }>`
   color: #d1dae6;
@@ -37,8 +37,8 @@ export const NestedRouteLink = styled(Link)<{ span?: number }>`
   span {
     margin-bottom: 5px;
   }
-  ${({ theme }) => theme.breakpoints.down('sm')} {
+  ${({ theme }) => theme.breakpoints.down("sm")} {
     padding: 0;
     grid-column: span ${({ span }) => (span ? span : 1)};
   }
-`
+`;

@@ -5,9 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="980c1e59-2a66-476c-8058-c1191519ba3f" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/LICENSE" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.github/workflows/ci-cd.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.github/workflows/ci-cd.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/apollo/client.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/apollo/client.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/vaults/faucet.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/vaults/faucet.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/TempSdkMethods.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/TempSdkMethods.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/Vaults/getStrategyTitleAndDescription.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/Vaults/getStrategyTitleAndDescription.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/Vaults/getVaultTitleAndDescription.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/Vaults/getVaultTitleAndDescription.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -30,7 +35,7 @@
     </favorite-branches>
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="local-network" />
+        <entry key="$PROJECT_DIR$" value="master" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -43,8 +48,8 @@
 }</component>
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/desync-labs/splyce-solana-frontend-app.git&quot;,
-    &quot;accountId&quot;: &quot;c8e82aac-6882-44c3-9afe-50e212f4b13c&quot;
+    &quot;url&quot;: &quot;git@github.com:desync-labs/splyce-solana-frontend-app.git&quot;,
+    &quot;accountId&quot;: &quot;a6edaa0d-abaa-4ff6-8451-d18edcd7bbfc&quot;
   }
 }</component>
   <component name="MarkdownSettingsMigration">
@@ -64,8 +69,8 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.go.formatter.settings.were.checked": "true",
     "RunOnceActivity.go.migrated.go.modules.settings": "true",
-    "git-widget-placeholder": "fix-vault",
-    "last_opened_file_path": "/Users/aleksandrdovgopolyj/Work/splyce-frontend-app-M/public",
+    "git-widget-placeholder": "#17 on Merging refactor-get-or-create-token-asso…count",
+    "last_opened_file_path": "/Users/vetalion/sites/Splyce/splyce-solana-frontend-app",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.standard": "true",
     "node.js.detected.package.tslint": "true",
@@ -73,19 +78,19 @@
     "node.js.selected.package.standard": "",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "prettierjs.PrettierConfiguration.Package": "/Users/aleksandrdovgopolyj/Work/splyce-frontend-app-M/node_modules/prettier",
+    "prettierjs.PrettierConfiguration.Package": "/Users/vetalion/sites/Splyce/splyce-solana-frontend-app/node_modules/prettier",
     "settings.editor.selected.configurable": "settings.javascript.prettier",
-    "ts.external.directory.path": "/Users/aleksandrdovgopolyj/Work/splyce-frontend-app-M/node_modules/typescript/lib",
+    "ts.external.directory.path": "/Applications/WebStorm.app/Contents/plugins/javascript-plugin/jsLanguageServicesImpl/external",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/public" />
       <recent name="$PROJECT_DIR$/src/context" />
       <recent name="$PROJECT_DIR$/src/utils/Vaults" />
       <recent name="$PROJECT_DIR$/src/hooks/Vaults" />
-      <recent name="$PROJECT_DIR$/src" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/pages/dao" />
@@ -93,6 +98,13 @@
       <recent name="$PROJECT_DIR$/src/pages/lending" />
       <recent name="$PROJECT_DIR$/src/theme" />
     </key>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-d6986cc7102b-5c90d61e3bab-JavaScript-WS-242.23339.15" />
+      </set>
+    </attachedChunks>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -118,11 +130,23 @@
       <workItem from="1727950379494" duration="67321000" />
       <workItem from="1728070575987" duration="38000" />
       <workItem from="1728141811734" duration="27352000" />
+      <workItem from="1728395792728" duration="7398000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <option name="LAST_COMMIT_MESSAGE" value="" />

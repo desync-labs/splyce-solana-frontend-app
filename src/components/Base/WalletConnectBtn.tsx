@@ -1,6 +1,6 @@
-import { FC, ReactNode, MouseEvent, useCallback } from 'react'
-import { Button, SxProps, Theme, styled } from '@mui/material'
-import { useWalletModal } from '@solana/wallet-adapter-react-ui'
+import { FC, ReactNode, MouseEvent, useCallback } from "react";
+import { Button, SxProps, Theme, styled } from "@mui/material";
+import { useWalletModal } from "@solana/wallet-adapter-react-ui";
 
 export const WalletButton = styled(Button)`
   border-radius: 8px;
@@ -20,15 +20,15 @@ export const WalletButton = styled(Button)`
     cursor: pointer;
     pointer-events: all !important;
   }
-`
+`;
 
 type WalletConnectBtnPropsTypes = {
-  fullwidth?: boolean | undefined
-  sx?: SxProps<Theme> | undefined
-  testId?: string
-  children?: ReactNode
-  onClick?: (event: MouseEvent<HTMLButtonElement>) => void
-}
+  fullwidth?: boolean | undefined;
+  sx?: SxProps<Theme> | undefined;
+  testId?: string;
+  children?: ReactNode;
+  onClick?: (event: MouseEvent<HTMLButtonElement>) => void;
+};
 
 const WalletConnectBtn: FC<WalletConnectBtnPropsTypes> = ({
   fullwidth,
@@ -37,9 +37,9 @@ const WalletConnectBtn: FC<WalletConnectBtnPropsTypes> = ({
   children,
   onClick,
 }) => {
-  const { setVisible } = useWalletModal()
+  const { setVisible } = useWalletModal();
 
-  const openConnectorMenu = useCallback(() => setVisible(true), [setVisible])
+  const openConnectorMenu = useCallback(() => setVisible(true), [setVisible]);
 
   return (
     <WalletButton
@@ -49,9 +49,9 @@ const WalletConnectBtn: FC<WalletConnectBtnPropsTypes> = ({
       data-testid={testId}
       aria-hidden={false}
     >
-      {children ? children : 'Connect Wallet'}
+      {children ? children : "Connect Wallet"}
     </WalletButton>
-  )
-}
+  );
+};
 
-export default WalletConnectBtn
+export default WalletConnectBtn;

@@ -1,10 +1,10 @@
-import Image from 'next/image'
-import { styled } from '@mui/material/styles'
-import { Box } from '@mui/material'
+import Image from "next/image";
+import { styled } from "@mui/material/styles";
+import { Box } from "@mui/material";
 
-import TelegramSrc from 'assets/svg/socials/telegram.svg'
-import TwitterSrc from 'assets/svg/socials/twitter.svg'
-import LinkedInSrc from 'assets/svg/socials/linkedln.svg'
+import TelegramSrc from "assets/svg/socials/telegram.svg";
+import TwitterSrc from "assets/svg/socials/twitter.svg";
+import LinkedInSrc from "assets/svg/socials/linkedln.svg";
 
 const FooterWrapper = styled(Box)`
   display: flex;
@@ -17,10 +17,10 @@ const FooterWrapper = styled(Box)`
   border-top: 1px solid #3a4f6a;
   padding: 0 40px;
 
-  ${({ theme }) => theme.breakpoints.down('sm')} {
+  ${({ theme }) => theme.breakpoints.down("sm")} {
     flex-direction: column;
   }
-`
+`;
 
 const LinksWrapper = styled(Box)`
   display: flex;
@@ -43,12 +43,12 @@ const LinksWrapper = styled(Box)`
     }
   }
 
-  ${({ theme }) => theme.breakpoints.down('sm')} {
+  ${({ theme }) => theme.breakpoints.down("sm")} {
     justify-content: center;
     gap: 18px 32px;
     padding: 16px 0;
   }
-`
+`;
 
 const SocialLinksWrapper = styled(Box)`
   display: flex;
@@ -65,7 +65,7 @@ const SocialLinksWrapper = styled(Box)`
     width: 20px;
   }
 
-  ${({ theme }) => theme.breakpoints.down('sm')} {
+  ${({ theme }) => theme.breakpoints.down("sm")} {
     gap: 20px;
     & a {
       height: 32px;
@@ -76,59 +76,59 @@ const SocialLinksWrapper = styled(Box)`
       width: 32px;
     }
   }
-`
+`;
 
 const Footer = () => {
   return (
     <FooterWrapper component="footer">
       <LinksWrapper>
-        <a href={'https://splyce.finance'} rel="noreferrer" target={'_blank'}>
+        <a href={"https://splyce.finance"} rel="noreferrer" target={"_blank"}>
           splyce.fi
         </a>
-        <a href={'#'} rel="noreferrer" target={'_blank'}>
+        <a href={"#"} rel="noreferrer" target={"_blank"}>
           Docs
         </a>
-        <a href={'#'} rel="noreferrer" target={'_blank'}>
+        <a href={"#"} rel="noreferrer" target={"_blank"}>
           Privacy Policy
         </a>
-        <a href={'#'} rel="noreferrer" target={'_blank'}>
+        <a href={"#"} rel="noreferrer" target={"_blank"}>
           Terms of Service
         </a>
-        <a href={'#'} target={'_blank'} rel="noreferrer">
+        <a href={"#"} target={"_blank"} rel="noreferrer">
           spUSD
         </a>
-        <a href={'#'} target={'_blank'} rel="noreferrer">
+        <a href={"#"} target={"_blank"} rel="noreferrer">
           SPLY
         </a>
       </LinksWrapper>
       <SocialLinksWrapper>
-        <a href={'#'} rel="noreferrer" target={'_blank'}>
+        <a href={"#"} rel="noreferrer" target={"_blank"}>
           <Image
             src={TelegramSrc as string}
             width={20}
             height={20}
-            alt={'telegram'}
+            alt={"telegram"}
           />
         </a>
-        <a href={'#'} rel="noreferrer" target={'_blank'}>
+        <a href={"#"} rel="noreferrer" target={"_blank"}>
           <Image
             src={TwitterSrc as string}
             width={20}
             height={20}
-            alt={'twitter'}
+            alt={"twitter"}
           />
         </a>
-        <a href={'#'} rel="noreferrer" target={'_blank'}>
+        <a href={"#"} rel="noreferrer" target={"_blank"}>
           <Image
             src={LinkedInSrc as string}
             width={20}
             height={20}
-            alt={'linked-in'}
+            alt={"linked-in"}
           />
         </a>
       </SocialLinksWrapper>
     </FooterWrapper>
-  )
-}
+  );
+};
 
-export default Footer
+export default Footer;

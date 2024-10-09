@@ -3,13 +3,13 @@ export const getPeriodInDays = (
   endDate: string | null
 ) => {
   if (!startDate || !endDate) {
-    return 0
+    return 0;
   }
 
-  const depositEnd = new Date(parseInt(startDate, 10) * 1000)
-  const lockEnd = new Date(parseInt(endDate, 10) * 1000)
+  const depositEnd = new Date(parseInt(startDate, 10) * 1000);
+  const lockEnd = new Date(parseInt(endDate, 10) * 1000);
 
-  const differenceInTime = lockEnd.getTime() - depositEnd.getTime()
+  const differenceInTime = lockEnd.getTime() - depositEnd.getTime();
 
-  return Math.floor(differenceInTime / (1000 * 60 * 60 * 24))
-}
+  return Math.floor(differenceInTime / (1000 * 60 * 60 * 24));
+};

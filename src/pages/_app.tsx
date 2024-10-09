@@ -1,17 +1,17 @@
-import type { AppProps } from 'next/app'
-import Head from 'next/head'
-import dynamic from 'next/dynamic'
-import '@/theme/globals.css'
+import type { AppProps } from "next/app";
+import Head from "next/head";
+import dynamic from "next/dynamic";
+import "@/theme/globals.css";
 
 const DynamicProviders = dynamic(() =>
-  import('@/provider').then((mod) => mod.Providers)
-)
+  import("@/provider").then((mod) => mod.Providers)
+);
 const AppNavLayout = dynamic(
-  () => import('@/components/AppLayout/AppNavLayout')
-)
+  () => import("@/components/AppLayout/AppNavLayout")
+);
 
 const MyApp = ({ Component, pageProps, ...props }: AppProps) => {
-  console.log('_app props: ', props)
+  console.log("_app props: ", props);
   return (
     <>
       <Head>
@@ -54,7 +54,7 @@ const MyApp = ({ Component, pageProps, ...props }: AppProps) => {
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black" />
         <title>
-          {pageProps?.title ? `${pageProps.title} Splyce` : 'Splyce'}
+          {pageProps?.title ? `${pageProps.title} Splyce` : "Splyce"}
         </title>
       </Head>
       <DynamicProviders>
@@ -63,7 +63,7 @@ const MyApp = ({ Component, pageProps, ...props }: AppProps) => {
         </AppNavLayout>
       </DynamicProviders>
     </>
-  )
-}
+  );
+};
 
-export default MyApp
+export default MyApp;

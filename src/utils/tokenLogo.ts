@@ -1,7 +1,7 @@
-import SPLYlogo from '@/assets/tokens/sply.png'
+import SPLYlogo from "@/assets/tokens/sply.png";
 export const getTokenLogoURL = (address: string) => {
-  return SPLYlogo as string
-}
+  return SPLYlogo as string;
+};
 
 // export const getTokenInfo = (address: string): TokenItem => {
 //   const addressLowerCase = address?.toLowerCase()

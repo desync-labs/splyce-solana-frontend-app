@@ -1,15 +1,15 @@
-import { FC, PropsWithChildren } from 'react'
-import React, { useMemo, useState } from 'react'
-import { WalletAdapterNetwork } from '@solana/wallet-adapter-base'
+import { FC, PropsWithChildren } from "react";
+import React, { useMemo, useState } from "react";
+import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
 import {
   ConnectionProvider,
   WalletProvider,
-} from '@solana/wallet-adapter-react'
-import { WalletModalProvider } from '@solana/wallet-adapter-react-ui'
-import { GlowWalletAdapter } from '@solana/wallet-adapter-glow'
-import { ExodusWalletAdapter } from '@solana/wallet-adapter-exodus'
-import { SlopeWalletAdapter } from '@solana/wallet-adapter-slope'
-import { initialize } from '@solflare-wallet/wallet-adapter'
+} from "@solana/wallet-adapter-react";
+import { WalletModalProvider } from "@solana/wallet-adapter-react-ui";
+import { GlowWalletAdapter } from "@solana/wallet-adapter-glow";
+import { ExodusWalletAdapter } from "@solana/wallet-adapter-exodus";
+import { SlopeWalletAdapter } from "@solana/wallet-adapter-slope";
+import { initialize } from "@solflare-wallet/wallet-adapter";
 import {
   TorusWalletAdapter,
   TrustWalletAdapter,
@@ -21,32 +21,32 @@ import {
   SafePalWalletAdapter,
   BitpieWalletAdapter,
   BitgetWalletAdapter,
-} from '@solana/wallet-adapter-wallets'
-import { type WalletError } from '@solana/wallet-adapter-base'
-import { registerMoonGateWallet } from '@moongate/moongate-adapter'
-import { TipLinkWalletAdapter } from '@tiplink/wallet-adapter'
-import { WalletConnectWalletAdapter } from '@walletconnect/solana-adapter'
-import { defaultEndpoint, defaultNetWork } from '@/utils/network'
+} from "@solana/wallet-adapter-wallets";
+import { type WalletError } from "@solana/wallet-adapter-base";
+import { registerMoonGateWallet } from "@moongate/moongate-adapter";
+import { TipLinkWalletAdapter } from "@tiplink/wallet-adapter";
+import { WalletConnectWalletAdapter } from "@walletconnect/solana-adapter";
+import { defaultEndpoint, defaultNetWork } from "@/utils/network";
 
-initialize()
+initialize();
 
 const App: FC<PropsWithChildren<any>> = ({ children }) => {
   //TODO: Add different networks
-  const [network] = useState<WalletAdapterNetwork>(defaultNetWork)
-  const [endpoint] = useState<string>(defaultEndpoint)
+  const [network] = useState<WalletAdapterNetwork>(defaultNetWork);
+  const [endpoint] = useState<string>(defaultEndpoint);
 
   registerMoonGateWallet({
-    authMode: 'Ethereum',
-    position: 'top-right',
+    authMode: "Ethereum",
+    position: "top-right",
     // logoDataUri: 'OPTIONAL ADD IN-WALLET LOGO URL HERE',
     // buttonLogoUri: 'ADD OPTIONAL LOGO FOR WIDGET BUTTON HERE'
-  })
+  });
   registerMoonGateWallet({
-    authMode: 'Google',
-    position: 'top-right',
+    authMode: "Google",
+    position: "top-right",
     // logoDataUri: 'OPTIONAL ADD IN-WALLET LOGO URL HERE',
     // buttonLogoUri: 'ADD OPTIONAL LOGO FOR WIDGET BUTTON HERE'
-  })
+  });
   // registerMoonGateWallet({
   //   authMode: 'Twitter',
   //   position: 'top-right'
@@ -54,14 +54,14 @@ const App: FC<PropsWithChildren<any>> = ({ children }) => {
   //   // buttonLogoUri: 'ADD OPTIONAL LOGO FOR WIDGET BUTTON HERE'
   // })
   registerMoonGateWallet({
-    authMode: 'Apple',
-    position: 'top-right',
+    authMode: "Apple",
+    position: "top-right",
     // logoDataUri: 'OPTIONAL ADD IN-WALLET LOGO URL HERE',
     // buttonLogoUri: 'ADD OPTIONAL LOGO FOR WIDGET BUTTON HERE'
-  })
+  });
 
   const _walletConnect = useMemo(() => {
-    const connectWallet: WalletConnectWalletAdapter[] = []
+    const connectWallet: WalletConnectWalletAdapter[] = [];
     try {
       connectWallet.push(
         new WalletConnectWalletAdapter({
@@ -69,19 +69,19 @@ const App: FC<PropsWithChildren<any>> = ({ children }) => {
           options: {
             projectId: process.env.NEXT_PUBLIC_WALLET_CONNECT_PJ_ID,
             metadata: {
-              name: 'Raydium',
-              description: 'Raydium',
-              url: 'https://raydium.io/',
-              icons: ['https://raydium.io/logo/logo-only-icon.svg'],
+              name: "Raydium",
+              description: "Raydium",
+              url: "https://raydium.io/",
+              icons: ["https://raydium.io/logo/logo-only-icon.svg"],
             },
           },
         })
-      )
+      );
     } catch (e) {
       // console.error('WalletConnect error', e)
     }
-    return connectWallet
-  }, [network])
+    return connectWallet;
+  }, [network]);
 
   const wallets = useMemo(
     () => [
@@ -101,17 +101,17 @@ const App: FC<PropsWithChildren<any>> = ({ children }) => {
       new BitgetWalletAdapter({ endpoint }),
       new ExodusWalletAdapter({ endpoint }),
       new TipLinkWalletAdapter({
-        clientId: process.env.NEXT_PUBLIC_WALLET_TIP_WALLET_KEY ?? '',
-        title: 'Raydium',
-        theme: 'system',
+        clientId: process.env.NEXT_PUBLIC_WALLET_TIP_WALLET_KEY ?? "",
+        title: "Raydium",
+        theme: "system",
       }),
     ],
     [network, endpoint]
-  )
+  );
 
   const onWalletError = (error: WalletError) => {
-    console.error('Wallet error', error)
-  }
+    console.error("Wallet error", error);
+  };
 
   return (
     <ConnectionProvider
@@ -122,7 +122,7 @@ const App: FC<PropsWithChildren<any>> = ({ children }) => {
         <WalletModalProvider>{children}</WalletModalProvider>
       </WalletProvider>
     </ConnectionProvider>
-  )
-}
+  );
+};
 
-export default App
+export default App;

@@ -1,11 +1,11 @@
-import { styled } from '@mui/material/styles'
+import { styled } from "@mui/material/styles";
 import {
   Box,
   Button,
   IconButton as MuiButton,
   ToggleButtonGroup,
-} from '@mui/material'
-import OpenInNewRoundedIcon from '@mui/icons-material/OpenInNewRounded'
+} from "@mui/material";
+import OpenInNewRoundedIcon from "@mui/icons-material/OpenInNewRounded";
 
 export const WalletButton = styled(Button)`
   color: #183102;
@@ -26,7 +26,7 @@ export const WalletButton = styled(Button)`
       color: ${({ theme }) => theme.palette.primary.main};
     }
   }
-`
+`;
 
 export const BaseButtonSecondary = styled(MuiButton)`
   color: #a0f2c4;
@@ -53,9 +53,9 @@ export const BaseButtonSecondary = styled(MuiButton)`
     cursor: not-allowed !important;
     pointer-events: all !important; 
   }
-`
+`;
 
-export const BaseButtonSecondaryLink = styled('a')`
+export const BaseButtonSecondaryLink = styled("a")`
   display: flex;
   align-items: center;  
   color: #a0f2c4;
@@ -83,24 +83,24 @@ export const BaseButtonSecondaryLink = styled('a')`
     pointer-events: all !important; 
   }
   
-  ${({ theme }) => theme.breakpoints.down('sm')} {
+  ${({ theme }) => theme.breakpoints.down("sm")} {
     height: 28px;
     font-size: 11px;
     padding: 8px;
   }
-`
+`;
 
 export const ExtLinkIcon = styled(OpenInNewRoundedIcon, {
-  shouldForwardProp: (prop) => prop !== 'scroll',
+  shouldForwardProp: (prop) => prop !== "scroll",
 })<{ width?: string; height?: string }>`
-  width: ${({ width = '16px' }) => width};
-  height: ${({ height = '16px' }) => height};
+  width: ${({ width = "16px" }) => width};
+  height: ${({ height = "16px" }) => height};
   color: ${({ theme }) => theme.palette.primary.main};
   margin-left: 4px;
-  ${({ theme }) => theme.breakpoints.down('sm')} {
+  ${({ theme }) => theme.breakpoints.down("sm")} {
     margin-left: 0;
   }
-`
+`;
 
 export const BaseToggleButtonGroup = styled(ToggleButtonGroup)`
   gap: 8px;
@@ -119,7 +119,7 @@ export const BaseToggleButtonGroup = styled(ToggleButtonGroup)`
       font-weight: 600;
     }
   }
-`
+`;
 
 export const BaseButtonsSwitcherGroup = styled(Box)`
   display: flex;
@@ -133,7 +133,7 @@ export const BaseButtonsSwitcherGroup = styled(Box)`
   border-radius: 8px;
   padding: 4px;
   margin-bottom: 16px;
-`
+`;
 
 export const BaseSwitcherButton = styled(MuiButton)`
   align-items: center;
@@ -148,4 +148,4 @@ export const BaseSwitcherButton = styled(MuiButton)`
   &.active {
     background: #072a40;
   }
-`
+`;

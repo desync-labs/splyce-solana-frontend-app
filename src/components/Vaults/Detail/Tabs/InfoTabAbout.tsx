@@ -1,15 +1,15 @@
-import { memo, useEffect, useState } from 'react'
-import BigNumber from 'bignumber.js'
-import { Box, List, styled } from '@mui/material'
-import { IVaultStrategyReport, VaultType } from '@/utils/TempData'
-import useVaultContext from '@/context/vaultDetail'
+import { memo, useEffect, useState } from "react";
+import BigNumber from "bignumber.js";
+import { Box, List, styled } from "@mui/material";
+import { IVaultStrategyReport, VaultType } from "@/utils/TempData";
+import useVaultContext from "@/context/vaultDetail";
 import VaultHistoryChart, {
   HistoryChartDataType,
-} from '@/components/Vaults/Detail/VaultHistoryChart'
-import VaultAboutTabContent from '@/components/Vaults/Detail/Tabs/AboutTabContent'
-import { VaultAboutSkeleton } from '@/components/Base/Skeletons/VaultSkeletons'
-import { TabContentWrapper } from '@/components/Vaults/Detail/Tabs/InfoTabs'
-import { tempEarnedData } from '@/utils/TempEarnedData'
+} from "@/components/Vaults/Detail/VaultHistoryChart";
+import VaultAboutTabContent from "@/components/Vaults/Detail/Tabs/AboutTabContent";
+import { VaultAboutSkeleton } from "@/components/Base/Skeletons/VaultSkeletons";
+import { TabContentWrapper } from "@/components/Vaults/Detail/Tabs/InfoTabs";
+import { tempEarnedData } from "@/utils/TempEarnedData";
 
 export const VaultDescriptionWrapper = styled(Box)`
   font-size: 14px;
@@ -35,13 +35,13 @@ export const VaultDescriptionWrapper = styled(Box)`
     }
   }
 
-  ${({ theme }) => theme.breakpoints.down('sm')} {
+  ${({ theme }) => theme.breakpoints.down("sm")} {
     font-size: 12px;
     span {
       font-size: 12px;
     }
   }
-`
+`;
 
 export const VaultContractAddress = styled(Box)`
   font-size: 14px;
@@ -53,10 +53,10 @@ export const VaultContractAddress = styled(Box)`
     text-decoration: underline;
   }
 
-  ${({ theme }) => theme.breakpoints.down('sm')} {
+  ${({ theme }) => theme.breakpoints.down("sm")} {
     font-size: 12px;
   }
-`
+`;
 
 export const AppListApy = styled(List)`
   &.MuiList-root {
@@ -84,9 +84,9 @@ export const AppListApy = styled(List)`
       font-weight: 600;
     }
   }
-`
+`;
 
-export const AppListFees = styled(AppListApy)``
+export const AppListFees = styled(AppListApy)``;
 
 const InfoTabAbout = () => {
   const {
@@ -96,46 +96,46 @@ const InfoTabAbout = () => {
     vaultLoading,
     isReportsLoaded,
     activeTfPeriod,
-  } = useVaultContext()
+  } = useVaultContext();
   const [earnedHistoryArr, setEarnedHistoryArr] = useState<
     HistoryChartDataType[]
-  >([])
-  const { type } = vault
+  >([]);
+  const { type } = vault;
 
   useEffect(() => {
     if (!Object.keys(reports).length) {
-      return
+      return;
     }
 
-    const extractedData = []
-    let allReports: IVaultStrategyReport[] = []
-    let accumulatedTotalEarned = '0'
+    const extractedData = [];
+    let allReports: IVaultStrategyReport[] = [];
+    let accumulatedTotalEarned = "0";
 
     for (const reportsCollection of Object.values(reports)) {
-      allReports = [...allReports, ...reportsCollection]
+      allReports = [...allReports, ...reportsCollection];
     }
 
-    allReports.sort((a, b) => Number(a.timestamp) - Number(b.timestamp))
+    allReports.sort((a, b) => Number(a.timestamp) - Number(b.timestamp));
 
     for (let i = 0; i <= allReports.length - 1; i++) {
-      const report = allReports[i]
+      const report = allReports[i];
 
       const currentTotalEarned = BigNumber(report.gain)
         .minus(report.loss)
         .dividedBy(10 ** 9)
         .plus(accumulatedTotalEarned)
-        .toString()
+        .toString();
 
-      accumulatedTotalEarned = currentTotalEarned
+      accumulatedTotalEarned = currentTotalEarned;
 
       extractedData.push({
         timestamp: report.timestamp,
         chartValue: currentTotalEarned,
-      })
+      });
     }
 
-    setEarnedHistoryArr(extractedData)
-  }, [reports, historicalApr])
+    setEarnedHistoryArr(extractedData);
+  }, [reports, historicalApr]);
 
   return (
     <TabContentWrapper>
@@ -148,8 +148,8 @@ const InfoTabAbout = () => {
         <VaultHistoryChart
           title={
             type === VaultType.TRADEFI && activeTfPeriod < 2
-              ? 'Expected Cumulative Earnings'
-              : 'Cumulative Earnings'
+              ? "Expected Cumulative Earnings"
+              : "Cumulative Earnings"
           }
           chartDataArray={tempEarnedData}
           valueLabel="Earnings"
@@ -158,7 +158,7 @@ const InfoTabAbout = () => {
         />
       )}
     </TabContentWrapper>
-  )
-}
+  );
+};
 
-export default memo(InfoTabAbout)
+export default memo(InfoTabAbout);

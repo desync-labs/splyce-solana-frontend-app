@@ -1,4 +1,4 @@
-import { Box, Button, styled } from '@mui/material'
+import { Box, Button, styled } from "@mui/material";
 
 export const BaseTabsWrapper = styled(Box)`
   display: flex;
@@ -7,10 +7,10 @@ export const BaseTabsWrapper = styled(Box)`
   background: #3a4f6a;
   padding: 10px 24px;
 
-  ${({ theme }) => theme.breakpoints.down('sm')} {
+  ${({ theme }) => theme.breakpoints.down("sm")} {
     padding: 10px 16px;
   }
-`
+`;
 
 export const BaseTabsItem = styled(Button)`
   display: flex;
@@ -36,9 +36,9 @@ export const BaseTabsItem = styled(Button)`
     background-color: unset;
   }
 
-  ${({ theme }) => theme.breakpoints.down('sm')} {
+  ${({ theme }) => theme.breakpoints.down("sm")} {
     font-size: 14px;
     width: 100%;
     padding: 8px 16px;
   }
-`
+`;

@@ -1,24 +1,24 @@
-import { Box, ListItemText } from '@mui/material'
-import { VaultAboutTitle } from '@/utils/Vaults/getVaultTitleAndDescription'
+import { Box, ListItemText } from "@mui/material";
+import { VaultAboutTitle } from "@/utils/Vaults/getVaultTitleAndDescription";
 import {
   StrategySelector,
   StrategySelectorLabel,
-} from '@/components/Vaults/Detail/Tabs/InfoTabStrategies'
+} from "@/components/Vaults/Detail/Tabs/InfoTabStrategies";
 import {
   AppListApy,
   AppListFees,
   VaultContractAddress,
   VaultDescriptionWrapper,
-} from '@/components/Vaults/Detail/Tabs/InfoTabAbout'
+} from "@/components/Vaults/Detail/Tabs/InfoTabAbout";
 import {
   VaultIndicatorItemLabel,
   VaultIndicatorItemWrapper,
   VaultIndicatorsWrapper,
   VaultStrategyDescription,
   VaultStrategyTitle,
-} from '@/components/Vaults/Detail/Tabs/VaultStrategyItem'
-import { CustomSkeleton } from 'components/Base/Skeletons/StyledSkeleton'
-import { BaseListItem } from 'components/Base/List/StyledList'
+} from "@/components/Vaults/Detail/Tabs/VaultStrategyItem";
+import { CustomSkeleton } from "components/Base/Skeletons/StyledSkeleton";
+import { BaseListItem } from "components/Base/List/StyledList";
 
 export const VaultAboutSkeleton = () => {
   return (
@@ -27,23 +27,23 @@ export const VaultAboutSkeleton = () => {
         <VaultAboutTitle variant="h5">Description</VaultAboutTitle>
         <CustomSkeleton
           variant="text"
-          animation={'wave'}
-          width={'100%'}
+          animation={"wave"}
+          width={"100%"}
           height={100}
         />
       </VaultDescriptionWrapper>
       <VaultContractAddress
         sx={{
-          display: 'flex',
-          justifyContent: 'flex-start',
-          alignItems: 'center',
+          display: "flex",
+          justifyContent: "flex-start",
+          alignItems: "center",
           gap: 1,
         }}
       >
-        Vault contract address:{' '}
+        Vault contract address:{" "}
         <CustomSkeleton
           variant="text"
-          animation={'wave'}
+          animation={"wave"}
           height={17}
           width={350}
         />
@@ -52,28 +52,28 @@ export const VaultAboutSkeleton = () => {
         <VaultAboutTitle variant="h5" sx={{ marginBottom: 0 }}>
           APY
         </VaultAboutTitle>
-        <Box width={'100%'}>
+        <Box width={"100%"}>
           <AppListApy>
             <BaseListItem
               secondaryAction={
-                <CustomSkeleton variant="text" animation={'wave'} width={50} />
+                <CustomSkeleton variant="text" animation={"wave"} width={50} />
               }
             >
-              <ListItemText primary={'Weekly APY'} />
+              <ListItemText primary={"Weekly APY"} />
             </BaseListItem>
             <BaseListItem
               secondaryAction={
-                <CustomSkeleton variant="text" animation={'wave'} width={50} />
+                <CustomSkeleton variant="text" animation={"wave"} width={50} />
               }
             >
-              <ListItemText primary={'Monthly APY'} />
+              <ListItemText primary={"Monthly APY"} />
             </BaseListItem>
             <BaseListItem
               secondaryAction={
-                <CustomSkeleton variant="text" animation={'wave'} width={50} />
+                <CustomSkeleton variant="text" animation={"wave"} width={50} />
               }
             >
-              <ListItemText primary={'Yearly APY'} />
+              <ListItemText primary={"Yearly APY"} />
             </BaseListItem>
           </AppListApy>
         </Box>
@@ -83,23 +83,23 @@ export const VaultAboutSkeleton = () => {
         <AppListFees>
           <BaseListItem
             secondaryAction={
-              <CustomSkeleton variant="text" animation={'wave'} width={50} />
+              <CustomSkeleton variant="text" animation={"wave"} width={50} />
             }
           >
-            <ListItemText primary={'Protocol fee'} />
+            <ListItemText primary={"Protocol fee"} />
           </BaseListItem>
           <BaseListItem
             secondaryAction={
-              <CustomSkeleton variant="text" animation={'wave'} width={50} />
+              <CustomSkeleton variant="text" animation={"wave"} width={50} />
             }
           >
-            <ListItemText primary={'Total fee'} />
+            <ListItemText primary={"Total fee"} />
           </BaseListItem>
         </AppListFees>
       </Box>
     </>
-  )
-}
+  );
+};
 
 export const VaultStrategiesSkeleton = () => {
   return (
@@ -109,13 +109,13 @@ export const VaultStrategiesSkeleton = () => {
         <StrategySelector>
           <CustomSkeleton
             variant="rounded"
-            animation={'wave'}
+            animation={"wave"}
             width={200}
             height={46}
           />
           <CustomSkeleton
             variant="rounded"
-            animation={'wave'}
+            animation={"wave"}
             width={200}
             height={46}
           />
@@ -125,24 +125,24 @@ export const VaultStrategiesSkeleton = () => {
         <VaultStrategyTitle>
           <CustomSkeleton
             variant="rounded"
-            animation={'wave'}
+            animation={"wave"}
             height={22}
             width={150}
           />
         </VaultStrategyTitle>
         <CustomSkeleton
           variant="rounded"
-          animation={'wave'}
+          animation={"wave"}
           height={20}
           width={250}
-          sx={{ marginBottom: '16px' }}
+          sx={{ marginBottom: "16px" }}
         />
         <VaultStrategyDescription>
           <CustomSkeleton
             variant="rounded"
-            animation={'wave'}
+            animation={"wave"}
             height={150}
-            width={'100%'}
+            width={"100%"}
           />
         </VaultStrategyDescription>
         <VaultIndicatorsWrapper>
@@ -152,7 +152,7 @@ export const VaultStrategiesSkeleton = () => {
             </VaultIndicatorItemLabel>
             <CustomSkeleton
               variant="rounded"
-              animation={'wave'}
+              animation={"wave"}
               height={22}
               width={100}
             />
@@ -161,7 +161,7 @@ export const VaultStrategiesSkeleton = () => {
             <VaultIndicatorItemLabel>Total Gain</VaultIndicatorItemLabel>
             <CustomSkeleton
               variant="rounded"
-              animation={'wave'}
+              animation={"wave"}
               height={22}
               width={100}
             />
@@ -170,7 +170,7 @@ export const VaultStrategiesSkeleton = () => {
             <VaultIndicatorItemLabel>APY</VaultIndicatorItemLabel>
             <CustomSkeleton
               variant="rounded"
-              animation={'wave'}
+              animation={"wave"}
               height={22}
               width={100}
             />
@@ -179,7 +179,7 @@ export const VaultStrategiesSkeleton = () => {
             <VaultIndicatorItemLabel>Allocation</VaultIndicatorItemLabel>
             <CustomSkeleton
               variant="rounded"
-              animation={'wave'}
+              animation={"wave"}
               height={22}
               width={100}
             />
@@ -188,7 +188,7 @@ export const VaultStrategiesSkeleton = () => {
             <VaultIndicatorItemLabel>Perfomance fee</VaultIndicatorItemLabel>
             <CustomSkeleton
               variant="rounded"
-              animation={'wave'}
+              animation={"wave"}
               height={22}
               width={100}
             />
@@ -196,5 +196,5 @@ export const VaultStrategiesSkeleton = () => {
         </VaultIndicatorsWrapper>
       </Box>
     </>
-  )
-}
+  );
+};

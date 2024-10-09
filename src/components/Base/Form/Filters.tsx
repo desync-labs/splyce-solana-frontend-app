@@ -1,9 +1,9 @@
-import Image from 'next/image'
-import { styled } from '@mui/material/styles'
-import { Select } from '@mui/material'
-import { BaseTextField } from '@/components/Base/Form/StyledForm'
+import Image from "next/image";
+import { styled } from "@mui/material/styles";
+import { Select } from "@mui/material";
+import { BaseTextField } from "@/components/Base/Form/StyledForm";
 
-import SearchSrc from 'assets/svg/search.svg'
+import SearchSrc from "assets/svg/search.svg";
 
 export const BaseSearchTextField = styled(BaseTextField)`
   input {
@@ -18,7 +18,7 @@ export const BaseSearchTextField = styled(BaseTextField)`
       box-shadow: ${({ theme }) => theme.palette.action.focus};
     }
   }
-`
+`;
 
 export const BaseFormInputLogo = styled(Image)`
   width: 20px;
@@ -26,11 +26,11 @@ export const BaseFormInputLogo = styled(Image)`
   position: absolute;
   top: 12px;
   left: 9px;
-`
+`;
 
 export const SearchFieldLogo = () => {
-  return <BaseFormInputLogo src={SearchSrc} alt="search" />
-}
+  return <BaseFormInputLogo src={SearchSrc} alt="search" />;
+};
 
 export const BaseSortSelect = styled(Select)`
   width: auto;
@@ -49,4 +49,4 @@ export const BaseSortSelect = styled(Select)`
     border: none;
     outline: none;
   }
-`
+`;
