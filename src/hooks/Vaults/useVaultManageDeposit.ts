@@ -1,6 +1,10 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useWallet } from "@solana/wallet-adapter-react";
+import {
+  AnchorWallet,
+  useAnchorWallet,
+  useWallet,
+} from "@solana/wallet-adapter-react";
 import { PublicKey } from "@solana/web3.js";
 import debounce from "lodash.debounce";
 import BigNumber from "bignumber.js";
@@ -36,7 +40,8 @@ const useVaultManageDeposit = (
   const { depositLimit, balanceTokens, token, shareToken, shutdown, type } =
     vault;
   const { balancePosition, balanceShares } = vaultPosition;
-  const { publicKey, wallet } = useWallet();
+  const { publicKey } = useWallet();
+  const anchorWallet = useAnchorWallet() as AnchorWallet;
   const { lastTransactionBlock, setLastTransactionBlock } = useSyncContext();
 
   const methods = useForm({
@@ -69,7 +74,7 @@ const useVaultManageDeposit = (
       return;
     }
     const balance = await getUserTokenBalance(publicKey, token.id);
-    setWalletBalance(balance);
+    setWalletBalance(balance as string);
     setIsWalletFetching(true);
   }, [publicKey, token?.id, setWalletBalance, setIsWalletFetching]);
 
@@ -274,7 +279,7 @@ const useVaultManageDeposit = (
 
   const onSubmit = useCallback(
     async (values: Record<string, any>) => {
-      if (!publicKey || !wallet || !token) {
+      if (!publicKey || !anchorWallet || !token) {
         return;
       }
       setOpenDepositLoading(true);
@@ -292,7 +297,7 @@ const useVaultManageDeposit = (
           depositTokens(
             publicKey,
             formattedAmount,
-            wallet,
+            anchorWallet,
             tokenPublicKey,
             sharedTokenPublicKey,
             getVaultIndex(vault.id)
@@ -317,13 +322,13 @@ const useVaultManageDeposit = (
           withdrawTokens(
             publicKey,
             formattedAmount,
-            wallet,
+            anchorWallet,
             tokenPublicKey,
             sharedTokenPublicKey,
             getVaultIndex(vault.id)
           )
             .then(async (txSignature) => {
-              const txSlot = await getTransactionBlock(txSignature);
+              const txSlot = await getTransactionBlock(txSignature as string);
 
               if (txSlot) {
                 setLastTransactionBlock(txSlot);
@@ -339,7 +344,7 @@ const useVaultManageDeposit = (
         }
       }
     },
-    [formType]
+    [formType, anchorWallet]
   );
 
   return {

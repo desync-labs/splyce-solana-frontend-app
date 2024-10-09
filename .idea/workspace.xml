@@ -5,14 +5,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="980c1e59-2a66-476c-8058-c1191519ba3f" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/LICENSE" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.github/workflows/ci-cd.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.github/workflows/ci-cd.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/apollo/client.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/apollo/client.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/context/sync.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/context/sync.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/hooks/General/useMainLayout.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/hooks/General/useMainLayout.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/hooks/Vaults/useVaultManageDeposit.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/hooks/Vaults/useVaultManageDeposit.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/_app.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/_app.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/vaults/faucet.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/vaults/faucet.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/Vaults/getStrategyTitleAndDescription.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/Vaults/getStrategyTitleAndDescription.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/Vaults/getVaultTitleAndDescription.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/Vaults/getVaultTitleAndDescription.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/theme/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/theme/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/TempData.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/TempData.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/TempSdkMethods.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/TempSdkMethods.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -69,7 +73,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.go.formatter.settings.were.checked": "true",
     "RunOnceActivity.go.migrated.go.modules.settings": "true",
-    "git-widget-placeholder": "#17 on Merging refactor-get-or-create-token-asso…count",
+    "git-widget-placeholder": "refactor-get-or-create-token-associated-account",
     "last_opened_file_path": "/Users/vetalion/sites/Splyce/splyce-solana-frontend-app",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.standard": "true",
@@ -78,9 +82,10 @@
     "node.js.selected.package.standard": "",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
+    "npm.format.executor": "Run",
     "prettierjs.PrettierConfiguration.Package": "/Users/vetalion/sites/Splyce/splyce-solana-frontend-app/node_modules/prettier",
-    "settings.editor.selected.configurable": "settings.javascript.prettier",
-    "ts.external.directory.path": "/Applications/WebStorm.app/Contents/plugins/javascript-plugin/jsLanguageServicesImpl/external",
+    "settings.editor.selected.configurable": "settings.jsgraphql",
+    "ts.external.directory.path": "/Users/vetalion/sites/Splyce/splyce-solana-frontend-app/node_modules/typescript/lib",
     "vue.rearranger.settings.migration": "true"
   }
 }</component>
@@ -98,6 +103,23 @@
       <recent name="$PROJECT_DIR$/src/pages/lending" />
       <recent name="$PROJECT_DIR$/src/theme" />
     </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="format" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="format" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="npm.format" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>

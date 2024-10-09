@@ -44,7 +44,7 @@ const MyApp = ({ Component, pageProps, ...props }: AppProps) => {
         <meta name="twitter:site" content="@Splycefi" />
         <meta
           name="keywords"
-          content="Decentralized Finance, DeFi, RWA, spUSD, stablecoins, lending, borrowing, Xdc, assets, XRC-20, smart contracts, open finance, trustless"
+          content="Decentralized Finance, DeFi, RWA, spUSD, stablecoins, lending, borrowing, assets, smart contracts, open finance, trustless"
         />
         <link rel="apple-touch-icon" href="/splyce-site-preview.png" />
         <meta
