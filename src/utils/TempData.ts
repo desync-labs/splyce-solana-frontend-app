@@ -18,6 +18,7 @@ export interface IVaultPosition {
     name: string;
   };
 }
+
 export interface IVaultStrategy {
   id: string;
   delegatedAssets: string;
@@ -26,6 +27,7 @@ export interface IVaultStrategy {
   apr: string;
   performanceFees: string;
 }
+
 export interface IVault {
   id: string;
   name: string;
