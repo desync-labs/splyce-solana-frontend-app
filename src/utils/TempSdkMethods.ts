@@ -23,13 +23,29 @@ import { getIdl, IdlTypes } from "@/utils/getIdl";
 
 const connection = new Connection(defaultEndpoint);
 
-const FAUCET_DATA_PUB_KEY = new PublicKey(
+const FAUCET_DATA_PUB_KEY_DEV = new PublicKey(
   "GhHAUWzijk3e3pUTJbwAFjU3v51hkrpujnEhhnxtp8Q7"
 );
+const FAUCET_DATA_PUB_KEY_MAINNET = new PublicKey(
+  "84aAmYBsJWBZWbsgeBS6MSuFsGUGLAqaofVMLD4DZXtP"
+);
 
-const FAUCET_TOKE_ACCOUNT_PUB_KEY = new PublicKey(
+const FAUCET_TOKEN_ACCOUNT_PUB_KEY_DEV = new PublicKey(
   "EjQxPWRJPvLFcPj4LomBwCpWxKYuig8jggVFhUq1qYQv"
 );
+const FAUCET_TOKEN_ACCOUNT_PUB_KEY_MAINNET = new PublicKey(
+  "3zztMz1BaGckpyNhrTTRBBgfNpFn9kj4VzkyCGCxHnWB"
+);
+
+const FAUCET_DATA_PUB_KEY =
+  process.env.NEXT_PUBLIC_ENV === "prod"
+    ? FAUCET_DATA_PUB_KEY_MAINNET
+    : FAUCET_DATA_PUB_KEY_DEV;
+
+const FAUCET_TOKEN_ACCOUNT_PUB_KEY =
+  process.env.NEXT_PUBLIC_ENV === "prod"
+    ? FAUCET_TOKEN_ACCOUNT_PUB_KEY_MAINNET
+    : FAUCET_TOKEN_ACCOUNT_PUB_KEY_DEV;
 
 export const getUserSolanaBalance = async (walletPublicKey: PublicKey) => {
   if (!walletPublicKey) {
@@ -377,7 +393,7 @@ export const faucetTestToken = async (
         .sendTokens()
         .accounts({
           faucetData: FAUCET_DATA_PUB_KEY,
-          tokenAccount: FAUCET_TOKE_ACCOUNT_PUB_KEY,
+          tokenAccount: FAUCET_TOKEN_ACCOUNT_PUB_KEY,
           recipient: userTokenAccount.address,
           signer: userPubKey,
           tokenProgram: TOKEN_PROGRAM_ID,
@@ -385,8 +401,10 @@ export const faucetTestToken = async (
         .instruction()
     );
 
+    const signature = await provider.sendAndConfirm(tx);
+
     // Send Tx
-    return provider.sendAndConfirm(tx);
+    return signature;
   } catch (err) {
     console.error("Error deposit tx:", err);
   }

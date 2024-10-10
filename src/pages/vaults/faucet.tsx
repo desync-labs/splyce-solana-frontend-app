@@ -9,8 +9,11 @@ import VaultsNestedNav from "@/components/Vaults/NestedNav";
 import { BaseInfoIcon } from "@/components/Base/Icons/StyledIcons";
 import { BaseErrorBox, BaseInfoBox } from "@/components/Base/Boxes/StyledBoxes";
 
-const TEST_TOKE_PUBLIC_KEY = new PublicKey(
+const TEST_TOKEN_PUBLIC_KEY_DEV = new PublicKey(
   "4dCLhR7U8PzwXau6qfjr73tKgp5SD42aLbyo3XQNzY4V"
+);
+const TEST_TOKEN_PUBLIC_KEY_MAINNET = new PublicKey(
+  "4N37FD6SU35ssX6yTu2AcCvzVbdS6z3YZTtk5gv7ejhE"
 );
 
 const FaucetIndex: FC = () => {
@@ -19,6 +22,11 @@ const FaucetIndex: FC = () => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const { publicKey } = useWallet();
   const anchorWallet = useAnchorWallet();
+
+  const mintTokenPubKey =
+    process.env.NEXT_PUBLIC_ENV === "prod"
+      ? TEST_TOKEN_PUBLIC_KEY_MAINNET
+      : TEST_TOKEN_PUBLIC_KEY_DEV;
 
   useEffect(() => {
     if (successMessage) {
@@ -46,7 +54,7 @@ const FaucetIndex: FC = () => {
     try {
       const res = await faucetTestToken(
         publicKey,
-        TEST_TOKE_PUBLIC_KEY,
+        mintTokenPubKey,
         anchorWallet
       );
       console.log("Tx signature:", res);
