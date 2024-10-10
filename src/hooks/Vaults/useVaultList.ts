@@ -40,6 +40,9 @@ const useVaultList = () => {
   const [sortBy, setSortBy] = useState<SortType>(SortType.TVL);
   const [isShutdown, setIsShutdown] = useState<boolean>(false);
 
+  const [vaultPositionsAdditionLoading, setVaultPositionsAdditionLoading] =
+    useState<boolean>(true);
+
   const {
     data: vaultItemsData,
     loading: vaultsLoading,
@@ -77,6 +80,7 @@ const useVaultList = () => {
           setVaultPositionsList(res.data?.accountVaultPositions);
 
           const promises: Promise<any>[] = [];
+          setVaultPositionsAdditionLoading(true);
 
           res.data?.accountVaultPositions.forEach(
             (position: IVaultPosition) => {
@@ -118,6 +122,7 @@ const useVaultList = () => {
                 }
               );
               setVaultPositionsList(updatedVaultPositions);
+              setVaultPositionsAdditionLoading(false);
             });
           });
         } else {
@@ -292,7 +297,8 @@ const useVaultList = () => {
   return {
     vaultSortedList,
     vaultsLoading,
-    vaultPositionsLoading,
+    vaultPositionsLoading:
+      vaultPositionsAdditionLoading || vaultPositionsLoading,
     vaultPositionsList,
     vaultCurrentPage,
     vaultItemsCount,
