@@ -1,10 +1,14 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
-import { useForm } from 'react-hook-form'
-import { useWallet } from '@solana/wallet-adapter-react'
-import { PublicKey } from '@solana/web3.js'
-import debounce from 'lodash.debounce'
-import BigNumber from 'bignumber.js'
-import { IVault, IVaultPosition, VaultType } from '@/utils/TempData'
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { useForm } from "react-hook-form";
+import {
+  AnchorWallet,
+  useAnchorWallet,
+  useWallet,
+} from "@solana/wallet-adapter-react";
+import { PublicKey } from "@solana/web3.js";
+import debounce from "lodash.debounce";
+import BigNumber from "bignumber.js";
+import { IVault, IVaultPosition, VaultType } from "@/utils/TempData";
 import {
   depositTokens,
   getTransactionBlock,
@@ -12,16 +16,16 @@ import {
   previewDeposit,
   previewWithdraw,
   withdrawTokens,
-} from '@/utils/TempSdkMethods'
-import { formatNumber } from '@/utils/format'
-import { MAX_PERSONAL_DEPOSIT } from '@/hooks/Vaults/useVaultOpenDeposit'
-import useSyncContext from '@/context/sync'
-import { getVaultIndex } from '@/utils/getVaultIndex'
+} from "@/utils/TempSdkMethods";
+import { formatNumber } from "@/utils/format";
+import { MAX_PERSONAL_DEPOSIT } from "@/hooks/Vaults/useVaultOpenDeposit";
+import useSyncContext from "@/context/sync";
+import { getVaultIndex } from "@/utils/getVaultIndex";
 
 export const defaultValues = {
-  formToken: '',
-  formSharedToken: '',
-}
+  formToken: "",
+  formSharedToken: "",
+};
 
 export enum FormType {
   DEPOSIT,
@@ -34,16 +38,17 @@ const useVaultManageDeposit = (
   onClose: () => void
 ) => {
   const { depositLimit, balanceTokens, token, shareToken, shutdown, type } =
-    vault
-  const { balancePosition, balanceShares } = vaultPosition
-  const { publicKey, wallet } = useWallet()
-  const { lastTransactionBlock, setLastTransactionBlock } = useSyncContext()
+    vault;
+  const { balancePosition, balanceShares } = vaultPosition;
+  const { publicKey } = useWallet();
+  const anchorWallet = useAnchorWallet() as AnchorWallet;
+  const { lastTransactionBlock, setLastTransactionBlock } = useSyncContext();
 
   const methods = useForm({
     defaultValues,
-    reValidateMode: 'onChange',
-    mode: 'onChange',
-  })
+    reValidateMode: "onChange",
+    mode: "onChange",
+  });
 
   const {
     control,
@@ -51,88 +56,88 @@ const useVaultManageDeposit = (
     setValue,
     watch,
     formState: { errors },
-  } = methods
+  } = methods;
 
   const [formType, setFormType] = useState<FormType>(
     shutdown ? FormType.WITHDRAW : FormType.DEPOSIT
-  )
-  const [walletBalance, setWalletBalance] = useState<string>('0')
-  const [isWalletFetching, setIsWalletFetching] = useState<boolean>(false)
-  const [openDepositLoading, setOpenDepositLoading] = useState<boolean>(false)
-  const [isFullWithdraw, setIsFullWithdraw] = useState<boolean>(false)
+  );
+  const [walletBalance, setWalletBalance] = useState<string>("0");
+  const [isWalletFetching, setIsWalletFetching] = useState<boolean>(false);
+  const [openDepositLoading, setOpenDepositLoading] = useState<boolean>(false);
+  const [isFullWithdraw, setIsFullWithdraw] = useState<boolean>(false);
 
-  const formToken = watch('formToken')
-  const formSharedToken = watch('formSharedToken')
+  const formToken = watch("formToken");
+  const formSharedToken = watch("formSharedToken");
 
   const getVaultTokenBalance = useCallback(async () => {
     if (!publicKey || !token?.id) {
-      return
+      return;
     }
-    const balance = await getUserTokenBalance(publicKey, token.id)
-    setWalletBalance(balance)
-    setIsWalletFetching(true)
-  }, [publicKey, token?.id, setWalletBalance, setIsWalletFetching])
+    const balance = await getUserTokenBalance(publicKey, token.id);
+    setWalletBalance(balance as string);
+    setIsWalletFetching(true);
+  }, [publicKey, token?.id, setWalletBalance, setIsWalletFetching]);
 
   const updateSharedAmount = useMemo(
     () =>
       debounce(async (deposit: string) => {
-        let sharedAmount = '0'
+        let sharedAmount = "0";
 
         if (isFullWithdraw) {
-          setIsFullWithdraw(false)
-          return
+          setIsFullWithdraw(false);
+          return;
         }
 
         if (formType === FormType.DEPOSIT) {
-          sharedAmount = await previewDeposit(deposit, vault.id)
+          sharedAmount = await previewDeposit(deposit, vault.id);
         } else {
-          sharedAmount = await previewWithdraw(deposit, vault.id)
+          sharedAmount = await previewWithdraw(deposit, vault.id);
         }
 
-        const sharedConverted = BigNumber(sharedAmount).toString()
+        const sharedConverted = BigNumber(sharedAmount).toString();
 
-        setValue('formSharedToken', sharedConverted)
+        setValue("formSharedToken", sharedConverted);
       }, 500),
     [vault.id, formType, isFullWithdraw, setIsFullWithdraw]
-  )
+  );
 
   useEffect(() => {
-    let timeout: ReturnType<typeof setTimeout>
+    let timeout: ReturnType<typeof setTimeout>;
     timeout = setTimeout(() => {
-      getVaultTokenBalance()
-    }, 300)
+      getVaultTokenBalance();
+    }, 300);
 
-    return () => clearTimeout(timeout)
-  }, [publicKey, token?.id, getVaultTokenBalance, lastTransactionBlock])
+    return () => clearTimeout(timeout);
+  }, [publicKey, token?.id, getVaultTokenBalance, lastTransactionBlock]);
 
   useEffect(() => {
-    let timeout: ReturnType<typeof setTimeout>
+    let timeout: ReturnType<typeof setTimeout>;
 
     if (formToken.toString().trim() && BigNumber(formToken).isGreaterThan(0)) {
-      updateSharedAmount(formToken)
+      updateSharedAmount(formToken);
     } else {
       timeout = setTimeout(() => {
-        setValue('formSharedToken', '')
-      }, 600)
+        setValue("formSharedToken", "");
+      }, 600);
     }
 
     return () => {
-      timeout && clearTimeout(timeout)
-    }
-  }, [formToken, updateSharedAmount, setValue])
+      timeout && clearTimeout(timeout);
+    };
+  }, [formToken, updateSharedAmount, setValue]);
 
   const setMax = useCallback(() => {
     if (formType === FormType.DEPOSIT) {
       if (type === VaultType.TRADEFI) {
         const max = BigNumber.min(walletBalance, depositLimit)
           .dividedBy(10 ** 9)
-          .decimalPlaces(6, BigNumber.ROUND_DOWN)
+          .decimalPlaces(6, BigNumber.ROUND_DOWN);
 
-        const maxCapped = max.isNegative() ? BigNumber(0) : max
+        const maxCapped = max.isNegative() ? BigNumber(0) : max;
 
-        setValue('formToken', maxCapped.toString(), {
+        setValue("formToken", maxCapped.toString(), {
           shouldValidate: true,
-        })
+        });
       } else {
         const max = BigNumber.min(
           BigNumber(walletBalance).dividedBy(10 ** 9),
@@ -142,31 +147,31 @@ const useVaultManageDeposit = (
           BigNumber(MAX_PERSONAL_DEPOSIT).minus(
             BigNumber(balancePosition).dividedBy(10 ** 9)
           )
-        ).decimalPlaces(6, BigNumber.ROUND_DOWN)
-        console.log('max', max.toString())
+        ).decimalPlaces(6, BigNumber.ROUND_DOWN);
+        console.log("max", max.toString());
 
-        const maxCapped = max.isNegative() ? BigNumber(0) : max
+        const maxCapped = max.isNegative() ? BigNumber(0) : max;
 
-        setValue('formToken', maxCapped.toString(), {
+        setValue("formToken", maxCapped.toString(), {
           shouldValidate: true,
-        })
+        });
       }
     } else {
-      setIsFullWithdraw(true)
+      setIsFullWithdraw(true);
       setValue(
-        'formToken',
+        "formToken",
         BigNumber(balancePosition)
           .dividedBy(10 ** 9)
           .toString(),
         { shouldValidate: true }
-      )
+      );
       setValue(
-        'formSharedToken',
+        "formSharedToken",
         BigNumber(balanceShares)
           .dividedBy(10 ** 9)
           .toString(),
         { shouldValidate: true }
-      )
+      );
     }
   }, [
     setValue,
@@ -178,7 +183,7 @@ const useVaultManageDeposit = (
     balanceTokens,
     formType,
     balanceShares,
-  ])
+  ]);
 
   const validateDeposit = (
     value: string,
@@ -186,46 +191,48 @@ const useVaultManageDeposit = (
     maxDepositLimit: BigNumber
   ) => {
     if (BigNumber(value).isGreaterThan(maxWalletBalance)) {
-      return 'You do not have enough money in your wallet'
+      return "You do not have enough money in your wallet";
     }
 
     if (BigNumber(value).isGreaterThan(maxDepositLimit)) {
       return `Deposit value exceeds the maximum allowed limit ${formatNumber(
         maxDepositLimit.toNumber()
-      )} ${token.symbol}`
+      )} ${token.symbol}`;
     }
 
-    const formattedDeposit = BigNumber(depositLimit).dividedBy(10 ** 9)
+    const formattedDeposit = BigNumber(depositLimit).dividedBy(10 ** 9);
     const rule =
       type === VaultType.TRADEFI
         ? BigNumber(value).isGreaterThan(formattedDeposit)
         : BigNumber(balancePosition)
             .dividedBy(10 ** 9)
             .plus(value)
-            .isGreaterThan(formattedDeposit)
+            .isGreaterThan(formattedDeposit);
 
     if (rule) {
       return `The ${formattedDeposit.toNumber() / 1000}k ${
         token.symbol
-      } limit has been exceeded. Please reduce the amount to continue.`
+      } limit has been exceeded. Please reduce the amount to continue.`;
     }
 
-    return true
-  }
+    return true;
+  };
 
   const validateRepay = (value: string, maxBalanceToken: BigNumber) => {
     if (BigNumber(value).isGreaterThan(maxBalanceToken)) {
-      return "You don't have enough to repay that amount"
+      return "You don't have enough to repay that amount";
     }
 
-    return true
-  }
+    return true;
+  };
 
   const validateMaxValue = useCallback(
     (value: string) => {
       if (formType === FormType.DEPOSIT) {
-        const maxWalletBalance = BigNumber(walletBalance).dividedBy(10 ** 9)
-        const formattedDepositLimit = BigNumber(depositLimit).dividedBy(10 ** 9)
+        const maxWalletBalance = BigNumber(walletBalance).dividedBy(10 ** 9);
+        const formattedDepositLimit = BigNumber(depositLimit).dividedBy(
+          10 ** 9
+        );
         const maxDepositLimit =
           type === VaultType.TRADEFI
             ? BigNumber.max(formattedDepositLimit, 0)
@@ -234,23 +241,23 @@ const useVaultManageDeposit = (
                   .minus(BigNumber(balanceTokens).dividedBy(10 ** 9))
                   .toNumber(),
                 0
-              )
+              );
 
-        return validateDeposit(value, maxWalletBalance, maxDepositLimit)
+        return validateDeposit(value, maxWalletBalance, maxDepositLimit);
       } else {
-        const maxBalanceToken = BigNumber(balancePosition).dividedBy(10 ** 9)
-        return validateRepay(value, maxBalanceToken)
+        const maxBalanceToken = BigNumber(balancePosition).dividedBy(10 ** 9);
+        return validateRepay(value, maxBalanceToken);
       }
     },
     [depositLimit, balanceTokens, walletBalance, balancePosition, formType]
-  )
+  );
 
   const withdrawLimitExceeded = (value: string) => {
     /**
      * Logic for TradeFlowVault
      */
     if (type === VaultType.TRADEFI) {
-      const maxBalanceToken = BigNumber(balancePosition).dividedBy(10 ** 9)
+      const maxBalanceToken = BigNumber(balancePosition).dividedBy(10 ** 9);
 
       if (
         BigNumber(maxBalanceToken).minus(value).isGreaterThan(0) &&
@@ -262,83 +269,83 @@ const useVaultManageDeposit = (
           BigNumber(maxBalanceToken).minus(value).toNumber()
         )} ${token.name} less then minimum allowed deposit ${
           minimumDeposit / 1000
-        }k ${token.name}, you can do full withdraw instead.`
+        }k ${token.name}, you can do full withdraw instead.`;
       }
-      return false
+      return false;
     } else {
-      return false
+      return false;
     }
-  }
+  };
 
   const onSubmit = useCallback(
     async (values: Record<string, any>) => {
-      if (!publicKey || !wallet || !token) {
-        return
+      if (!publicKey || !anchorWallet || !token) {
+        return;
       }
-      setOpenDepositLoading(true)
+      setOpenDepositLoading(true);
 
-      const { formToken, formSharedToken } = values
+      const { formToken, formSharedToken } = values;
 
-      const tokenPublicKey = new PublicKey(token.id)
-      const sharedTokenPublicKey = new PublicKey(shareToken.id)
+      const tokenPublicKey = new PublicKey(token.id);
+      const sharedTokenPublicKey = new PublicKey(shareToken.id);
       const formattedAmount = BigNumber(formToken)
         .multipliedBy(10 ** 9)
-        .toString()
+        .toString();
 
       if (formType === FormType.DEPOSIT) {
         try {
           depositTokens(
             publicKey,
             formattedAmount,
-            wallet,
+            anchorWallet,
             tokenPublicKey,
             sharedTokenPublicKey,
             getVaultIndex(vault.id)
           )
             .then(async (txSignature) => {
-              const txSlot = await getTransactionBlock(txSignature)
+              const txSlot = await getTransactionBlock(txSignature as string);
 
               if (txSlot) {
-                setLastTransactionBlock(txSlot)
+                setLastTransactionBlock(txSlot);
               }
             })
             .finally(() => {
-              setOpenDepositLoading(false)
-              onClose()
-            })
+              setOpenDepositLoading(false);
+              onClose();
+            });
         } catch (error) {
-          console.error('Error depositing tokens:', error)
-          setOpenDepositLoading(false)
+          console.error("Error depositing tokens:", error);
+          setOpenDepositLoading(false);
         }
       } else {
         try {
           withdrawTokens(
             publicKey,
             formattedAmount,
-            wallet,
+            anchorWallet,
             tokenPublicKey,
             sharedTokenPublicKey,
             getVaultIndex(vault.id)
           )
             .then(async (txSignature) => {
-              const txSlot = await getTransactionBlock(txSignature)
+              const txSlot = await getTransactionBlock(txSignature as string);
 
               if (txSlot) {
-                setLastTransactionBlock(txSlot)
+                setLastTransactionBlock(txSlot);
               }
             })
             .finally(() => {
-              setOpenDepositLoading(false)
-              onClose()
-            })
+              setOpenDepositLoading(false);
+              onClose();
+            });
         } catch (error) {
-          console.error('Error withdrawing tokens:', error)
-          setOpenDepositLoading(false)
+          console.error("Error withdrawing tokens:", error);
+          setOpenDepositLoading(false);
         }
       }
     },
-    [formType]
-  )
+    [formType, anchorWallet]
+  );
 
   return {
     control,
@@ -357,7 +364,7 @@ const useVaultManageDeposit = (
     onSubmit,
     methods,
     withdrawLimitExceeded,
-  }
-}
+  };
+};
 
-export default useVaultManageDeposit
+export default useVaultManageDeposit;

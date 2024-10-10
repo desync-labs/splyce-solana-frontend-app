@@ -1,47 +1,47 @@
-import { FC, memo } from 'react'
-import { FormProvider } from 'react-hook-form'
-import { useWallet } from '@solana/wallet-adapter-react'
-import BigNumber from 'bignumber.js'
+import { FC, memo } from "react";
+import { FormProvider } from "react-hook-form";
+import { useWallet } from "@solana/wallet-adapter-react";
+import BigNumber from "bignumber.js";
 import {
   Box,
   Button,
   CircularProgress,
   DialogContent,
   Typography,
-} from '@mui/material'
+} from "@mui/material";
 
 import useVaultManageDeposit, {
   FormType,
-} from '@/hooks/Vaults/useVaultManageDeposit'
-import { IVault, IVaultPosition } from '@/utils/TempData'
+} from "@/hooks/Vaults/useVaultManageDeposit";
+import { IVault, IVaultPosition } from "@/utils/TempData";
 
-import ManageVaultForm from '@/components/Vaults/List/ManageVaultModal/ManageVaultForm'
-import ManageVaultInfo from '@/components/Vaults/List/ManageVaultModal/ManageVaultInfo'
-import VaultModalLockingBar from '@/components/Vaults/List/DepositVaultModal/VaultModalLockingBar'
+import ManageVaultForm from "@/components/Vaults/List/ManageVaultModal/ManageVaultForm";
+import ManageVaultInfo from "@/components/Vaults/List/ManageVaultModal/ManageVaultInfo";
+import VaultModalLockingBar from "@/components/Vaults/List/DepositVaultModal/VaultModalLockingBar";
 import {
   BaseDialogButtonWrapper,
   BaseDialogNavItem,
   BaseDialogNavWrapper,
   BaseDialogWrapper,
-} from '@/components/Base/Dialog/StyledDialog'
+} from "@/components/Base/Dialog/StyledDialog";
 import {
   BaseErrorBox,
   BaseWarningBox,
-} from '@/components/Base/Boxes/StyledBoxes'
-import { BaseDialogTitle } from '@/components/Base/Dialog/BaseDialogTitle'
-import WalletConnectBtn from '@/components/Base/WalletConnectBtn'
-import { BaseInfoIcon } from '@/components/Base/Icons/StyledIcons'
+} from "@/components/Base/Boxes/StyledBoxes";
+import { BaseDialogTitle } from "@/components/Base/Dialog/BaseDialogTitle";
+import WalletConnectBtn from "@/components/Base/WalletConnectBtn";
+import { BaseInfoIcon } from "@/components/Base/Icons/StyledIcons";
 
 export type VaultManageProps = {
-  vaultItemData: IVault
-  vaultPosition: IVaultPosition
-  isTfVaultType: boolean
-  tfVaultDepositEndDate: string | null
-  tfVaultLockEndDate: string | null
-  activeTfPeriod: number
-  minimumDeposit: number
-  onClose: () => void
-}
+  vaultItemData: IVault;
+  vaultPosition: IVaultPosition;
+  isTfVaultType: boolean;
+  tfVaultDepositEndDate: string | null;
+  tfVaultLockEndDate: string | null;
+  activeTfPeriod: number;
+  minimumDeposit: number;
+  onClose: () => void;
+};
 
 const VaultListItemManageModal: FC<VaultManageProps> = ({
   vaultItemData,
@@ -75,10 +75,10 @@ const VaultListItemManageModal: FC<VaultManageProps> = ({
     vaultPosition,
     minimumDeposit,
     onClose
-  )
+  );
 
-  const { connected } = useWallet()
-  const { shutdown } = vaultItemData
+  const { connected } = useWallet();
+  const { shutdown } = vaultItemData;
 
   return (
     <BaseDialogWrapper
@@ -92,23 +92,23 @@ const VaultListItemManageModal: FC<VaultManageProps> = ({
       <BaseDialogTitle
         id="customized-dialog-title"
         onClose={onClose}
-        sx={{ padding: '24px' }}
-        sxCloseIcon={{ right: '16px', top: '16px' }}
+        sx={{ padding: "24px" }}
+        sxCloseIcon={{ right: "16px", top: "16px" }}
       >
         {shutdown ? (
-          'Withdrawing'
+          "Withdrawing"
         ) : (
           <BaseDialogNavWrapper>
             <BaseDialogNavItem
               onClick={() => setFormType(FormType.DEPOSIT)}
-              className={formType === FormType.DEPOSIT ? 'active' : ''}
+              className={formType === FormType.DEPOSIT ? "active" : ""}
               data-testid="vault-listItemManageModal-depositNavItem"
             >
               Deposit
             </BaseDialogNavItem>
             <BaseDialogNavItem
               onClick={() => setFormType(FormType.WITHDRAW)}
-              className={formType === FormType.WITHDRAW ? 'active' : ''}
+              className={formType === FormType.WITHDRAW ? "active" : ""}
               data-testid="vault-listItemManageModal-withdrawNavItem"
             >
               Withdraw
@@ -152,7 +152,7 @@ const VaultListItemManageModal: FC<VaultManageProps> = ({
               (BigNumber(walletBalance)
                 .dividedBy(10 ** 9)
                 .isLessThan(BigNumber(formToken)) ||
-                walletBalance == '0') && (
+                walletBalance == "0") && (
                 <BaseErrorBox sx={{ marginBottom: 0 }}>
                   <BaseInfoIcon />
                   <Typography>
@@ -170,7 +170,7 @@ const VaultListItemManageModal: FC<VaultManageProps> = ({
             {activeTfPeriod === 1 && (
               <BaseWarningBox>
                 <BaseInfoIcon
-                  sx={{ width: '20px', color: '#F5953D', height: '20px' }}
+                  sx={{ width: "20px", color: "#F5953D", height: "20px" }}
                 />
                 <Box flexDirection="column">
                   <Typography width="100%">
@@ -199,11 +199,11 @@ const VaultListItemManageModal: FC<VaultManageProps> = ({
                 }
               >
                 {openDepositLoading ? (
-                  <CircularProgress sx={{ color: '#183102' }} size={20} />
+                  <CircularProgress sx={{ color: "#183102" }} size={20} />
                 ) : formType === FormType.DEPOSIT ? (
-                  'Deposit'
+                  "Deposit"
                 ) : (
-                  'Withdraw'
+                  "Withdraw"
                 )}
               </Button>
             )}
@@ -211,7 +211,7 @@ const VaultListItemManageModal: FC<VaultManageProps> = ({
         </FormProvider>
       </DialogContent>
     </BaseDialogWrapper>
-  )
-}
+  );
+};
 
-export default memo(VaultListItemManageModal)
+export default memo(VaultListItemManageModal);

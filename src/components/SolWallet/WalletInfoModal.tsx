@@ -1,18 +1,28 @@
-import { ReactNode, useState } from 'react'
-import Image from 'next/image'
-import { Wallet } from '@solana/wallet-adapter-react'
-import { Box, Button, Drawer, styled, Typography } from '@mui/material'
-import CloseIcon from '@mui/icons-material/Close'
-import ContentCopyRoundedIcon from '@mui/icons-material/ContentCopyRounded'
-import CheckCircleOutlineRoundedIcon from '@mui/icons-material/CheckCircleOutlineRounded'
-import { BaseDialogCloseIcon } from '@/components/Base/Dialog/BaseDialogTitle'
-import { FlexBox } from '@/components/Base/Boxes/StyledBoxes'
-import SolanaNetworkIcon from '@/assets/networks/SolanaNetworkIcon'
-import EthereumNetworkIcon from '@/assets/networks/EthereumNetworkIcon'
-import BinanceNetworkIcon from '@/assets/networks/BinanceNetworkIcon'
-import PolygonNetworkIcon from '@/assets/networks/PolygonNetworkIcon'
-import IconButton from '@mui/material/IconButton'
-import { encodeStr } from '@/utils/common'
+import {
+  JSXElementConstructor,
+  ReactElement,
+  ReactNode,
+  ReactPortal,
+  useEffect,
+  useState,
+} from "react";
+import Image from "next/image";
+import { PublicKey } from "@solana/web3.js";
+import { Wallet } from "@solana/wallet-adapter-react";
+import { Box, Button, Drawer, styled, Typography } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
+import IconButton from "@mui/material/IconButton";
+import ContentCopyRoundedIcon from "@mui/icons-material/ContentCopyRounded";
+import CheckCircleOutlineRoundedIcon from "@mui/icons-material/CheckCircleOutlineRounded";
+import { BaseDialogCloseIcon } from "@/components/Base/Dialog/BaseDialogTitle";
+import { FlexBox } from "@/components/Base/Boxes/StyledBoxes";
+import SolanaNetworkIcon from "@/assets/networks/SolanaNetworkIcon";
+import EthereumNetworkIcon from "@/assets/networks/EthereumNetworkIcon";
+import BinanceNetworkIcon from "@/assets/networks/BinanceNetworkIcon";
+import PolygonNetworkIcon from "@/assets/networks/PolygonNetworkIcon";
+import { encodeStr } from "@/utils/common";
+import { getUserSolanaBalance } from "@/utils/TempSdkMethods";
+import { formatNumber } from "@/utils/format";
 
 const StyledDrawer = styled(Drawer)`
   & .MuiDrawer-paper {
@@ -22,20 +32,20 @@ const StyledDrawer = styled(Drawer)`
     right: 20px;
     border-radius: 16px;
   }
-`
+`;
 
 const DrawerContent = styled(FlexBox)`
   flex-direction: column;
   justify-content: center;
   padding: 24px 20px;
-`
+`;
 
 const WalletLogoWrapper = styled(Box)`
   position: relative;
   & img {
     border-radius: 50%;
   }
-`
+`;
 
 const DisconnectButton = styled(Button)`
   height: 48px;
@@ -44,76 +54,106 @@ const DisconnectButton = styled(Button)`
   background: rgba(55, 127, 146, 0.25);
   color: #bbfb5b;
   border-radius: 0;
-`
+`;
+
+const SolanaBalance = styled(FlexBox)`
+  justify-content: center;
+  width: 100%;
+  padding-top: 8px;
+
+  & span {
+    font-size: 16px;
+    font-weight: 600;
+  }
+`;
 
 interface WalletInfoModalProps {
-  wallet: Wallet | null
-  address: string
-  onDisconnect: () => void
-  isOpen?: boolean
-  onClose: () => void
+  wallet: Wallet;
+  pubKey: PublicKey;
+  onDisconnect: () => void;
+  isOpen?: boolean;
+  onClose: () => void;
 }
 
 type WalletInfo = {
-  adaptarName: string | undefined
-  adaptarIcon?: string
-  network: string
-  networkIcon?: string | ReactNode
-  address: string
-}
+  adapterName: string & { __brand__: "WalletName" };
+  adapterIcon: string;
+  networkIcon:
+    | ReactElement<any, string | JSXElementConstructor<any>>
+    | string
+    | number
+    | Iterable<ReactNode>
+    | ReactPortal
+    | boolean
+    | undefined
+    | null;
+  network: string;
+  pubKey: string | undefined;
+};
 
 function getNetworkIcon(network: string): ReactNode | undefined {
   switch (network) {
-    case 'Solana':
-      return <SolanaNetworkIcon />
-    case 'Ethereum':
-      return <EthereumNetworkIcon />
-    case 'Binance':
-      return <BinanceNetworkIcon />
-    case 'Polgon':
-      return <PolygonNetworkIcon />
+    case "Solana":
+      return <SolanaNetworkIcon />;
+    case "Ethereum":
+      return <EthereumNetworkIcon />;
+    case "Binance":
+      return <BinanceNetworkIcon />;
+    case "Polgon":
+      return <PolygonNetworkIcon />;
   }
 }
 
 const WalletInfoModal = ({
   wallet,
-  address,
+  pubKey,
   isOpen = false,
   onClose,
   onDisconnect,
 }: WalletInfoModalProps) => {
-  const solanaWalletInfo: WalletInfo | undefined = {
-    adaptarName: wallet?.adapter.name,
-    adaptarIcon: wallet?.adapter.icon,
-    network: 'Solana',
-    networkIcon: getNetworkIcon('Solana'),
-    address,
-  }
+  const solanaWalletInfo: WalletInfo = {
+    adapterName: wallet.adapter.name,
+    adapterIcon: wallet.adapter.icon,
+    network: "Solana",
+    networkIcon: getNetworkIcon("Solana"),
+    pubKey: pubKey?.toBase58(),
+  };
 
-  const [copied, setCopied] = useState<boolean>(false)
+  const [copied, setCopied] = useState<boolean>(false);
+  const [solBalance, setSolBalance] = useState<number>(0);
+
+  useEffect(() => {
+    getUserSolanaBalance(pubKey)
+      .then((balance) => {
+        setSolBalance(balance);
+      })
+      .catch((err) => {
+        console.error("Error get balance: ", err);
+      });
+  }, [pubKey]);
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(address).then(
+    navigator.clipboard.writeText(pubKey.toString()).then(
       () => {
-        setCopied(true)
+        setCopied(true);
 
         setTimeout(() => {
-          setCopied(false)
-        }, 2000)
+          setCopied(false);
+        }, 2000);
       },
       (err) => {
-        console.error('Error copy address: ', err)
+        console.error("Error copy address: ", err);
       }
-    )
-  }
+    );
+  };
 
   const handleDisConnect = () => {
-    onDisconnect()
-    onClose()
-  }
+    onDisconnect();
+    onClose();
+  };
 
   return (
-    <StyledDrawer anchor={'right'} open={isOpen} onClose={onClose}>
+    <StyledDrawer anchor={"right"} open={isOpen} onClose={onClose}>
       <BaseDialogCloseIcon aria-label="close" onClick={onClose}>
         <CloseIcon />
       </BaseDialogCloseIcon>
@@ -122,7 +162,7 @@ const WalletInfoModal = ({
         <DrawerContent>
           <WalletLogoWrapper>
             <Image
-              src={solanaWalletInfo.adaptarIcon as string}
+              src={solanaWalletInfo.adapterIcon as string}
               rounded="full"
               overflow="hidden"
               width={40}
@@ -130,13 +170,13 @@ const WalletInfoModal = ({
               alt="wallet icon"
             />
             <Box
-              sx={{ position: 'absolute' }}
-              bottom={'-1px'}
-              right={'-1px'}
+              sx={{ position: "absolute" }}
+              bottom={"-1px"}
+              right={"-1px"}
               width="16px"
               height="16px"
             >
-              {typeof solanaWalletInfo.networkIcon === 'string' ? (
+              {typeof solanaWalletInfo.networkIcon === "string" ? (
                 <Image
                   src={solanaWalletInfo.networkIcon as string}
                   width={16}
@@ -148,17 +188,19 @@ const WalletInfoModal = ({
               )}
             </Box>
           </WalletLogoWrapper>
-
-          <FlexBox sx={{ justifyContent: 'center', gap: 0 }}>
-            <Typography>{encodeStr(solanaWalletInfo.address, 8)}</Typography>
+          <SolanaBalance>
+            Balance: <span>{formatNumber(solBalance)} SOL</span>
+          </SolanaBalance>
+          <FlexBox sx={{ justifyContent: "center", gap: 0 }}>
+            <Typography>{encodeStr(solanaWalletInfo.pubKey, 8)}</Typography>
             <IconButton disabled={copied} onClick={handleCopy}>
               {copied ? (
                 <CheckCircleOutlineRoundedIcon
-                  sx={{ width: '16px', height: '16px' }}
+                  sx={{ width: "16px", height: "16px" }}
                 />
               ) : (
                 <ContentCopyRoundedIcon
-                  sx={{ width: '16px', height: '16px' }}
+                  sx={{ width: "16px", height: "16px" }}
                 />
               )}
             </IconButton>
@@ -171,7 +213,7 @@ const WalletInfoModal = ({
         </DisconnectButton>
       </Box>
     </StyledDrawer>
-  )
-}
+  );
+};
 
-export default WalletInfoModal
+export default WalletInfoModal;

@@ -1,7 +1,7 @@
-import { Dispatch, FC, memo } from 'react'
-import { styled } from '@mui/material/styles'
-import { Box } from '@mui/material'
-import { Menu } from '@/components/AppLayout/Menu'
+import { Dispatch, FC, memo } from "react";
+import { styled } from "@mui/material/styles";
+import { Box } from "@mui/material";
+import { Menu } from "@/components/AppLayout/Menu";
 
 export const MobileMenuWrapper = styled(Box)`
   position: fixed;
@@ -22,18 +22,18 @@ export const MobileMenuWrapper = styled(Box)`
       border-radius: 8px;
     }
   }
-`
+`;
 
 type MobileMenuPropsType = {
-  setOpenMobile: Dispatch<boolean>
-}
+  setOpenMobile: Dispatch<boolean>;
+};
 
 const MobileMenu: FC<MobileMenuPropsType> = memo(({ setOpenMobile }) => {
   return (
     <MobileMenuWrapper onClick={() => setOpenMobile(false)}>
       <Menu open={true} />
     </MobileMenuWrapper>
-  )
-})
+  );
+});
 
-export default MobileMenu
+export default MobileMenu;

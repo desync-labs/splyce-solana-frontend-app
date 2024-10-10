@@ -1,5 +1,5 @@
-import { Controller, useForm } from 'react-hook-form'
-import { FC, memo, useCallback, useEffect, useState } from 'react'
+import { Controller, useForm } from "react-hook-form";
+import { FC, memo, useCallback, useEffect, useState } from "react";
 import {
   Accordion,
   AccordionDetails,
@@ -10,23 +10,23 @@ import {
   FormGroup,
   styled,
   Typography,
-} from '@mui/material'
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+} from "@mui/material";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
-import TransactionResponseDataList from '@/components/Vaults/Detail/Managment/TransactionResponseDataList'
-import { STATE_MUTABILITY_TRANSACTIONS } from '@/components/Vaults/Detail/Managment/ManagementVaultMethodList'
-import { FlexBox } from '@/components/Base/Boxes/StyledBoxes'
+import TransactionResponseDataList from "@/components/Vaults/Detail/Managment/TransactionResponseDataList";
+import { STATE_MUTABILITY_TRANSACTIONS } from "@/components/Vaults/Detail/Managment/ManagementVaultMethodList";
+import { FlexBox } from "@/components/Base/Boxes/StyledBoxes";
 import {
   BaseFormTextField,
   BaseFormInputLabel,
-} from '@/components/Base/Form/StyledForm'
+} from "@/components/Base/Form/StyledForm";
 
 enum MethodType {
-  View = 'view',
-  Mutate = 'mutate',
+  View = "view",
+  Mutate = "mutate",
 }
 
-const EMPTY_FIELD_NAME = 'noname'
+const EMPTY_FIELD_NAME = "noname";
 
 const MethodResponseStyled = styled(Box)`
   position: relative;
@@ -40,10 +40,10 @@ const MethodResponseStyled = styled(Box)`
     width: 100%;
   }
 
-  ${({ theme }) => theme.breakpoints.down('sm')} {
+  ${({ theme }) => theme.breakpoints.down("sm")} {
     font-size: 12px;
   }
-`
+`;
 
 const MethodListItemAccordion = styled(Accordion)`
   border-bottom: 1px solid #476182;
@@ -74,14 +74,14 @@ const MethodListItemAccordion = styled(Accordion)`
     padding: 16px 0;
   }
 
-  ${({ theme }) => theme.breakpoints.down('sm')} {
+  ${({ theme }) => theme.breakpoints.down("sm")} {
     & .MuiAccordionSummary-content {
       p {
         font-size: 12px;
       }
     }
   }
-`
+`;
 
 const AccordionSummaryStyled = styled(AccordionSummary)`
   min-height: 48px;
@@ -98,7 +98,7 @@ const AccordionSummaryStyled = styled(AccordionSummary)`
     min-height: 48px;
     margin: 0;
   }
-`
+`;
 
 const MethodInputFormGroup = styled(FormGroup)`
   margin-bottom: 14px;
@@ -125,7 +125,7 @@ const MethodInputFormGroup = styled(FormGroup)`
     padding: 8px;
   }
 
-  ${({ theme }) => theme.breakpoints.down('sm')} {
+  ${({ theme }) => theme.breakpoints.down("sm")} {
     & .MuiFormLabel-root {
       font-size: 12px;
     }
@@ -135,9 +135,9 @@ const MethodInputFormGroup = styled(FormGroup)`
       padding: 4px 8px;
     }
   }
-`
+`;
 
-export const ReadeMethodIcon = ({ color = '#2C4066' }: { color?: string }) => {
+export const ReadeMethodIcon = ({ color = "#2C4066" }: { color?: string }) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -154,9 +154,9 @@ export const ReadeMethodIcon = ({ color = '#2C4066' }: { color?: string }) => {
         strokeLinejoin="round"
       />
     </svg>
-  )
-}
-export const WriteMethodIcon = ({ color = '#2C4066' }: { color?: string }) => {
+  );
+};
+export const WriteMethodIcon = ({ color = "#2C4066" }: { color?: string }) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -172,44 +172,44 @@ export const WriteMethodIcon = ({ color = '#2C4066' }: { color?: string }) => {
         fill={color}
       />
     </svg>
-  )
-}
+  );
+};
 
 const MethodListItem: FC<{
-  method: any
-  contractAddress: string
-  index: number
+  method: any;
+  contractAddress: string;
+  index: number;
 }> = ({ method, contractAddress, index }) => {
   const { formState, control, handleSubmit, getValues } = useForm({
     defaultValues: {},
-    reValidateMode: 'onChange',
-    mode: 'onChange',
-  })
+    reValidateMode: "onChange",
+    mode: "onChange",
+  });
 
-  const [methodType, setMethodType] = useState<MethodType>(MethodType.View)
-  const [response, setResponse] = useState<any>()
-  const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [methodType, setMethodType] = useState<MethodType>(MethodType.View);
+  const [response, setResponse] = useState<any>();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
     const methodType = STATE_MUTABILITY_TRANSACTIONS.includes(
       method.stateMutability
     )
       ? MethodType.Mutate
-      : MethodType.View
+      : MethodType.View;
 
-    setMethodType(methodType)
-  }, [contractAddress, method, setMethodType])
+    setMethodType(methodType);
+  }, [contractAddress, method, setMethodType]);
 
   const handleSubmitForm = useCallback(async () => {
-    alert('submit')
-  }, [formState, methodType, method, getValues])
+    alert("submit");
+  }, [formState, methodType, method, getValues]);
 
   return (
     <MethodListItemAccordion>
       <AccordionSummaryStyled
         expandIcon={
           <ExpandMoreIcon
-            sx={{ color: '#A9BAD0', width: '24px', height: '24px' }}
+            sx={{ color: "#A9BAD0", width: "24px", height: "24px" }}
           />
         }
         aria-controls="panel1a-content"
@@ -232,16 +232,16 @@ const MethodListItem: FC<{
             <Controller
               key={input.name}
               name={
-                input.name !== ''
+                input.name !== ""
                   ? (input.name as never)
                   : (EMPTY_FIELD_NAME as never)
               }
-              rules={{ required: input.type !== 'address[]' }}
+              rules={{ required: input.type !== "address[]" }}
               control={control}
               render={({ field, fieldState: { error } }) => (
                 <MethodInputFormGroup>
                   <BaseFormInputLabel>{`${input.name} (${input.type}${
-                    input.type === 'uint256' ? ' in wei' : ''
+                    input.type === "uint256" ? " in wei" : ""
                   })`}</BaseFormInputLabel>
                   <BaseFormTextField
                     error={!!error}
@@ -253,10 +253,10 @@ const MethodListItem: FC<{
               )}
             />
           ))}
-          {method.stateMutability === 'payable' && (
+          {method.stateMutability === "payable" && (
             <Controller
               key="value"
-              name={'value' as never}
+              name={"value" as never}
               rules={{ required: true }}
               control={control}
               render={({ field, fieldState: { error } }) => (
@@ -275,20 +275,20 @@ const MethodListItem: FC<{
           <FlexBox
             sx={{
               flexDirection:
-                methodType === MethodType.Mutate ? 'column-reverse' : 'row',
+                methodType === MethodType.Mutate ? "column-reverse" : "row",
               justifyContent:
                 methodType === MethodType.Mutate
-                  ? 'flex-start'
-                  : 'space-between',
+                  ? "flex-start"
+                  : "space-between",
               alignItems:
-                methodType === MethodType.Mutate ? 'flex-end' : 'flex-start',
+                methodType === MethodType.Mutate ? "flex-end" : "flex-start",
             }}
           >
             <MethodResponseStyled
               className={
                 methodType === MethodType.Mutate
-                  ? 'writeMethodRes'
-                  : 'viewMethodRes'
+                  ? "writeMethodRes"
+                  : "viewMethodRes"
               }
             >
               {response !== undefined && <>{renderResponse()}</>}
@@ -296,23 +296,23 @@ const MethodListItem: FC<{
             <Button
               variant="contained"
               sx={{
-                fontSize: '12px',
-                width: '80px',
-                height: '28px',
+                fontSize: "12px",
+                width: "80px",
+                height: "28px",
                 marginTop: 0,
               }}
             >
               {isLoading ? (
-                <CircularProgress size={18} sx={{ color: '#00332f' }} />
+                <CircularProgress size={18} sx={{ color: "#00332f" }} />
               ) : (
-                'Execute'
+                "Execute"
               )}
             </Button>
           </FlexBox>
         </Box>
       </AccordionDetails>
     </MethodListItemAccordion>
-  )
-}
+  );
+};
 
-export default memo(MethodListItem)
+export default memo(MethodListItem);

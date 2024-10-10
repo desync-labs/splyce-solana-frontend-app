@@ -1,23 +1,29 @@
-import { FC, memo, useCallback, useMemo } from 'react'
-import Image from 'next/image'
-import { useRouter } from 'next/router'
-import { Box, TableCell, styled, Button, CircularProgress } from '@mui/material'
-import BigNumber from 'bignumber.js'
+import { FC, memo, useCallback, useMemo } from "react";
+import Image from "next/image";
+import { useRouter } from "next/router";
+import {
+  Box,
+  TableCell,
+  styled,
+  Button,
+  CircularProgress,
+} from "@mui/material";
+import BigNumber from "bignumber.js";
 
-import { IVault, IVaultPosition } from '@/utils/TempData'
-import { getTokenLogoURL } from '@/utils/tokenLogo'
-import { formatCurrency, formatNumber } from '@/utils/format'
-import useVaultListItem from '@/hooks/Vaults/useVaultListItem'
-import { useApr } from '@/hooks/Vaults/useApr'
-import { FlexBox } from '@/components/Base/Boxes/StyledBoxes'
-import { BaseTableItemRow } from '@/components/Base/Table/StyledTable'
-import VaultListItemDepositModal from '@/components/Vaults/List/DepositVaultModal'
-import VaultListItemManageModal from '@/components/Vaults/List/ManageVaultModal'
+import { IVault, IVaultPosition } from "@/utils/TempData";
+import { getTokenLogoURL } from "@/utils/tokenLogo";
+import { formatCurrency, formatNumber } from "@/utils/format";
+import useVaultListItem from "@/hooks/Vaults/useVaultListItem";
+import { useApr } from "@/hooks/Vaults/useApr";
+import { FlexBox } from "@/components/Base/Boxes/StyledBoxes";
+import { BaseTableItemRow } from "@/components/Base/Table/StyledTable";
+import VaultListItemDepositModal from "@/components/Vaults/List/DepositVaultModal";
+import VaultListItemManageModal from "@/components/Vaults/List/ManageVaultModal";
 
-import LockAquaSrc from 'assets/svg/lock-aqua.svg'
-import LockSrc from 'assets/svg/lock.svg'
+import LockAquaSrc from "assets/svg/lock-aqua.svg";
+import LockSrc from "assets/svg/lock.svg";
 
-export const VaultTitle = styled('div')`
+export const VaultTitle = styled("div")`
   display: flex;
   align-items: center;
   gap: 8px;
@@ -26,31 +32,31 @@ export const VaultTitle = styled('div')`
   font-size: 14px;
   line-height: 20px;
   text-decoration-line: underline;
-`
+`;
 
-export const VaultEarned = styled('div')`
+export const VaultEarned = styled("div")`
   line-height: 20px;
   font-size: 14px;
   color: #fff;
-`
+`;
 
-export const VaultApr = styled('div')`
+export const VaultApr = styled("div")`
   color: #fff;
-`
+`;
 
-export const VaultStackedLiquidity = styled('div')`
+export const VaultStackedLiquidity = styled("div")`
   color: #fff;
-`
+`;
 
-export const VaultAvailable = styled('div')`
+export const VaultAvailable = styled("div")`
   &.blue {
     color: #6d86b2;
   }
   color: #fff;
   word-break: break-word;
-`
+`;
 
-export const VaultStacked = styled('div')`
+export const VaultStacked = styled("div")`
   display: flex;
   align-items: center;
   font-size: 14px;
@@ -72,9 +78,9 @@ export const VaultStacked = styled('div')`
   .value {
     color: #fff;
   }
-`
+`;
 
-export const VaultTagLabel = styled('div')`
+export const VaultTagLabel = styled("div")`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -87,12 +93,12 @@ export const VaultTagLabel = styled('div')`
   border-radius: 6px;
   margin-bottom: 4px;
   padding: 4px 8px;
-  ${({ theme }) => theme.breakpoints.down('sm')} {
+  ${({ theme }) => theme.breakpoints.down("sm")} {
     margin-left: 19px;
   }
-`
+`;
 
-export const VaultListItemImageWrapper = styled('div')`
+export const VaultListItemImageWrapper = styled("div")`
   display: flex;
   justify-content: left;
 
@@ -100,25 +106,25 @@ export const VaultListItemImageWrapper = styled('div')`
     border-radius: 18px;
   }
 
-  ${({ theme }) => theme.breakpoints.down('sm')} {
+  ${({ theme }) => theme.breakpoints.down("sm")} {
     img {
       margin-top: 0;
     }
   }
-`
+`;
 
 type VaultListItemProps = {
-  vaultItemData: IVault
-  vaultPosition: IVaultPosition
-}
+  vaultItemData: IVault;
+  vaultPosition: IVaultPosition;
+};
 
 const VaultListItem: FC<VaultListItemProps> = ({
   vaultItemData,
   vaultPosition,
 }) => {
-  const { token, shutdown, balanceTokens, depositLimit } = vaultItemData
-  const router = useRouter()
-  const formattedApr = useApr(vaultItemData)
+  const { token, shutdown, balanceTokens, depositLimit } = vaultItemData;
+  const router = useRouter();
+  const formattedApr = useApr(vaultItemData);
 
   const {
     balanceEarned,
@@ -136,26 +142,26 @@ const VaultListItem: FC<VaultListItemProps> = ({
     minimumDeposit,
     isWithdrawLoading,
     showWithdrawAllButton,
-  } = useVaultListItem({ vaultPosition, vault: vaultItemData })
+  } = useVaultListItem({ vaultPosition, vault: vaultItemData });
 
   const redirectToVaultDetail = useCallback(() => {
-    router.push(`/vaults/${vaultItemData.id}`)
-  }, [vaultItemData.id])
+    router.push(`/vaults/${vaultItemData.id}`);
+  }, [vaultItemData.id]);
 
-  const fxdPrice = 1
+  const fxdPrice = 1;
 
   return (
     <>
       <BaseTableItemRow>
         <TableCell
           colSpan={2}
-          sx={{ width: '20%', cursor: 'pointer' }}
+          sx={{ width: "20%", cursor: "pointer" }}
           onClick={redirectToVaultDetail}
         >
-          <FlexBox sx={{ justifyContent: 'flex-start', gap: '11px' }}>
+          <FlexBox sx={{ justifyContent: "flex-start", gap: "11px" }}>
             <VaultListItemImageWrapper>
               <Image
-                src={getTokenLogoURL('1')}
+                src={getTokenLogoURL("1")}
                 width={24}
                 height={24}
                 alt={vaultItemData.id}
@@ -175,10 +181,10 @@ const VaultListItem: FC<VaultListItemProps> = ({
             </Box>
           </FlexBox>
         </TableCell>
-        <TableCell colSpan={1} sx={{ width: '11%' }}>
+        <TableCell colSpan={1} sx={{ width: "11%" }}>
           <VaultEarned>
             {balanceEarned && BigNumber(balanceEarned).isGreaterThan(0) ? (
-              '$' +
+              "$" +
               formatNumber(
                 BigNumber(balanceEarned)
                   .multipliedBy(fxdPrice)
@@ -192,10 +198,10 @@ const VaultListItem: FC<VaultListItemProps> = ({
             )}
           </VaultEarned>
         </TableCell>
-        <TableCell colSpan={1} sx={{ width: '10%' }}>
+        <TableCell colSpan={1} sx={{ width: "10%" }}>
           <VaultApr>{formattedApr}%</VaultApr>
         </TableCell>
-        <TableCell colSpan={2} sx={{ width: '13%' }}>
+        <TableCell colSpan={2} sx={{ width: "13%" }}>
           <VaultStackedLiquidity>
             {formatCurrency(
               BigNumber(fxdPrice)
@@ -205,7 +211,7 @@ const VaultListItem: FC<VaultListItemProps> = ({
             )}
           </VaultStackedLiquidity>
         </TableCell>
-        <TableCell colSpan={1} sx={{ width: '14%' }}>
+        <TableCell colSpan={1} sx={{ width: "14%" }}>
           <VaultAvailable>
             {
               // isTfVaultType
@@ -224,31 +230,31 @@ const VaultListItem: FC<VaultListItemProps> = ({
                   0
                 )
               )
-            }{' '}
+            }{" "}
             {token.symbol}
           </VaultAvailable>
         </TableCell>
-        <TableCell colSpan={1} sx={{ width: '15%' }}>
+        <TableCell colSpan={1} sx={{ width: "15%" }}>
           <VaultStacked>
-            <Box className={'img-wrapper'}>
+            <Box className={"img-wrapper"}>
               {vaultPosition?.balancePosition &&
               BigNumber(vaultPosition?.balancePosition).isGreaterThan(0) ? (
                 <Image
                   src={LockAquaSrc as string}
-                  alt={'locked-active'}
+                  alt={"locked-active"}
                   width={20}
                   height={20}
                 />
               ) : (
                 <Image
                   src={LockSrc as string}
-                  alt={'locked'}
+                  alt={"locked"}
                   width={20}
                   height={20}
                 />
               )}
             </Box>
-            <Box className={'value'}>
+            <Box className={"value"}>
               {vaultPosition
                 ? formatNumber(
                     BigNumber(vaultPosition.balancePosition)
@@ -256,17 +262,17 @@ const VaultListItem: FC<VaultListItemProps> = ({
                       .toNumber()
                   )
                 : 0}
-              {' ' + token.symbol}
+              {" " + token.symbol}
             </Box>
           </VaultStacked>
         </TableCell>
         <TableCell colSpan={4}>
           <FlexBox
             sx={{
-              justifyContent: 'flex-end',
-              gap: '16px',
-              mx: '16px',
-              width: 'inherit',
+              justifyContent: "flex-end",
+              gap: "16px",
+              mx: "16px",
+              width: "inherit",
             }}
           >
             {(!vaultPosition ||
@@ -276,7 +282,7 @@ const VaultListItem: FC<VaultListItemProps> = ({
                 <Button
                   variant="contained"
                   onClick={() => setNewVaultDeposit(true)}
-                  sx={{ minWidth: '100px' }}
+                  sx={{ minWidth: "100px" }}
                 >
                   Deposit
                 </Button>
@@ -288,7 +294,7 @@ const VaultListItem: FC<VaultListItemProps> = ({
                 <Button
                   variant="contained"
                   onClick={() => setManageVault(true)}
-                  sx={{ minWidth: '100px' }}
+                  sx={{ minWidth: "100px" }}
                 >
                   Manage
                 </Button>
@@ -300,7 +306,7 @@ const VaultListItem: FC<VaultListItemProps> = ({
                 <Button
                   variant="contained"
                   onClick={() => setManageVault(true)}
-                  sx={{ minWidth: '100px' }}
+                  sx={{ minWidth: "100px" }}
                 >
                   Withdraw
                 </Button>
@@ -313,7 +319,7 @@ const VaultListItem: FC<VaultListItemProps> = ({
                   variant="contained"
                   onClick={handleWithdrawAll}
                   disabled={isWithdrawLoading || !showWithdrawAllButton}
-                  sx={{ minWidth: '100px' }}
+                  sx={{ minWidth: "100px" }}
                 >
                   Withdraw all
                 </Button>
@@ -335,7 +341,7 @@ const VaultListItem: FC<VaultListItemProps> = ({
               onClose={() => setNewVaultDeposit(false)}
             />
           )
-        )
+        );
       }, [newVaultDeposit, setNewVaultDeposit])}
       {useMemo(() => {
         return (
@@ -352,10 +358,10 @@ const VaultListItem: FC<VaultListItemProps> = ({
               onClose={() => setManageVault(false)}
             />
           )
-        )
+        );
       }, [manageVault, setManageVault])}
     </>
-  )
-}
+  );
+};
 
-export default memo(VaultListItem)
+export default memo(VaultListItem);

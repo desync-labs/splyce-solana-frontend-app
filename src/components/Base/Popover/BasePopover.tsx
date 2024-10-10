@@ -5,15 +5,15 @@ import {
   ReactNode,
   useState,
   MouseEvent,
-} from 'react'
-import { Popover, Typography } from '@mui/material'
-import InfoIcon from '@mui/icons-material/Info'
-import { styled } from '@mui/material/styles'
+} from "react";
+import { Popover, Typography } from "@mui/material";
+import InfoIcon from "@mui/icons-material/Info";
+import { styled } from "@mui/material/styles";
 
 const PopoverWrapper = styled(Popover)<{ type: PopoverType }>`
   .MuiPaper-root {
     background: ${({ type }) =>
-      type === PopoverType.Error ? '#FF6767' : 'rgba(255, 255, 255, 0.9)'};
+      type === PopoverType.Error ? "#FF6767" : "rgba(255, 255, 255, 0.9)"};
     color: #000c24;
     max-width: 400px;
     border-radius: 8px;
@@ -26,7 +26,7 @@ const PopoverWrapper = styled(Popover)<{ type: PopoverType }>`
     }
   }
 
-  ${({ theme }) => theme.breakpoints.down('sm')} {
+  ${({ theme }) => theme.breakpoints.down("sm")} {
     .MuiPaper-root {
       max-width: 350px;
       padding: 8px 12px;
@@ -36,41 +36,41 @@ const PopoverWrapper = styled(Popover)<{ type: PopoverType }>`
       }
     }
   }
-`
+`;
 
 export enum PopoverType {
-  Info = 'info',
-  Error = 'error',
+  Info = "info",
+  Error = "error",
 }
 
 type AppPopoverProps = {
-  id: string
-  text: ReactNode
-  element?: ReactElement
-  type?: PopoverType
-  iconSize?: string
-  iconColor?: string
-}
+  id: string;
+  text: ReactNode;
+  element?: ReactElement;
+  type?: PopoverType;
+  iconSize?: string;
+  iconColor?: string;
+};
 
 const BasePopover: FC<AppPopoverProps> = ({
   id,
   text,
   element,
   type = PopoverType.Info,
-  iconSize = '16px',
-  iconColor = '#A9BAD0',
+  iconSize = "16px",
+  iconColor = "#A9BAD0",
 }) => {
-  const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null)
+  const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
 
   const handlePopoverOpen = (event: MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget)
-  }
+    setAnchorEl(event.currentTarget);
+  };
 
   const handlePopoverClose = () => {
-    setAnchorEl(null)
-  }
+    setAnchorEl(null);
+  };
 
-  const open = Boolean(anchorEl)
+  const open = Boolean(anchorEl);
 
   return (
     <>
@@ -78,12 +78,12 @@ const BasePopover: FC<AppPopoverProps> = ({
         cloneElement(element, {
           onMouseEnter: handlePopoverOpen,
           onMouseLeave: handlePopoverClose,
-          'aria-owns': open ? id : undefined,
-          style: { cursor: 'pointer' },
+          "aria-owns": open ? id : undefined,
+          style: { cursor: "pointer" },
         })
       ) : (
         <span
-          style={{ display: 'inline-flex', cursor: 'pointer' }}
+          style={{ display: "inline-flex", cursor: "pointer" }}
           aria-owns={open ? id : undefined}
           aria-haspopup="true"
           onMouseEnter={handlePopoverOpen}
@@ -95,18 +95,18 @@ const BasePopover: FC<AppPopoverProps> = ({
       <PopoverWrapper
         id={id}
         sx={{
-          pointerEvents: 'none',
+          pointerEvents: "none",
         }}
         type={type}
         open={open}
         anchorEl={anchorEl}
         anchorOrigin={{
-          vertical: 'top',
-          horizontal: 'right',
+          vertical: "top",
+          horizontal: "right",
         }}
         transformOrigin={{
-          vertical: 'top',
-          horizontal: 'left',
+          vertical: "top",
+          horizontal: "left",
         }}
         onClose={handlePopoverClose}
         disableRestoreFocus
@@ -114,7 +114,7 @@ const BasePopover: FC<AppPopoverProps> = ({
         <Typography>{text}</Typography>
       </PopoverWrapper>
     </>
-  )
-}
+  );
+};
 
-export default BasePopover
+export default BasePopover;

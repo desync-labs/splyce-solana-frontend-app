@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client'
+import { gql } from "@apollo/client";
 
 /**
  * Vault queries
@@ -40,7 +40,7 @@ export const VAULTS = gql`
       }
     }
   }
-`
+`;
 export const VAULT = gql`
   query Vault($id: ID, $network: String) {
     vault(id: $id) {
@@ -74,7 +74,7 @@ export const VAULT = gql`
       }
     }
   }
-`
+`;
 
 export const VAULT_POSITION = gql`
   query AccountVaultPositions(
@@ -105,7 +105,7 @@ export const VAULT_POSITION = gql`
       }
     }
   }
-`
+`;
 
 export const VAULT_STRATEGY_REPORTS = gql`
   query VaultStrategyReports(
@@ -137,7 +137,7 @@ export const VAULT_STRATEGY_REPORTS = gql`
       currentDebt
     }
   }
-`
+`;
 
 export const ACCOUNT_VAULT_POSITIONS = gql`
   query AccountVaultPositions(
@@ -169,7 +169,7 @@ export const ACCOUNT_VAULT_POSITIONS = gql`
       }
     }
   }
-`
+`;
 
 export const VAULT_POSITION_TRANSACTIONS = gql`
   query VaultPositionTransactions(
@@ -207,7 +207,7 @@ export const VAULT_POSITION_TRANSACTIONS = gql`
       blockNumber
     }
   }
-`
+`;
 
 export const VAULTS_ACCOUNT_DEPOSITS = gql`
   query VaultAccountDeposits(
@@ -229,7 +229,7 @@ export const VAULTS_ACCOUNT_DEPOSITS = gql`
       blockNumber
     }
   }
-`
+`;
 
 export const VAULTS_ACCOUNT_WITHDRAWALS = gql`
   query VaultAccountWithdrawals(
@@ -251,4 +251,4 @@ export const VAULTS_ACCOUNT_WITHDRAWALS = gql`
       blockNumber
     }
   }
-`
+`;

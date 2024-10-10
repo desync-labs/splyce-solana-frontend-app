@@ -1,9 +1,9 @@
-import { useState } from 'react'
-import { WalletReadyState } from '@solana/wallet-adapter-base'
-import { Wallet } from '@solana/wallet-adapter-react'
-import AccountBalanceWalletOutlinedIcon from '@mui/icons-material/AccountBalanceWalletOutlined'
-import SmartphoneRoundedIcon from '@mui/icons-material/SmartphoneRounded'
-import ComputerRoundedIcon from '@mui/icons-material/ComputerRounded'
+import { useState } from "react";
+import { WalletReadyState } from "@solana/wallet-adapter-base";
+import { Wallet } from "@solana/wallet-adapter-react";
+import AccountBalanceWalletOutlinedIcon from "@mui/icons-material/AccountBalanceWalletOutlined";
+import SmartphoneRoundedIcon from "@mui/icons-material/SmartphoneRounded";
+import ComputerRoundedIcon from "@mui/icons-material/ComputerRounded";
 import {
   Box,
   Collapse,
@@ -14,19 +14,19 @@ import {
   Switch,
   Typography,
   styled,
-} from '@mui/material'
-import { BaseDialogTitle } from '@/components/Base/Dialog/BaseDialogTitle'
+} from "@mui/material";
+import { BaseDialogTitle } from "@/components/Base/Dialog/BaseDialogTitle";
 import {
   BaseDialogContent,
   BaseDialogWrapper,
-} from '@/components/Base/Dialog/StyledDialog'
-import { BaseWarningBox, FlexBox } from '@/components/Base/Boxes/StyledBoxes'
-import BasePopover from '@/components/Base/Popover/BasePopover'
+} from "@/components/Base/Dialog/StyledDialog";
+import { BaseWarningBox, FlexBox } from "@/components/Base/Boxes/StyledBoxes";
+import BasePopover from "@/components/Base/Popover/BasePopover";
 import {
   BaseButtonSecondary,
   BaseButtonSecondaryLink,
   ExtLinkIcon,
-} from '@/components/Base/Buttons/StyledButtons'
+} from "@/components/Base/Buttons/StyledButtons";
 
 const WalletItemWrapper = styled(FlexBox)`
   justify-content: flex-start;
@@ -40,11 +40,11 @@ const WalletItemWrapper = styled(FlexBox)`
     opacity: 1;
     cursor: pointer;
   }
-`
+`;
 
 const ScrollableBox = styled(Box)`
   overflow-y: auto;
-`
+`;
 
 const WalletItemLabel = styled(FlexBox)`
   justify-content: flex-end;
@@ -52,7 +52,7 @@ const WalletItemLabel = styled(FlexBox)`
   background: rgba(81, 109, 115, 0.4);
   border-radius: 8px;
   padding: 4px 8px;
-`
+`;
 
 const InstallStepItem = styled(FlexBox)`
   flex-direction: column;
@@ -69,14 +69,22 @@ const InstallStepItem = styled(FlexBox)`
     padding-top: 0;
     padding-bottom: 0;
   }
-`
+`;
+
+const WalletItemContentFlexBox = styled(FlexBox)`
+  ${({ theme }) => theme.breakpoints.down("sm")} {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+  }
+`;
 
 interface SelectWalletModalProps {
-  wallets: Wallet[]
-  isOpen: boolean
+  wallets: Wallet[];
+  isOpen: boolean;
   // eslint-disable-next-line no-unused-vars
-  onSelectWallet: (wallet: Wallet) => void
-  onClose: () => void
+  onSelectWallet: (wallet: Wallet) => void;
+  onClose: () => void;
 }
 
 const WalletItem = ({
@@ -84,48 +92,50 @@ const WalletItem = ({
   wallet,
   onClick,
 }: {
-  selectable?: boolean
-  wallet: Wallet
+  selectable?: boolean;
+  wallet: Wallet;
   // eslint-disable-next-line no-unused-vars
-  onClick: (wallet: Wallet) => void
-  isCurrent?: boolean
+  onClick: (wallet: Wallet) => void;
+  isCurrent?: boolean;
 }) => {
   return (
     <Grid item xs={6}>
       <WalletItemWrapper
         onClick={() => onClick(wallet)}
-        className={selectable ? 'selectable' : ''}
+        className={selectable ? "selectable" : ""}
       >
         <img
           src={wallet.adapter.icon}
           width={32}
           height={32}
-          alt={'wallet_adapter'}
+          alt={"wallet_adapter"}
         />
-        <Typography fontWeight={700}>{wallet.adapter.name}</Typography>
-        <Box flexGrow={1}></Box>
-        {wallet.adapter.name === 'Phantom' && (
-          <WalletItemLabel>
-            <Typography fontSize="12px">Auto confirm</Typography>
-            <BasePopover
-              id="auto_confirm_tip"
-              text="Auto-confirm is now available for all transactions on Splyce."
-            />
-          </WalletItemLabel>
-        )}
-        {wallet.adapter.name === 'Solflare' && (
-          <WalletItemLabel>
-            <Typography fontSize="12px">Auto approve</Typography>
-            <BasePopover
-              id="auto_approve_tip_solflare"
-              text="Auto-approve is now available for all transactions on Splyce."
-            />
-          </WalletItemLabel>
-        )}
+        <WalletItemContentFlexBox>
+          <Typography fontWeight={700}>{wallet.adapter.name}</Typography>
+          <Box flexGrow={1}></Box>
+          {wallet.adapter.name === "Phantom" && (
+            <WalletItemLabel>
+              <Typography fontSize="12px">Auto confirm</Typography>
+              <BasePopover
+                id="auto_confirm_tip"
+                text="Auto-confirm is now available for all transactions on Splyce."
+              />
+            </WalletItemLabel>
+          )}
+          {wallet.adapter.name === "Solflare" && (
+            <WalletItemLabel>
+              <Typography fontSize="12px">Auto approve</Typography>
+              <BasePopover
+                id="auto_approve_tip_solflare"
+                text="Auto-approve is now available for all transactions on Splyce."
+              />
+            </WalletItemLabel>
+          )}
+        </WalletItemContentFlexBox>
       </WalletItemWrapper>
     </Grid>
-  )
-}
+  );
+};
 
 const SelectWalletModal = ({
   wallets,
@@ -134,14 +144,14 @@ const SelectWalletModal = ({
   onClose,
 }: SelectWalletModalProps) => {
   const [canShowUninstalledWallets, setCanShowUninstalledWallets] =
-    useState(false)
-  const [isWalletNotInstalled, setIsWalletNotInstalled] = useState(false)
+    useState(false);
+  const [isWalletNotInstalled, setIsWalletNotInstalled] = useState(false);
 
-  const { recommendedWallets, notInstalledWallets } = splitWallets(wallets)
+  const { recommendedWallets, notInstalledWallets } = splitWallets(wallets);
 
   const phantomWallet = recommendedWallets.find(
-    (w) => w.adapter.name === 'Phantom'
-  )
+    (w) => w.adapter.name === "Phantom"
+  );
 
   return (
     <BaseDialogWrapper
@@ -161,18 +171,18 @@ const SelectWalletModal = ({
                 Oops... Looks like you don’t have Phantom installed!
               </Typography>
             </BaseWarningBox>
-            <FlexBox mt={5} sx={{ justifyContent: 'center' }}>
+            <FlexBox mt={5} sx={{ justifyContent: "center" }}>
               <img
                 src={phantomWallet?.adapter.icon as string}
                 width={100}
                 height={100}
-                alt={'install_phantom'}
+                alt={"install_phantom"}
               />
             </FlexBox>
-            <FlexBox mt={3} sx={{ justifyContent: 'center' }}>
+            <FlexBox mt={3} sx={{ justifyContent: "center" }}>
               <BaseButtonSecondaryLink
                 href="https://phantom.app"
-                target={'_blank'}
+                target={"_blank"}
               >
                 Install Phantom
                 <ExtLinkIcon />
@@ -181,11 +191,11 @@ const SelectWalletModal = ({
             <FlexBox
               px={1.5}
               mt={6}
-              sx={{ flexDirection: 'column', alignItems: 'start' }}
+              sx={{ flexDirection: "column", alignItems: "start" }}
             >
               <Typography>How to install Phantom?</Typography>
               <InstallStepItem>
-                <FlexBox sx={{ justifyContent: 'flex-start' }}>
+                <FlexBox sx={{ justifyContent: "flex-start" }}>
                   <SmartphoneRoundedIcon />
                   <Typography fontWeight="medium">On mobile:</Typography>
                 </FlexBox>
@@ -194,7 +204,7 @@ const SelectWalletModal = ({
                 </List>
               </InstallStepItem>
               <InstallStepItem>
-                <FlexBox sx={{ justifyContent: 'flex-start' }}>
+                <FlexBox sx={{ justifyContent: "flex-start" }}>
                   <ComputerRoundedIcon />
                   <Typography fontWeight="medium">On desktop:</Typography>
                 </FlexBox>
@@ -205,28 +215,28 @@ const SelectWalletModal = ({
                 </List>
               </InstallStepItem>
             </FlexBox>
-            <FlexBox px={1.5} mt={6} sx={{ flexDirection: 'column' }}>
+            <FlexBox px={1.5} mt={6} sx={{ flexDirection: "column" }}>
               <BaseButtonSecondary
                 onClick={() => {
                   if (
                     !phantomWallet ||
                     phantomWallet.readyState == WalletReadyState.NotDetected
                   ) {
-                    window.location.reload()
+                    window.location.reload();
                   } else {
-                    onSelectWallet(phantomWallet)
-                    onClose()
+                    onSelectWallet(phantomWallet);
+                    onClose();
                   }
                 }}
-                sx={{ borderColor: 'transparent' }}
+                sx={{ borderColor: "transparent" }}
               >
                 I’ve already Installed, Refresh page
               </BaseButtonSecondary>
               <BaseButtonSecondary
                 onClick={() => {
-                  setIsWalletNotInstalled(false)
+                  setIsWalletNotInstalled(false);
                 }}
-                sx={{ borderColor: 'transparent' }}
+                sx={{ borderColor: "transparent" }}
               >
                 Go back
               </BaseButtonSecondary>
@@ -247,12 +257,12 @@ const SelectWalletModal = ({
                     onClick={(wallet) => {
                       if (
                         wallet.readyState == WalletReadyState.NotDetected &&
-                        wallet.adapter.name === 'Phantom'
+                        wallet.adapter.name === "Phantom"
                       ) {
-                        setIsWalletNotInstalled(true)
-                        return
+                        setIsWalletNotInstalled(true);
+                        return;
                       }
-                      onSelectWallet(wallet)
+                      onSelectWallet(wallet);
                     }}
                   />
                 ))}
@@ -284,7 +294,7 @@ const SelectWalletModal = ({
               bgcolor="#314156"
               borderRadius="16px"
             >
-              <FlexBox sx={{ justifyContent: 'flex-start' }}>
+              <FlexBox sx={{ justifyContent: "flex-start" }}>
                 <AccountBalanceWalletOutlinedIcon />
                 <Typography>Show uninstalled wallets</Typography>
               </FlexBox>
@@ -297,35 +307,37 @@ const SelectWalletModal = ({
         )}
       </BaseDialogContent>
     </BaseDialogWrapper>
-  )
-}
+  );
+};
 
 function splitWallets(wallets: Wallet[]): {
-  recommendedWallets: Wallet[]
-  notInstalledWallets: Wallet[]
+  recommendedWallets: Wallet[];
+  notInstalledWallets: Wallet[];
 } {
   const supportedWallets = wallets.filter(
     (w) => w.readyState !== WalletReadyState.Unsupported
-  )
+  );
   const recommendedWallets = supportedWallets.filter(
     (w) =>
       w.readyState !== WalletReadyState.NotDetected &&
-      w.adapter.name !== 'Sollet'
-  )
+      w.adapter.name !== "Sollet"
+  );
   const notInstalledWallets = supportedWallets.filter(
     (w) =>
       w.readyState == WalletReadyState.NotDetected &&
-      w.adapter.name !== 'Phantom'
-  )
-  const solletWallet = supportedWallets.find((w) => w.adapter.name === 'Sollet')
-  solletWallet && notInstalledWallets.push(solletWallet)
+      w.adapter.name !== "Phantom"
+  );
+  const solletWallet = supportedWallets.find(
+    (w) => w.adapter.name === "Sollet"
+  );
+  solletWallet && notInstalledWallets.push(solletWallet);
   const phantomWallet = supportedWallets.find(
-    (w) => w.adapter.name === 'Phantom'
-  )
+    (w) => w.adapter.name === "Phantom"
+  );
   phantomWallet &&
     phantomWallet.readyState == WalletReadyState.NotDetected &&
-    recommendedWallets.unshift(phantomWallet)
-  return { recommendedWallets, notInstalledWallets }
+    recommendedWallets.unshift(phantomWallet);
+  return { recommendedWallets, notInstalledWallets };
 }
 
-export default SelectWalletModal
+export default SelectWalletModal;

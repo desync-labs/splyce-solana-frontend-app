@@ -1,4 +1,4 @@
-import { Box } from '@mui/material'
+import { Box } from "@mui/material";
 
 export default function AvalancheNetworkIcon() {
   return (
@@ -69,5 +69,5 @@ export default function AvalancheNetworkIcon() {
         </defs>
       </svg>
     </Box>
-  )
+  );
 }

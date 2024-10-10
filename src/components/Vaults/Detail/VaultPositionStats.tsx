@@ -1,12 +1,12 @@
-import { memo, useEffect, useState } from 'react'
-import { Box, Paper, styled, Typography } from '@mui/material'
-import BigNumber from 'bignumber.js'
-import useVaultContext from '@/context/vaultDetail'
-import useSharedContext from '@/context/shared'
-import { formatNumber } from '@/utils/format'
-import BasePageStatsWrapper from '@/components/Base/PageStatsGrid/PageStatsWrapper'
-import BasePageStatsItem from '@/components/Base/PageStatsGrid/PageStatsItem'
-import { StatsValueSkeleton } from '@/components/Base/Skeletons/StyledSkeleton'
+import { memo, useEffect, useState } from "react";
+import { Box, Paper, styled, Typography } from "@mui/material";
+import BigNumber from "bignumber.js";
+import useVaultContext from "@/context/vaultDetail";
+import useSharedContext from "@/context/shared";
+import { formatNumber } from "@/utils/format";
+import BasePageStatsWrapper from "@/components/Base/PageStatsGrid/PageStatsWrapper";
+import BasePageStatsItem from "@/components/Base/PageStatsGrid/PageStatsItem";
+import { StatsValueSkeleton } from "@/components/Base/Skeletons/StyledSkeleton";
 
 const VaultPositionTitle = styled(Typography)`
   color: #fff;
@@ -14,10 +14,10 @@ const VaultPositionTitle = styled(Typography)`
   font-weight: 600;
   line-height: 24px;
   margin-bottom: 12px;
-  ${({ theme }) => theme.breakpoints.down('sm')} {
+  ${({ theme }) => theme.breakpoints.down("sm")} {
     font-size: 16px;
   }
-`
+`;
 
 const UsdValue = styled(Box)`
   color: #a9bad0;
@@ -25,7 +25,7 @@ const UsdValue = styled(Box)`
   font-style: normal;
   font-weight: 600;
   line-height: 20px;
-`
+`;
 
 const VaultPositionStats = () => {
   const {
@@ -36,22 +36,22 @@ const VaultPositionStats = () => {
     balanceEarned,
     tfVaultDepositLimit,
     isTfVaultType,
-  } = useVaultContext()
+  } = useVaultContext();
 
-  const fxdPrice = 1
+  const fxdPrice = 1;
 
-  const { isMobile } = useSharedContext()
-  const [isLoading, setIsLoading] = useState<boolean>(true)
+  const { isMobile } = useSharedContext();
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const timeout = setTimeout(() => {
-      setIsLoading(vaultLoading || vaultPositionLoading)
-    }, 300)
+      setIsLoading(vaultLoading || vaultPositionLoading);
+    }, 300);
 
     return () => {
-      timeout && clearTimeout(timeout)
-    }
-  }, [vaultLoading, vaultPositionLoading, setIsLoading])
+      timeout && clearTimeout(timeout);
+    };
+  }, [vaultLoading, vaultPositionLoading, setIsLoading]);
 
   const getVaultDepositLimit = () => {
     // if (isTfVaultType) {
@@ -63,22 +63,22 @@ const VaultPositionStats = () => {
         .dividedBy(10 ** 9)
         .toNumber(),
       0
-    )
+    );
     //}
-  }
+  };
 
   return (
     <Paper>
       <VaultPositionTitle variant="h1">Your Position</VaultPositionTitle>
       <BasePageStatsWrapper>
         <BasePageStatsItem
-          title={'Total Deposited'}
+          title={"Total Deposited"}
           value={
             isLoading ? (
               <StatsValueSkeleton
                 height={isMobile ? 40 : 42}
-                width={'100%'}
-                marginTop={isMobile ? '0' : '12px'}
+                width={"100%"}
+                marginTop={isMobile ? "0" : "12px"}
               />
             ) : (
               <>
@@ -87,10 +87,10 @@ const VaultPositionStats = () => {
                     .dividedBy(10 ** 9)
                     .toNumber()
                 ) +
-                  ' ' +
+                  " " +
                   vault?.token?.symbol}
                 <UsdValue>
-                  {'$' +
+                  {"$" +
                     formatNumber(
                       BigNumber(vault?.balanceTokens || 0)
                         .multipliedBy(fxdPrice)
@@ -106,20 +106,20 @@ const VaultPositionStats = () => {
           md={4}
         />
         <BasePageStatsItem
-          title={'Available'}
+          title={"Available"}
           value={
             isLoading ? (
               <StatsValueSkeleton
                 height={isMobile ? 40 : 42}
-                width={'100%'}
-                marginTop={isMobile ? '0' : '12px'}
+                width={"100%"}
+                marginTop={isMobile ? "0" : "12px"}
               />
             ) : (
               <>
-                {formatNumber(getVaultDepositLimit().toNumber())}{' '}
+                {formatNumber(getVaultDepositLimit().toNumber())}{" "}
                 {vault?.token?.symbol}
                 <UsdValue>
-                  {'$' +
+                  {"$" +
                     formatNumber(
                       getVaultDepositLimit().multipliedBy(fxdPrice).toNumber()
                     )}
@@ -132,13 +132,13 @@ const VaultPositionStats = () => {
           md={4}
         />
         <BasePageStatsItem
-          title={'Balance'}
+          title={"Balance"}
           value={
             isLoading ? (
               <StatsValueSkeleton
                 height={isMobile ? 40 : 42}
-                width={'100%'}
-                marginTop={isMobile ? '0' : '12px'}
+                width={"100%"}
+                marginTop={isMobile ? "0" : "12px"}
               />
             ) : (
               <>
@@ -147,10 +147,10 @@ const VaultPositionStats = () => {
                     .dividedBy(10 ** 9)
                     .toNumber()
                 ) +
-                  ' ' +
+                  " " +
                   vault?.token?.symbol}
                 <UsdValue>
-                  {'$' +
+                  {"$" +
                     formatNumber(
                       BigNumber(vaultPosition?.balancePosition || 0)
                         .multipliedBy(fxdPrice)
@@ -166,24 +166,24 @@ const VaultPositionStats = () => {
           md={2}
         />
         <BasePageStatsItem
-          title={'Earned'}
+          title={"Earned"}
           value={
             <>
               {isLoading || balanceEarned === -1 ? (
                 <StatsValueSkeleton
                   height={isMobile ? 40 : 42}
-                  width={'100%'}
-                  marginTop={isMobile ? '0' : '12px'}
+                  width={"100%"}
+                  marginTop={isMobile ? "0" : "12px"}
                 />
               ) : BigNumber(balanceEarned).isGreaterThan(0) ? (
                 <>
                   {formatNumber(Number(balanceEarned)) +
-                    ' ' +
+                    " " +
                     vault?.token?.symbol}
                   <UsdValue>
-                    {'$' +
+                    {"$" +
                       formatNumber(
-                        BigNumber(balanceEarned || '0')
+                        BigNumber(balanceEarned || "0")
                           .multipliedBy(fxdPrice)
                           .toNumber()
                       )}
@@ -203,7 +203,7 @@ const VaultPositionStats = () => {
         />
       </BasePageStatsWrapper>
     </Paper>
-  )
-}
+  );
+};
 
-export default memo(VaultPositionStats)
+export default memo(VaultPositionStats);

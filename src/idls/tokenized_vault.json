@@ -1,5 +1,5 @@
 {
-  "address": "CNyqz3mqw6koNmAe7rn2xHGHAS9ftXUNQohwHSiXhJLQ",
+  "address": "5R6bVKZfag4X9vW4nek6UNP8XXwH7cPaVohyAo1xfVEU",
   "metadata": {
     "name": "tokenized_vault",
     "version": "0.1.0",
@@ -336,6 +336,126 @@
           }
         },
         {
+          "name": "underlying_token_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  117,
+                  110,
+                  100,
+                  101,
+                  114,
+                  108,
+                  121,
+                  105,
+                  110,
+                  103
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "vault"
+              }
+            ]
+          }
+        },
+        {
+          "name": "underlying_mint",
+          "writable": true
+        },
+        {
+          "name": "roles",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  114,
+                  111,
+                  108,
+                  101,
+                  115
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "signer"
+              }
+            ]
+          }
+        },
+        {
+          "name": "signer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        },
+        {
+          "name": "rent",
+          "address": "SysvarRent111111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "index",
+          "type": "u64"
+        },
+        {
+          "name": "config",
+          "type": {
+            "defined": {
+              "name": "VaultConfig"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "init_vault_shares",
+      "discriminator": [
+        130,
+        72,
+        70,
+        251,
+        17,
+        251,
+        201,
+        124
+      ],
+      "accounts": [
+        {
+          "name": "vault",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  118,
+                  97,
+                  117,
+                  108,
+                  116
+                ]
+              },
+              {
+                "kind": "arg",
+                "path": "index"
+              }
+            ]
+          }
+        },
+        {
           "name": "shares_mint",
           "writable": true,
           "pda": {
@@ -361,33 +481,6 @@
         {
           "name": "metadata",
           "writable": true
-        },
-        {
-          "name": "token_account",
-          "writable": true,
-          "pda": {
-            "seeds": [
-              {
-                "kind": "const",
-                "value": [
-                  117,
-                  110,
-                  100,
-                  101,
-                  114,
-                  108,
-                  121,
-                  105,
-                  110,
-                  103
-                ]
-              },
-              {
-                "kind": "account",
-                "path": "vault"
-              }
-            ]
-          }
         },
         {
           "name": "shares_token_account",
@@ -419,10 +512,6 @@
               }
             ]
           }
-        },
-        {
-          "name": "underlying_mint",
-          "writable": true
         },
         {
           "name": "roles",
@@ -476,7 +565,7 @@
           "name": "config",
           "type": {
             "defined": {
-              "name": "VaultConfig"
+              "name": "SharesConfig"
             }
           }
         }
@@ -648,7 +737,7 @@
         },
         {
           "name": "strategy_program",
-          "address": "ErJGueTn3xVKETP4dc8vrmS5Lu7iupJZ2pr7kYJkCtUE"
+          "address": "FeMChq4ZCFP8UstbyHnVyme3ATa2vtteLNCwms4jLMAj"
         }
       ],
       "args": [
@@ -1001,7 +1090,7 @@
         },
         {
           "name": "strategy_program",
-          "address": "ErJGueTn3xVKETP4dc8vrmS5Lu7iupJZ2pr7kYJkCtUE"
+          "address": "FeMChq4ZCFP8UstbyHnVyme3ATa2vtteLNCwms4jLMAj"
         }
       ],
       "args": [
@@ -1097,7 +1186,7 @@
         },
         {
           "name": "strategy_program",
-          "address": "ErJGueTn3xVKETP4dc8vrmS5Lu7iupJZ2pr7kYJkCtUE"
+          "address": "FeMChq4ZCFP8UstbyHnVyme3ATa2vtteLNCwms4jLMAj"
         }
       ],
       "args": [
@@ -1471,6 +1560,26 @@
       }
     },
     {
+      "name": "SharesConfig",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "name",
+            "type": "string"
+          },
+          {
+            "name": "symbol",
+            "type": "string"
+          },
+          {
+            "name": "uri",
+            "type": "string"
+          }
+        ]
+      }
+    },
+    {
       "name": "StrategyData",
       "serialization": "bytemuckunsafe",
       "repr": {
@@ -1731,18 +1840,6 @@
       "type": {
         "kind": "struct",
         "fields": [
-          {
-            "name": "name",
-            "type": "string"
-          },
-          {
-            "name": "symbol",
-            "type": "string"
-          },
-          {
-            "name": "uri",
-            "type": "string"
-          },
           {
             "name": "deposit_limit",
             "type": "u64"

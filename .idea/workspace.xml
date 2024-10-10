@@ -7,8 +7,7 @@
     <list default="true" id="980c1e59-2a66-476c-8058-c1191519ba3f" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/apollo/client.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/apollo/client.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/Vaults/getStrategyTitleAndDescription.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/Vaults/getStrategyTitleAndDescription.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/Vaults/getVaultTitleAndDescription.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/Vaults/getVaultTitleAndDescription.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/network.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/network.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -31,7 +30,7 @@
     </favorite-branches>
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="local-network" />
+        <entry key="$PROJECT_DIR$" value="master" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -44,8 +43,8 @@
 }</component>
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/desync-labs/splyce-solana-frontend-app.git&quot;,
-    &quot;accountId&quot;: &quot;c8e82aac-6882-44c3-9afe-50e212f4b13c&quot;
+    &quot;url&quot;: &quot;git@github.com:desync-labs/splyce-solana-frontend-app.git&quot;,
+    &quot;accountId&quot;: &quot;a6edaa0d-abaa-4ff6-8451-d18edcd7bbfc&quot;
   }
 }</component>
   <component name="MarkdownSettingsMigration">
@@ -59,34 +58,35 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.go.formatter.settings.were.checked": "true",
-    "RunOnceActivity.go.migrated.go.modules.settings": "true",
-    "git-widget-placeholder": "dev",
-    "last_opened_file_path": "/Users/aleksandrdovgopolyj/Work/splyce-frontend-app-M/public",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.standard": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.standard": "",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "prettierjs.PrettierConfiguration.Package": "/Users/aleksandrdovgopolyj/Work/splyce-frontend-app-M/node_modules/prettier",
-    "settings.editor.selected.configurable": "settings.javascript.prettier",
-    "ts.external.directory.path": "/Users/aleksandrdovgopolyj/Work/splyce-frontend-app-M/node_modules/typescript/lib",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.formatter.settings.were.checked&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.migrated.go.modules.settings&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;refactor-get-or-create-token-associated-account&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/vetalion/sites/Splyce/splyce-solana-frontend-app&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.standard&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.standard&quot;: &quot;&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;npm.format.executor&quot;: &quot;Run&quot;,
+    &quot;prettierjs.PrettierConfiguration.Package&quot;: &quot;/Users/vetalion/sites/Splyce/splyce-solana-frontend-app/node_modules/prettier&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;settings.jsgraphql&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/Users/vetalion/sites/Splyce/splyce-solana-frontend-app/node_modules/typescript/lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/public" />
       <recent name="$PROJECT_DIR$/src/context" />
       <recent name="$PROJECT_DIR$/src/utils/Vaults" />
       <recent name="$PROJECT_DIR$/src/hooks/Vaults" />
-      <recent name="$PROJECT_DIR$/src" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/pages/dao" />
@@ -94,6 +94,30 @@
       <recent name="$PROJECT_DIR$/src/pages/lending" />
       <recent name="$PROJECT_DIR$/src/theme" />
     </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="format" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="format" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="npm.format" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-d6986cc7102b-5c90d61e3bab-JavaScript-WS-242.23339.15" />
+      </set>
+    </attachedChunks>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -119,11 +143,23 @@
       <workItem from="1727950379494" duration="67321000" />
       <workItem from="1728070575987" duration="38000" />
       <workItem from="1728141811734" duration="27352000" />
+      <workItem from="1728395792728" duration="7398000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <option name="LAST_COMMIT_MESSAGE" value="" />

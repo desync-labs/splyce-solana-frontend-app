@@ -1,31 +1,31 @@
-import { ChangeEvent, FC, memo } from 'react'
+import { ChangeEvent, FC, memo } from "react";
 import {
   Pagination,
   Table,
   TableBody,
   TableContainer,
   TableHead,
-} from '@mui/material'
-import { IVault, IVaultPosition } from '@/utils/TempData'
-import { COUNT_PER_PAGE_VAULT } from '@/utils/Constants'
-import BasePopover from '@/components/Base/Popover/BasePopover'
-import { VaultListItemSkeleton } from '@/components/Vaults/List/VaultListItemSkeleton'
-import VaultListItem from '@/components/Vaults/List/VaultListItem'
+} from "@mui/material";
+import { IVault, IVaultPosition } from "@/utils/TempData";
+import { COUNT_PER_PAGE_VAULT } from "@/utils/Constants";
+import BasePopover from "@/components/Base/Popover/BasePopover";
+import { VaultListItemSkeleton } from "@/components/Vaults/List/VaultListItemSkeleton";
+import VaultListItem from "@/components/Vaults/List/VaultListItem";
 import {
   BaseTableCell,
   BaseTableCellPopover,
   BaseTableHeaderRow,
   BaseTablePaginationWrapper,
-} from '@/components/Base/Table/StyledTable'
+} from "@/components/Base/Table/StyledTable";
 
 type VaultListPropsType = {
-  vaults: IVault[]
-  isLoading: boolean
-  filterCurrentPosition: (vaultId: string) => IVaultPosition | null
-  vaultCurrentPage: number
-  vaultItemsCount: number
-  handlePageChange: (event: ChangeEvent<unknown>, page: number) => void
-}
+  vaults: IVault[];
+  isLoading: boolean;
+  filterCurrentPosition: (vaultId: string) => IVaultPosition | null;
+  vaultCurrentPage: number;
+  vaultItemsCount: number;
+  handlePageChange: (event: ChangeEvent<unknown>, page: number) => void;
+};
 
 const VaultsList: FC<VaultListPropsType> = ({
   vaults,
@@ -45,7 +45,7 @@ const VaultsList: FC<VaultListPropsType> = ({
               <BaseTableCellPopover>
                 Earned
                 <BasePopover
-                  id={'earned'}
+                  id={"earned"}
                   text={<>How much have you earned on this Vault so far.</>}
                 />
               </BaseTableCellPopover>
@@ -54,7 +54,7 @@ const VaultsList: FC<VaultListPropsType> = ({
               <BaseTableCellPopover>
                 Apy
                 <BasePopover
-                  id={'apr'}
+                  id={"apr"}
                   text={
                     <>
                       Annual Percentage Yield – The annualized rate of return
@@ -68,7 +68,7 @@ const VaultsList: FC<VaultListPropsType> = ({
               <BaseTableCellPopover>
                 Tvl
                 <BasePopover
-                  id={'tvl'}
+                  id={"tvl"}
                   text={
                     <>
                       Total value locked (TVL) is a metric that refers to the
@@ -110,7 +110,7 @@ const VaultsList: FC<VaultListPropsType> = ({
         </BaseTablePaginationWrapper>
       )}
     </TableContainer>
-  )
-}
+  );
+};
 
-export default memo(VaultsList)
+export default memo(VaultsList);

@@ -1,16 +1,23 @@
-import { WalletAdapterNetwork } from '@solana/wallet-adapter-base'
-import { clusterApiUrl } from '@solana/web3.js'
+import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
+import { clusterApiUrl } from "@solana/web3.js";
 
-export const defaultNetWork = WalletAdapterNetwork.Devnet // Can be set to 'devnet', 'testnet', or 'mainnet-beta'
-//export const defaultEndpoint = clusterApiUrl(defaultNetWork) // You can also provide a custom RPC endpoint
-export const defaultEndpoint = 'https://rpc.solana.splyce.finance'
-//export const defaultEndpoint = 'http://34.42.12.83:8899'
+export const defaultNetWork =
+  process.env.NEXT_PUBLIC_ENV === "prod"
+    ? WalletAdapterNetwork.Mainnet
+    : WalletAdapterNetwork.Devnet;
+
+const MAINNET_RPC = clusterApiUrl(WalletAdapterNetwork.Mainnet);
+const DEV_RPC = "https://rpc.solana.splyce.finance";
+
+export const defaultEndpoint =
+  process.env.NEXT_PUBLIC_ENV === "prod" ? MAINNET_RPC : DEV_RPC;
 
 export const SUBGRAPH_URLS = {
-  // [WalletAdapterNetwork.Mainnet]: 'http://34.42.12.83:8000',
-  // [WalletAdapterNetwork.Testnet]: 'http://34.42.12.83:8000',
-  // [WalletAdapterNetwork.Devnet]: 'http://34.42.12.83:8000',
-  [WalletAdapterNetwork.Mainnet]: 'https://graph.solana.splyce.finance',
-  [WalletAdapterNetwork.Testnet]: 'https://graph.solana.splyce.finance',
-  [WalletAdapterNetwork.Devnet]: 'https://graph.solana.splyce.finance',
-}
+  [WalletAdapterNetwork.Mainnet]:
+    "https://api.studio.thegraph.com/query/90915/splyce-vault-subgraph/version/latest",
+  [WalletAdapterNetwork.Devnet]: "https://graph.solana.splyce.finance",
+  [WalletAdapterNetwork.Testnet]: "https://graph.solana.splyce.finance",
+};
+
+export const VAULTS_SUBGRAPH_URL_PROD =
+  "https://gateway.thegraph.com/api/738f549a8239061dfa1ddb2e0d44fe5e/subgraphs/id/2nrSQVSkTxp5orhEYfCAwiJai6Gnm72WTzraXLAqwewK";

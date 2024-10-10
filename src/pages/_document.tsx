@@ -1,4 +1,4 @@
-import { Html, Main, Head, NextScript } from 'next/document'
+import { Html, Main, Head, NextScript } from "next/document";
 
 const SplyceDocument = () => {
   return (
@@ -9,7 +9,7 @@ const SplyceDocument = () => {
         <NextScript />
       </body>
     </Html>
-  )
-}
+  );
+};
 
-export default SplyceDocument
+export default SplyceDocument;

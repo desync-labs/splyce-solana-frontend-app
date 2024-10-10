@@ -1,13 +1,13 @@
-import { useRouter } from 'next/router'
-import { memo, useCallback, useEffect, useState } from 'react'
-import { Box, MenuItem, Select, styled, Typography } from '@mui/material'
-import { SelectChangeEvent } from '@mui/material/Select'
-import useVaultContext from '@/context/vaultDetail'
-import { IVaultStrategy } from '@/utils/TempData'
-import { strategyTitle } from '@/utils/Vaults/getStrategyTitleAndDescription'
-import VaultStrategyItem from '@/components/Vaults/Detail/Tabs/VaultStrategyItem'
-import { VaultStrategiesSkeleton } from '@/components/Base/Skeletons/VaultSkeletons'
-import { TabContentWrapper } from '@/components/Vaults/Detail/Tabs/InfoTabs'
+import { useRouter } from "next/router";
+import { memo, useCallback, useEffect, useState } from "react";
+import { Box, MenuItem, Select, styled, Typography } from "@mui/material";
+import { SelectChangeEvent } from "@mui/material/Select";
+import useVaultContext from "@/context/vaultDetail";
+import { IVaultStrategy } from "@/utils/TempData";
+import { strategyTitle } from "@/utils/Vaults/getStrategyTitleAndDescription";
+import VaultStrategyItem from "@/components/Vaults/Detail/Tabs/VaultStrategyItem";
+import { VaultStrategiesSkeleton } from "@/components/Base/Skeletons/VaultSkeletons";
+import { TabContentWrapper } from "@/components/Vaults/Detail/Tabs/InfoTabs";
 
 export const StrategySelectorLabel = styled(Typography)`
   color: #a9bad0;
@@ -17,12 +17,12 @@ export const StrategySelectorLabel = styled(Typography)`
   letter-spacing: 0.44px;
   text-transform: uppercase;
   padding-bottom: 4px;
-  ${({ theme }) => theme.breakpoints.down('sm')} {
+  ${({ theme }) => theme.breakpoints.down("sm")} {
     font-size: 14px;
     text-transform: capitalize;
     margin-bottom: 10px;
   }
-`
+`;
 
 export const StrategySelector = styled(Select)`
   border-radius: 8px;
@@ -38,13 +38,13 @@ export const StrategySelector = styled(Select)`
     box-sizing: border-box;
     padding: 10px 12px !important;
   }
-`
+`;
 
 const NoStrategiesTitle = styled(Typography)`
-  ${({ theme }) => theme.breakpoints.down('sm')} {
+  ${({ theme }) => theme.breakpoints.down("sm")} {
     padding: 16px 8px 24px;
   }
-`
+`;
 
 const InfoTabStrategies = () => {
   const {
@@ -54,27 +54,27 @@ const InfoTabStrategies = () => {
     reports,
     historicalApr,
     isReportsLoaded,
-  } = useVaultContext()
-  const { strategies, balanceTokens, token } = vault
-  const router = useRouter()
+  } = useVaultContext();
+  const { strategies, balanceTokens, token } = vault;
+  const router = useRouter();
 
-  const [activeStrategy, setActiveStrategy] = useState<string>('')
+  const [activeStrategy, setActiveStrategy] = useState<string>("");
 
   useEffect(() => {
-    if (!strategies || !strategies.length) return
+    if (!strategies || !strategies.length) return;
 
-    const strategyId = router.query.strategy as string
+    const strategyId = router.query.strategy as string;
 
     if (strategyId) {
-      setActiveStrategy(strategyId)
+      setActiveStrategy(strategyId);
     } else {
-      setActiveStrategy(strategies[0].id)
+      setActiveStrategy(strategies[0].id);
     }
-  }, [setActiveStrategy, strategies, router.query.strategy])
+  }, [setActiveStrategy, strategies, router.query.strategy]);
 
   const handleChangeActiveStrategy = useCallback(
     (event: SelectChangeEvent) => {
-      const strategyId = event.target.value as string
+      const strategyId = event.target.value as string;
 
       router.replace(
         {
@@ -83,19 +83,19 @@ const InfoTabStrategies = () => {
         },
         undefined,
         { shallow: true }
-      )
+      );
 
-      setActiveStrategy(strategyId)
+      setActiveStrategy(strategyId);
     },
     [router, setActiveStrategy]
-  )
+  );
 
   if (!vault?.strategies?.length && !vaultLoading) {
     return (
       <TabContentWrapper>
         <NoStrategiesTitle>Has no strategies yet</NoStrategiesTitle>
       </TabContentWrapper>
-    )
+    );
   }
 
   return (
@@ -117,7 +117,7 @@ const InfoTabStrategies = () => {
                     strategyTitle[strategy.id.toLowerCase()]
                   ) : (
                     <>
-                      tspUSD: Direct Incentive - Educational Strategy{' '}
+                      tspUSD: Direct Incentive - Educational Strategy{" "}
                       {index + 1}
                     </>
                   )}
@@ -142,7 +142,7 @@ const InfoTabStrategies = () => {
         </>
       )}
     </TabContentWrapper>
-  )
-}
+  );
+};
 
-export default memo(InfoTabStrategies)
+export default memo(InfoTabStrategies);

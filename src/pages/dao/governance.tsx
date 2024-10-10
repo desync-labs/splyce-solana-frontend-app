@@ -1,5 +1,5 @@
-import { Container } from '@mui/material'
-import DaoNestedNav from '@/components/Dao/NestedNav'
+import { Container } from "@mui/material";
+import DaoNestedNav from "@/components/Dao/NestedNav";
 
 const GovernancePage = () => {
   return (
@@ -7,7 +7,7 @@ const GovernancePage = () => {
       <DaoNestedNav />
       <Container>Dao governance</Container>
     </>
-  )
-}
+  );
+};
 
-export default GovernancePage
+export default GovernancePage;

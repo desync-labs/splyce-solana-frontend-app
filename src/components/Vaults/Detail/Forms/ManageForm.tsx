@@ -1,37 +1,37 @@
-import { memo } from 'react'
-import { FormProvider } from 'react-hook-form'
-import { styled } from '@mui/material'
+import { memo } from "react";
+import { FormProvider } from "react-hook-form";
+import { styled } from "@mui/material";
 import useVaultManageDeposit, {
   FormType,
-} from '@/hooks/Vaults/useVaultManageDeposit'
-import useVaultContext from '@/context/vaultDetail'
-import ManageVaultForm from '@/components/Vaults/List/ManageVaultModal/ManageVaultForm'
-import ManageVaultInfo from '@/components/Vaults/Detail/Forms/ManageVaultInfo'
+} from "@/hooks/Vaults/useVaultManageDeposit";
+import useVaultContext from "@/context/vaultDetail";
+import ManageVaultForm from "@/components/Vaults/List/ManageVaultModal/ManageVaultForm";
+import ManageVaultInfo from "@/components/Vaults/Detail/Forms/ManageVaultInfo";
 import {
   BaseDialogNavItem,
   BaseDialogNavWrapper,
-} from '@/components/Base/Dialog/StyledDialog'
-import { VaultFormWrapper } from '@/components/Vaults/Detail/Forms/index'
-import { VaultDetailFormColumn } from '@/components/Vaults/Detail/Forms/DepositForm'
+} from "@/components/Base/Dialog/StyledDialog";
+import { VaultFormWrapper } from "@/components/Vaults/Detail/Forms/index";
+import { VaultDetailFormColumn } from "@/components/Vaults/Detail/Forms/DepositForm";
 
 const NavWrapper = styled(BaseDialogNavWrapper)`
   gap: 24px;
   margin-top: 0;
-`
+`;
 
 const NavItem = styled(BaseDialogNavItem)`
   font-size: 16px;
   padding: 6px 0;
-`
+`;
 
 const VaultDetailManageForm = () => {
   const { vault, vaultPosition, balanceToken, minimumDeposit } =
-    useVaultContext()
-  const { shutdown } = vault
+    useVaultContext();
+  const { shutdown } = vault;
 
   const onClose = () => {
-    methods.reset()
-  }
+    methods.reset();
+  };
 
   const {
     formType,
@@ -53,21 +53,21 @@ const VaultDetailManageForm = () => {
     methods,
     withdrawLimitExceeded,
     depositLimitExceeded,
-  } = useVaultManageDeposit(vault, vaultPosition, minimumDeposit, onClose)
+  } = useVaultManageDeposit(vault, vaultPosition, minimumDeposit, onClose);
 
   return (
     <>
       <NavWrapper>
         {!shutdown && (
           <NavItem
-            className={formType === FormType.DEPOSIT ? 'active' : ''}
+            className={formType === FormType.DEPOSIT ? "active" : ""}
             onClick={() => setFormType(FormType.DEPOSIT)}
           >
             Deposit
           </NavItem>
         )}
         <NavItem
-          className={formType === FormType.WITHDRAW ? 'active' : ''}
+          className={formType === FormType.WITHDRAW ? "active" : ""}
           onClick={() => setFormType(FormType.WITHDRAW)}
         >
           Withdraw
@@ -112,7 +112,7 @@ const VaultDetailManageForm = () => {
         </FormProvider>
       </VaultFormWrapper>
     </>
-  )
-}
+  );
+};
 
-export default memo(VaultDetailManageForm)
+export default memo(VaultDetailManageForm);

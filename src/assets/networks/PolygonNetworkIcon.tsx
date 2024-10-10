@@ -1,4 +1,4 @@
-import { Box } from '@mui/material'
+import { Box } from "@mui/material";
 
 export default function PolygonNetworkIcon() {
   return (
@@ -65,5 +65,5 @@ export default function PolygonNetworkIcon() {
         </defs>
       </svg>
     </Box>
-  )
+  );
 }

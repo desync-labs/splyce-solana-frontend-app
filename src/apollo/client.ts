@@ -4,9 +4,13 @@ import {
   concat,
   HttpLink,
   InMemoryCache,
-} from '@apollo/client'
-import { loadDevMessages, loadErrorMessages } from '@apollo/client/dev'
-import { defaultNetWork, SUBGRAPH_URLS } from '@/utils/network'
+} from "@apollo/client";
+import { loadDevMessages, loadErrorMessages } from "@apollo/client/dev";
+import {
+  defaultNetWork,
+  SUBGRAPH_URLS,
+  VAULTS_SUBGRAPH_URL_PROD,
+} from "@/utils/network";
 
 /***
  * For Query we have pagination, So we need to return incoming items
@@ -15,124 +19,79 @@ const cache = new InMemoryCache({
   typePolicies: {
     Query: {
       fields: {
-        positions: {
-          keyArgs: ['network', 'account'],
-          merge(_, incoming) {
-            return incoming
-          },
-        },
-        proposals: {
-          keyArgs: false,
-          merge(_, incoming) {
-            return incoming
-          },
-        },
-        pools: {
-          keyArgs: ['network'],
-          merge(_, incoming) {
-            return incoming
-          },
-        },
         strategyHistoricalAprs: {
-          keyArgs: ['strategy', 'network'],
+          keyArgs: ["strategy", "network"],
           merge(existing = [], incoming) {
-            return [...existing, ...incoming]
+            return [...existing, ...incoming];
           },
         },
         strategyReports: {
-          keyArgs: ['strategy', 'network'],
+          keyArgs: ["strategy", "network"],
           merge(existing = [], incoming) {
-            return [...existing, ...incoming]
+            return [...existing, ...incoming];
           },
         },
         accountVaultPositions: {
-          keyArgs: ['account'],
+          keyArgs: ["account"],
           merge(_, incoming) {
-            return incoming
+            return incoming;
           },
         },
         vaults: {
-          keyArgs: ['network'],
+          keyArgs: ["network"],
           merge(_, incoming) {
-            return incoming
+            return incoming;
           },
         },
         indexingStatusForCurrentVersion: {
-          keyArgs: ['network'],
+          keyArgs: ["network"],
           merge(_, incoming) {
-            return incoming
-          },
-        },
-        users: {
-          keyArgs: ['walletAddress'],
-          merge(_, incoming) {
-            return incoming
-          },
-        },
-        mints: {
-          keyArgs: ['account'],
-          merge(_, incoming) {
-            return incoming
-          },
-        },
-        burns: {
-          keyArgs: ['account'],
-          merge(_, incoming) {
-            return incoming
-          },
-        },
-        swaps: {
-          keyArgs: ['account'],
-          merge(_, incoming) {
-            return incoming
-          },
-        },
-        lockPositions: {
-          keyArgs: ['account'],
-          merge(_, incoming) {
-            return incoming
+            return incoming;
           },
         },
       },
     },
   },
-})
+});
 
-if (process.env.NEXT_PUBLIC_ENV === 'dev') {
+if (process.env.NEXT_PUBLIC_ENV === "dev") {
   // Adds messages only in a dev environment
-  loadDevMessages()
-  loadErrorMessages()
+  loadDevMessages();
+  loadErrorMessages();
 }
 
-const httpLink = new HttpLink({ uri: SUBGRAPH_URLS[defaultNetWork] })
+const httpLink = new HttpLink({ uri: SUBGRAPH_URLS[defaultNetWork] });
 
 const authMiddleware = new ApolloLink((operation, forward) => {
   // add the authorization to the headers
-  const network = operation.getContext().network
 
-  let uri =
-    network && (SUBGRAPH_URLS as any)[network]
-      ? (SUBGRAPH_URLS as any)[network]
-      : SUBGRAPH_URLS[defaultNetWork]
+  let uri: string = "";
 
-  if (operation.getContext().clientName === 'stable') {
-    uri += '/subgraphs/name/stablecoin-subgraph'
-  } else if (operation.getContext().clientName === 'governance') {
-    uri += '/subgraphs/name/dao-subgraph'
-  } else if (operation.getContext().clientName === 'vaults') {
-    uri += '/subgraphs/name/splyce-vault-subgraph'
+  if (process.env.NEXT_PUBLIC_ENV === "prod") {
+    if (operation.getContext().clientName === "vaults") {
+      uri = VAULTS_SUBGRAPH_URL_PROD;
+    }
   } else {
-    uri += '/graphql'
+    const network = operation.getContext().network;
+
+    uri =
+      network && (SUBGRAPH_URLS as any)[network]
+        ? (SUBGRAPH_URLS as any)[network]
+        : SUBGRAPH_URLS[defaultNetWork];
+
+    if (operation.getContext().clientName === "vaults") {
+      uri += "/subgraphs/name/splyce-vault-subgraph";
+    }
   }
 
   operation.setContext(() => ({
     uri,
-  }))
+  }));
 
-  return forward(operation)
-})
+  return forward(operation);
+});
 
 export const client = new ApolloClient({
   link: concat(authMiddleware, httpLink),
   cache,
-})
+});
