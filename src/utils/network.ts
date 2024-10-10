@@ -13,3 +13,6 @@ export const SUBGRAPH_URLS = {
   [WalletAdapterNetwork.Testnet]: "https://graph.solana.splyce.finance",
   [WalletAdapterNetwork.Devnet]: "https://graph.solana.splyce.finance",
 };
+
+export const VAULTS_SUBGRAPH_URL_PROD =
+  "https://gateway.thegraph.com/api/738f549a8239061dfa1ddb2e0d44fe5e/subgraphs/id/2nrSQVSkTxp5orhEYfCAwiJai6Gnm72WTzraXLAqwewK";

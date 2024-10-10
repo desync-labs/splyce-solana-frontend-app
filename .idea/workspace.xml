@@ -6,17 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="980c1e59-2a66-476c-8058-c1191519ba3f" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/apollo/client.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/apollo/client.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/context/sync.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/context/sync.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/hooks/General/useMainLayout.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/hooks/General/useMainLayout.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/hooks/Vaults/useVaultManageDeposit.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/hooks/Vaults/useVaultManageDeposit.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/_app.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/_app.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/vaults/faucet.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/vaults/faucet.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/theme/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/theme/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/TempData.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/TempData.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/TempSdkMethods.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/TempSdkMethods.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/network.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/network.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -67,28 +58,28 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.go.formatter.settings.were.checked": "true",
-    "RunOnceActivity.go.migrated.go.modules.settings": "true",
-    "git-widget-placeholder": "refactor-get-or-create-token-associated-account",
-    "last_opened_file_path": "/Users/vetalion/sites/Splyce/splyce-solana-frontend-app",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.standard": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.standard": "",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "npm.format.executor": "Run",
-    "prettierjs.PrettierConfiguration.Package": "/Users/vetalion/sites/Splyce/splyce-solana-frontend-app/node_modules/prettier",
-    "settings.editor.selected.configurable": "settings.jsgraphql",
-    "ts.external.directory.path": "/Users/vetalion/sites/Splyce/splyce-solana-frontend-app/node_modules/typescript/lib",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.formatter.settings.were.checked&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.migrated.go.modules.settings&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;refactor-get-or-create-token-associated-account&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/vetalion/sites/Splyce/splyce-solana-frontend-app&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.standard&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.standard&quot;: &quot;&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;npm.format.executor&quot;: &quot;Run&quot;,
+    &quot;prettierjs.PrettierConfiguration.Package&quot;: &quot;/Users/vetalion/sites/Splyce/splyce-solana-frontend-app/node_modules/prettier&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;settings.jsgraphql&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/Users/vetalion/sites/Splyce/splyce-solana-frontend-app/node_modules/typescript/lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$" />
