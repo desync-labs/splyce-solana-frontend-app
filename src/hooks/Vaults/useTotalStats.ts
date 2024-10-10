@@ -159,12 +159,6 @@ const useTotalStats = (
       .toString();
   }, [balanceEarnedLoading, totalBalanceValue, depositsList, withdrawalsList]);
 
-  console.log({
-    totalBalanceValue: totalBalanceValue.toString(),
-    positionsLoading,
-    positionsList,
-  });
-
   return {
     depositsLoading,
     withdrawalsLoading,
