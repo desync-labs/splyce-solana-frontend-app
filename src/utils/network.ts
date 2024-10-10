@@ -1,14 +1,14 @@
 import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
-import { clusterApiUrl } from "@solana/web3.js";
 
 export const defaultNetWork =
   process.env.NEXT_PUBLIC_ENV === "prod"
     ? WalletAdapterNetwork.Mainnet
     : WalletAdapterNetwork.Devnet;
 
-const MAINNET_RPC =
-  "https://mainnet.helius-rpc.com/?api-key=d3db5333-b3a6-4684-b4be-c3b8eef030ce";
-const DEV_RPC = "https://rpc.solana.splyce.finance";
+export const PROD_BASE_URL = "https://solana.mainnet.splyce.finance/";
+
+export const MAINNET_RPC = `${PROD_BASE_URL}/api/prod-rpc-helius`;
+export const DEV_RPC = "https://rpc.solana.splyce.finance";
 
 export const defaultEndpoint =
   process.env.NEXT_PUBLIC_ENV === "prod" ? MAINNET_RPC : DEV_RPC;
