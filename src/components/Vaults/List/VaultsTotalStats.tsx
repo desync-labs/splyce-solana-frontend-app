@@ -82,39 +82,46 @@ type VaultsTotalStatsType = {
   positionsLoading: boolean;
 };
 
-type StatItemPropsType = { title: string; value: string; icon: string };
+type StatItemPropsType = {
+  title: string;
+  value: string;
+  icon: string;
+  isLoading: boolean;
+};
 
-const StatItem: FC<StatItemPropsType> = memo(({ title, value, icon }) => {
-  const fxdPrice = 1;
-  const fetchPricesInProgress = false;
-  const { isMobile } = useSharedContext();
-  return (
-    <StatItemWrapper>
-      <StatItemInfo>
-        <Image src={icon} alt={title} width={36} height={36} />
-        <StatItemLabel>{title}</StatItemLabel>
-      </StatItemInfo>
-      <StatItemValue>
-        {value === "-1" || fetchPricesInProgress ? (
-          <BaseSkeletonValue
-            animation={"wave"}
-            width={isMobile ? 80 : 110}
-            height={isMobile ? 24 : 28}
-          />
-        ) : BigNumber(value).isGreaterThan(0) ? (
-          `$${formatNumber(
-            BigNumber(value)
-              .multipliedBy(fxdPrice)
-              .dividedBy(10 ** 9)
-              .toNumber()
-          )}`
-        ) : (
-          "$0"
-        )}
-      </StatItemValue>
-    </StatItemWrapper>
-  );
-});
+const StatItem: FC<StatItemPropsType> = memo(
+  ({ title, value, icon, isLoading }) => {
+    const fxdPrice = 1;
+    const fetchPricesInProgress = false;
+    const { isMobile } = useSharedContext();
+    return (
+      <StatItemWrapper>
+        <StatItemInfo>
+          <Image src={icon} alt={title} width={36} height={36} />
+          <StatItemLabel>{title}</StatItemLabel>
+        </StatItemInfo>
+        <StatItemValue>
+          {value === "-1" || isLoading || fetchPricesInProgress ? (
+            <BaseSkeletonValue
+              animation={"wave"}
+              width={isMobile ? 80 : 110}
+              height={isMobile ? 24 : 28}
+            />
+          ) : BigNumber(value).isGreaterThan(0) ? (
+            `$${formatNumber(
+              BigNumber(value)
+                .multipliedBy(fxdPrice)
+                .dividedBy(10 ** 9)
+                .toNumber()
+            )}`
+          ) : (
+            "$0"
+          )}
+        </StatItemValue>
+      </StatItemWrapper>
+    );
+  }
+);
 
 const VaultsTotalStats: FC<VaultsTotalStatsType> = ({
   positionsList,
@@ -125,17 +132,23 @@ const VaultsTotalStats: FC<VaultsTotalStatsType> = ({
     positionsLoading
   );
 
+  console.log({
+    totalBalance,
+  });
+
   return (
     <StatsWrapper>
       <StatItem
         title="Deposited"
         value={totalBalance}
         icon={DepositedIcon as string}
+        isLoading={positionsLoading}
       />
       <StatItem
         title="Earnings"
         value={balanceEarned}
         icon={EarnedIcon as string}
+        isLoading={positionsLoading}
       />
     </StatsWrapper>
   );

@@ -43,12 +43,6 @@ const cache = new InMemoryCache({
             return incoming;
           },
         },
-        indexingStatusForCurrentVersion: {
-          keyArgs: ["network"],
-          merge(_, incoming) {
-            return incoming;
-          },
-        },
       },
     },
   },

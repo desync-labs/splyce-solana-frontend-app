@@ -24,7 +24,6 @@ const useTotalStats = (
   positionsList: IVaultPosition[],
   positionsLoading: boolean
 ) => {
-  const [totalBalance, setTotalBalance] = useState("-1");
   const [depositsList, setDepositsList] = useState<TransactionItem[]>([]);
   const [withdrawalsList, setWithdrawalsList] = useState<TransactionItem[]>([]);
   const [balanceEarnedLoading, setBalanceEarnedLoading] =
@@ -112,7 +111,7 @@ const useTotalStats = (
       setBalanceEarnedLoading(
         positionsLoading || withdrawalsLoading || depositsLoading
       );
-    }, 100);
+    }, 500);
 
     return () => {
       clearTimeout(timeout);
@@ -124,18 +123,11 @@ const useTotalStats = (
     setBalanceEarnedLoading,
   ]);
 
-  useEffect(() => {
-    if (positionsLoading) {
-      setTotalBalance("-1");
-    } else if (positionsList.length && !positionsLoading) {
-      const totalBalance = positionsList.reduce((acc, position) => {
-        return BigNumber(acc).plus(position.balancePosition);
-      }, BigNumber(0));
-      setTotalBalance(totalBalance.toString());
-    } else {
-      setTotalBalance("0");
-    }
-  }, [positionsList, positionsLoading, setTotalBalance]);
+  const totalBalanceValue = useMemo(() => {
+    return positionsList.reduce((acc, position) => {
+      return BigNumber(acc).plus(position.balancePosition);
+    }, BigNumber(0));
+  }, [positionsList]);
 
   useEffect(() => {
     fetchAccountDeposits([]);
@@ -151,7 +143,6 @@ const useTotalStats = (
 
   const balanceEarned = useMemo(() => {
     if (balanceEarnedLoading) return "-1";
-    if (totalBalance === "-1") return "0";
 
     const sumTokenDeposits = depositsList.reduce(
       (acc: BigNumber, deposit: any) => acc.plus(deposit.tokenAmount),
@@ -163,16 +154,23 @@ const useTotalStats = (
       new BigNumber(0)
     );
 
-    return BigNumber(totalBalance || "0")
+    return BigNumber(totalBalanceValue || "0")
       .minus(sumTokenDeposits.minus(sumTokenWithdrawals))
       .toString();
-  }, [balanceEarnedLoading, totalBalance, depositsList, withdrawalsList]);
+  }, [balanceEarnedLoading, totalBalanceValue, depositsList, withdrawalsList]);
+
+  console.log({
+    totalBalanceValue: totalBalanceValue.toString(),
+    positionsLoading,
+    positionsList,
+  });
 
   return {
     depositsLoading,
     withdrawalsLoading,
-    totalBalance,
+    totalBalance: positionsLoading ? "-1" : totalBalanceValue.toString(),
     balanceEarned,
+    balanceEarnedLoading,
   };
 };
 

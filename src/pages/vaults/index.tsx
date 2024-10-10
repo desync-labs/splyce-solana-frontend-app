@@ -34,7 +34,7 @@ const VaultsOverview = () => {
   useEffect(() => {
     const timeout = setTimeout(() => {
       setListLoading(vaultsLoading || vaultPositionsLoading);
-    }, 50);
+    }, 300);
 
     return () => {
       clearTimeout(timeout);
@@ -51,7 +51,7 @@ const VaultsOverview = () => {
         />
         <VaultsTotalStats
           positionsList={vaultPositionsList}
-          positionsLoading={vaultPositionsLoading}
+          positionsLoading={listLoading}
         />
         {isMobile ? (
           <>
