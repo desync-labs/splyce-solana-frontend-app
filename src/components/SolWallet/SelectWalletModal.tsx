@@ -71,6 +71,14 @@ const InstallStepItem = styled(FlexBox)`
   }
 `;
 
+const WalletItemContentFlexBox = styled(FlexBox)`
+  ${({ theme }) => theme.breakpoints.down("sm")} {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+  }
+`;
+
 interface SelectWalletModalProps {
   wallets: Wallet[];
   isOpen: boolean;
@@ -102,26 +110,28 @@ const WalletItem = ({
           height={32}
           alt={"wallet_adapter"}
         />
-        <Typography fontWeight={700}>{wallet.adapter.name}</Typography>
-        <Box flexGrow={1}></Box>
-        {wallet.adapter.name === "Phantom" && (
-          <WalletItemLabel>
-            <Typography fontSize="12px">Auto confirm</Typography>
-            <BasePopover
-              id="auto_confirm_tip"
-              text="Auto-confirm is now available for all transactions on Splyce."
-            />
-          </WalletItemLabel>
-        )}
-        {wallet.adapter.name === "Solflare" && (
-          <WalletItemLabel>
-            <Typography fontSize="12px">Auto approve</Typography>
-            <BasePopover
-              id="auto_approve_tip_solflare"
-              text="Auto-approve is now available for all transactions on Splyce."
-            />
-          </WalletItemLabel>
-        )}
+        <WalletItemContentFlexBox>
+          <Typography fontWeight={700}>{wallet.adapter.name}</Typography>
+          <Box flexGrow={1}></Box>
+          {wallet.adapter.name === "Phantom" && (
+            <WalletItemLabel>
+              <Typography fontSize="12px">Auto confirm</Typography>
+              <BasePopover
+                id="auto_confirm_tip"
+                text="Auto-confirm is now available for all transactions on Splyce."
+              />
+            </WalletItemLabel>
+          )}
+          {wallet.adapter.name === "Solflare" && (
+            <WalletItemLabel>
+              <Typography fontSize="12px">Auto approve</Typography>
+              <BasePopover
+                id="auto_approve_tip_solflare"
+                text="Auto-approve is now available for all transactions on Splyce."
+              />
+            </WalletItemLabel>
+          )}
+        </WalletItemContentFlexBox>
       </WalletItemWrapper>
     </Grid>
   );
