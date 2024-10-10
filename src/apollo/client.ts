@@ -6,7 +6,11 @@ import {
   InMemoryCache,
 } from "@apollo/client";
 import { loadDevMessages, loadErrorMessages } from "@apollo/client/dev";
-import { defaultNetWork, SUBGRAPH_URLS } from "@/utils/network";
+import {
+  defaultNetWork,
+  SUBGRAPH_URLS,
+  VAULTS_SUBGRAPH_URL_PROD,
+} from "@/utils/network";
 
 /***
  * For Query we have pagination, So we need to return incoming items
@@ -60,17 +64,24 @@ const httpLink = new HttpLink({ uri: SUBGRAPH_URLS[defaultNetWork] });
 
 const authMiddleware = new ApolloLink((operation, forward) => {
   // add the authorization to the headers
-  const network = operation.getContext().network;
 
-  let uri =
-    network && (SUBGRAPH_URLS as any)[network]
-      ? (SUBGRAPH_URLS as any)[network]
-      : SUBGRAPH_URLS[defaultNetWork];
+  let uri: string = "";
 
-  if (operation.getContext().clientName === "vaults") {
-    uri += "/subgraphs/name/splyce-vault-subgraph";
+  if (process.env.NEXT_PUBLIC_ENV === "prod") {
+    if (operation.getContext().clientName === "vaults") {
+      uri = VAULTS_SUBGRAPH_URL_PROD;
+    }
   } else {
-    uri += "/graphql";
+    const network = operation.getContext().network;
+
+    uri =
+      network && (SUBGRAPH_URLS as any)[network]
+        ? (SUBGRAPH_URLS as any)[network]
+        : SUBGRAPH_URLS[defaultNetWork];
+
+    if (operation.getContext().clientName === "vaults") {
+      uri += "/subgraphs/name/splyce-vault-subgraph";
+    }
   }
 
   operation.setContext(() => ({
