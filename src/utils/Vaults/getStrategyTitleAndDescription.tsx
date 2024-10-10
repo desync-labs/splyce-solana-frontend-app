@@ -86,6 +86,34 @@ strategyDescription[
     </DescriptionList>
   </>
 );
+strategyDescription[
+  "8AQNf4Ttp3tqRdEcDw5zmX7NAxUVMKDbnAJwgFd2vymW".toLowerCase()
+] = (
+  <>
+    <p>
+      Diversify your investment through the iShares Gold Trust Micro Strategy,
+      which invests in IAUM, an exchange-traded fund (ETF) that tracks the price
+      of gold. This strategy offers a cost-effective and highly liquid means to
+      invest in physical gold, providing a hedge against market volatility and
+      inflation without the need to manage physical assets.
+    </p>
+    <b>Key Highlights:</b>
+    <DescriptionList>
+      <li>
+        Direct Gold Exposure: Track the price movement of gold with lower
+        investment thresholds.
+      </li>
+      <li>
+        High Liquidity: Benefit from the ability to quickly and easily trade
+        shares of the ETF, similar to trading stocks.
+      </li>
+      <li>
+        Low Expense Ratio: Invest in gold with minimal overhead costs,
+        maximizing potential returns.
+      </li>
+    </DescriptionList>
+  </>
+);
 
 strategyDescription["0xcea3c48da7aa17d5bc0a588a3e743577d94eb192"] = (
   <>
@@ -124,9 +152,26 @@ strategyDescription[
     </p>
   </>
 );
+strategyDescription[
+  "5QEBWGqLcDPgFswq5KXnCj4GGfgDa4exac87HHcwKQW4".toLowerCase()
+] = (
+  <>
+    <p>
+      The Strategy utilizes funds in Splyce Lending. It supplies certain lending
+      pools to achieve the maximum possible gain.
+    </p>
+  </>
+);
 
 strategyDescription[
   "6FMbL6GhocnXfqXmM3H3c2musKFqWtqmoHfY6cCbTc36".toLowerCase()
+] = (
+  <>
+    <p>Strategy based on off-chain TradeFi products.</p>
+  </>
+);
+strategyDescription[
+  "En7hLJ3grbLpEuBaudsZgWdset6RCEZ5frfZJwJvxbd9".toLowerCase()
 ] = (
   <>
     <p>Strategy based on off-chain TradeFi products.</p>
@@ -195,6 +240,8 @@ strategyTitle["0x3adf1e440657fa55d11adb6a102d140b01449139"] =
 
 strategyTitle["PB3pu2GFyw8g1LBqPjuF7cU6NuGw2BJcjQac6p9AzjC".toLowerCase()] =
   "iShares Gold Trust Micro (IAUM) Strategy";
+strategyTitle["8AQNf4Ttp3tqRdEcDw5zmX7NAxUVMKDbnAJwgFd2vymW".toLowerCase()] =
+  "iShares Gold Trust Micro (IAUM) Strategy";
 
 strategyTitle["0xcea3c48da7aa17d5bc0a588a3e743577d94eb192"] =
   "Anglogold Ashanti PLC (AU) Strategy";
@@ -207,8 +254,12 @@ strategyTitle["0xBc8C9999a3D56e799Bb470D8402A9dA121FcBf14"] =
 
 strategyTitle["6FMbL6GhocnXfqXmM3H3c2musKFqWtqmoHfY6cCbTc36".toLowerCase()] =
   "TradeFlow strategy #1";
+strategyTitle["En7hLJ3grbLpEuBaudsZgWdset6RCEZ5frfZJwJvxbd9".toLowerCase()] =
+  "TradeFlow strategy #1";
 
 strategyTitle["3uDciMtTyUkdPtraAwXNBoDwM3cRN7XFLmVq6tK5aFfy".toLowerCase()] =
+  "Lending strategy";
+strategyTitle["5QEBWGqLcDPgFswq5KXnCj4GGfgDa4exac87HHcwKQW4".toLowerCase()] =
   "Lending strategy";
 
 export { strategyTitle, strategyDescription };

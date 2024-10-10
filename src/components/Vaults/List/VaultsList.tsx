@@ -94,7 +94,9 @@ const VaultsList: FC<VaultListPropsType> = ({
               <VaultListItem
                 key={vault.id}
                 vaultItemData={vault}
-                vaultPosition={filterCurrentPosition(vault.id)}
+                vaultPosition={
+                  filterCurrentPosition(vault.id) as IVaultPosition
+                }
               />
             ))
           )}
