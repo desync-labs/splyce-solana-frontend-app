@@ -45,12 +45,12 @@ const SolWallet = () => {
   const handleShowWalletDrawer = () => setIsWalletDrawerShown(true);
   const onClose = () => setIsWalletDrawerShown(false);
 
-  if (connected)
+  if (connected && publicKey && wallet)
     return (
       <>
         <WalletInfoModal
           wallet={wallet}
-          address={publicKey?.toBase58() || ""}
+          pubKey={publicKey}
           onDisconnect={disconnect}
           isOpen={isWalletDrawerShown}
           onClose={onClose}

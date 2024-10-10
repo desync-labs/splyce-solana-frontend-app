@@ -1,8 +1,17 @@
-import { ReactNode, useState } from "react";
+import {
+  JSXElementConstructor,
+  ReactElement,
+  ReactNode,
+  ReactPortal,
+  useEffect,
+  useState,
+} from "react";
 import Image from "next/image";
+import { PublicKey } from "@solana/web3.js";
 import { Wallet } from "@solana/wallet-adapter-react";
 import { Box, Button, Drawer, styled, Typography } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
+import IconButton from "@mui/material/IconButton";
 import ContentCopyRoundedIcon from "@mui/icons-material/ContentCopyRounded";
 import CheckCircleOutlineRoundedIcon from "@mui/icons-material/CheckCircleOutlineRounded";
 import { BaseDialogCloseIcon } from "@/components/Base/Dialog/BaseDialogTitle";
@@ -11,8 +20,9 @@ import SolanaNetworkIcon from "@/assets/networks/SolanaNetworkIcon";
 import EthereumNetworkIcon from "@/assets/networks/EthereumNetworkIcon";
 import BinanceNetworkIcon from "@/assets/networks/BinanceNetworkIcon";
 import PolygonNetworkIcon from "@/assets/networks/PolygonNetworkIcon";
-import IconButton from "@mui/material/IconButton";
 import { encodeStr } from "@/utils/common";
+import { getUserSolanaBalance } from "@/utils/TempSdkMethods";
+import { formatNumber } from "@/utils/format";
 
 const StyledDrawer = styled(Drawer)`
   & .MuiDrawer-paper {
@@ -46,20 +56,39 @@ const DisconnectButton = styled(Button)`
   border-radius: 0;
 `;
 
+const SolanaBalance = styled(FlexBox)`
+  justify-content: center;
+  width: 100%;
+  padding-top: 8px;
+
+  & span {
+    font-size: 16px;
+    font-weight: 600;
+  }
+`;
+
 interface WalletInfoModalProps {
-  wallet: Wallet | null;
-  address: string;
+  wallet: Wallet;
+  pubKey: PublicKey;
   onDisconnect: () => void;
   isOpen?: boolean;
   onClose: () => void;
 }
 
 type WalletInfo = {
-  adaptarName: string | undefined;
-  adaptarIcon?: string;
+  adapterName: string & { __brand__: "WalletName" };
+  adapterIcon: string;
+  networkIcon:
+    | ReactElement<any, string | JSXElementConstructor<any>>
+    | string
+    | number
+    | Iterable<ReactNode>
+    | ReactPortal
+    | boolean
+    | undefined
+    | null;
   network: string;
-  networkIcon?: string | ReactNode;
-  address: string;
+  pubKey: string | undefined;
 };
 
 function getNetworkIcon(network: string): ReactNode | undefined {
@@ -77,23 +106,34 @@ function getNetworkIcon(network: string): ReactNode | undefined {
 
 const WalletInfoModal = ({
   wallet,
-  address,
+  pubKey,
   isOpen = false,
   onClose,
   onDisconnect,
 }: WalletInfoModalProps) => {
-  const solanaWalletInfo: WalletInfo | undefined = {
-    adaptarName: wallet?.adapter.name,
-    adaptarIcon: wallet?.adapter.icon,
+  const solanaWalletInfo: WalletInfo = {
+    adapterName: wallet.adapter.name,
+    adapterIcon: wallet.adapter.icon,
     network: "Solana",
     networkIcon: getNetworkIcon("Solana"),
-    address,
+    pubKey: pubKey?.toBase58(),
   };
 
   const [copied, setCopied] = useState<boolean>(false);
+  const [solBalance, setSolBalance] = useState<number>(0);
+
+  useEffect(() => {
+    getUserSolanaBalance(pubKey)
+      .then((balance) => {
+        setSolBalance(balance);
+      })
+      .catch((err) => {
+        console.error("Error get balance: ", err);
+      });
+  }, [pubKey]);
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(address).then(
+    navigator.clipboard.writeText(pubKey.toString()).then(
       () => {
         setCopied(true);
 
@@ -122,7 +162,7 @@ const WalletInfoModal = ({
         <DrawerContent>
           <WalletLogoWrapper>
             <Image
-              src={solanaWalletInfo.adaptarIcon as string}
+              src={solanaWalletInfo.adapterIcon as string}
               rounded="full"
               overflow="hidden"
               width={40}
@@ -148,9 +188,11 @@ const WalletInfoModal = ({
               )}
             </Box>
           </WalletLogoWrapper>
-
+          <SolanaBalance>
+            Balance: <span>{formatNumber(solBalance)} SOL</span>
+          </SolanaBalance>
           <FlexBox sx={{ justifyContent: "center", gap: 0 }}>
-            <Typography>{encodeStr(solanaWalletInfo.address, 8)}</Typography>
+            <Typography>{encodeStr(solanaWalletInfo.pubKey, 8)}</Typography>
             <IconButton disabled={copied} onClick={handleCopy}>
               {copied ? (
                 <CheckCircleOutlineRoundedIcon

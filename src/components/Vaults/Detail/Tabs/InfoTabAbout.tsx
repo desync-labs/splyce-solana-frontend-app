@@ -84,6 +84,18 @@ export const AppListApy = styled(List)`
       font-weight: 600;
     }
   }
+
+  ${({ theme }) => theme.breakpoints.down("sm")} {
+    &.MuiList-root {
+      flex-direction: column;
+      gap: 8px;
+    }
+    & li.MuiListItem-root {
+      flex-direction: row;
+      justify-content: space-between;
+      width: 100%;
+    }
+  }
 `;
 
 export const AppListFees = styled(AppListApy)``;
