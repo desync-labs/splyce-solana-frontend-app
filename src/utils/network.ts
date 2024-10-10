@@ -6,7 +6,8 @@ export const defaultNetWork =
     ? WalletAdapterNetwork.Mainnet
     : WalletAdapterNetwork.Devnet;
 
-const MAINNET_RPC = clusterApiUrl(WalletAdapterNetwork.Mainnet);
+const MAINNET_RPC =
+  "https://mainnet.helius-rpc.com/?api-key=d3db5333-b3a6-4684-b4be-c3b8eef030ce";
 const DEV_RPC = "https://rpc.solana.splyce.finance";
 
 export const defaultEndpoint =
