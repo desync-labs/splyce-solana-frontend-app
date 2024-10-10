@@ -20,16 +20,12 @@ import { AnchorProvider, BN, Program } from "@coral-xyz/anchor";
 import { AnchorWallet } from "@solana/wallet-adapter-react";
 import { defaultEndpoint } from "@/utils/network";
 import { getIdl, IdlTypes } from "@/utils/getIdl";
+import {
+  FAUCET_DATA_PUB_KEY,
+  FAUCET_TOKEN_ACCOUNT_PUB_KEY,
+} from "@/utils/addresses";
 
 const connection = new Connection(defaultEndpoint);
-
-const FAUCET_DATA_PUB_KEY = new PublicKey(
-  "GhHAUWzijk3e3pUTJbwAFjU3v51hkrpujnEhhnxtp8Q7"
-);
-
-const FAUCET_TOKE_ACCOUNT_PUB_KEY = new PublicKey(
-  "EjQxPWRJPvLFcPj4LomBwCpWxKYuig8jggVFhUq1qYQv"
-);
 
 export const getUserSolanaBalance = async (walletPublicKey: PublicKey) => {
   if (!walletPublicKey) {
@@ -377,7 +373,7 @@ export const faucetTestToken = async (
         .sendTokens()
         .accounts({
           faucetData: FAUCET_DATA_PUB_KEY,
-          tokenAccount: FAUCET_TOKE_ACCOUNT_PUB_KEY,
+          tokenAccount: FAUCET_TOKEN_ACCOUNT_PUB_KEY,
           recipient: userTokenAccount.address,
           signer: userPubKey,
           tokenProgram: TOKEN_PROGRAM_ID,
@@ -385,8 +381,10 @@ export const faucetTestToken = async (
         .instruction()
     );
 
+    const signature = await provider.sendAndConfirm(tx);
+
     // Send Tx
-    return provider.sendAndConfirm(tx);
+    return signature;
   } catch (err) {
     console.error("Error deposit tx:", err);
   }

@@ -1,17 +1,13 @@
 import { FC, useEffect, useState } from "react";
 import { Button, CircularProgress, Container, Typography } from "@mui/material";
 import { useAnchorWallet, useWallet } from "@solana/wallet-adapter-react";
-import { PublicKey } from "@solana/web3.js";
 
 import { faucetTestToken } from "@/utils/TempSdkMethods";
 import BasePageHeader from "@/components/Base/PageHeader";
 import VaultsNestedNav from "@/components/Vaults/NestedNav";
 import { BaseInfoIcon } from "@/components/Base/Icons/StyledIcons";
 import { BaseErrorBox, BaseInfoBox } from "@/components/Base/Boxes/StyledBoxes";
-
-const TEST_TOKE_PUBLIC_KEY = new PublicKey(
-  "4dCLhR7U8PzwXau6qfjr73tKgp5SD42aLbyo3XQNzY4V"
-);
+import { TEST_TOKEN_PUBLIC_KEY } from "@/utils/addresses";
 
 const FaucetIndex: FC = () => {
   const [loading, setLoading] = useState(false);
@@ -46,7 +42,7 @@ const FaucetIndex: FC = () => {
     try {
       const res = await faucetTestToken(
         publicKey,
-        TEST_TOKE_PUBLIC_KEY,
+        TEST_TOKEN_PUBLIC_KEY,
         anchorWallet
       );
       console.log("Tx signature:", res);
