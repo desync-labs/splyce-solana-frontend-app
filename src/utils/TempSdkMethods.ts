@@ -31,6 +31,23 @@ const FAUCET_TOKE_ACCOUNT_PUB_KEY = new PublicKey(
   "EjQxPWRJPvLFcPj4LomBwCpWxKYuig8jggVFhUq1qYQv"
 );
 
+export const getUserSolanaBalance = async (walletPublicKey: PublicKey) => {
+  if (!walletPublicKey) {
+    console.error("User wallet public key is required");
+    return;
+  }
+
+  try {
+    const balanceLamports = await connection.getBalance(
+      new PublicKey(walletPublicKey)
+    );
+
+    return balanceLamports / 1e9;
+  } catch (error) {
+    console.error("Error fetching balance of SOL", error);
+  }
+};
+
 export const getUserTokenBalance = async (
   publicKey: PublicKey,
   tokenMintAddress: string
