@@ -5,7 +5,7 @@ export const defaultNetWork =
     ? WalletAdapterNetwork.Mainnet
     : WalletAdapterNetwork.Devnet;
 
-export const PROD_BASE_URL = "https://solana.mainnet.splyce.finance/";
+export const PROD_BASE_URL = "https://solana.mainnet.splyce.finance";
 
 export const MAINNET_RPC = `${PROD_BASE_URL}/api/prod-rpc-helius`;
 export const DEV_RPC = "https://rpc.solana.splyce.finance";
