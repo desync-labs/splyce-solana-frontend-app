@@ -20,32 +20,12 @@ import { AnchorProvider, BN, Program } from "@coral-xyz/anchor";
 import { AnchorWallet } from "@solana/wallet-adapter-react";
 import { defaultEndpoint } from "@/utils/network";
 import { getIdl, IdlTypes } from "@/utils/getIdl";
+import {
+  FAUCET_DATA_PUB_KEY,
+  FAUCET_TOKEN_ACCOUNT_PUB_KEY,
+} from "@/utils/addresses";
 
 const connection = new Connection(defaultEndpoint);
-
-const FAUCET_DATA_PUB_KEY_DEV = new PublicKey(
-  "GhHAUWzijk3e3pUTJbwAFjU3v51hkrpujnEhhnxtp8Q7"
-);
-const FAUCET_DATA_PUB_KEY_MAINNET = new PublicKey(
-  "84aAmYBsJWBZWbsgeBS6MSuFsGUGLAqaofVMLD4DZXtP"
-);
-
-const FAUCET_TOKEN_ACCOUNT_PUB_KEY_DEV = new PublicKey(
-  "EjQxPWRJPvLFcPj4LomBwCpWxKYuig8jggVFhUq1qYQv"
-);
-const FAUCET_TOKEN_ACCOUNT_PUB_KEY_MAINNET = new PublicKey(
-  "3zztMz1BaGckpyNhrTTRBBgfNpFn9kj4VzkyCGCxHnWB"
-);
-
-const FAUCET_DATA_PUB_KEY =
-  process.env.NEXT_PUBLIC_ENV === "prod"
-    ? FAUCET_DATA_PUB_KEY_MAINNET
-    : FAUCET_DATA_PUB_KEY_DEV;
-
-const FAUCET_TOKEN_ACCOUNT_PUB_KEY =
-  process.env.NEXT_PUBLIC_ENV === "prod"
-    ? FAUCET_TOKEN_ACCOUNT_PUB_KEY_MAINNET
-    : FAUCET_TOKEN_ACCOUNT_PUB_KEY_DEV;
 
 export const getUserSolanaBalance = async (walletPublicKey: PublicKey) => {
   if (!walletPublicKey) {
