@@ -18,10 +18,13 @@ export enum IdlTypes {
 export const getIdl = (typeIdl: IdlTypes): Idl => {
   switch (typeIdl) {
     case IdlTypes.VAULT:
-      return { ...vaultIdl, address: vaultProgramIds[defaultNetWork] };
+      return { ...vaultIdl, address: vaultProgramIds[defaultNetWork] } as Idl;
     case IdlTypes.STRATEGY:
-      return { ...strategyIdl, address: strategyProgramIds[defaultNetWork] };
+      return {
+        ...strategyIdl,
+        address: strategyProgramIds[defaultNetWork],
+      } as Idl;
     case IdlTypes.FAUCET:
-      return { ...faucetIdl, address: faucetProgramIds[defaultNetWork] };
+      return { ...faucetIdl, address: faucetProgramIds[defaultNetWork] } as Idl;
   }
 };
