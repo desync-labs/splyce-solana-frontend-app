@@ -20,8 +20,10 @@ jobs:
         run: |
           if [ "${{ env.BRANCH_NAME }}" == "master" ]; then
             echo "ENV_TAG=" >> $GITHUB_ENV
+            echo "NEXT_PUBLIC_ENV=prod" >> $GITHUB_ENV
           else
             echo "ENV_TAG=dev-" >> $GITHUB_ENV
+            echo "NEXT_PUBLIC_ENV=dev" >> $GITHUB_ENV
           fi
       - name: Checkout code
         uses: actions/checkout@v2
@@ -59,7 +61,12 @@ jobs:
 
       - name: Build Docker image (Production Stage)
         run: |
-          docker build --target production -t ${{ steps.set-secrets.outputs.IMAGE_REPOSITORY }}:${{ github.sha }} .
+          docker build --target production \
+            --build-arg NEXT_PUBLIC_MOON_PAY_KEY=secrets.NEXT_PUBLIC_MOON_PAY_KEY \
+            --build-arg NEXT_PUBLIC_WALLET_CONNECT_PJ_ID=secrets.NEXT_PUBLIC_WALLET_CONNECT_PJ_ID \
+            --build-arg PROD_RPC_KEY_HELIUM=secrets.PROD_RPC_KEY_HELIUM \
+            --build-arg NEXT_PUBLIC_ENV=env.NEXT_PUBLIC_ENV \
+            -t ${{ steps.set-secrets.outputs.IMAGE_REPOSITORY }}:${{ github.sha }} .
           docker tag ${{ steps.set-secrets.outputs.IMAGE_REPOSITORY }}:${{ github.sha }} ${{ steps.set-secrets.outputs.IMAGE_REPOSITORY }}:${{ env.ENV_TAG }}latest
 
       - name: Push Docker image to Docker Hub
