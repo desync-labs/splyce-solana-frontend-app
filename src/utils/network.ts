@@ -1,8 +1,6 @@
 import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
 
-console.log("env1", process.env.NEXT_PUBLIC_ENV);
-console.log("env2", process.env.next_public_env);
-console.log("env3", process.env.PROD_RPC_KEY_HELIUM);
+console.log("process.env.NEXT_PUBLIC_ENV", process.env.ENV);
 
 export const defaultNetWork =
   process.env.NEXT_PUBLIC_ENV === "prod"

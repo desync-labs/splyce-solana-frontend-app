@@ -1,4 +1,14 @@
 /** @type {import('next').NextConfig} */
+console.log(
+  "process.env.NEXT_PUBLIC_MOON_PAY_KEY",
+  process.env.NEXT_PUBLIC_MOON_PAY_KEY
+);
+console.log(
+  "process.env.NEXT_PUBLIC_WALLET_CONNECT_PJ_ID",
+  process.env.NEXT_PUBLIC_WALLET_CONNECT_PJ_ID
+);
+console.log("process.env.NEXT_PUBLIC_ENV", process.env.NEXT_PUBLIC_ENV);
+
 const nextConfig = {
   output: "standalone",
   eslint: {
@@ -12,7 +22,10 @@ const nextConfig = {
     NEXT_PUBLIC_WALLET_CONNECT_PJ_ID:
       process.env.NEXT_PUBLIC_WALLET_CONNECT_PJ_ID,
     NEXT_PUBLIC_ENV: process.env.NEXT_PUBLIC_ENV,
-    PROD_RPC_KEY_HELIUM: process.env.PROD_RPC_KEY_HELIUM,
+
+    MOON_PAY_KEY: process.env.NEXT_PUBLIC_MOON_PAY_KEY,
+    WALLET_CONNECT_PJ_ID: process.env.NEXT_PUBLIC_WALLET_CONNECT_PJ_ID,
+    ENV: process.env.NEXT_PUBLIC_ENV,
   },
   async rewrites() {
     return [
