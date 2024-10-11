@@ -1,15 +1,13 @@
 import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
 
-console.log("env1", process.env.NEXT_PUBLIC_ENV);
-console.log("env2", process.env.next_public_env);
-console.log("env3", process.env.PROD_RPC_KEY_HELIUM);
+console.log("process.env.NEXT_PUBLIC_ENV", process.env.ENV);
 
 export const defaultNetWork =
   process.env.NEXT_PUBLIC_ENV === "prod"
     ? WalletAdapterNetwork.Mainnet
     : WalletAdapterNetwork.Devnet;
 
-export const PROD_BASE_URL = "https://solana.mainnet.splyce.finance";
+export const PROD_BASE_URL = "http://localhost:3000";
 
 export const MAINNET_RPC = `${PROD_BASE_URL}/api/prod-rpc-helius`;
 export const DEV_RPC = "https://rpc.solana.splyce.finance";
