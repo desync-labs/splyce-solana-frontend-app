@@ -111,7 +111,7 @@ const useTotalStats = (
       setBalanceEarnedLoading(
         positionsLoading || withdrawalsLoading || depositsLoading
       );
-    }, 500);
+    }, 100);
 
     return () => {
       clearTimeout(timeout);

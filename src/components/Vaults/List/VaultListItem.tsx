@@ -142,6 +142,7 @@ const VaultListItem: FC<VaultListItemProps> = ({
     minimumDeposit,
     isWithdrawLoading,
     showWithdrawAllButton,
+    tfVaultDepositEndTimeLoading,
   } = useVaultListItem({ vaultPosition, vault: vaultItemData });
 
   const redirectToVaultDetail = useCallback(() => {
@@ -277,16 +278,17 @@ const VaultListItem: FC<VaultListItemProps> = ({
           >
             {(!vaultPosition ||
               !BigNumber(vaultPosition.balanceShares).isGreaterThan(0)) &&
-              !shutdown &&
-              activeTfPeriod !== 2 && (
-                <Button
-                  variant="contained"
-                  onClick={() => setNewVaultDeposit(true)}
-                  sx={{ minWidth: "100px" }}
-                >
-                  Deposit
-                </Button>
-              )}
+            !shutdown &&
+            activeTfPeriod !== 2 &&
+            !tfVaultDepositEndTimeLoading ? (
+              <Button
+                variant="contained"
+                onClick={() => setNewVaultDeposit(true)}
+                sx={{ minWidth: "100px" }}
+              >
+                Deposit
+              </Button>
+            ) : null}
             {vaultPosition &&
               BigNumber(vaultPosition.balanceShares).isGreaterThan(0) &&
               !shutdown &&
