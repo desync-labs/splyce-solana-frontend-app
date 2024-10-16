@@ -381,6 +381,8 @@ const useVaultListItem = ({ vaultPosition, vault }: UseVaultListItemProps) => {
     handleWithdrawAll,
     isWithdrawLoading,
     showWithdrawAllButton,
+    tfVaultDepositEndTimeLoading,
+    tfVaultLockEndTimeLoading,
   };
 };
 
