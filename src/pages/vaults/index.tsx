@@ -64,7 +64,7 @@ const VaultsOverview = () => {
               handleIsShutdown={handleIsShutdown}
             />
             {vaultSortedList.length === 0 &&
-            !(vaultsLoading || vaultPositionsLoading) ? (
+            !(vaultsLoading || vaultPositionsLoading || listLoading) ? (
               <EmptyVaultsWrapper>
                 <Typography>
                   No vaults found.{" "}
@@ -93,7 +93,7 @@ const VaultsOverview = () => {
               handleIsShutdown={handleIsShutdown}
             />
             {vaultSortedList.length === 0 &&
-            !(vaultsLoading || vaultPositionsLoading) ? (
+            !(vaultsLoading || vaultPositionsLoading || listLoading) ? (
               <EmptyVaultsWrapper>
                 <Typography>
                   No vaults found.{" "}
