@@ -3,8 +3,9 @@ import Head from "next/head";
 import dynamic from "next/dynamic";
 import "@/theme/globals.css";
 
-const DynamicProviders = dynamic(() =>
-  import("@/provider").then((mod) => mod.Providers)
+const DynamicProviders = dynamic(
+  () => import("@/provider").then((mod) => mod.Providers),
+  { ssr: false }
 );
 const AppNavLayout = dynamic(
   () => import("@/components/AppLayout/AppNavLayout")
