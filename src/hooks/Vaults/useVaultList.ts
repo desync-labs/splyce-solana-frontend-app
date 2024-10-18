@@ -12,6 +12,7 @@ import { defaultNetWork } from "@/utils/network";
 import { vaultType } from "@/utils/Vaults/getVaultType";
 import { getUserTokenBalance, previewRedeem } from "@/utils/TempSdkMethods";
 import useSyncContext from "@/context/sync";
+import { setTimeout } from "@wry/context";
 
 interface IdToVaultIdMap {
   [key: string]: string | undefined;
@@ -41,6 +42,8 @@ const useVaultList = () => {
   const [isShutdown, setIsShutdown] = useState<boolean>(false);
 
   const [vaultPositionsAdditionLoading, setVaultPositionsAdditionLoading] =
+    useState<boolean>(false);
+  const [vaultPositionsLoading, setVaultsPositionLoading] =
     useState<boolean>(true);
 
   const {
@@ -59,14 +62,28 @@ const useVaultList = () => {
     fetchPolicy: "network-only",
   });
 
-  const [loadPositions, { loading: vaultPositionsLoading }] = useLazyQuery(
-    ACCOUNT_VAULT_POSITIONS,
-    {
+  const [loadPositions, { loading: vaultPositionsCollectionLoading }] =
+    useLazyQuery(ACCOUNT_VAULT_POSITIONS, {
       context: { clientName: "vaults", network },
       fetchPolicy: "network-only",
       variables: { network, first: 1000 },
-    }
-  );
+    });
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setVaultsPositionLoading(
+        vaultPositionsCollectionLoading || vaultPositionsAdditionLoading
+      );
+    }, 300);
+
+    return () => {
+      clearTimeout(timeout);
+    };
+  }, [
+    vaultPositionsCollectionLoading,
+    vaultPositionsAdditionLoading,
+    setVaultsPositionLoading,
+  ]);
 
   useEffect(() => {
     if (publicKey) {
@@ -127,6 +144,7 @@ const useVaultList = () => {
           });
         } else {
           setVaultPositionsList([]);
+          setVaultPositionsAdditionLoading(false);
         }
       });
     } else {
@@ -297,8 +315,7 @@ const useVaultList = () => {
   return {
     vaultSortedList,
     vaultsLoading,
-    vaultPositionsLoading:
-      vaultPositionsAdditionLoading || vaultPositionsLoading,
+    vaultPositionsLoading,
     vaultPositionsList,
     vaultCurrentPage,
     vaultItemsCount,
