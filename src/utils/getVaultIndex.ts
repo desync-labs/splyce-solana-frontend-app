@@ -8,5 +8,8 @@ export const getVaultIndex = (vaultId: string) => {
   if (vaultId.toLowerCase() === "LQM2cdzDY3".toLowerCase()) {
     return 2;
   }
+  if (vaultId.toLowerCase() === "W723RTUpoZ".toLowerCase()) {
+    return 3;
+  }
   return 0;
 };
