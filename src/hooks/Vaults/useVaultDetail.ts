@@ -597,11 +597,8 @@ const useVaultDetail = () => {
       getTfVaultPeriods(getVaultIndex(vaultId))
         .then((periods) => {
           const { depositPeriodEnds, lockPeriodEnds } = periods;
-          // todo: remove hardcoded values
-          // setTfVaultDepositEndDate(depositPeriodEnds.toString())
-          // setTfVaultLockEndDate(lockPeriodEnds.toString())
-          setTfVaultDepositEndDate("1728568800");
-          setTfVaultLockEndDate("1728655200");
+          setTfVaultDepositEndDate(depositPeriodEnds.toString());
+          setTfVaultLockEndDate(lockPeriodEnds.toString());
         })
         .finally(() => {
           setTfVaultDepositEndTimeLoading(false);
