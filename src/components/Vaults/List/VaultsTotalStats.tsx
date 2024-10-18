@@ -132,10 +132,6 @@ const VaultsTotalStats: FC<VaultsTotalStatsType> = ({
     positionsLoading
   );
 
-  console.log({
-    totalBalance,
-  });
-
   return (
     <StatsWrapper>
       <StatItem

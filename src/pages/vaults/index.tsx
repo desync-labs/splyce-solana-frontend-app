@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Container, Paper, Typography } from "@mui/material";
+import { Paper, Typography } from "@mui/material";
 import useSharedContext from "@/context/shared";
 import VaultsNestedNav from "@/components/Vaults/NestedNav";
 import BasePageHeader from "@/components/Base/PageHeader";
@@ -9,6 +9,7 @@ import VaultFilters from "@/components/Vaults/List/VaultFilters";
 import VaultsListMobile from "@/components/Vaults/List/VaultsListMobile";
 import useVaultList from "@/hooks/Vaults/useVaultList";
 import { EmptyVaultsWrapper } from "@/components/Base/Boxes/StyledBoxes";
+import PageContainer from "@/components/Base/PageContainer";
 
 const VaultsOverview = () => {
   const {
@@ -44,7 +45,7 @@ const VaultsOverview = () => {
   return (
     <>
       <VaultsNestedNav />
-      <Container>
+      <PageContainer>
         <BasePageHeader
           title="Vaults"
           description="Explore existing Vaults, and deposit your assets for a sustainable yield."
@@ -64,7 +65,7 @@ const VaultsOverview = () => {
               handleIsShutdown={handleIsShutdown}
             />
             {vaultSortedList.length === 0 &&
-            !(vaultsLoading || vaultPositionsLoading) ? (
+            !(vaultsLoading || vaultPositionsLoading || listLoading) ? (
               <EmptyVaultsWrapper>
                 <Typography>
                   No vaults found.{" "}
@@ -93,7 +94,7 @@ const VaultsOverview = () => {
               handleIsShutdown={handleIsShutdown}
             />
             {vaultSortedList.length === 0 &&
-            !(vaultsLoading || vaultPositionsLoading) ? (
+            !(vaultsLoading || vaultPositionsLoading || listLoading) ? (
               <EmptyVaultsWrapper>
                 <Typography>
                   No vaults found.{" "}
@@ -112,7 +113,7 @@ const VaultsOverview = () => {
             )}
           </Paper>
         )}
-      </Container>
+      </PageContainer>
     </>
   );
 };
