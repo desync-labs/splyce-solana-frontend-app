@@ -250,7 +250,7 @@ export const getOrCreateTokenAssociatedAccount = async (
   associatedTokenProgramId = ASSOCIATED_TOKEN_PROGRAM_ID
 ) => {
   const provider = new AnchorProvider(connection, wallet, {
-    preflightCommitment: "confirmed",
+    preflightCommitment: "finalized",
   });
 
   const associatedToken = getAssociatedTokenAddressSync(

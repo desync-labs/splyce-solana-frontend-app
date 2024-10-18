@@ -3,7 +3,7 @@ import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
 
 // Token addresses
 const TEST_TOKEN_PUBLIC_KEY_DEV = new PublicKey(
-  "4dCLhR7U8PzwXau6qfjr73tKgp5SD42aLbyo3XQNzY4V"
+  "gMiieh8f3j6VVRaSKqxa2iiznqXCNkY6ocr65YCY7i1"
 );
 const TEST_TOKEN_PUBLIC_KEY_MAINNET = new PublicKey(
   "4N37FD6SU35ssX6yTu2AcCvzVbdS6z3YZTtk5gv7ejhE"
@@ -16,14 +16,14 @@ export const TEST_TOKEN_PUBLIC_KEY =
 
 // Faucet addresses
 const FAUCET_DATA_PUB_KEY_DEV = new PublicKey(
-  "GhHAUWzijk3e3pUTJbwAFjU3v51hkrpujnEhhnxtp8Q7"
+  "Fx6qTeZEk8UxJuTjZ9REThtsocHiukjP9iTd87qgfCui"
 );
 const FAUCET_DATA_PUB_KEY_MAINNET = new PublicKey(
   "84aAmYBsJWBZWbsgeBS6MSuFsGUGLAqaofVMLD4DZXtP"
 );
 
 const FAUCET_TOKEN_ACCOUNT_PUB_KEY_DEV = new PublicKey(
-  "EjQxPWRJPvLFcPj4LomBwCpWxKYuig8jggVFhUq1qYQv"
+  "8BEaXawL7MeRYbmtnmHKFZrn52irAjxYJL3RwPfkHa7M"
 );
 const FAUCET_TOKEN_ACCOUNT_PUB_KEY_MAINNET = new PublicKey(
   "3zztMz1BaGckpyNhrTTRBBgfNpFn9kj4VzkyCGCxHnWB"
@@ -43,23 +43,23 @@ export const FAUCET_TOKEN_ACCOUNT_PUB_KEY =
 export const vaultProgramIds = {
   [WalletAdapterNetwork.Mainnet]:
     "5R6bVKZfag4X9vW4nek6UNP8XXwH7cPaVohyAo1xfVEU",
-  [WalletAdapterNetwork.Devnet]: "CNyqz3mqw6koNmAe7rn2xHGHAS9ftXUNQohwHSiXhJLQ",
+  [WalletAdapterNetwork.Devnet]: "ATdWqQQrwKbwbGv2zmD2nfcXsmTVA62eXWEtundAdwfE",
   [WalletAdapterNetwork.Testnet]:
-    "CNyqz3mqw6koNmAe7rn2xHGHAS9ftXUNQohwHSiXhJLQ",
+    "ATdWqQQrwKbwbGv2zmD2nfcXsmTVA62eXWEtundAdwfE",
 };
 
 export const strategyProgramIds = {
   [WalletAdapterNetwork.Mainnet]:
     "FeMChq4ZCFP8UstbyHnVyme3ATa2vtteLNCwms4jLMAj",
-  [WalletAdapterNetwork.Devnet]: "ErJGueTn3xVKETP4dc8vrmS5Lu7iupJZ2pr7kYJkCtUE",
+  [WalletAdapterNetwork.Devnet]: "5rQVgdeNp4RMUXjL8B8ksajVNywLoS7rK9e5yD4pi983",
   [WalletAdapterNetwork.Testnet]:
-    "ErJGueTn3xVKETP4dc8vrmS5Lu7iupJZ2pr7kYJkCtUE",
+    "5rQVgdeNp4RMUXjL8B8ksajVNywLoS7rK9e5yD4pi983",
 };
 
 export const faucetProgramIds = {
   [WalletAdapterNetwork.Mainnet]:
     "4rza9AifAapN4SKho3teAuLhc1TPpNWp9DHNPEMzVqgp",
-  [WalletAdapterNetwork.Devnet]: "BnjdeSt6reRowzTYp5KQFWXnqBymUe4oNRwjfBW3g5Bu",
+  [WalletAdapterNetwork.Devnet]: "84SxMfjJ3xZzZFCEsZSaPJWF7aWQBiyXq4KMaC4k892Y",
   [WalletAdapterNetwork.Testnet]:
-    "BnjdeSt6reRowzTYp5KQFWXnqBymUe4oNRwjfBW3g5Bu",
+    "84SxMfjJ3xZzZFCEsZSaPJWF7aWQBiyXq4KMaC4k892Y",
 };
