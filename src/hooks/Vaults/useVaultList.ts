@@ -248,27 +248,34 @@ const useVaultList = () => {
       /**
        * Reset counters for default vault titles
        */
-      let vaultListWithNames = vaultList.map((vault) => {
-        return {
-          ...vault,
-          name: vaultTitle[vault.id.toLowerCase()]
-            ? vaultTitle[vault.id.toLowerCase()]
-            : getDefaultVaultTitle(
-                vaultType[vault.id.toLowerCase()] || VaultType.DEFAULT,
-                "tspUSD",
-                //vault.token.name,
-                vault.id.toLowerCase()
-              ),
-          type: vaultType[vault.id.toLowerCase()] || VaultType.DEFAULT,
-          // todo: remove this after graph fix
-          token: { ...vault.token, symbol: "tspUSD", name: "Test Splyce USD" },
-          shareToken: {
-            ...vault.shareToken,
-            symbol: "sstUSD",
-            name: "Splyce Vault Shares Token USD",
-          },
-        };
-      });
+      let vaultListWithNames = vaultList
+        .map((vault) => {
+          return {
+            ...vault,
+            name: vaultTitle[vault.id.toLowerCase()]
+              ? vaultTitle[vault.id.toLowerCase()]
+              : getDefaultVaultTitle(
+                  vaultType[vault.id.toLowerCase()] || VaultType.DEFAULT,
+                  "tspUSD",
+                  //vault.token.name,
+                  vault.id.toLowerCase()
+                ),
+            type: vaultType[vault.id.toLowerCase()] || VaultType.DEFAULT,
+            // todo: remove this after graph fix
+            token: {
+              ...vault.token,
+              symbol: "tspUSD",
+              name: "Test Splyce USD",
+            },
+            shareToken: {
+              ...vault.shareToken,
+              symbol: "sstUSD",
+              name: "Splyce Vault Shares Token USD",
+            },
+          };
+        })
+        // todo: Exclude shutdown tf vault. remove this after graph fix
+        .filter((vault) => vault.id !== "LQM2cdzDY3");
 
       if (search) {
         vaultListWithNames = vaultListWithNames.filter((vault) =>
