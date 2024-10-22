@@ -62,7 +62,8 @@ const DepositVaultForm: FC<VaultDepositFormProps> = ({
   depositLimitExceeded,
   isDetailPage = false,
 }) => {
-  const { token, depositLimit, balanceTokens, shutdown } = vaultItemData;
+  const { token, shareToken, depositLimit, balanceTokens, shutdown } =
+    vaultItemData;
   const fxdPrice = "1";
 
   return (
@@ -94,7 +95,7 @@ const DepositVaultForm: FC<VaultDepositFormProps> = ({
                     Balance:{" "}
                     {formatNumber(
                       BigNumber(walletBalance)
-                        .dividedBy(10 ** 9)
+                        .dividedBy(10 ** token?.decimals)
                         .toNumber()
                     ) +
                       " " +
@@ -208,7 +209,7 @@ const DepositVaultForm: FC<VaultDepositFormProps> = ({
               )}`}</BaseFormInputUsdIndicator>
               <BaseFormInputLogo
                 className={"extendedInput"}
-                src={getTokenLogoURL(token?.name)}
+                src={getTokenLogoURL(token?.id)}
                 alt={token?.name}
               />
               <BaseFormSetMaxButton onClick={() => setMax()}>
@@ -223,7 +224,7 @@ const DepositVaultForm: FC<VaultDepositFormProps> = ({
           rules={{
             max: BigNumber(depositLimit)
               .minus(BigNumber(balanceTokens))
-              .dividedBy(10 ** 9)
+              .dividedBy(10 ** shareToken?.decimals)
               .toNumber(),
           }}
           render={({ field: { onChange, value }, fieldState: { error } }) => {
@@ -256,7 +257,7 @@ const DepositVaultForm: FC<VaultDepositFormProps> = ({
                             {formatNumber(
                               BigNumber(depositLimit)
                                 .minus(BigNumber(balanceTokens))
-                                .dividedBy(10 ** 9)
+                                .dividedBy(10 ** shareToken?.decimals)
                                 .toNumber()
                             )}
                             .
@@ -272,7 +273,7 @@ const DepositVaultForm: FC<VaultDepositFormProps> = ({
                   disabled
                 />
                 <BaseFormInputLogo
-                  src={getTokenLogoURL(token?.symbol)}
+                  src={getTokenLogoURL(token?.id)}
                   alt={token?.name}
                 />
               </BaseFormInputWrapper>

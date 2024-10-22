@@ -135,11 +135,11 @@ const DepositVaultInfo: FC<DepositVaultInfoProps> = ({
                   BigNumber(vaultItemData.totalShare).isGreaterThan(0)
                     ? formatNumber(
                         BigNumber(sharedToken || "0")
-                          .multipliedBy(10 ** 9)
+                          .multipliedBy(10 ** shareToken?.decimals)
                           .dividedBy(
                             BigNumber(vaultItemData.totalShare).plus(
                               BigNumber(sharedToken || "0").multipliedBy(
-                                10 ** 9
+                                10 ** shareToken?.decimals
                               )
                             )
                           )
@@ -174,7 +174,7 @@ const DepositVaultInfo: FC<DepositVaultInfoProps> = ({
       </VaultList>
       {isWalletFetching &&
         (BigNumber(walletBalance)
-          .dividedBy(10 ** 9)
+          .dividedBy(10 ** token.decimals)
           .isLessThan(BigNumber(deposit)) ||
           walletBalance == "0") && (
           <BaseErrorBox sx={{ marginBottom: 0 }}>

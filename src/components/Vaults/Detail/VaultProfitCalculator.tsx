@@ -103,10 +103,16 @@ const CalcFormWrapper = styled(FlexBox)`
   }
 `;
 
-const InputTokenLabel = ({ tokenSymbol }: { tokenSymbol: string }) => {
+const InputTokenLabel = ({
+  tokenAddress,
+  tokenSymbol,
+}: {
+  tokenAddress: string;
+  tokenSymbol: string;
+}) => {
   return (
     <InputTokenLabelRow>
-      <Image src={getTokenLogoURL(tokenSymbol)} alt={tokenSymbol} />
+      <Image src={getTokenLogoURL(tokenAddress)} alt={tokenSymbol} />
       <InputTokenLabelSymbol>{tokenSymbol}</InputTokenLabelSymbol>
     </InputTokenLabelRow>
   );
@@ -238,7 +244,10 @@ const VaultProfitCalculator = () => {
               .multipliedBy(fxdPrice)
               .toNumber()
           )}`}</CalculatorUsdIndicator>
-          <InputTokenLabel tokenSymbol={token?.symbol || ""} />
+          <InputTokenLabel
+            tokenAddress={token.id}
+            tokenSymbol={token?.symbol}
+          />
         </CalculatorInputWrapper>
         <CalculatorInputWrapper>
           <BaseFormLabelRow pb={1}>

@@ -67,6 +67,14 @@ export const getDefaultVaultTitle = (
       index++;
       title = `Incentive vault (${asset}) #${index}`;
       break;
+    case VaultType.CROSSCHAIN:
+      indexes = Object.values(vaultTitles)
+        .filter((item) => item.type === VaultType.CROSSCHAIN)
+        .map((item) => item.index as number);
+      index = indexes.length ? Math.max(...indexes) : 0;
+      index++;
+      title = `Crosschain vault (${asset}) #${index}`;
+      break;
     default:
       indexes = Object.values(vaultTitles)
         .filter((item) => item.type === VaultType.INCENTIVE)
@@ -141,6 +149,15 @@ export const getDefaultVaultDescription = (
           The vault programs themselves are non-custodial. Splyce is not
           responsible for the security of strategies created by a 3-rd party or
           in partnership with a 3-rd party.
+        </>
+      );
+    case VaultType.CROSSCHAIN:
+      return (
+        <>
+          Splyce’s Vault uses USDC from other chains to deploy in high-yield
+          strategies on Solana. Wormhole’s secure bridge ensures fast and safe
+          transfers, optimizing liquidity. This Vault gives users access to
+          Solana’s DeFi while leveraging USDC liquidity from multiple chains.
         </>
       );
     default:

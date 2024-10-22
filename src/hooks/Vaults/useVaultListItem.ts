@@ -85,7 +85,7 @@ const useVaultListItem = ({ vaultPosition, vault }: UseVaultListItemProps) => {
     setBalanceTokenLoading(true);
     return previewRedeem(
       BigNumber(vaultPosition?.balanceShares as string)
-        .dividedBy(10 ** 9)
+        .dividedBy(10 ** vault.shareToken.decimals)
         .toString(),
       vault.id
     )
@@ -301,7 +301,7 @@ const useVaultListItem = ({ vaultPosition, vault }: UseVaultListItemProps) => {
 
     const earnedValue = BigNumber(balanceToken || "0")
       .minus(sumTokenDeposits.minus(sumTokenWithdrawals))
-      .dividedBy(10 ** 9)
+      .dividedBy(10 ** vault.token.decimals)
       .toNumber();
 
     return BigNumber(earnedValue).isLessThan(0.0001) ? 0 : earnedValue;

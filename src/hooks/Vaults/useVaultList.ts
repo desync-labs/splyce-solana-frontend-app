@@ -248,34 +248,48 @@ const useVaultList = () => {
       /**
        * Reset counters for default vault titles
        */
-      let vaultListWithNames = vaultList
-        .map((vault) => {
-          return {
-            ...vault,
-            name: vaultTitle[vault.id.toLowerCase()]
-              ? vaultTitle[vault.id.toLowerCase()]
-              : getDefaultVaultTitle(
-                  vaultType[vault.id.toLowerCase()] || VaultType.DEFAULT,
-                  "tspUSD",
-                  //vault.token.name,
-                  vault.id.toLowerCase()
-                ),
-            type: vaultType[vault.id.toLowerCase()] || VaultType.DEFAULT,
-            // todo: remove this after graph fix
-            token: {
-              ...vault.token,
-              symbol: "tspUSD",
-              name: "Test Splyce USD",
-            },
-            shareToken: {
-              ...vault.shareToken,
-              symbol: "sstUSD",
-              name: "Splyce Vault Shares Token USD",
-            },
-          };
-        })
-        // todo: Exclude shutdown tf vault. remove this after graph fix
-        .filter((vault) => vault.id !== "LQM2cdzDY3");
+      let vaultListWithNames = vaultList.map((vault) => {
+        return {
+          ...vault,
+          name: vaultTitle[vault.id.toLowerCase()]
+            ? vaultTitle[vault.id.toLowerCase()]
+            : getDefaultVaultTitle(
+                vaultType[vault.id.toLowerCase()] || VaultType.DEFAULT,
+                vault.token.id ===
+                  "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"
+                  ? "USDC"
+                  : "tspUSD",
+                //vault.token.name,
+                vault.id.toLowerCase()
+              ),
+          type: vaultType[vault.id.toLowerCase()] || VaultType.DEFAULT,
+          // todo: remove this after graph fix
+          token: {
+            ...vault.token,
+            symbol:
+              vault.token.id === "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"
+                ? "USDC"
+                : "tspUSD",
+            name:
+              vault.token.id === "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"
+                ? "USD Coin"
+                : "Test Splyce USD",
+          },
+          shareToken: {
+            ...vault.shareToken,
+            symbol:
+              vault.shareToken.id ===
+              "5aa3HkBenNLtJwccrNDYri1FrqfB7U2oWQsRanbGRHot"
+                ? "sUSDC"
+                : "sstUSD",
+            name:
+              vault.shareToken.id ===
+              "5aa3HkBenNLtJwccrNDYri1FrqfB7U2oWQsRanbGRHot"
+                ? "Splyce Vault Shares USD Coin"
+                : "Splyce Vault Shares Token USD",
+          },
+        };
+      });
 
       if (search) {
         vaultListWithNames = vaultListWithNames.filter((vault) =>

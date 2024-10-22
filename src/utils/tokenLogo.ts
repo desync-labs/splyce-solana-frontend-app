@@ -1,5 +1,12 @@
 import SPLYlogo from "@/assets/tokens/sply.png";
+import USDClogo from "@/assets/tokens/usdc.png";
 export const getTokenLogoURL = (address: string) => {
+  if (
+    address === "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v" ||
+    address === "5aa3HkBenNLtJwccrNDYri1FrqfB7U2oWQsRanbGRHot"
+  ) {
+    return USDClogo as string;
+  }
   return SPLYlogo as string;
 };
 
