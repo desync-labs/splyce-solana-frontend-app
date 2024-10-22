@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from "react";
-import { Button, CircularProgress, Container, Typography } from "@mui/material";
+import { Button, CircularProgress, Typography } from "@mui/material";
 import { useAnchorWallet, useWallet } from "@solana/wallet-adapter-react";
 
 import { faucetTestToken } from "@/utils/TempSdkMethods";
@@ -8,6 +8,7 @@ import VaultsNestedNav from "@/components/Vaults/NestedNav";
 import { BaseInfoIcon } from "@/components/Base/Icons/StyledIcons";
 import { BaseErrorBox, BaseInfoBox } from "@/components/Base/Boxes/StyledBoxes";
 import { TEST_TOKEN_PUBLIC_KEY } from "@/utils/addresses";
+import PageContainer from "@/components/Base/PageContainer";
 
 const FaucetIndex: FC = () => {
   const [loading, setLoading] = useState(false);
@@ -56,7 +57,7 @@ const FaucetIndex: FC = () => {
   return (
     <>
       <VaultsNestedNav />
-      <Container>
+      <PageContainer>
         <BasePageHeader title="Faucet" />
         <Button
           variant="gradient"
@@ -82,7 +83,7 @@ const FaucetIndex: FC = () => {
             <Typography>{errorMessage}</Typography>
           </BaseErrorBox>
         )}
-      </Container>
+      </PageContainer>
     </>
   );
 };

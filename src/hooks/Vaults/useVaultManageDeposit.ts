@@ -130,7 +130,7 @@ const useVaultManageDeposit = (
     if (formType === FormType.DEPOSIT) {
       if (type === VaultType.TRADEFI) {
         const max = BigNumber.min(walletBalance, depositLimit)
-          .dividedBy(10 ** 9)
+          .dividedBy(10 ** token.decimals)
           .decimalPlaces(6, BigNumber.ROUND_DOWN);
 
         const maxCapped = max.isNegative() ? BigNumber(0) : max;
@@ -140,12 +140,12 @@ const useVaultManageDeposit = (
         });
       } else {
         const max = BigNumber.min(
-          BigNumber(walletBalance).dividedBy(10 ** 9),
+          BigNumber(walletBalance).dividedBy(10 ** token.decimals),
           BigNumber(depositLimit)
             .minus(balanceTokens)
-            .dividedBy(10 ** 9),
+            .dividedBy(10 ** token.decimals),
           BigNumber(MAX_PERSONAL_DEPOSIT).minus(
-            BigNumber(balancePosition).dividedBy(10 ** 9)
+            BigNumber(balancePosition).dividedBy(10 ** token.decimals)
           )
         ).decimalPlaces(6, BigNumber.ROUND_DOWN);
         console.log("max", max.toString());
@@ -161,14 +161,14 @@ const useVaultManageDeposit = (
       setValue(
         "formToken",
         BigNumber(balancePosition)
-          .dividedBy(10 ** 9)
+          .dividedBy(10 ** token.decimals)
           .toString(),
         { shouldValidate: true }
       );
       setValue(
         "formSharedToken",
         BigNumber(balanceShares)
-          .dividedBy(10 ** 9)
+          .dividedBy(10 ** shareToken.decimals)
           .toString(),
         { shouldValidate: true }
       );
@@ -200,12 +200,14 @@ const useVaultManageDeposit = (
       )} ${token.symbol}`;
     }
 
-    const formattedDeposit = BigNumber(depositLimit).dividedBy(10 ** 9);
+    const formattedDeposit = BigNumber(depositLimit).dividedBy(
+      10 ** token.decimals
+    );
     const rule =
       type === VaultType.TRADEFI
         ? BigNumber(value).isGreaterThan(formattedDeposit)
         : BigNumber(balancePosition)
-            .dividedBy(10 ** 9)
+            .dividedBy(10 ** token.decimals)
             .plus(value)
             .isGreaterThan(formattedDeposit);
 
@@ -229,23 +231,29 @@ const useVaultManageDeposit = (
   const validateMaxValue = useCallback(
     (value: string) => {
       if (formType === FormType.DEPOSIT) {
-        const maxWalletBalance = BigNumber(walletBalance).dividedBy(10 ** 9);
+        const maxWalletBalance = BigNumber(walletBalance).dividedBy(
+          10 ** token.decimals
+        );
         const formattedDepositLimit = BigNumber(depositLimit).dividedBy(
-          10 ** 9
+          10 ** token.decimals
         );
         const maxDepositLimit =
           type === VaultType.TRADEFI
             ? BigNumber.max(formattedDepositLimit, 0)
             : BigNumber.max(
                 BigNumber(formattedDepositLimit)
-                  .minus(BigNumber(balanceTokens).dividedBy(10 ** 9))
+                  .minus(
+                    BigNumber(balanceTokens).dividedBy(10 ** token.decimals)
+                  )
                   .toNumber(),
                 0
               );
 
         return validateDeposit(value, maxWalletBalance, maxDepositLimit);
       } else {
-        const maxBalanceToken = BigNumber(balancePosition).dividedBy(10 ** 9);
+        const maxBalanceToken = BigNumber(balancePosition).dividedBy(
+          10 ** token.decimals
+        );
         return validateRepay(value, maxBalanceToken);
       }
     },
@@ -257,7 +265,9 @@ const useVaultManageDeposit = (
      * Logic for TradeFlowVault
      */
     if (type === VaultType.TRADEFI) {
-      const maxBalanceToken = BigNumber(balancePosition).dividedBy(10 ** 9);
+      const maxBalanceToken = BigNumber(balancePosition).dividedBy(
+        10 ** token.decimals
+      );
 
       if (
         BigNumber(maxBalanceToken).minus(value).isGreaterThan(0) &&
@@ -289,7 +299,7 @@ const useVaultManageDeposit = (
       const tokenPublicKey = new PublicKey(token.id);
       const sharedTokenPublicKey = new PublicKey(shareToken.id);
       const formattedAmount = BigNumber(formToken)
-        .multipliedBy(10 ** 9)
+        .multipliedBy(10 ** token.decimals)
         .toString();
 
       if (formType === FormType.DEPOSIT) {

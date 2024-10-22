@@ -109,10 +109,7 @@ const StatItem: FC<StatItemPropsType> = memo(
             />
           ) : BigNumber(value).isGreaterThan(0) ? (
             `$${formatNumber(
-              BigNumber(value)
-                .multipliedBy(fxdPrice)
-                .dividedBy(10 ** 9)
-                .toNumber()
+              BigNumber(value).multipliedBy(fxdPrice).toNumber()
             )}`
           ) : (
             "$0"

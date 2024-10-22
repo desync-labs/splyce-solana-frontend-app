@@ -44,7 +44,7 @@ const ManageVaultInfo: FC<VaultManageInfoProps> = ({
             <>
               {formatPercentage(
                 BigNumber(balancePosition)
-                  .dividedBy(10 ** 9)
+                  .dividedBy(10 ** token.decimals)
                   .toNumber()
               ) +
                 " " +
@@ -60,7 +60,7 @@ const ManageVaultInfo: FC<VaultManageInfoProps> = ({
                 {formType === FormType.DEPOSIT
                   ? formatPercentage(
                       BigNumber(balancePosition)
-                        .dividedBy(10 ** 9)
+                        .dividedBy(10 ** token.decimals)
                         .plus(BigNumber(formToken || "0"))
                         .toNumber()
                     ) +
@@ -70,7 +70,7 @@ const ManageVaultInfo: FC<VaultManageInfoProps> = ({
                   : formatPercentage(
                       Math.max(
                         BigNumber(balancePosition)
-                          .dividedBy(10 ** 9)
+                          .dividedBy(10 ** token.decimals)
                           .minus(BigNumber(formToken || "0"))
                           .toNumber(),
                         0
@@ -108,14 +108,14 @@ const ManageVaultInfo: FC<VaultManageInfoProps> = ({
                       BigNumber(balanceShares)
                         .plus(
                           BigNumber(formSharedToken || "0").multipliedBy(
-                            10 ** 9
+                            10 ** shareToken.decimals
                           )
                         )
                         .dividedBy(
                           // todo: chenge to sharesSupply when it will be available
                           BigNumber(vaultItemData.totalShare).plus(
                             BigNumber(formSharedToken || "0").multipliedBy(
-                              10 ** 9
+                              10 ** shareToken.decimals
                             )
                           )
                         )
@@ -123,7 +123,7 @@ const ManageVaultInfo: FC<VaultManageInfoProps> = ({
                         .toNumber()
                     )
                   : BigNumber(formSharedToken)
-                        .multipliedBy(10 ** 9)
+                        .multipliedBy(10 ** shareToken.decimals)
                         // todo: chenge to sharesSupply when it will be available
                         .isEqualTo(BigNumber(vaultItemData.totalShare))
                     ? "0"
@@ -132,14 +132,14 @@ const ManageVaultInfo: FC<VaultManageInfoProps> = ({
                           BigNumber(balanceShares)
                             .minus(
                               BigNumber(formSharedToken || "0").multipliedBy(
-                                10 ** 9
+                                10 ** shareToken.decimals
                               )
                             )
                             .dividedBy(
                               // todo: chenge to sharesSupply when it will be available
                               BigNumber(vaultItemData.totalShare).minus(
                                 BigNumber(formSharedToken || "0").multipliedBy(
-                                  10 ** 9
+                                  10 ** shareToken.decimals
                                 )
                               )
                             )
@@ -161,7 +161,7 @@ const ManageVaultInfo: FC<VaultManageInfoProps> = ({
             <>
               {formatPercentage(
                 BigNumber(balanceShares)
-                  .dividedBy(10 ** 9)
+                  .dividedBy(10 ** shareToken.decimals)
                   .toNumber()
               ) +
                 " " +
@@ -177,7 +177,7 @@ const ManageVaultInfo: FC<VaultManageInfoProps> = ({
                 {formType === FormType.DEPOSIT
                   ? formatPercentage(
                       BigNumber(balanceShares)
-                        .dividedBy(10 ** 9)
+                        .dividedBy(10 ** shareToken.decimals)
                         .plus(BigNumber(formSharedToken || "0"))
                         .toNumber()
                     ) +
@@ -186,7 +186,7 @@ const ManageVaultInfo: FC<VaultManageInfoProps> = ({
                   : formatPercentage(
                       Math.max(
                         BigNumber(balanceShares)
-                          .dividedBy(10 ** 9)
+                          .dividedBy(10 ** shareToken.decimals)
                           .minus(BigNumber(formSharedToken || "0"))
                           .toNumber(),
                         0

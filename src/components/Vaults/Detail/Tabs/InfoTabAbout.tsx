@@ -134,7 +134,7 @@ const InfoTabAbout = () => {
 
       const currentTotalEarned = BigNumber(report.gain)
         .minus(report.loss)
-        .dividedBy(10 ** 9)
+        .dividedBy(10 ** vault.token.decimals)
         .plus(accumulatedTotalEarned)
         .toString();
 

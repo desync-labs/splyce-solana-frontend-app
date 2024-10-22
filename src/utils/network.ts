@@ -1,7 +1,5 @@
 import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
 
-console.log("NEXT_PUBLIC_ENV", process.env.NEXT_PUBLIC_ENV);
-
 export const defaultNetWork =
   process.env.NEXT_PUBLIC_ENV === "prod"
     ? WalletAdapterNetwork.Mainnet
@@ -24,6 +22,3 @@ export const SUBGRAPH_URLS = {
 
 export const VAULTS_SUBGRAPH_URL_PROD =
   "https://gateway.thegraph.com/api/738f549a8239061dfa1ddb2e0d44fe5e/subgraphs/id/2nrSQVSkTxp5orhEYfCAwiJai6Gnm72WTzraXLAqwewK";
-
-console.log("NEXT_PUBLIC_ENV", process.env.NEXT_PUBLIC_ENV);
-console.log("NEXT_PUBLIC_TEST_KEY", process.env.NEXT_PUBLIC_TEST_KEY);

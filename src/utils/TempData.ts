@@ -9,11 +9,13 @@ export interface IVaultPosition {
   };
   token: {
     id: string;
+    decimals: number;
     symbol: string;
     name: string;
   };
   shareToken: {
     id: string;
+    decimals: number;
     symbol: string;
     name: string;
   };
@@ -71,6 +73,7 @@ export enum VaultType {
   DEFI = "DEFI",
   TRADEFI = "TRADEFI",
   INCENTIVE = "INCENTIVE",
+  CROSSCHAIN = "CROSSCHAIN",
   DEFAULT = "DEFAULT",
 }
 

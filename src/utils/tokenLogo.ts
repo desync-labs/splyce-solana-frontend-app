@@ -1,21 +1,10 @@
 import SPLYlogo from "@/assets/tokens/sply.png";
-export const getTokenLogoURL = (address: string) => {
-  return SPLYlogo as string;
-};
+import USDClogo from "@/assets/tokens/usdc.png";
+import { USDC_MINT_ADDRESSES } from "@/utils/addresses";
 
-// export const getTokenInfo = (address: string): TokenItem => {
-//   const addressLowerCase = address?.toLowerCase()
-//
-//   for (let i = 0; i < DEFAULT_TOKEN_LIST.tokens.length; i++) {
-//     const tokenListItem = DEFAULT_TOKEN_LIST.tokens[i]
-//     if (
-//       tokenListItem.address.toLowerCase() === addressLowerCase ||
-//       tokenListItem.name.toLowerCase() === addressLowerCase ||
-//       tokenListItem.symbol.toLowerCase() === addressLowerCase
-//     ) {
-//       return tokenListItem
-//     }
-//   }
-//
-//   return { address: '', name: '', symbol: '' }
-// }
+export const getTokenLogoURL = (address: string) => {
+  if (USDC_MINT_ADDRESSES.includes(address.toLowerCase())) {
+    return USDClogo as unknown as string;
+  }
+  return SPLYlogo as unknown as string;
+};

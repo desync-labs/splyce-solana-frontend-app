@@ -162,7 +162,7 @@ const VaultListItem: FC<VaultListItemProps> = ({
           <FlexBox sx={{ justifyContent: "flex-start", gap: "11px" }}>
             <VaultListItemImageWrapper>
               <Image
-                src={getTokenLogoURL("1")}
+                src={getTokenLogoURL(token.id)}
                 width={24}
                 height={24}
                 alt={vaultItemData.id}
@@ -189,7 +189,7 @@ const VaultListItem: FC<VaultListItemProps> = ({
               formatNumber(
                 BigNumber(balanceEarned)
                   .multipliedBy(fxdPrice)
-                  .dividedBy(10 ** 9)
+                  .dividedBy(10 ** token.decimals)
                   .toNumber()
               )
             ) : balanceEarned === -1 ? (
@@ -207,7 +207,7 @@ const VaultListItem: FC<VaultListItemProps> = ({
             {formatCurrency(
               BigNumber(fxdPrice)
                 .multipliedBy(BigNumber(balanceTokens))
-                .dividedBy(10 ** 9)
+                .dividedBy(10 ** token.decimals)
                 .toNumber()
             )}
           </VaultStackedLiquidity>
@@ -226,7 +226,7 @@ const VaultListItem: FC<VaultListItemProps> = ({
                 Math.max(
                   BigNumber(depositLimit)
                     .minus(BigNumber(balanceTokens))
-                    .dividedBy(10 ** 9)
+                    .dividedBy(10 ** token.decimals)
                     .toNumber(),
                   0
                 )
@@ -259,7 +259,7 @@ const VaultListItem: FC<VaultListItemProps> = ({
               {vaultPosition
                 ? formatNumber(
                     BigNumber(vaultPosition.balancePosition)
-                      .dividedBy(10 ** 9)
+                      .dividedBy(10 ** token.decimals)
                       .toNumber()
                   )
                 : 0}
