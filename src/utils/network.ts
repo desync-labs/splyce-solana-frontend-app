@@ -6,9 +6,16 @@ export const defaultNetWork =
     ? WalletAdapterNetwork.Mainnet
     : WalletAdapterNetwork.Devnet;
 
-export const PROD_BASE_URL = "https://solana.mainnet.splyce.finance";
+export const PROD_BASE_URL = "http://localhost:3000";
 
-export const MAINNET_RPC = `${PROD_BASE_URL}/api/prod-rpc-helius`;
+export enum PROD_RPC_TYPE {
+  HELLIUM = "/api/prod-rpc-helius",
+  DRPC = "/api/prod-rpc-drpc",
+}
+
+export const SELECTED_PROD_PRC = PROD_RPC_TYPE.HELLIUM;
+
+export const MAINNET_RPC = `${PROD_BASE_URL}${SELECTED_PROD_PRC}`;
 export const DEV_RPC = "https://rpc.solana.splyce.finance";
 
 export const defaultEndpoint =

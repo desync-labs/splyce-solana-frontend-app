@@ -89,13 +89,9 @@ export const depositTokens = async (
     return;
   }
 
-  const provider = new AnchorProvider(
-    new Connection(defaultEndpoint, "confirmed"),
-    wallet,
-    {
-      preflightCommitment: "confirmed",
-    }
-  );
+  const provider = new AnchorProvider(connection, wallet, {
+    preflightCommitment: "confirmed",
+  });
 
   const vaultProgram = new Program(getIdl(IdlTypes.VAULT), provider);
 
@@ -154,13 +150,9 @@ export const withdrawTokens = async (
     return;
   }
 
-  const provider = new AnchorProvider(
-    new Connection(defaultEndpoint, "confirmed"),
-    wallet,
-    {
-      preflightCommitment: "confirmed",
-    }
-  );
+  const provider = new AnchorProvider(connection, wallet, {
+    preflightCommitment: "confirmed",
+  });
 
   const vaultProgram = new Program(getIdl(IdlTypes.VAULT), provider);
   const strategyProgram = new Program(getIdl(IdlTypes.STRATEGY), provider);
