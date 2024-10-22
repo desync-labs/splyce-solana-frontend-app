@@ -1,4 +1,5 @@
 import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
+import { Connection } from "@solana/web3.js";
 
 export const defaultNetWork =
   process.env.NEXT_PUBLIC_ENV === "prod"
@@ -22,3 +23,5 @@ export const SUBGRAPH_URLS = {
 
 export const VAULTS_SUBGRAPH_URL_PROD =
   "https://gateway.thegraph.com/api/738f549a8239061dfa1ddb2e0d44fe5e/subgraphs/id/2nrSQVSkTxp5orhEYfCAwiJai6Gnm72WTzraXLAqwewK";
+
+export const connection = new Connection(defaultEndpoint, "confirmed");

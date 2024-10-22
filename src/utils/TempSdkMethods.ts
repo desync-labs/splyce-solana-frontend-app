@@ -18,15 +18,13 @@ import {
 } from "@solana/spl-token";
 import { AnchorProvider, BN, Program } from "@coral-xyz/anchor";
 import { AnchorWallet } from "@solana/wallet-adapter-react";
-import { defaultEndpoint } from "@/utils/network";
+import { defaultEndpoint, connection } from "@/utils/network";
 import { getIdl, IdlTypes } from "@/utils/getIdl";
 import {
   FAUCET_DATA_PUB_KEY,
   FAUCET_TOKEN_ACCOUNT_PUB_KEY,
 } from "@/utils/addresses";
 import BigNumber from "bignumber.js";
-
-const connection = new Connection(defaultEndpoint);
 
 export const getUserSolanaBalance = async (walletPublicKey: PublicKey) => {
   if (!walletPublicKey) {
