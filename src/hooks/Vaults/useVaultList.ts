@@ -13,6 +13,10 @@ import { vaultType } from "@/utils/Vaults/getVaultType";
 import { getUserTokenBalance, previewRedeem } from "@/utils/TempSdkMethods";
 import useSyncContext from "@/context/sync";
 import { setTimeout } from "@wry/context";
+import {
+  USDC_MINT_ADDRESSES,
+  USDC_MINT_ADDRESSES_SHARED,
+} from "@/utils/addresses";
 
 interface IdToVaultIdMap {
   [key: string]: string | undefined;
@@ -249,46 +253,44 @@ const useVaultList = () => {
        * Reset counters for default vault titles
        */
       let vaultListWithNames = vaultList.map((vault) => {
-        return {
+        const vautData = {
           ...vault,
           name: vaultTitle[vault.id.toLowerCase()]
             ? vaultTitle[vault.id.toLowerCase()]
             : getDefaultVaultTitle(
                 vaultType[vault.id.toLowerCase()] || VaultType.DEFAULT,
-                vault.token.id ===
-                  "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"
+                USDC_MINT_ADDRESSES.includes(vault.token.id.toLowerCase())
                   ? "USDC"
                   : "tspUSD",
-                //vault.token.name,
                 vault.id.toLowerCase()
               ),
           type: vaultType[vault.id.toLowerCase()] || VaultType.DEFAULT,
           // todo: remove this after graph fix
           token: {
             ...vault.token,
-            symbol:
-              vault.token.id === "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"
-                ? "USDC"
-                : "tspUSD",
-            name:
-              vault.token.id === "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"
-                ? "USD Coin"
-                : "Test Splyce USD",
+            symbol: USDC_MINT_ADDRESSES.includes(vault.token.id.toLowerCase())
+              ? "USDC"
+              : "tspUSD",
+            name: USDC_MINT_ADDRESSES.includes(vault.token.id.toLowerCase())
+              ? "USD Coin"
+              : "Test Splyce USD",
           },
           shareToken: {
             ...vault.shareToken,
-            symbol:
-              vault.shareToken.id ===
-              "5aa3HkBenNLtJwccrNDYri1FrqfB7U2oWQsRanbGRHot"
-                ? "sUSDC"
-                : "sstUSD",
-            name:
-              vault.shareToken.id ===
-              "5aa3HkBenNLtJwccrNDYri1FrqfB7U2oWQsRanbGRHot"
-                ? "Splyce Vault Shares USD Coin"
-                : "Splyce Vault Shares Token USD",
+            symbol: USDC_MINT_ADDRESSES_SHARED.includes(
+              vault.shareToken.id.toLowerCase()
+            )
+              ? "sUSDC"
+              : "sstUSD",
+            name: USDC_MINT_ADDRESSES_SHARED.includes(
+              vault.shareToken.id.toLowerCase()
+            )
+              ? "Splyce Vault Shares USD Coin"
+              : "Splyce Vault Shares Token USD",
           },
         };
+
+        return vautData;
       });
 
       if (search) {

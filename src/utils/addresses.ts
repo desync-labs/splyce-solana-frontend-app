@@ -63,3 +63,12 @@ export const faucetProgramIds = {
   [WalletAdapterNetwork.Testnet]:
     "84SxMfjJ3xZzZFCEsZSaPJWF7aWQBiyXq4KMaC4k892Y",
 };
+
+export const USDC_MINT_ADDRESSES = [
+  "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v".toLowerCase(),
+  "5aa3HkBenNLtJwccrNDYri1FrqfB7U2oWQsRanbGRHot".toLowerCase(),
+];
+
+export const USDC_MINT_ADDRESSES_SHARED = [
+  "5aa3HkBenNLtJwccrNDYri1FrqfB7U2oWQsRanbGRHot".toLowerCase(),
+];
