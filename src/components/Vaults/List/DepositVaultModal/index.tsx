@@ -113,7 +113,7 @@ const VaultListItemDepositModal: FC<VaultDepositProps> = ({
             />
             {isWalletFetching &&
               (BigNumber(walletBalance)
-                .dividedBy(10 ** 9)
+                .dividedBy(10 ** vaultItemData.token.decimals)
                 .isLessThan(BigNumber(deposit)) ||
                 walletBalance == "0") && (
                 <BaseErrorBox sx={{ marginBottom: 0 }}>
@@ -155,7 +155,7 @@ const VaultListItemDepositModal: FC<VaultDepositProps> = ({
                 }
               >
                 {openDepositLoading ? (
-                  <CircularProgress sx={{ color: "#183102" }} size={20} />
+                  <CircularProgress size={20} />
                 ) : (
                   "Deposit"
                 )}

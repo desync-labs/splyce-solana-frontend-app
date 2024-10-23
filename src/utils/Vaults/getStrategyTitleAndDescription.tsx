@@ -171,6 +171,13 @@ strategyDescription[
   </>
 );
 strategyDescription[
+  "6WnUSbRfZakRG5gRL774n5XJkS6fDMYoGyBeNQKajhog".toLowerCase()
+] = (
+  <>
+    <p>Strategy based on off-chain TradeFi products.</p>
+  </>
+);
+strategyDescription[
   "En7hLJ3grbLpEuBaudsZgWdset6RCEZ5frfZJwJvxbd9".toLowerCase()
 ] = (
   <>
@@ -253,6 +260,8 @@ strategyTitle["0xBc8C9999a3D56e799Bb470D8402A9dA121FcBf14"] =
   "Splyce Trade Fintech Strategy 1";
 
 strategyTitle["6FMbL6GhocnXfqXmM3H3c2musKFqWtqmoHfY6cCbTc36".toLowerCase()] =
+  "TradeFlow strategy #1";
+strategyTitle["6WnUSbRfZakRG5gRL774n5XJkS6fDMYoGyBeNQKajhog".toLowerCase()] =
   "TradeFlow strategy #1";
 strategyTitle["En7hLJ3grbLpEuBaudsZgWdset6RCEZ5frfZJwJvxbd9".toLowerCase()] =
   "TradeFlow strategy #1";

@@ -69,7 +69,7 @@ const ManageVaultForm: FC<VaultManageFormProps> = ({
   const formattedBalanceToken = useMemo(
     () =>
       BigNumber(balanceToken)
-        .dividedBy(10 ** 9)
+        .dividedBy(10 ** token?.decimals)
         .toNumber(),
     [balanceToken]
   );
@@ -110,7 +110,7 @@ const ManageVaultForm: FC<VaultManageFormProps> = ({
                       ? "Balance: " +
                         formatNumber(
                           BigNumber(walletBalance)
-                            .dividedBy(10 ** 9)
+                            .dividedBy(10 ** token?.decimals)
                             .toNumber()
                         ) +
                         " " +
@@ -209,7 +209,7 @@ const ManageVaultForm: FC<VaultManageFormProps> = ({
               )}`}</BaseFormInputUsdIndicator>
               <BaseFormInputLogo
                 className={"extendedInput"}
-                src={getTokenLogoURL(token?.name)}
+                src={getTokenLogoURL(token?.id)}
                 alt={token?.name}
               />
               <BaseFormSetMaxButton onClick={() => setMax()}>
@@ -264,7 +264,7 @@ const ManageVaultForm: FC<VaultManageFormProps> = ({
                   disabled
                 />
                 <BaseFormInputLogo
-                  src={getTokenLogoURL("FXD")}
+                  src={getTokenLogoURL(token?.id)}
                   alt={token.id}
                 />
               </BaseFormInputWrapper>

@@ -215,19 +215,38 @@ const useVaultDetail = () => {
           : getDefaultVaultTitle(
               vaultType[vaultData.id.toLowerCase()] || VaultType.DEFAULT,
               //vaultData.token.name,
-              "tspUSD",
+              vaultData.token.id ===
+                "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"
+                ? "USDC"
+                : "tspUSD",
               vaultData.id
             ),
         type,
         token: {
           ...vaultData.token,
-          symbol: "tspUSD",
-          name: "Test Splyce USD",
+          symbol:
+            vaultData.token.id ===
+            "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"
+              ? "USDC"
+              : "tspUSD",
+          name:
+            vaultData.token.id ===
+            "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"
+              ? "USD Coin"
+              : "Test Splyce USD",
         },
         shareToken: {
           ...vaultData.shareToken,
-          symbol: "sstUSD",
-          name: "Splyce Vault Shares Token USD",
+          symbol:
+            vaultData.shareToken.id ===
+            "5aa3HkBenNLtJwccrNDYri1FrqfB7U2oWQsRanbGRHot"
+              ? "sUSDC"
+              : "sstUSD",
+          name:
+            vaultData.shareToken.id ===
+            "5aa3HkBenNLtJwccrNDYri1FrqfB7U2oWQsRanbGRHot"
+              ? "Splyce Vault Shares USD Coin"
+              : "Splyce Vault Shares Token USD",
         },
       };
 
@@ -597,11 +616,8 @@ const useVaultDetail = () => {
       getTfVaultPeriods(getVaultIndex(vaultId))
         .then((periods) => {
           const { depositPeriodEnds, lockPeriodEnds } = periods;
-          // todo: remove hardcoded values
-          // setTfVaultDepositEndDate(depositPeriodEnds.toString())
-          // setTfVaultLockEndDate(lockPeriodEnds.toString())
-          setTfVaultDepositEndDate("1728568800");
-          setTfVaultLockEndDate("1728655200");
+          setTfVaultDepositEndDate(depositPeriodEnds.toString());
+          setTfVaultLockEndDate(lockPeriodEnds.toString());
         })
         .finally(() => {
           setTfVaultDepositEndTimeLoading(false);
@@ -722,7 +738,7 @@ const useVaultDetail = () => {
 
     return BigNumber(balanceToken || "0")
       .minus(sumTokenDeposits.minus(sumTokenWithdrawals))
-      .dividedBy(10 ** 9)
+      .dividedBy(10 ** vault?.token?.decimals)
       .toNumber();
   }, [
     vaultPosition,

@@ -125,7 +125,11 @@ const useTotalStats = (
 
   const totalBalanceValue = useMemo(() => {
     return positionsList.reduce((acc, position) => {
-      return BigNumber(acc).plus(position.balancePosition);
+      return BigNumber(acc).plus(
+        BigNumber(position.balancePosition).dividedBy(
+          10 ** position.token.decimals
+        )
+      );
     }, BigNumber(0));
   }, [positionsList]);
 
@@ -144,13 +148,16 @@ const useTotalStats = (
   const balanceEarned = useMemo(() => {
     if (balanceEarnedLoading) return "-1";
 
+    // todo: add correct token decimals
     const sumTokenDeposits = depositsList.reduce(
-      (acc: BigNumber, deposit: any) => acc.plus(deposit.tokenAmount),
+      (acc: BigNumber, deposit: any) =>
+        acc.plus(BigNumber(deposit.tokenAmount).dividedBy(10 ** 1)),
       new BigNumber(0)
     );
 
     const sumTokenWithdrawals = withdrawalsList.reduce(
-      (acc: BigNumber, withdrawal: any) => acc.plus(withdrawal.tokenAmount),
+      (acc: BigNumber, withdrawal: any) =>
+        acc.plus(BigNumber(withdrawal.tokenAmount).dividedBy(10 ** 1)),
       new BigNumber(0)
     );
 

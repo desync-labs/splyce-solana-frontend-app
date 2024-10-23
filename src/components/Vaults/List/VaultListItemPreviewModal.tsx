@@ -153,7 +153,7 @@ const VaultListItemPreviewModal: FC<VaultListItemPreviewModalProps> = ({
       <FlexBox>
         <FlexBox sx={{ justifyContent: "flex-start", gap: "4px" }}>
           <VaultListItemImageWrapper>
-            <Image src={getTokenLogoURL(token.symbol)} alt={token.name} />
+            <Image src={getTokenLogoURL(token.id)} alt={token.name} />
           </VaultListItemImageWrapper>
           <VaultTitle>{vault.name}</VaultTitle>
         </FlexBox>
@@ -177,7 +177,7 @@ const VaultListItemPreviewModal: FC<VaultListItemPreviewModalProps> = ({
                   formatNumber(
                     BigNumber(balanceEarned)
                       .multipliedBy(fxdPrice)
-                      .dividedBy(10 ** 9)
+                      .dividedBy(10 ** token.decimals)
                       .toNumber()
                   )
                 ) : balanceEarned === -1 ? (
@@ -198,7 +198,9 @@ const VaultListItemPreviewModal: FC<VaultListItemPreviewModalProps> = ({
               <>
                 {formatCurrency(
                   BigNumber(fxdPrice)
-                    .multipliedBy(BigNumber(balanceTokens).dividedBy(10 ** 9))
+                    .multipliedBy(
+                      BigNumber(balanceTokens).dividedBy(10 ** token.decimals)
+                    )
                     .toNumber()
                 )}
               </>
@@ -213,7 +215,7 @@ const VaultListItemPreviewModal: FC<VaultListItemPreviewModalProps> = ({
                   Math.max(
                     BigNumber(depositLimit)
                       .minus(BigNumber(balanceTokens))
-                      .dividedBy(10 ** 9)
+                      .dividedBy(10 ** token.decimals)
                       .toNumber(),
                     0
                   )
@@ -249,7 +251,7 @@ const VaultListItemPreviewModal: FC<VaultListItemPreviewModalProps> = ({
                   {vaultPosition
                     ? formatNumber(
                         BigNumber(vaultPosition.balancePosition)
-                          .dividedBy(10 ** 9)
+                          .dividedBy(10 ** token.decimals)
                           .toNumber()
                       )
                     : 0}

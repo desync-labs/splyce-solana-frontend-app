@@ -50,6 +50,7 @@ COPY --from=builder /app/public ./public
 
 # Use a non-root user for security
 RUN addgroup -S appgroup && adduser -S appuser -G appgroup
+RUN chown -R appuser:appgroup /app
 USER appuser
 
 # Expose port 3000
