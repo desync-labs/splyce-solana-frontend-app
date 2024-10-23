@@ -358,7 +358,7 @@ const VaultLockingBar = () => {
             isLoading={isWithdrawAllLoading}
           >
             {isWithdrawAllLoading ? (
-              <CircularProgress sx={{ color: "#0D1526" }} size={20} />
+              <CircularProgress size={20} />
             ) : (
               "Withdraw all"
             )}
