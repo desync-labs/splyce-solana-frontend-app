@@ -25,7 +25,7 @@ export const VaultFormWrapper = styled(FlexBox)`
 `;
 
 const VaultDetailForms = () => {
-  const [isLoaded, setNotLoaded] = useState<boolean>(false);
+  const [isLoaded, setIsLoaded] = useState<boolean>(false);
 
   const {
     vaultPosition,
@@ -39,13 +39,13 @@ const VaultDetailForms = () => {
 
   useEffect(() => {
     const timeout = setTimeout(() => {
-      setNotLoaded(vaultPosition && !vaultPositionLoading && !vaultLoading);
+      setIsLoaded(vaultPosition && !vaultPositionLoading && !vaultLoading);
     }, 300);
 
     return () => {
       clearTimeout(timeout);
     };
-  }, [vaultPosition, vaultPositionLoading, vaultLoading, setNotLoaded]);
+  }, [vaultPosition, vaultPositionLoading, vaultLoading, setIsLoaded]);
 
   if (isTfVaultType && activeTfPeriod > 0) return null;
 
