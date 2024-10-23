@@ -24,6 +24,7 @@ import {
   FAUCET_DATA_PUB_KEY,
   FAUCET_TOKEN_ACCOUNT_PUB_KEY,
 } from "@/utils/addresses";
+import BigNumber from "bignumber.js";
 
 const connection = new Connection(defaultEndpoint);
 
@@ -323,11 +324,21 @@ export const previewRedeem = async (shareBalance: string, vaultId: string) => {
 
 export const previewDeposit = async (tokenAmount: string, vaultId: string) => {
   // todo: implement preview deposit from program
+  if (vaultId.toLowerCase() === "W723RTUpoZ".toLowerCase()) {
+    return BigNumber(tokenAmount)
+      .dividedBy(10 ** 3)
+      .toString();
+  }
   return tokenAmount;
 };
 
 export const previewWithdraw = async (tokenAmount: string, vaultId: string) => {
   // todo: implement preview withdraw from program
+  if (vaultId.toLowerCase() === "W723RTUpoZ".toLowerCase()) {
+    return BigNumber(tokenAmount)
+      .dividedBy(10 ** 3)
+      .toString();
+  }
   return tokenAmount;
 };
 

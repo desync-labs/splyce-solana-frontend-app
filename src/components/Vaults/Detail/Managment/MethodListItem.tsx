@@ -302,11 +302,7 @@ const MethodListItem: FC<{
                 marginTop: 0,
               }}
             >
-              {isLoading ? (
-                <CircularProgress size={18} sx={{ color: "#00332f" }} />
-              ) : (
-                "Execute"
-              )}
+              {isLoading ? <CircularProgress size={20} /> : "Execute"}
             </Button>
           </FlexBox>
         </Box>

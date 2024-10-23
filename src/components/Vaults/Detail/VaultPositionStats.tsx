@@ -60,7 +60,7 @@ const VaultPositionStats = () => {
     return BigNumber.max(
       BigNumber(vault?.depositLimit || 0)
         .minus(vault?.balanceTokens || 0)
-        .dividedBy(10 ** 9)
+        .dividedBy(10 ** vault?.token?.decimals)
         .toNumber(),
       0
     );
@@ -84,7 +84,7 @@ const VaultPositionStats = () => {
               <>
                 {formatNumber(
                   BigNumber(vault?.balanceTokens || 0)
-                    .dividedBy(10 ** 9)
+                    .dividedBy(10 ** vault?.token?.decimals)
                     .toNumber()
                 ) +
                   " " +
@@ -94,7 +94,7 @@ const VaultPositionStats = () => {
                     formatNumber(
                       BigNumber(vault?.balanceTokens || 0)
                         .multipliedBy(fxdPrice)
-                        .dividedBy(10 ** 9)
+                        .dividedBy(10 ** vault?.token?.decimals)
                         .toNumber()
                     )}
                 </UsdValue>
@@ -144,7 +144,7 @@ const VaultPositionStats = () => {
               <>
                 {formatNumber(
                   BigNumber(vaultPosition?.balancePosition || 0)
-                    .dividedBy(10 ** 9)
+                    .dividedBy(10 ** vault?.token?.decimals)
                     .toNumber()
                 ) +
                   " " +
@@ -154,7 +154,7 @@ const VaultPositionStats = () => {
                     formatNumber(
                       BigNumber(vaultPosition?.balancePosition || 0)
                         .multipliedBy(fxdPrice)
-                        .dividedBy(10 ** 9)
+                        .dividedBy(10 ** vault?.token?.decimals)
                         .toNumber()
                     )}
                 </UsdValue>

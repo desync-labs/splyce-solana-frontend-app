@@ -65,11 +65,7 @@ const FaucetIndex: FC = () => {
           onClick={handleGetTestTokens}
           disabled={loading || successMessage || !publicKey || !anchorWallet}
         >
-          {loading ? (
-            <CircularProgress sx={{ color: "#0D1526" }} size={20} />
-          ) : (
-            "Get test tokens"
-          )}
+          {loading ? <CircularProgress size={20} /> : "Get test tokens"}
         </Button>
         {successMessage && (
           <BaseInfoBox sx={{ marginTop: "24px" }}>

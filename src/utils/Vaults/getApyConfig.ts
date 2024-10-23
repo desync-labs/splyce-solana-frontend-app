@@ -1,5 +1,10 @@
-export const ApyConfig = {
-  ["11111111".toLowerCase()]: 20.2,
-  ["LQM2cdzDY3".toLowerCase()]: 10,
-  ["W723RTUpoZ".toLowerCase()]: 10,
-} as const;
+const ApyConfig: { [key: string]: number } = {};
+
+if (process.env.NEXT_PUBLIC_ENV === "prod") {
+  ApyConfig["LQM2cdzDY3".toLowerCase()] = 10;
+} else {
+  ApyConfig["LQM2cdzDY3".toLowerCase()] = 10;
+  ApyConfig["W723RTUpoZ".toLowerCase()] = 10;
+}
+
+export { ApyConfig };

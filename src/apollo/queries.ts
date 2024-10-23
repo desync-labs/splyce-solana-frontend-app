@@ -159,11 +159,13 @@ export const ACCOUNT_VAULT_POSITIONS = gql`
       }
       token {
         id
+        decimals
         symbol
         name
       }
       shareToken {
         id
+        decimals
         symbol
         name
       }
