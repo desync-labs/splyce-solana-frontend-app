@@ -25,7 +25,7 @@ export const VaultFormWrapper = styled(FlexBox)`
 `;
 
 const VaultDetailForms = () => {
-  const [notLoading, setNotLoaded] = useState(false);
+  const [isLoaded, setNotLoaded] = useState<boolean>(false);
 
   const {
     vaultPosition,
@@ -47,7 +47,9 @@ const VaultDetailForms = () => {
     };
   }, [vaultPosition, vaultPositionLoading, vaultLoading, setNotLoaded]);
 
-  if (!notLoading) {
+  if (isTfVaultType && activeTfPeriod > 0) return null;
+
+  if (!isLoaded) {
     return (
       <VaultDepositPaper>
         <Typography variant="h3" sx={{ fontSize: isMobile ? "14px" : "16px" }}>
@@ -70,14 +72,13 @@ const VaultDetailForms = () => {
       </VaultDepositPaper>
     );
   }
-  if (isTfVaultType && activeTfPeriod > 0) return null;
 
   return (
     <VaultDepositPaper>
-      {notLoading && BigNumber(vaultPosition.balanceShares).isGreaterThan(0) ? (
+      {isLoaded && BigNumber(vaultPosition.balanceShares).isGreaterThan(0) ? (
         <VaultDetailManageForm />
       ) : !shutdown ? (
-        <VaultDetailDepositForm notLoading={notLoading} />
+        <VaultDetailDepositForm />
       ) : null}
     </VaultDepositPaper>
   );

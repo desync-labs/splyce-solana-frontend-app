@@ -13,9 +13,9 @@ export enum PROD_RPC_TYPE {
   DRPC = "/api/prod-rpc-drpc",
 }
 
-export const SELECTED_PROD_PRC = PROD_RPC_TYPE.HELLIUM;
+export const SELECTED_PROD_RPC = PROD_RPC_TYPE.HELLIUM;
 
-export const MAINNET_RPC = `${PROD_BASE_URL}${SELECTED_PROD_PRC}`;
+export const MAINNET_RPC = `${PROD_BASE_URL}${SELECTED_PROD_RPC}`;
 export const DEV_RPC = "https://rpc.solana.splyce.finance";
 
 export const defaultEndpoint =

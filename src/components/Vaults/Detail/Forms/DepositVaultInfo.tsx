@@ -239,11 +239,7 @@ const DepositVaultInfo: FC<DepositVaultInfoProps> = ({
               (isTfVaultType && !isUserKycPassed)
             }
           >
-            {openDepositLoading ? (
-              <CircularProgress sx={{ color: "#0D1526" }} size={20} />
-            ) : (
-              "Deposit"
-            )}
+            {openDepositLoading ? <CircularProgress size={20} /> : "Deposit"}
           </Button>
         )}
       </BaseDialogButtonWrapper>
